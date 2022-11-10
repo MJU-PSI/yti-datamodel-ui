@@ -94,6 +94,7 @@ import { NewDatamodelVersionModalComponent } from './components/model/new-datamo
 import { NewDatamodelVersionModalService } from './components/model/new-datamodel-version-modal.component';
 import { LMarkdownEditorModule } from 'ngx-markdown-editor';
 import { ModelDocumentationComponent } from './components/model-documentation/model-documentation.component';
+import { environment } from '../environments/environment';
 
 require('angular-gettext');
 require('checklist-model');
@@ -158,7 +159,11 @@ export function localizerFactory(languageService: LanguageService): AngularLocal
     ReactiveFormsModule,
     HttpClientModule,
     UpgradeModule,
-    YtiCommonModule,
+    YtiCommonModule.forRoot({
+      url: environment.url,
+      realm: environment.realm,
+      clientId: environment.clientId
+    }),
     VirtualScrollerModule,
     TranslateModule.forRoot({
       loader: {

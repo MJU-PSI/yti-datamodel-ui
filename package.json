@@ -48,6 +48,8 @@
     "jquery": "3.4.1",
     "jquery-mousewheel": "3.1.13",
     "jsonld": "0.4.12",
+    "keycloak-angular": "^4.0.2",
+    "keycloak-js": "^4.8.3",
     "lodash": "4.17.15",
     "material-design-icons": "^3.0.1",
     "moment": "^2.21.0",
@@ -62,7 +64,7 @@
     "uri-js": "4.2.2",
     "uuid": "3.0.1",
     "webcola": "3.3.8",
-    "yti-common-ui": "https://github.com/VRK-YTI/yti-common-ui.git/#91705c04dff3132ba4372994d9f1237d3b25678d",
+    "yti-common-ui": "https://github.com/goraresult/yti-common-ui#before-angular-12_gora-dev",
     "zone.js": "~0.8.26"
   },
   "devDependencies": {

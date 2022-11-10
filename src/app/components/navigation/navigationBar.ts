@@ -136,7 +136,7 @@ export class NavigationBarComponent {
   }
 
   logIn() {
-    this.loginModal.open();
+    this.userService.login();
   }
 
   canStartHelp() {
