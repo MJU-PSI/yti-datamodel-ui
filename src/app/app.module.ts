@@ -1,5 +1,5 @@
 import * as angular from 'angular';
-import { animate, ICompileProvider, ILocationProvider, ILogProvider } from 'angular';
+import { animate, ICompileProvider, ILocationProvider, ILogProvider, IHttpProvider } from 'angular';
 import { ITooltipProvider } from 'angular-ui-bootstrap';
 import { routeConfig } from './routes';
 import { module as commonModule } from './components/common';
@@ -95,6 +95,7 @@ import { NewDatamodelVersionModalService } from './components/model/new-datamode
 import { LMarkdownEditorModule } from 'ngx-markdown-editor';
 import { ModelDocumentationComponent } from './components/model-documentation/model-documentation.component';
 import { environment } from '../environments/environment';
+import { KeycloakService } from 'keycloak-angular';
 
 require('angular-gettext');
 require('checklist-model');
@@ -317,6 +318,7 @@ mod.factory('alertModalService', downgradeInjectable(AlertModalService));
 mod.factory('datamodelConfirmationModalService', downgradeInjectable(DatamodelConfirmationModalService));
 mod.factory('errorModalService', downgradeInjectable(ErrorModalService));
 mod.factory('newDatamodelVersionModalService', downgradeInjectable(NewDatamodelVersionModalService));
+mod.factory('keycloakService', downgradeInjectable(KeycloakService));
 
 mod.config(routeConfig);
 
@@ -324,7 +326,8 @@ mod.config(($locationProvider: ILocationProvider,
             $logProvider: ILogProvider,
             $compileProvider: ICompileProvider,
             $animateProvider: IAnimateProvider,
-            $uibTooltipProvider: ITooltipProvider) => {
+            $uibTooltipProvider: ITooltipProvider,
+            $httpProvider: IHttpProvider) => {
   'ngInject';
   $locationProvider.html5Mode(true);
   $logProvider.debugEnabled(false);
@@ -336,6 +339,24 @@ mod.config(($locationProvider: ILocationProvider,
 
   $uibTooltipProvider.options({ appendToBody: true });
   $uibTooltipProvider.setTriggers({ 'mouseenter': 'mouseleave click' });
+
+  $httpProvider.interceptors.push(['$injector','$q', function ($injector, $q) {
+    return {
+      request: function (config) {
+        const keycloakService = $injector.get('keycloakService');
+        var deferred = $q.defer();
+        keycloakService.getToken().then((token: any) => {
+          if (config){
+            config.headers = config.headers || {};
+            config.headers['Authorization'] = `Bearer ${token}`;
+          }
+
+          deferred.resolve(config);
+        });
+        return deferred.promise;
+      }
+    };
+  }]);
 });
 
 
