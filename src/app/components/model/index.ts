@@ -27,11 +27,11 @@ import { NonEditableVocabularyComponent } from './nonEditableVocabulary';
 import { NewDatamodelVersionPrefixModalFormComponent } from './newDatamodelVersionPrefixModalForm';
 
 import { componentDeclaration } from 'app/utils/angular';
-import { module as mod } from './module';
+import { module5 as mod } from './module';
 import { downgradeComponent } from '@angular/upgrade/static';
 import { ModelMainComponent } from './modelMain';
 import { ModelDocumentationComponent } from '../model-documentation/model-documentation.component';
-export { module } from './module';
+export { module5 } from './module';
 
 mod.component('editableRootClass', componentDeclaration(EditableRootClassComponent));
 mod.component('conceptForm', componentDeclaration(ConceptFormComponent));

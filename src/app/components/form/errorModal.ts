@@ -1,7 +1,7 @@
 import { IModalService } from 'angular-ui-bootstrap';
 import { Usage } from 'app/entities/usage';
 import { LanguageContext } from 'app/types/language';
-import { identity } from 'yti-common-ui/utils/object';
+import { identity } from '@vrk-yti/yti-common-ui';
 import { modalCancelHandler } from 'app/utils/angular';
 
 interface UsageParameters {
@@ -24,13 +24,13 @@ export class ErrorModal {
               <a><i ng-click="$dismiss('cancel')" class="fas fa-times"></i></a>
               <i class="fas fa-exclamation-circle"></i>{{$ctrl.title | translate}}
             </h4>
-          </div>          
-          
+          </div>
+
           <div class="modal-body">
             <p>{{$ctrl.errorMessage | translate}}</p>
             <usage ng-if="$ctrl.usage" usage="$ctrl.usage.usage" context="$ctrl.usage.context"></usage>
           </div>
-        
+
           <div class="modal-footer">
             <button class="btn btn-link" type="button" ng-click="$dismiss('cancel')" translate>Close</button>
           </div>

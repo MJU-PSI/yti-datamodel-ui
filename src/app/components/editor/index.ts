@@ -28,8 +28,8 @@ import { SubjectViewComponent } from './subjectView';
 import { VisualizationViewComponent } from './visualizationView';
 
 import { componentDeclaration } from 'app/utils/angular';
-import { module as mod } from './module';
-export { module } from './module';
+import { module2 as mod } from './module';
+export { module2 } from './module';
 
 mod.component('classForm', componentDeclaration(ClassFormComponent));
 mod.component('classView', componentDeclaration(ClassViewComponent));

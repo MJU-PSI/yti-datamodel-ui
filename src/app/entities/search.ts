@@ -5,7 +5,7 @@ import { init } from './mapping';
 import { GraphNode } from './graphNode';
 import { uriSerializer, entityAwareOptional, entity } from './serializer/entitySerializer';
 import { localizableSerializer, optional, stringSerializer } from './serializer/serializer';
-import { Localizable } from 'yti-common-ui/types/localization';
+import { Localizable } from '@vrk-yti/yti-common-ui';
 
 export class SearchResult extends GraphNode {
 

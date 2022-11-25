@@ -1,12 +1,10 @@
-import { isDefined } from 'yti-common-ui/utils/object';
-import { normalizeAsArray, filterDefined } from 'yti-common-ui/utils/array';
-import Moment = moment.Moment;
-import * as moment from 'moment';
-import { Coordinate  } from 'app/types/visualization';
-import { Language } from 'app/types/language';
+import { filterDefined, isDefined, Localizable, normalizeAsArray } from '@vrk-yti/yti-common-ui';
 import { Type } from 'app/types/entity';
+import { Language } from 'app/types/language';
+import { Coordinate } from 'app/types/visualization';
 import { mapType, reverseMapType } from 'app/utils/entity';
-import { Localizable } from 'yti-common-ui/types/localization';
+import * as moment from 'moment';
+import Moment = moment.Moment;
 
 export interface Serializer<T> {
   type: 'Normal';

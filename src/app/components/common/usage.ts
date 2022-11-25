@@ -1,8 +1,7 @@
 import { IScope } from 'angular';
 import { Referrer, Usage } from 'app/entities/usage';
 import { LanguageContext } from 'app/types/language';
-import { groupBy } from 'yti-common-ui/utils/array';
-import { stringMapToObject } from 'yti-common-ui/utils/object';
+import { groupBy, stringMapToObject } from '@vrk-yti/yti-common-ui';
 import { LegacyComponent } from 'app/utils/angular';
 import { EditableForm } from 'app/components/form/editableEntityController';
 

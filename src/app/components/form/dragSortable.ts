@@ -1,5 +1,5 @@
 import { IAttributes, IDirectiveFactory, IRepeatScope, IScope } from 'angular';
-import { moveElement, resetWith } from 'yti-common-ui/utils/array';
+import { moveElement, resetWith } from '@vrk-yti/yti-common-ui';
 import { LegacyDirective } from 'app/utils/angular';
 
 interface DragSortableAttributes extends IAttributes {
@@ -106,10 +106,16 @@ export const DragSortableItemDirective: IDirectiveFactory = () => {
     require: '^dragSortable',
     link($scope: IRepeatScope, element: JQuery, _attributes: IAttributes, dragSortable: DragSortableDirective<any>) {
 
-      const selectStartHandler = () => element[0].dragDrop(); // IE9 support hack
+      const selectStartHandler = () => element.dragDrop(); // IE9 support hack
 
       const dragStartHandler = (event: JQueryMouseEventObject) => $scope.$apply(
-        () => dragSortable.startDrag((<DragEvent> event.originalEvent).dataTransfer, $scope.$index, element.width()));
+        () => {
+          if ((<DragEvent>event.originalEvent).dataTransfer != null) {
+            dragSortable.startDrag((<DragEvent> event.originalEvent).dataTransfer!, $scope.$index, element.width())
+          }
+        }
+      );
+
 
       const dragEndHandler = () => $scope.$apply(() => dragSortable.drop());
 

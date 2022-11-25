@@ -3,7 +3,7 @@ import { GraphData } from 'app/types/entity';
 import * as frames from 'app/entities/frames';
 import { Classification } from 'app/entities/classification';
 import { FrameService } from './frameService';
-import { comparingPrimitive } from 'yti-common-ui/utils/comparator';
+import { comparingPrimitive } from '@vrk-yti/yti-common-ui';
 import { apiEndpointWithName } from './config';
 
 export class ClassificationService {

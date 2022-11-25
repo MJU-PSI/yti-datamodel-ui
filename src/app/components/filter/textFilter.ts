@@ -1,7 +1,7 @@
 import { SearchController, TextAnalysis } from 'app/types/filter';
 import { IScope } from 'angular';
 import { ifChanged, LegacyComponent } from 'app/utils/angular';
-import { isDefined } from 'yti-common-ui/utils/object';
+import { isDefined } from '@vrk-yti/yti-common-ui';
 
 @LegacyComponent({
   bindings: {

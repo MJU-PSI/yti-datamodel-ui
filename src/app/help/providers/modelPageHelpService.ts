@@ -10,7 +10,7 @@ import * as VisualizationView from 'app/help/pages/model/visualizationView.po';
 import { HelpBuilderService, NavigationEvents } from 'app/help/providers/helpBuilderService';
 import { ClassDetails, PredicateDetails } from 'app/services/entityLoader';
 import { Language } from 'app/types/language';
-import { Localizable } from 'yti-common-ui/types/localization';
+import { Localizable } from '@vrk-yti/yti-common-ui';
 import { modelUrl } from 'app/utils/entity';
 
 function addModelNamespace(type: KnownModelType, model: { prefix: string }): StoryLine {

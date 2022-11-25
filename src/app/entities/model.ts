@@ -1,25 +1,22 @@
+import { containsAny, Localizable, remove, requireDefined, Status } from '@vrk-yti/yti-common-ui';
 import * as _ from 'lodash';
-import { requireDefined } from 'yti-common-ui/utils/object';
-import { KnownModelType, Type, UseContext } from '../types/entity';
-import { modelUrl, normalizeModelType, resourceUrl } from '../utils/entity';
-import { Uri, Url, Urn } from './uri';
-import { Language } from '../types/language';
 import { Moment } from 'moment';
-import { containsAny, remove } from 'yti-common-ui/utils/array';
+import { KnownModelType, Type, UseContext } from '../types/entity';
+import { Language } from '../types/language';
+import { modelUrl, normalizeModelType, resourceUrl } from '../utils/entity';
+import { Classification } from './classification';
 import { DefinedBy } from './definedBy';
-import { Vocabulary } from './vocabulary';
-import { ReferenceData } from './referenceData';
-import { init, serialize } from './mapping';
 import { GraphNode } from './graphNode';
+import { init, serialize } from './mapping';
+import { Organization } from './organization';
+import { ReferenceData } from './referenceData';
 import { entity, entityAwareList, entityAwareOptional, uriSerializer } from './serializer/entitySerializer';
 import {
   dateSerializer, identitySerializer, languageSerializer, list, localizableSerializer, optional,
   stringSerializer, typeSerializer, valueOrDefault
 } from './serializer/serializer';
-import { Localizable } from 'yti-common-ui/types/localization';
-import { Organization } from './organization';
-import { Classification } from './classification';
-import { Status } from 'yti-common-ui/entities/status';
+import { Uri, Url, Urn } from './uri';
+import { Vocabulary } from './vocabulary';
 
 function normalizeType(type: Type[]): KnownModelType {
   const normalizedType = requireDefined(normalizeModelType(type));

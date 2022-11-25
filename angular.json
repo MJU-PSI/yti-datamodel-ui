@@ -30,6 +30,11 @@
                 "input": "node_modules/ace-builds/src-min",
                 "output": "/assets/ace-builds/"
               },
+              {
+                "glob": "**/*",
+                "input": "./node_modules/@vrk-yti/yti-common-ui/assets/",
+                "output": "./assets/"
+              },
               "src/version.txt"
             ],
             "styles": [
@@ -66,7 +71,7 @@
           }
         },
         "serve": {
-          "builder": "@angular-builders/dev-server:generic",
+          "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
             "browserTarget": "yti-datamodel-ui:build"
           },

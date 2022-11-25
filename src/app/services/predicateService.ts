@@ -1,22 +1,19 @@
+import { containsAny, flatten, requireDefined } from '@vrk-yti/yti-common-ui';
 import { IHttpService, IPromise, IQService } from 'angular';
-import * as moment from 'moment';
 import { upperCaseFirst } from 'change-case';
-import { KnownPredicateType, PredicateRelationType } from '../types/entity';
-import { reverseMapType } from '../utils/entity';
-import { Urn, Uri } from '../entities/uri';
-import { expandContextWithKnownModels } from '../utils/entity';
-import { Language } from '../types/language';
-import { DataSource } from '../components/form/dataSource';
+import * as moment from 'moment';
 import { modelScopeCache } from '../components/form/cache';
-import { requireDefined } from 'yti-common-ui/utils/object';
-import { FrameService } from './frameService';
-import { GraphData, EntityFactory } from '../types/entity';
+import { DataSource } from '../components/form/dataSource';
 import * as frames from '../entities/frames';
-import { containsAny, flatten } from 'yti-common-ui/utils/array';
-import { PredicateListItem, Predicate, Attribute, Association } from '../entities/predicate';
 import { Model } from '../entities/model';
+import { Association, Attribute, Predicate, PredicateListItem } from '../entities/predicate';
 import { typeSerializer } from '../entities/serializer/serializer';
+import { Uri, Urn } from '../entities/uri';
+import { EntityFactory, GraphData, KnownPredicateType, PredicateRelationType } from '../types/entity';
+import { Language } from '../types/language';
+import { expandContextWithKnownModels, reverseMapType } from '../utils/entity';
 import { apiEndpointWithName } from './config';
+import { FrameService } from './frameService';
 
 export class RelatedPredicate {
   constructor(public oldPredicateId: Uri, public relationType: PredicateRelationType) {

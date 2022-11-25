@@ -15,7 +15,7 @@ import { editableMargin } from 'app/help/utils/selector';
 import { KnownModelType } from 'app/types/entity';
 import * as SearchClassificationModal from './modal/searchClassificationModal.po';
 import * as SearchOrganizationsModal from './modal/searchOrganizationModal.po';
-import { Localizable } from 'yti-common-ui/types/localization';
+import { Localizable } from '@vrk-yti/yti-common-ui';
 import { Language } from 'app/types/language';
 import { Uri } from 'app/entities/uri';
 

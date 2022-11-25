@@ -5,7 +5,7 @@ import { Uri } from 'app/entities/uri';
 import { Exclusion } from 'app/utils/exclusion';
 import { WithId } from 'app/types/entity';
 import { LegacyComponent, modalCancelHandler } from 'app/utils/angular';
-import { labelNameToResourceIdIdentifier } from 'yti-common-ui/utils/resource';
+import { labelNameToResourceIdIdentifier } from '@vrk-yti/yti-common-ui';
 
 export abstract class AddNew {
 

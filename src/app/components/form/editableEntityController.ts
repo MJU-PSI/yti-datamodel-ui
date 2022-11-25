@@ -5,7 +5,7 @@ import { isModalCancel } from 'app/utils/angular';
 import { ErrorModal } from './errorModal';
 import { LanguageContext } from 'app/types/language';
 import { EditableEntity } from 'app/types/entity';
-import { ignoreModalClose } from 'yti-common-ui/utils/modal';
+import { ignoreModalClose } from '@vrk-yti/yti-common-ui';
 
 export interface EditableForm extends IFormController {
   editing: boolean;

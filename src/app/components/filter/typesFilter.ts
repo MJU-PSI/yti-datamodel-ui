@@ -1,7 +1,7 @@
 import { SearchController, TextAnalysis } from 'app/types/filter';
 import { IScope } from 'angular';
 import { Type, WithIdAndType } from 'app/types/entity';
-import { containsAny } from 'yti-common-ui/utils/array';
+import { containsAny } from '@vrk-yti/yti-common-ui';
 import { ifChanged, LegacyComponent } from 'app/utils/angular';
 
 @LegacyComponent({

@@ -1,26 +1,12 @@
+import { NgZone } from '@angular/core';
+import { arraysAreEqual, firstMatching, mapOptional, normalizeAsArray, Optional, requireDefined } from '@vrk-yti/yti-common-ui';
 import { IPromise, IQService, IScope, ITimeoutService, IWindowService } from 'angular';
-import { LanguageService } from 'app/services/languageService';
-import { ClassVisualization, VisualizationService } from 'app/services/visualizationService';
-import { ClassInteractionListener, Coordinate, Dimensions } from 'app/types/visualization';
-import { ChangeListener } from 'app/types/component';
-import * as joint from 'jointjs';
-import { Uri } from 'app/entities/uri';
-import { arraysAreEqual, firstMatching, normalizeAsArray } from 'yti-common-ui/utils/array';
-import { UserService } from 'app/services/userService';
 import { ConfirmationModal } from 'app/components/common/confirmationModal';
-import { FocusLevel, NameType, SessionService } from 'app/services/sessionService';
-import { VisualizationPopoverDetails } from './popover';
-import { createAssociationLink, createClassElement, ShadowClass } from './diagram';
-import { PaperHolder } from './paperHolder';
-import { centerToElement, focusElement, moveOrigin, scale, scaleToFit } from './paperUtil';
-import { adjustElementLinks, calculateLabelPosition, layoutGraph, VertexAction } from './layout';
-import { Localizer } from 'app/types/language';
-import { ifChanged, LegacyComponent, modalCancelHandler } from 'app/utils/angular';
-import { centerToPosition, coordinatesAreEqual, copyVertices } from 'app/utils/entity';
-import { mapOptional, Optional, requireDefined } from 'yti-common-ui/utils/object';
+import { ModelPageActions } from 'app/components/model/modelPage';
 import { Class, Property } from 'app/entities/class';
-import { Predicate } from 'app/entities/predicate';
 import { Model } from 'app/entities/model';
+import { Predicate } from 'app/entities/predicate';
+import { Uri } from 'app/entities/uri';
 import {
   AssociationPropertyPosition,
   AssociationTargetPlaceholderClass,
@@ -28,11 +14,24 @@ import {
   VisualizationClass
 } from 'app/entities/visualization';
 import { InteractiveHelpService } from 'app/help/services/interactiveHelpService';
+import { AuthorizationManagerService } from 'app/services/authorizationManagerService';
+import { LanguageService } from 'app/services/languageService';
+import { FocusLevel, NameType, SessionService } from 'app/services/sessionService';
+import { UserService } from 'app/services/userService';
+import { ClassVisualization, VisualizationService } from 'app/services/visualizationService';
+import { ChangeListener } from 'app/types/component';
+import { Localizer } from 'app/types/language';
+import { ClassInteractionListener, Coordinate, Dimensions } from 'app/types/visualization';
+import { ifChanged, LegacyComponent, modalCancelHandler } from 'app/utils/angular';
+import { centerToPosition, coordinatesAreEqual, copyVertices } from 'app/utils/entity';
+import * as joint from 'jointjs';
 import * as moment from 'moment';
 import { ContextMenuTarget } from './contextMenu';
-import { ModelPageActions } from 'app/components/model/modelPage';
-import { AuthorizationManagerService } from 'app/services/authorizationManagerService';
-import { NgZone } from '@angular/core';
+import { createAssociationLink, createClassElement, ShadowClass } from './diagram';
+import { adjustElementLinks, calculateLabelPosition, layoutGraph, VertexAction } from './layout';
+import { PaperHolder } from './paperHolder';
+import { centerToElement, focusElement, moveOrigin, scale, scaleToFit } from './paperUtil';
+import { VisualizationPopoverDetails } from './popover';
 
 @LegacyComponent({
   bindings: {
@@ -43,55 +42,55 @@ import { NgZone } from '@angular/core';
   },
   template: `
      <div class="visualization-buttons">
-       
+
        <button id="maximize_button"
-               ng-if="!$ctrl.maximized" 
+               ng-if="!$ctrl.maximized"
                class="btn btn-link btn-lg pull-right pt-0 pb-0 pr-0"
                uib-tooltip="{{'Maximize' | translate}}"
                tooltip-placement="left"
                ng-click="$ctrl.maximized = true">
         <i class="fas fa-window-maximize"></i>
        </button>
-       
+
        <button id="minimize_button"
-               ng-if="$ctrl.maximized" 
+               ng-if="$ctrl.maximized"
                class="btn btn-secondary-action btn-lg pull-right pl-1 pt-0 pb-0 pr-1 mr-3"
                uib-tooltip="{{'Minimize' | translate}}"
                tooltip-placement="left"
                ng-click="$ctrl.maximized = false">
         <i class="fas fa-window-minimize"></i>
        </button>
-       
+
        <button id="zoom_out_button"
-               class="btn btn-secondary-action btn-sm" 
-               ng-mousedown="$ctrl.zoomOut()" 
+               class="btn btn-secondary-action btn-sm"
+               ng-mousedown="$ctrl.zoomOut()"
                ng-mouseup="$ctrl.zoomOutEnded()">
          <i class="fas fa-search-minus"></i>
        </button>
-       
+
        <button id="zoom_in_button"
-               class="btn btn-secondary-action btn-sm" 
-               ng-mousedown="$ctrl.zoomIn()" 
+               class="btn btn-secondary-action btn-sm"
+               ng-mousedown="$ctrl.zoomIn()"
                ng-mouseup="$ctrl.zoomInEnded()">
          <i class="fas fa-search-plus"></i>
        </button>
-       
+
        <button id="fit_to_content_button"
-               class="btn btn-secondary-action btn-sm" 
+               class="btn btn-secondary-action btn-sm"
                ng-click="$ctrl.fitToContent()">
          <i class="fas fa-arrows-alt"></i>
        </button>
-       
+
        <button id="center_to_selected_class_button"
-               ng-show="$ctrl.canFocus()" 
-               class="btn btn-secondary-action btn-sm" 
+               ng-show="$ctrl.canFocus()"
+               class="btn btn-secondary-action btn-sm"
                ng-click="$ctrl.centerToSelectedClass()">
          <i class="fas fa-crosshairs"></i>
        </button>
-       
+
        <span ng-show="$ctrl.canFocus()">
          <button id="focus_out_button"
-                 class="btn btn-secondary-action btn-sm" 
+                 class="btn btn-secondary-action btn-sm"
                  ng-click="$ctrl.focusOut()">
            <i class="fas fa-angle-left"></i>
          </button>
@@ -99,61 +98,61 @@ import { NgZone } from '@angular/core';
            <i>{{$ctrl.renderSelectionFocus()}}</i>
          </div>
          <button id="focus_in_button"
-                 class="btn btn-secondary-action btn-sm" 
+                 class="btn btn-secondary-action btn-sm"
                  ng-click="$ctrl.focusIn()">
            <i class="fas fa-angle-right"></i>
          </button>
        </span>
-       
+
        <button id="toggle_show_name_button"
-               class="btn btn-secondary-action btn-sm" 
+               class="btn btn-secondary-action btn-sm"
                ng-click="$ctrl.toggleShowName()">
          <i>{{$ctrl.showNameLabel | translate}}</i>
        </button>
-       
+
        <button id="save_positions_button"
-               class="btn btn-secondary-action btn-sm" 
-               ng-show="$ctrl.canSave()" 
-               ng-disabled="$ctrl.modelPositions.isPristine()" 
+               class="btn btn-secondary-action btn-sm"
+               ng-show="$ctrl.canSave()"
+               ng-disabled="$ctrl.modelPositions.isPristine()"
                ng-click="$ctrl.savePositions()">
         <i class="fas fa-save"></i>
        </button>
-       
+
        <button id="layout_persistent_positions_button"
-               class="btn btn-secondary-action btn-sm" 
-               ng-disabled="$ctrl.saving" 
-               ng-click="$ctrl.layoutPersistentPositions()" 
+               class="btn btn-secondary-action btn-sm"
+               ng-disabled="$ctrl.saving"
+               ng-click="$ctrl.layoutPersistentPositions()"
                ng-context-menu="$ctrl.relayoutPositions()">
         <i class="fas fa-sync-alt"></i>
        </button>
-       
+
        <div uib-dropdown is-open="$ctrl.exportOpen" ng-if="$ctrl.downloads" class="d-inline-block">
          <button id="download_dropdown" class="btn btn-secondary-action btn-sm dropdown-toggle" uib-dropdown-toggle>
            <i class="fas fa-download" />
          </button>
          <div uib-dropdown-menu>
            <a id="{{download.name + '_download_dropdown'}}"
-              class="dropdown-item" 
+              class="dropdown-item"
               ng-repeat="download in $ctrl.downloads"
-              target="_self" 
-              download="{{download.filename}}" 
-              ng-href="{{download.href}}" 
+              target="_self"
+              download="{{download.filename}}"
+              ng-href="{{download.href}}"
               ng-click="download.onClick()">
              {{download.name}}
            </a>
          </div>
        </div>
      </div>
-     
+
      <canvas style="display:none; background-color: white"></canvas>
-     
+
      <visualization-popover details="$ctrl.popoverDetails" context="$ctrl.model"></visualization-popover>
-     
-     <visualization-context-menu ng-if="$ctrl.contextMenuTarget" 
-                                 target="$ctrl.contextMenuTarget" 
-                                 model="$ctrl.model" 
+
+     <visualization-context-menu ng-if="$ctrl.contextMenuTarget"
+                                 target="$ctrl.contextMenuTarget"
+                                 model="$ctrl.model"
                                  model-page-actions="$ctrl.modelPageActions"></visualization-context-menu>
-                                 
+
      <ajax-loading-indicator ng-if="$ctrl.loading"></ajax-loading-indicator>
   `
 })

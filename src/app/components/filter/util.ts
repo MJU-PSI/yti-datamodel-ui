@@ -3,9 +3,7 @@ import { Exclusion } from '../../utils/exclusion';
 import { ContentExtractor, SearchFilter, TextAnalysis } from '../../types/filter';
 import { analyze } from './textAnalyzer';
 import { comparingLocalizable} from '../../utils/comparator';
-import { Comparator, comparingPrimitive } from 'yti-common-ui/utils/comparator';
-import { allMatching, limit } from 'yti-common-ui/utils/array';
-import { Localizable } from 'yti-common-ui/types/localization';
+import { Comparator, comparingPrimitive, allMatching, limit, Localizable } from '@vrk-yti/yti-common-ui';
 import { DefinedBy } from '../../entities/definedBy';
 
 const defaultSearchLimit = 100;

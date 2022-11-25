@@ -1,12 +1,9 @@
 import { Component, OnDestroy } from '@angular/core';
-import { Role, UserService } from 'yti-common-ui/services/user.service';
+import { Role, UserService, combineSets, hasAny, Options, index } from '@vrk-yti/yti-common-ui';
 import { Subscription } from 'rxjs';
 import { Organization } from '../../entities/organization';
 import { LanguageService } from '../../services/languageService';
-import { combineSets, hasAny } from 'yti-common-ui/utils/set';
-import { Options } from 'yti-common-ui/components/dropdown.component';
 import { comparingLocalizable } from '../../utils/comparator';
-import { index } from 'yti-common-ui/utils/array';
 import {
   GettextCatalogWrapper,
   LocationServiceWrapper,

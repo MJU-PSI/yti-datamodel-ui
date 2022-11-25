@@ -1,9 +1,7 @@
-import { Uri } from 'app/entities/uri';
+import { assertNever, isDefined, normalizeAsArray } from '@vrk-yti/yti-common-ui';
 import { GraphNode } from 'app/entities/graphNode';
-import { EntityFactory } from 'app/types/entity';
-import { isDefined, assertNever } from 'yti-common-ui/utils/object';
-import { WithIdAndType } from 'app/types/entity';
-import { normalizeAsArray } from 'yti-common-ui/utils/array';
+import { Uri } from 'app/entities/uri';
+import { EntityFactory, WithIdAndType } from 'app/types/entity';
 import { indexById } from 'app/utils/entity';
 
 export interface EntityAwareSerializer<T, N> {

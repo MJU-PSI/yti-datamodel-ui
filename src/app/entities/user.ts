@@ -1,4 +1,4 @@
-import { Role, UUID } from 'yti-common-ui/services/user.service';
+import { Role, UUID } from '@vrk-yti/yti-common-ui';
 
 export interface User {
 

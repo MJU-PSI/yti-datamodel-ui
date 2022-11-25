@@ -1,18 +1,17 @@
+import { assertNever, requireDefined, Status } from '@vrk-yti/yti-common-ui';
 import { IHttpService, IPromise, IQService } from 'angular';
-import * as moment from 'moment';
 import { upperCaseFirst } from 'change-case';
-import { Uri, Urn } from '../entities/uri';
-import { Language } from '../types/language';
-import { assertNever, requireDefined } from 'yti-common-ui/utils/object';
-import * as frames from '../entities/frames';
-import { FrameService } from './frameService';
-import { GraphData, KnownModelType } from '../types/entity';
-import { ImportedNamespace, Link, Model, ModelListItem } from '../entities/model';
-import { apiEndpointWithName } from './config';
-import { ClassService } from './classService';
-import { PredicateService } from './predicateService';
-import { Status } from 'yti-common-ui/entities/status';
+import * as moment from 'moment';
 import { BehaviorSubject } from 'rxjs';
+import * as frames from '../entities/frames';
+import { ImportedNamespace, Link, Model, ModelListItem } from '../entities/model';
+import { Uri, Urn } from '../entities/uri';
+import { GraphData, KnownModelType } from '../types/entity';
+import { Language } from '../types/language';
+import { ClassService } from './classService';
+import { apiEndpointWithName } from './config';
+import { FrameService } from './frameService';
+import { PredicateService } from './predicateService';
 
 export interface ModelService {
 

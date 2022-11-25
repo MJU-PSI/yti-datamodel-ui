@@ -1,14 +1,13 @@
-import { VocabularyService } from 'app/services/vocabularyService';
-import { ResetableService } from './resetableService';
+import { isDefined, Localizable, requireDefined } from '@vrk-yti/yti-common-ui';
 import { IPromise, IQService } from 'angular';
-import { Language } from 'app/types/language';
-import { Concept, Vocabulary } from 'app/entities/vocabulary';
-import { Uri } from 'app/entities/uri';
-import { ResourceStore } from './resourceStore';
 import { analyze } from 'app/components/filter/textAnalyzer';
-import { Localizable } from 'yti-common-ui/types/localization';
-import { isDefined, requireDefined } from 'yti-common-ui/utils/object';
+import { Uri } from 'app/entities/uri';
+import { Concept, Vocabulary } from 'app/entities/vocabulary';
+import { VocabularyService } from 'app/services/vocabularyService';
+import { Language } from 'app/types/language';
 import { EntityCreatorService } from './entityCreatorService';
+import { ResetableService } from './resetableService';
+import { ResourceStore } from './resourceStore';
 
 export class InteractiveHelpVocabularyService implements VocabularyService, ResetableService {
 

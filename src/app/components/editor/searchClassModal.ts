@@ -13,8 +13,7 @@ import { AbstractClass, Class, ClassListItem } from 'app/entities/class';
 import { Model } from 'app/entities/model';
 import { ExternalEntity } from 'app/entities/externalEntity';
 import { filterAndSortSearchResults, defaultLabelComparator } from 'app/components/filter/util';
-import { Optional, requireDefined } from 'yti-common-ui/utils/object';
-import { ignoreModalClose } from 'yti-common-ui/utils/modal';
+import { Optional, requireDefined, ignoreModalClose } from '@vrk-yti/yti-common-ui';
 
 export const noExclude = (_item: AbstractClass) => null;
 export const defaultTextForSelection = (_klass: Class) => 'Use class';

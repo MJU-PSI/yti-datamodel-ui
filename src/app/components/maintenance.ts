@@ -1,5 +1,5 @@
 import { ILogService } from 'angular';
-import { identity } from 'yti-common-ui/utils/object';
+import { identity } from '@vrk-yti/yti-common-ui';
 import { modalCancelHandler } from 'app/utils/angular';
 import { IModalService } from 'angular-ui-bootstrap';
 

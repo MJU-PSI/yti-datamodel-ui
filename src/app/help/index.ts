@@ -1,28 +1,27 @@
-import { module as mod } from './module';
 import { componentDeclaration } from 'app/utils/angular';
+import { module11 as mod } from './module';
 
-import { InteractiveHelpService } from './services/interactiveHelpService';
-import { InteractiveHelpModelService } from './services/helpModelService';
-import { InteractiveHelpClassService } from './services/helpClassService';
-import { InteractiveHelpPredicateService } from './services/helpPredicateService';
-import { InteractiveHelpUserService } from './services/helpUserService';
-import { InteractiveHelpVocabularyService } from './services/helpVocabularyService';
-import { InteractiveHelpVisualizationService } from './services/helpVisualizationService';
-import { InteractiveHelpValidatorService } from './services/helpValidatorService';
-import { HelpBuilderService } from './providers/helpBuilderService';
-import { FrontPageHelpService } from './providers/frontPageHelpService';
-import { ModelPageHelpService } from './providers/modelPageHelpService';
+import { comparingPrimitive, flatten } from '@vrk-yti/yti-common-ui';
+import { availableUILanguages } from 'app/types/language';
+import { InteractiveHelpBackdropComponent } from './components/interactiveHelpBackdrop';
 import { InteractiveHelpDisplay } from './components/interactiveHelpDisplay';
-import { InteractiveHelpOrganizationService } from './services/helpOrganizationService';
 import { InteractiveHelpPopoverComponent } from './components/interactiveHelpPopover';
 import { InteractiveHelpPopoverDimensionsCalculatorComponent } from './components/interactiveHelpPopoverDimensionsCalculator';
-import { InteractiveHelpBackdropComponent } from './components/interactiveHelpBackdrop';
 import { InteractiveHelp } from './contract';
-import { comparingPrimitive } from 'yti-common-ui/utils/comparator';
-import { availableUILanguages } from 'app/types/language';
-import { flatten } from 'yti-common-ui/utils/array';
+import { FrontPageHelpService } from './providers/frontPageHelpService';
+import { HelpBuilderService } from './providers/helpBuilderService';
+import { ModelPageHelpService } from './providers/modelPageHelpService';
+import { InteractiveHelpClassService } from './services/helpClassService';
+import { InteractiveHelpModelService } from './services/helpModelService';
+import { InteractiveHelpOrganizationService } from './services/helpOrganizationService';
+import { InteractiveHelpPredicateService } from './services/helpPredicateService';
+import { InteractiveHelpUserService } from './services/helpUserService';
+import { InteractiveHelpValidatorService } from './services/helpValidatorService';
+import { InteractiveHelpVisualizationService } from './services/helpVisualizationService';
+import { InteractiveHelpVocabularyService } from './services/helpVocabularyService';
+import { InteractiveHelpService } from './services/interactiveHelpService';
 
-export { module } from './module';
+export { module11 } from './module';
 
 const logTranslations = false;
 

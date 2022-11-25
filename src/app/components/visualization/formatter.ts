@@ -1,10 +1,9 @@
-import { isDefined, assertNever } from 'yti-common-ui/utils/object';
-import { Localizer } from 'app/types/language';
-import { NameType } from 'app/services/sessionService';
+import { assertNever, comparingPrimitive, isDefined } from '@vrk-yti/yti-common-ui';
+import { Property } from 'app/entities/class';
 import { DataType } from 'app/entities/dataTypes';
 import { VisualizationClass } from 'app/entities/visualization';
-import { Property } from 'app/entities/class';
-import { comparingPrimitive } from 'yti-common-ui/utils/comparator';
+import { NameType } from 'app/services/sessionService';
+import { Localizer } from 'app/types/language';
 
 function formatDataTypeAsLabel(dataType: DataType|null, localizer: Localizer) {
   return localizer.getStringWithModelLanguageOrDefault(dataType, 'en');

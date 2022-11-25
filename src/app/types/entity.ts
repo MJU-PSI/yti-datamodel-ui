@@ -1,11 +1,10 @@
-import { Uri } from '../entities/uri';
-import { GraphNode, GraphNodes } from '../entities/graphNode';
-import { Localizable } from 'yti-common-ui/types/localization';
-import { DefinedBy } from '../entities/definedBy';
-import { ChainableComparator } from 'yti-common-ui/utils/comparator';
-import { TextAnalysis } from './filter';
+import { ChainableComparator, Localizable } from '@vrk-yti/yti-common-ui';
 import { ClassListItem } from '../entities/class';
+import { DefinedBy } from '../entities/definedBy';
+import { GraphNode, GraphNodes } from '../entities/graphNode';
 import { PredicateListItem } from '../entities/predicate';
+import { Uri } from '../entities/uri';
+import { TextAnalysis } from './filter';
 
 export type Type = ModelType
                  | ClassType

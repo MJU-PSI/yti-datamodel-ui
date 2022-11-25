@@ -17,7 +17,7 @@
     "main.ts",
     "polyfills.ts",
     "augment.d.ts",
-    "../node_modules/yti-common-ui/**/*.ts"
+    "typings.d.ts"
   ],
   "exclude": [
     "test.ts",

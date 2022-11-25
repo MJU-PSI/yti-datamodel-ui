@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import { SearchController, TextAnalysis } from '../../types/filter';
 import { IScope } from 'angular';
-import { isDefined } from 'yti-common-ui/utils/object';
+import { isDefined } from '@vrk-yti/yti-common-ui';
 import { collectIds } from '../../utils/entity';
 import { comparingLocalizable } from '../../utils/comparator';
 import { LanguageService } from '../../services/languageService';

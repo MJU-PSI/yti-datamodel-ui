@@ -1,17 +1,23 @@
 import { Component, OnInit, Injectable } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Model } from 'app/entities/model';
-import { UserService } from 'yti-common-ui/services/user.service';
-import { Status, selectableStatuses, changeToRestrictedStatus, allowedTargetStatuses } from 'yti-common-ui/entities/status';
+import {  } from '@vrk-yti/yti-common-ui';
+import {
+  UserService,
+  Status,
+  selectableStatuses,
+  changeToRestrictedStatus,
+  allowedTargetStatuses,
+  FilterOptions,
+  AlertModalService,
+  ModalService,
+  ErrorModalService,
+  ignoreModalClose
+} from '@vrk-yti/yti-common-ui';
 import { BehaviorSubject, combineLatest } from 'rxjs';
-import { FilterOptions } from 'yti-common-ui/components/filter-dropdown.component';
 import { TranslateService } from '@ngx-translate/core';
-import { AlertModalService } from 'yti-common-ui/components/alert-modal.component';
-import { ModalService } from 'yti-common-ui/services/modal.service';
 import { ModelService } from 'app/services/modelService';
 import { ModelServiceWrapper } from 'app/ajs-upgraded-providers';
-import { ErrorModalService } from 'yti-common-ui/components/error-modal.component';
-import { ignoreModalClose } from 'yti-common-ui/utils/modal';
 import { DatamodelConfirmationModalService } from 'app/services/confirmation-modal.service';
 
 @Component({

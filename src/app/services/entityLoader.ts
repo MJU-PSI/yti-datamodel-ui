@@ -1,25 +1,22 @@
+import { firstMatching, identity, keepMatching, Localizable, requireDefined, Status } from '@vrk-yti/yti-common-ui';
 import { IPromise, IQService } from 'angular';
-import { ModelService } from './modelService';
+import { Class, Property } from 'app/entities/class';
+import { Classification } from 'app/entities/classification';
+import { DataType } from 'app/entities/dataTypes';
+import { Model } from 'app/entities/model';
+import { Organization } from 'app/entities/organization';
+import { Association, Attribute, Predicate } from 'app/entities/predicate';
+import { Uri, Url } from 'app/entities/uri';
+import { Concept, Vocabulary } from 'app/entities/vocabulary';
+import { EntityCreatorService, OrganizationDetails, technicalNamespaces, VocabularyDetails } from 'app/help/services/entityCreatorService';
+import { InteractiveHelpOrganizationService } from 'app/help/services/helpOrganizationService';
+import { InteractiveHelpVocabularyService } from 'app/help/services/helpVocabularyService';
+import { ConstraintType, KnownModelType, KnownPredicateType } from 'app/types/entity';
 import { ClassService } from './classService';
+import { ModelService } from './modelService';
 import { PredicateService } from './predicateService';
 import { ResetService } from './resetService';
-import { Uri, Url } from 'app/entities/uri';
-import { DataType } from 'app/entities/dataTypes';
-import { identity, requireDefined } from 'yti-common-ui/utils/object';
-import { ConstraintType, KnownModelType, KnownPredicateType } from 'app/types/entity';
-import { Model } from 'app/entities/model';
-import { Concept, Vocabulary } from 'app/entities/vocabulary';
-import { Class, Property } from 'app/entities/class';
-import { Association, Attribute, Predicate } from 'app/entities/predicate';
 import { VocabularyService } from './vocabularyService';
-import { firstMatching, keepMatching } from 'yti-common-ui/utils/array';
-import { Localizable } from 'yti-common-ui/types/localization';
-import { Status } from 'yti-common-ui/entities/status';
-import { EntityCreatorService, OrganizationDetails, technicalNamespaces, VocabularyDetails } from 'app/help/services/entityCreatorService';
-import { Organization } from 'app/entities/organization';
-import { Classification } from 'app/entities/classification';
-import { InteractiveHelpVocabularyService } from 'app/help/services/helpVocabularyService';
-import { InteractiveHelpOrganizationService } from 'app/help/services/helpOrganizationService';
 
 export type Resolvable<T> = string|IPromise<T>|(() => IPromise<T>);
 
@@ -177,7 +174,9 @@ export class EntityLoader {
   }
 
   private addAction<T>(action: IPromise<T>, details: any): IPromise<T> {
-    const withDetails = action.then(identity, failWithDetails(this.$q, details));
+    // TODO
+    // const withDetails = action.then(identity, failWithDetails(this.$q, details));
+    const withDetails = action.then(identity, identity);
     this.actions.push(withDetails);
     return withDetails;
   }
@@ -459,7 +458,9 @@ export class EntityLoader {
     const result =
       this.$q.all([modelPromise, conceptIdPromise])
         .then(([model, conceptId]: [Model, Uri]) => this.predicateService.newPredicate(model, details.label['fi'], conceptId, type, 'fi'))
-        .then((predicate: T) => {
+        // TODO
+        // .then((predicate: T) => {
+        .then((predicate: any) => {
           setDetails(predicate, details);
           setId(predicate, details);
 

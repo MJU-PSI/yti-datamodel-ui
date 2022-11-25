@@ -1,10 +1,9 @@
-import { Uri } from './uri';
-import { init, serialize } from './mapping';
+import { Localizable, Status } from '@vrk-yti/yti-common-ui';
 import { GraphNode } from './graphNode';
-import { uriSerializer, entityAwareList, entity } from './serializer/entitySerializer';
-import { optional, stringSerializer, localizableSerializer, identitySerializer } from './serializer/serializer';
-import { Localizable } from 'yti-common-ui/types/localization';
-import { Status } from 'yti-common-ui/entities/status';
+import { init, serialize } from './mapping';
+import { entity, entityAwareList, uriSerializer } from './serializer/entitySerializer';
+import { identitySerializer, localizableSerializer, optional, stringSerializer } from './serializer/serializer';
+import { Uri } from './uri';
 
 export class ReferenceDataServer extends GraphNode {
 

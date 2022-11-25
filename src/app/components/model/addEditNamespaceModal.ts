@@ -2,7 +2,7 @@ import { IPromise, IScope } from 'angular';
 import { IModalService, IModalServiceInstance } from 'angular-ui-bootstrap';
 import { ModelService } from '../../services/modelService';
 import { Language, LanguageContext } from '../../types/language';
-import { isDefined } from 'yti-common-ui/utils/object';
+import { isDefined } from '@vrk-yti/yti-common-ui';
 import { ImportedNamespace } from '../../entities/model';
 
 const technicalNamespaces: { [prefix: string]: string } = {

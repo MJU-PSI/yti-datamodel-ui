@@ -1,6 +1,6 @@
 import { localizableContains } from './language';
 import { isLocalizable } from './language';
-import { Localizable } from 'yti-common-ui/types/localization';
+import { Localizable } from '@vrk-yti/yti-common-ui';
 
 export function valueContains(value: Localizable|string, searchString: string) {
   if (isLocalizable(value)) {

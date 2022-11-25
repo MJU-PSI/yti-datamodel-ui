@@ -1,6 +1,5 @@
-import { areEqual, assertNever, Optional } from 'yti-common-ui/utils/object';
+import { areEqual, assertNever, contains, Optional } from '@vrk-yti/yti-common-ui';
 import { Click, ModifyingClick, NavigatingClick, NextCondition, Notification, Story } from 'app/help/contract';
-import { contains } from 'yti-common-ui/utils/array';
 
 export const popupAnimationTimeInMs = 300; // should match css help-popover transition time
 export const arrowHeight = 13;

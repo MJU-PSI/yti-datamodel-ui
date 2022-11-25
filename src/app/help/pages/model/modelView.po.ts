@@ -3,7 +3,7 @@ import { child } from 'app/help/utils/selector';
 import { KnownModelType } from 'app/types/entity';
 import * as SearchNamespaceModal from './modal/searchNamepaceModal.po';
 import * as SearchVocabularyModal from './modal/searchVocabularyModal.po';
-import { Localizable } from 'yti-common-ui/types/localization';
+import { Localizable } from '@vrk-yti/yti-common-ui';
 import { Language } from 'app/types/language';
 import { modelIdFromPrefix, vocabularyIdFromPrefix } from 'app/help/utils/id';
 

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { UserService } from 'yti-common-ui/services/user.service';
-import { NgbTabChangeEvent, NgbTabset } from '@ng-bootstrap/ng-bootstrap';
+import { UserService } from '@vrk-yti/yti-common-ui';
+import { NgbNavChangeEvent, NgbNav } from '@ng-bootstrap/ng-bootstrap';
 import { BehaviorSubject } from 'rxjs';
 import { MessagingResource } from '../../entities-messaging/messaging-resource';
 import { MessagingService } from '../../services/messaging-service';
@@ -14,7 +14,7 @@ import { Config } from '../../entities/config';
 })
 export class UserDetailsComponent implements OnInit {
 
-  @ViewChild('tabSet') tabSet: NgbTabset;
+  @ViewChild('nav') nav: NgbNav;
 
   APPLICATION_CODELIST = 'codelist';
   APPLICATION_TERMINOLOGY = 'terminology';
@@ -28,9 +28,9 @@ export class UserDetailsComponent implements OnInit {
   messagingResources$ = new BehaviorSubject<Map<string, MessagingResource[]> | null>(null);
 
   constructor(private userService: UserService,
-              private datamodelLocationServiceWrapper: DatamodelLocationServiceWrapper,
-              private messagingService: MessagingService,
-              private configServiceWrapper: ConfigServiceWrapper) {
+    private datamodelLocationServiceWrapper: DatamodelLocationServiceWrapper,
+    private messagingService: MessagingService,
+    private configServiceWrapper: ConfigServiceWrapper) {
 
     datamodelLocationServiceWrapper.locationService.atUser();
   }
@@ -96,7 +96,7 @@ export class UserDetailsComponent implements OnInit {
     });
   }
 
-  onTabChange(event: NgbTabChangeEvent) {
+  onNavChange(event: NgbNavChangeEvent) {
 
     if (event.nextId === 'user_details_info_tab') {
       this.getUserSubscriptionData();

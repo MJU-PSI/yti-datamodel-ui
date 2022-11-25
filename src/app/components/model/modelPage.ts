@@ -24,13 +24,12 @@ import {
   Exclusion
 } from '../../utils/exclusion';
 import { collectIds, glyphIconClassForType } from '../../utils/entity';
-import { areEqual, Optional } from 'yti-common-ui/utils/object';
+import { areEqual, Optional, removeMatching } from '@vrk-yti/yti-common-ui';
 import { AbstractPredicate, Predicate, PredicateListItem } from '../../entities/predicate';
 import { AbstractClass, Class, ClassListItem, Property } from '../../entities/class';
 import { Model } from '../../entities/model';
 import { ExternalEntity } from '../../entities/externalEntity';
 import { NotificationModal } from '../../components/common/notificationModal';
-import { removeMatching } from 'yti-common-ui/utils/array';
 import { EditorContainer, ModelControllerService } from './modelControllerService';
 import { AuthorizationManagerService } from '../../services/authorizationManagerService';
 import { SearchPredicateTableModal, noPredicateExclude } from '../editor/searchPredicateTableModal';

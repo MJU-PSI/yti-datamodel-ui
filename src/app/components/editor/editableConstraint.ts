@@ -1,7 +1,7 @@
 import { SearchClassModal } from './searchClassModal';
 import { SearchClassType } from 'app/types/component';
 import { combineExclusions, createClassTypeExclusion, createDefinedByExclusion, createExistsExclusion, createSelfExclusion } from 'app/utils/exclusion';
-import { collectProperties } from 'yti-common-ui/utils/array';
+import { collectProperties } from '@vrk-yti/yti-common-ui';
 import { Class, ClassListItem, Constraint, ConstraintListItem } from 'app/entities/class';
 import { Model } from 'app/entities/model';
 import { ConstraintType } from 'app/types/entity';

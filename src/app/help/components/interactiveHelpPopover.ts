@@ -1,6 +1,6 @@
 import { LegacyComponent } from 'app/utils/angular';
 import { Notification, Story } from 'app/help/contract';
-import { assertNever, Optional, requireDefined } from 'yti-common-ui/utils/object';
+import { assertNever, Optional, requireDefined } from '@vrk-yti/yti-common-ui';
 import { IDocumentService, IScope } from 'angular';
 import { arrowHeight, Dimensions, elementPositioning, isInWindow, isVisible, popupAnimationTimeInMs, Positioning, resolveArrowClass } from 'app/help/utils/component';
 import { InteractiveHelpController } from './interactiveHelpDisplay';

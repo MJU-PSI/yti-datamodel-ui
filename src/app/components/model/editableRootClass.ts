@@ -1,6 +1,6 @@
 import { EditableForm } from 'app/components/form/editableEntityController';
 import { SearchClassModal } from 'app/components/editor/searchClassModal';
-import { requireDefined } from 'yti-common-ui/utils/object';
+import { requireDefined } from '@vrk-yti/yti-common-ui';
 import { Model } from 'app/entities/model';
 import { ClassListItem } from 'app/entities/class';
 import { LegacyComponent, modalCancelHandler } from 'app/utils/angular';

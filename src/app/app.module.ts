@@ -1,24 +1,28 @@
+import { NgModule, NgZone } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserModule, Title } from '@angular/platform-browser';
+import { downgradeComponent, downgradeInjectable, UpgradeModule } from '@angular/upgrade/static';
+import {
+  AjaxLoadingIndicatorComponent,
+  AjaxLoadingIndicatorSmallComponent, AlertModalService, AUTHENTICATED_USER_ENDPOINT, ConfirmationModalService, DropdownComponent, ErrorModalService, ExpandableTextComponent, FilterDropdownComponent, FooterComponent, Localizer as AngularLocalizer, LOCALIZER, LoginModalService, MenuComponent, ModalService, StatusComponent, YtiCommonModule
+} from '@vrk-yti/yti-common-ui';
 import * as angular from 'angular';
 import { animate, ICompileProvider, ILocationProvider, ILogProvider } from 'angular';
 import { ITooltipProvider } from 'angular-ui-bootstrap';
+import { module9 as componentsModule } from './components';
+import { module1 as commonModule } from './components/common';
+import { module2 as editorModule } from './components/editor';
+import { module8 as filterModule } from './components/filter';
+import { module4 as formModule } from './components/form';
+import { module7 as informationModule } from './components/information';
+import { module5 as modelModule } from './components/model';
+import { module6 as navigationModule } from './components/navigation';
+import { module3 as visualizationModule } from './components/visualization';
+import { module11 as helpModule } from './help';
 import { routeConfig } from './routes';
-import { module as commonModule } from './components/common';
-import { module as editorModule } from './components/editor';
-import { module as visualizationModule } from './components/visualization';
-import { module as formModule } from './components/form';
-import { module as modelModule } from './components/model';
-import { module as navigationModule } from './components/navigation';
-import { module as informationModule } from './components/information';
-import { module as filterModule } from './components/filter';
-import { module as componentsModule } from './components';
-import { module as servicesModule } from './services';
-import { module as helpModule } from './help';
-import { BrowserModule, Title } from '@angular/platform-browser';
-import { downgradeComponent, downgradeInjectable, UpgradeModule } from '@angular/upgrade/static';
-import { NgModule, NgZone } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { LOCALIZER, YtiCommonModule } from 'yti-common-ui';
-import { AUTHENTICATED_USER_ENDPOINT } from 'yti-common-ui/services/user.service';
+import { module10 as servicesModule } from './services';
+
+import { HttpClientModule } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {
   MissingTranslationHandler,
@@ -27,25 +31,21 @@ import {
   TranslateModule,
   TranslateService
 } from '@ngx-translate/core';
+import { LMarkdownEditorModule } from 'ngx-markdown-editor';
+import { VirtualScrollerModule } from 'ngx-virtual-scroller';
+import enPo from 'raw-loader!po-loader?format=mf!../../po/en.po';
+import fiPo from 'raw-loader!po-loader?format=mf!../../po/fi.po';
+import svPo from 'raw-loader!po-loader?format=mf!../../po/sv.po';
 import { of } from 'rxjs';
-import { availableUILanguages } from './types/language';
-
-import { LoginModalService } from 'yti-common-ui/components/login-modal.component';
-import { FooterComponent } from 'yti-common-ui/components/footer.component';
-import { MenuComponent } from 'yti-common-ui/components/menu.component';
-import { AjaxLoadingIndicatorComponent } from 'yti-common-ui/components/ajax-loading-indicator.component';
-import { AjaxLoadingIndicatorSmallComponent } from 'yti-common-ui/components/ajax-loading-indicator-small.component';
-import { FilterDropdownComponent } from 'yti-common-ui/components/filter-dropdown.component';
-import { StatusComponent } from 'yti-common-ui/components/status.component';
-import { DropdownComponent } from 'yti-common-ui/components/dropdown.component';
-import { UseContextDropdownComponent } from './components/model/use-context-dropdown.component';
-import { UseContextInputComponent } from './components/form/use-context-input.component';
-import { HttpClientModule } from '@angular/common/http';
-import { apiEndpointWithName } from './services/config';
-import { ExpandableTextComponent } from 'yti-common-ui/components/expandable-text.component';
-import { ModelMainComponent } from './components/model/modelMain';
 import {
-  configServiceProvider,
+  ExportDirective,
+  HighlightDirective, ModelActionMenuDirective,
+  ModelLanguageChooserDirective,
+  ModelPageDirective,
+  ModelViewDirective, NewDatamodelVersionPrefixModalFormDirective, SortByColumnHeaderDirective
+} from './ajs-upgraded-components';
+import {
+  authorizationManagerServiceProvider, configServiceProvider,
   confirmationModalProvider, datamodelLocationServiceProvider,
   displayItemFactoryProvider,
   gettextCatalogProvider,
@@ -59,41 +59,30 @@ import {
   scopeProvider,
   showClassInfoModalProvider,
   showPredicateInfoModalProvider,
-  userRoleServiceProvider,
-  authorizationManagerServiceProvider,
+  userRoleServiceProvider
 } from './ajs-upgraded-providers';
-import {
-  ExportDirective,
-  HighlightDirective, ModelActionMenuDirective,
-  ModelLanguageChooserDirective,
-  ModelPageDirective,
-  ModelViewDirective,
-  SortByColumnHeaderDirective,
-  NewDatamodelVersionPrefixModalFormDirective
-} from './ajs-upgraded-components';
-import { DefaultAngularLocalizer, LanguageService } from './services/languageService';
-import { Localizer as AngularLocalizer } from 'yti-common-ui/types/localization';
-import { HelpService } from './help/providers/helpService';
-import { IndexSearchService } from './services/indexSearchService';
-import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 import { SearchClassTableModalContentComponent } from './components/editor/searchClassTableModalContent';
 import { SearchPredicateTableModalContentComponent } from './components/editor/searchPredicateTableModalContent';
-import { MessagingService } from './services/messaging-service';
-import { UserDetailsSubscriptionsComponent } from './components/userdetails/user-details-subscriptions.component';
-import { UserDetailsInformationComponent } from './components/userdetails/user-details-information.component';
-import { UserDetailsComponent } from './components/userdetails/user-details.component';
-import IAnimateProvider = animate.IAnimateProvider;
-import { ConfirmationModalService } from 'yti-common-ui/components/confirmation-modal.component';
-import { MassMigrateDatamodelResourceStatusesModalComponent } from './components/model/mass-migrate-datamodel-resource-statuses-modal.component';
-import { MassMigrateDatamodelResourceStatusesModalService } from './components/model/mass-migrate-datamodel-resource-statuses-modal.component';
-import { ModalService } from 'yti-common-ui/services/modal.service';
-import { AlertModalService } from 'yti-common-ui/components/alert-modal.component';
-import { DatamodelConfirmationModalService } from './services/confirmation-modal.service';
-import { ErrorModalService } from 'yti-common-ui/components/error-modal.component';
-import { NewDatamodelVersionModalComponent } from './components/model/new-datamodel-version-modal.component';
-import { NewDatamodelVersionModalService } from './components/model/new-datamodel-version-modal.component';
-import { LMarkdownEditorModule } from 'ngx-markdown-editor';
+import { UseContextInputComponent } from './components/form/use-context-input.component';
 import { ModelDocumentationComponent } from './components/model-documentation/model-documentation.component';
+import { MassMigrateDatamodelResourceStatusesModalComponent, MassMigrateDatamodelResourceStatusesModalService } from './components/model/mass-migrate-datamodel-resource-statuses-modal.component';
+import { ModelMainComponent } from './components/model/modelMain';
+import { NewDatamodelVersionModalComponent, NewDatamodelVersionModalService } from './components/model/new-datamodel-version-modal.component';
+import { UseContextDropdownComponent } from './components/model/use-context-dropdown.component';
+import { UserDetailsInformationComponent } from './components/userdetails/user-details-information.component';
+import { UserDetailsSubscriptionsComponent } from './components/userdetails/user-details-subscriptions.component';
+import { UserDetailsComponent } from './components/userdetails/user-details.component';
+import { HelpService } from './help/providers/helpService';
+import { apiEndpointWithName } from './services/config';
+import { DatamodelConfirmationModalService } from './services/confirmation-modal.service';
+import { IndexSearchService } from './services/indexSearchService';
+import { DefaultAngularLocalizer, LanguageService } from './services/languageService';
+import { MessagingService } from './services/messaging-service';
+import { availableUILanguages } from './types/language';
+import IAnimateProvider = animate.IAnimateProvider;
+// import fiCommonPo from 'raw-loader!po-loader?format=mf!../../node_modules/@goraresult/yti-common-ui/po/fi.po';
+// import svCommonPo from 'raw-loader!po-loader?format=mf!../../node_modules/@goraresult/yti-common-ui/po/sv.po';
+// import enCommonPo from 'raw-loader!po-loader?format=mf!../../node_modules/@goraresult/yti-common-ui/po/en.po';
 
 require('angular-gettext');
 require('checklist-model');
@@ -112,27 +101,41 @@ function removeEmptyValues(obj: {}) {
   return result;
 }
 
-export const localizationStrings: { [key: string]: { [key: string]: string } } = {};
+// export const localizationStrings: { [key: string]: { [key: string]: string } } = {};
 
-for (const language of availableUILanguages) {
-  localizationStrings[language] = {
-    ...removeEmptyValues(JSON.parse(require(`raw-loader!po-loader?format=mf!../../po/${language}.po`))),
-    ...removeEmptyValues(JSON.parse(require(`raw-loader!po-loader?format=mf!yti-common-ui/po/${language}.po`)))
-  };
-}
+// for (const language of availableUILanguages) {
+//   localizationStrings[language] = {
+//     ...removeEmptyValues(JSON.parse(require(`raw-loader!po-loader?format=mf!../../po/${language}.po`))),
+//     ...removeEmptyValues(JSON.parse(require(`raw-loader!po-loader?format=mf!yti-common-ui/po/${language}.po`)))
+//   };
+// }
+
+
+
+export const localizationStrings: { [lang: string]: { [key: string]: string } } = {
+  fi: {
+    ...removeEmptyValues(JSON.parse(fiPo)),
+    // ...removeEmptyValues(JSON.parse(fiCommonPo))
+  },
+  sv: {
+    ...removeEmptyValues(JSON.parse(svPo)),
+    // ...removeEmptyValues(JSON.parse(svCommonPo))
+  },
+  en: {
+    ...removeEmptyValues(JSON.parse(enPo)),
+    // ...removeEmptyValues(JSON.parse(enCommonPo))
+  }
+};
 
 Object.freeze(localizationStrings);
+
 
 export function resolveAuthenticatedUserEndpoint() {
   return apiEndpointWithName('user');
 }
 
 export function createTranslateLoader(): TranslateLoader {
-  return {
-    getTranslation: (lang: string) => {
-      return of(localizationStrings[lang])
-    }
-  };
+  return { getTranslation: (lang: string) => of(localizationStrings[lang]) };
 }
 
 export function createMissingTranslationHandler(): MissingTranslationHandler {
@@ -167,7 +170,7 @@ export function localizerFactory(languageService: LanguageService): AngularLocal
       },
       missingTranslationHandler: { provide: MissingTranslationHandler, useFactory: createMissingTranslationHandler }
     }),
-    NgbModule.forRoot(),
+    NgbModule,
     LMarkdownEditorModule // markdown editor for use by ModelDocumentationComponent
   ],
   declarations: [
@@ -191,27 +194,7 @@ export function localizerFactory(languageService: LanguageService): AngularLocal
     NewDatamodelVersionModalComponent,
     ModelDocumentationComponent
   ],
-  entryComponents: [
-    FooterComponent,
-    MenuComponent,
-    AjaxLoadingIndicatorComponent,
-    AjaxLoadingIndicatorSmallComponent,
-    DropdownComponent,
-    FilterDropdownComponent,
-    ExpandableTextComponent,
-    StatusComponent,
-    UseContextDropdownComponent,
-    UseContextInputComponent,
-    ModelMainComponent,
-    SearchClassTableModalContentComponent,
-    SearchPredicateTableModalContentComponent,
-    UserDetailsComponent,
-    UserDetailsInformationComponent,
-    UserDetailsSubscriptionsComponent,
-    MassMigrateDatamodelResourceStatusesModalComponent,
-    NewDatamodelVersionModalComponent,
-    ModelDocumentationComponent
-  ],
+  entryComponents: [],
   providers: [
     { provide: AUTHENTICATED_USER_ENDPOINT, useFactory: resolveAuthenticatedUserEndpoint },
     { provide: LOCALIZER, useFactory: localizerFactory, deps: [LanguageService] },

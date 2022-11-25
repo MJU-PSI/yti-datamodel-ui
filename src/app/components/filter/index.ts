@@ -7,8 +7,8 @@ import { TypeFilterComponent } from './typeFilter';
 import { TypesFilterComponent } from './typesFilter';
 
 import { componentDeclaration } from 'app/utils/angular';
-import { module as mod } from './module';
-export { module } from './module';
+import { module8 as mod } from './module';
+export { module8 } from './module';
 
 mod.component('textFilter', componentDeclaration(TextFilterComponent));
 mod.component('contentFilter', componentDeclaration(ContentFilterComponent));

@@ -21,6 +21,11 @@ module.exports = {
       // 'jsonld': path.resolve(__dirname, 'node_modules/jsonld/dist/node6/lib/jsonld.js') // NOTE: Used to force jsonld 1.6.2 "babelished" version into use
     }
   },
+  module: {
+    rules: [
+      { test: /\.html$/, use: 'html-loader' }
+    ]
+  },
   plugins: [
     new NgAnnotatePlugin()
   ]

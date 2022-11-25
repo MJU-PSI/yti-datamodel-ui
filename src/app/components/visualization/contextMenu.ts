@@ -1,11 +1,10 @@
-import { Coordinate } from 'app/types/visualization';
+import { labelNameToResourceIdIdentifier, Optional, requireDefined } from '@vrk-yti/yti-common-ui';
 import { IScope } from 'angular';
-import { Optional, requireDefined } from 'yti-common-ui/utils/object';
-import { VisualizationClass } from 'app/entities/visualization';
-import { Model } from 'app/entities/model';
-import { ClassService } from 'app/services/classService';
 import { ModelPageActions } from 'app/components/model/modelPage';
-import { labelNameToResourceIdIdentifier } from 'yti-common-ui/utils/resource';
+import { Model } from 'app/entities/model';
+import { VisualizationClass } from 'app/entities/visualization';
+import { ClassService } from 'app/services/classService';
+import { Coordinate } from 'app/types/visualization';
 import { LegacyComponent } from 'app/utils/angular';
 
 export interface ContextMenuTarget {

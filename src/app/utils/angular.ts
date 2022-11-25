@@ -1,3 +1,4 @@
+import { allMatching, normalizeAsArray, requireDefined, valuesExcludingKeys } from '@vrk-yti/yti-common-ui';
 import {
   IComponentOptions,
   IControllerConstructor,
@@ -10,8 +11,6 @@ import {
   IQService
 } from 'angular';
 import { AsyncValidator, Validator } from 'app/components/form/validators';
-import { allMatching, normalizeAsArray } from 'yti-common-ui/utils/array';
-import { requireDefined, valuesExcludingKeys } from 'yti-common-ui/utils/object';
 
 const legacyComponentOptions = new Map<IControllerConstructor, IComponentOptions>();
 const legacyDirectiveOptions = new Map<IControllerConstructor, IDirective>();

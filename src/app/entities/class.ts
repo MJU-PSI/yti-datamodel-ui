@@ -1,37 +1,22 @@
-import { requireDefined, assertNever } from 'yti-common-ui/utils/object';
-import {
-  resourceUrl, glyphIconClassForType, glyphIconClassUnknown
-} from '../utils/entity';
-import { SelectionType, PredicateType, KnownPredicateType, ConstraintType } from '../types/entity';
-import { normalizeClassType, mapType, reverseMapType } from '../utils/entity';
-import { Uri, Urn } from './uri';
-import { DefinedBy } from './definedBy';
-import { EntityConstructor } from '../types/entity';
-import { DataType } from './dataTypes';
-import { containsAny, remove, removeMatching } from 'yti-common-ui/utils/array';
-import { ReferenceData } from './referenceData';
-import { hasLocalization } from '../utils/language';
-import { Language, Localizer } from '../types/language';
-import { VisualizationClass } from './visualization';
-import { comparingPrimitive } from 'yti-common-ui/utils/comparator';
-import { Predicate, Attribute, Association } from './predicate';
-import { init, serialize, initSingle } from './mapping';
-import { Concept } from './vocabulary';
+import { assertNever, comparingPrimitive, containsAny, labelNameToResourceIdIdentifier, Localizable, remove, removeMatching, requireDefined, Status } from '@vrk-yti/yti-common-ui';
 import { Moment } from 'moment';
+import { ConstraintType, EntityConstructor, KnownPredicateType, PredicateType, SelectionType } from '../types/entity';
+import { Language, Localizer } from '../types/language';
+import { glyphIconClassForType, glyphIconClassUnknown, mapType, normalizeClassType, resourceUrl, reverseMapType } from '../utils/entity';
+import { hasLocalization } from '../utils/language';
+import { DataType } from './dataTypes';
+import { DefinedBy } from './definedBy';
 import { GraphNode } from './graphNode';
-import {
-  uriSerializer, entity, entityAwareValueOrDefault,
-  entityAwareList, entityAwareOptional, entityOrId
-} from './serializer/entitySerializer';
-import {
-  localizableSerializer, dateSerializer, optional, identitySerializer, typeSerializer,
-  createSerializer, stringSerializer, list, valueOrDefault, booleanSerializer
-} from './serializer/serializer';
-import { normalizingDefinedBySerializer } from './serializer/common';
+import { init, initSingle, serialize } from './mapping';
 import { Model } from './model';
-import { Localizable } from 'yti-common-ui/types/localization';
-import { Status } from 'yti-common-ui/entities/status';
-import { labelNameToResourceIdIdentifier } from 'yti-common-ui/utils/resource';
+import { Association, Attribute, Predicate } from './predicate';
+import { ReferenceData } from './referenceData';
+import { normalizingDefinedBySerializer } from './serializer/common';
+import { entity, entityAwareList, entityAwareOptional, entityAwareValueOrDefault, entityOrId, uriSerializer } from './serializer/entitySerializer';
+import { booleanSerializer, createSerializer, dateSerializer, identitySerializer, list, localizableSerializer, optional, stringSerializer, typeSerializer, valueOrDefault } from './serializer/serializer';
+import { Uri, Urn } from './uri';
+import { VisualizationClass } from './visualization';
+import { Concept } from './vocabulary';
 
 export abstract class AbstractClass extends GraphNode {
 
@@ -88,7 +73,7 @@ export class Class extends AbstractClass implements VisualizationClass {
   static classMappings = {
     localName:         { name: 'localName',       serializer: optional(stringSerializer) },
     subClassOf:        { name: 'subClassOf',      serializer: entityAwareOptional(uriSerializer) },
-    scopeClass:        { name: 'targetClass',     serializer: entityAwareOptional(uriSerializer) },    
+    scopeClass:        { name: 'targetClass',     serializer: entityAwareOptional(uriSerializer) },
     properties:        { name: 'property',        serializer: entityAwareList(entity(() => Property)) },
     subject:           { name: 'subject',         serializer: entityAwareOptional(entity(() => Concept)) },
     equivalentClasses: { name: 'equivalentClass', serializer: entityAwareList(uriSerializer) },
@@ -105,7 +90,7 @@ export class Class extends AbstractClass implements VisualizationClass {
 
   subClassOf: Uri|null;
   scopeClass: Uri|null;
-  localName: string|null;  
+  localName: string|null;
   properties: Property[];
   subject: Concept|null;
   equivalentClasses: Uri[];
@@ -119,7 +104,7 @@ export class Class extends AbstractClass implements VisualizationClass {
   unsaved = false;
   external = false;
   deactivated: boolean;
-  absolutePath: string|null;  
+  absolutePath: string|null;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);

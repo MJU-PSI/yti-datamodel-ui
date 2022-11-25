@@ -5,7 +5,7 @@ import {
 } from './formatter';
 import { NameType } from 'app/services/sessionService';
 import { Localizer } from 'app/types/language';
-import { requireDefined } from 'yti-common-ui/utils/object';
+import { requireDefined } from '@vrk-yti/yti-common-ui';
 import { VisualizationClass } from 'app/entities/visualization';
 import { Property } from 'app/entities/class';
 import { Dimensions } from 'app/types/visualization';

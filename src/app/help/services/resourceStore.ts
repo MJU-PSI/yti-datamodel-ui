@@ -1,9 +1,8 @@
+import { flatten, Optional, requireDefined } from '@vrk-yti/yti-common-ui';
 import { IPromise, IQService } from 'angular';
+import { DefinedBy } from 'app/entities/definedBy';
 import { Model } from 'app/entities/model';
 import { Uri, Url } from 'app/entities/uri';
-import { flatten } from 'yti-common-ui/utils/array';
-import { DefinedBy } from 'app/entities/definedBy';
-import { Optional, requireDefined } from 'yti-common-ui/utils/object';
 
 type ModelId = string;
 type ResourceId = string;

@@ -1,4 +1,4 @@
-import { isDefined } from 'yti-common-ui/utils/object';
+import { isDefined } from '@vrk-yti/yti-common-ui';
 import { UsageService } from 'app/services/usageService';
 import { ErrorModal } from 'app/components/form/errorModal';
 import { PredicateService } from 'app/services/predicateService';

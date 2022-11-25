@@ -1,4 +1,4 @@
-import { requireDefined } from 'yti-common-ui/utils/object';
+import { requireDefined } from '@vrk-yti/yti-common-ui';
 import { DefinedBy } from 'app/entities/definedBy';
 import { entityAsId, normalized } from './entitySerializer';
 import { WithIdAndType } from 'app/types/entity';

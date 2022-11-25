@@ -1,4 +1,4 @@
-import { Localizable } from 'yti-common-ui/types/localization';
+import { Localizable } from '@vrk-yti/yti-common-ui';
 import { MessagingResourceType } from '../services/messaging-api-schema';
 import { DefaultAngularJSLocalizer } from '../services/languageService';
 

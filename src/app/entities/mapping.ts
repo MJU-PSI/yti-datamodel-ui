@@ -1,8 +1,7 @@
-import { assertNever, isDefined } from 'yti-common-ui/utils/object';
-import { Serializer } from './serializer/serializer';
-import { EntityAwareSerializer } from './serializer/entitySerializer';
+import { assertNever, contains, firstMatching, isDefined } from '@vrk-yti/yti-common-ui';
 import { GraphNode } from './graphNode';
-import { firstMatching, contains } from 'yti-common-ui/utils/array';
+import { EntityAwareSerializer } from './serializer/entitySerializer';
+import { Serializer } from './serializer/serializer';
 
 export interface Mapping<T, N extends GraphNode> {
   name: string|string[];

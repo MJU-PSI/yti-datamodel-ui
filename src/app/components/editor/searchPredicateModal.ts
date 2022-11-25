@@ -9,7 +9,7 @@ import { AddNew } from 'app/components/common/searchResults';
 import { glyphIconClassForType } from 'app/utils/entity';
 import { ChoosePredicateTypeModal } from './choosePredicateTypeModal';
 import { ClassService } from 'app/services/classService';
-import { collectProperties } from 'yti-common-ui/utils/array';
+import { collectProperties, ignoreModalClose, requireDefined } from '@vrk-yti/yti-common-ui';
 import { combineExclusions, createDefinedByExclusion, createExistsExclusion, Exclusion } from 'app/utils/exclusion';
 import { SearchController, SearchFilter } from 'app/types/filter';
 import { AbstractPredicate, Predicate, PredicateListItem } from 'app/entities/predicate';
@@ -18,8 +18,6 @@ import { KnownPredicateType } from 'app/types/entity';
 import { ExternalEntity } from 'app/entities/externalEntity';
 import { Class, Property } from 'app/entities/class';
 import { defaultLabelComparator, filterAndSortSearchResults } from 'app/components/filter/util';
-import { ignoreModalClose } from 'yti-common-ui/utils/modal';
-import { requireDefined } from 'yti-common-ui/utils/object';
 import { DataSource } from '../form/dataSource';
 
 const noExclude = (_item: PredicateListItem) => null;

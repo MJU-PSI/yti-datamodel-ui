@@ -2,7 +2,7 @@ import { IModalService, IModalServiceInstance } from 'angular-ui-bootstrap';
 import { Uri } from 'app/entities/uri';
 import { Language, LanguageContext } from 'app/types/language';
 import { ReferenceData } from 'app/entities/referenceData';
-import { identity } from 'yti-common-ui/utils/object';
+import { identity } from '@vrk-yti/yti-common-ui';
 import { modalCancelHandler } from 'app/utils/angular';
 
 export class EditReferenceDataModal {

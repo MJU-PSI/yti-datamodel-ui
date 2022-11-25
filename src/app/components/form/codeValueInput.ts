@@ -2,7 +2,7 @@ import { IAsyncModelValidators, IAttributes, IDirectiveFactory, INgModelControll
 import { gettextCatalog as GettextCatalog } from 'angular-gettext';
 import { ReferenceDataService } from 'app/services/referenceDataService';
 import { LanguageService } from 'app/services/languageService';
-import { anyMatching } from 'yti-common-ui/utils/array';
+import { anyMatching } from '@vrk-yti/yti-common-ui';
 import { ReferenceData } from 'app/entities/referenceData';
 
 export function placeholderText(gettextCatalog: GettextCatalog) {

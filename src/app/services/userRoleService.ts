@@ -1,6 +1,6 @@
 import { IHttpService, IPromise } from 'angular';
 import { Uri } from 'app/entities/uri';
-import { Role } from 'yti-common-ui/services/user.service';
+import { Role } from '@vrk-yti/yti-common-ui';
 import { apiEndpointWithName } from './config';
 
 export interface UserRequest {

@@ -10,7 +10,7 @@ import { LanguageService } from 'app/services/languageService';
 import { LanguageContext } from 'app/types/language';
 import { OverlayService } from './overlay';
 import { upperCaseFirst } from 'change-case';
-import { Localizable } from 'yti-common-ui/types/localization';
+import { Localizable } from '@vrk-yti/yti-common-ui';
 import { AccordionComponent, AccordionGroupComponent, AccordionTranscludeDirective } from './accordion';
 import { AccordionChevronComponent } from './accordionChevron';
 import { ButtonWithOptionsComponent } from './buttonWithOptions';
@@ -28,9 +28,9 @@ import { ContextMenuDirective } from './ngContextMenu';
 import { NgIfBodyDirective } from './ngIfBody';
 
 import { componentDeclaration, directiveDeclaration } from 'app/utils/angular';
-import { module as mod } from './module';
+import { module1 as mod } from './module';
 import { ModelActionMenuComponent } from './modelActionMenu';
-export { module } from './module'
+export { module1 } from './module'
 
 mod.component('accordion', componentDeclaration(AccordionComponent));
 mod.component('accordionGroup', componentDeclaration(AccordionGroupComponent));

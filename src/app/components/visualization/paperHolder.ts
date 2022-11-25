@@ -1,13 +1,13 @@
+import { NgZone } from '@angular/core';
+import * as Iterable from '@vrk-yti/yti-common-ui';
+import { Optional } from '@vrk-yti/yti-common-ui';
+import { IWindowService } from 'angular';
+import { Model } from 'app/entities/model';
+import { ClassInteractionListener, Coordinate } from 'app/types/visualization';
+import * as joint from 'jointjs';
 import * as jQuery from 'jquery';
 import { IowClassElement, ShadowClass } from './diagram';
-import * as joint from 'jointjs';
-import { ClassInteractionListener, Coordinate } from 'app/types/visualization';
-import * as Iterable from 'yti-common-ui/utils/iterable';
 import { moveOrigin, scale } from './paperUtil';
-import { Model } from 'app/entities/model';
-import { Optional } from 'yti-common-ui/utils/object';
-import { IWindowService } from 'angular';
-import { NgZone } from '@angular/core';
 
 interface Cached {
   element: JQuery;

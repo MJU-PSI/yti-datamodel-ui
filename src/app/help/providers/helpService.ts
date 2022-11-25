@@ -1,6 +1,8 @@
 import { HelpProvider } from '../../components/common/helpProvider';
 import { BehaviorSubject } from 'rxjs';
+import { Injectable } from "@angular/core";
 
+@Injectable()
 export class HelpService {
 
   helpProvider: BehaviorSubject<HelpProvider | undefined> = new BehaviorSubject(undefined);

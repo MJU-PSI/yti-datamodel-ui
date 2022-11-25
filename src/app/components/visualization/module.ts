@@ -1,3 +1,3 @@
 import * as angular from 'angular';
 
-export const module = angular.module('iow.components.visualization', ['iow.services']);
+export const module3 = angular.module('iow.components.visualization', ['iow.services']);

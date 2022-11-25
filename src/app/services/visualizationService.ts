@@ -1,14 +1,12 @@
-import { expandContextWithKnownModels } from 'app/utils/entity';
-import { index } from 'yti-common-ui/utils/array';
-import { requireDefined } from 'yti-common-ui/utils/object';
+import { index, normalizeAsArray, requireDefined } from '@vrk-yti/yti-common-ui';
+import { IHttpService, IPromise, IQService } from 'angular';
 import * as frames from 'app/entities/frames';
-import { FrameService } from './frameService';
-import { GraphData } from 'app/types/entity';
-import { ModelPositions, VisualizationClass, DefaultVisualizationClass } from 'app/entities/visualization';
 import { Model } from 'app/entities/model';
-import { IPromise, IQService, IHttpService } from 'angular';
-import { normalizeAsArray } from 'yti-common-ui/utils/array';
+import { DefaultVisualizationClass, ModelPositions, VisualizationClass } from 'app/entities/visualization';
+import { GraphData } from 'app/types/entity';
+import { expandContextWithKnownModels } from 'app/utils/entity';
 import { apiEndpointWithName } from './config';
+import { FrameService } from './frameService';
 
 export interface VisualizationService {
   getVisualization(model: Model): IPromise<ClassVisualization>;
@@ -47,30 +45,30 @@ export class DefaultVisualizationService implements VisualizationService {
           .filter((graph: any) => ['rdfs:Class', 'sh:NodeShape'].includes(graph['@type']))
           .map((cls: any) => {
             const propIds = normalizeAsArray(cls.property);
- 
+
             cls.name = this.mapLocalizedValues(cls.name);
             cls.description = this.mapLocalizedValues(cls.description);
-            
+
             cls.property = propIds.map((id: any) => {
               const property = data['@graph'].find((element: any) => element['@id'] === id);
 
               if (!property) {
                 return null;
               }
-              
+
               property.name = this.mapLocalizedValues(property.name);
               property.description = this.mapLocalizedValues(property.description);
 
               // delete memberOf because it is not needed in visualization
               delete property.memberOf;
-              
+
               return Object.assign({}, ...this.removePrefixes(property));
             })
             .filter(Boolean);
-            
+
             return Object.assign({}, ...this.removePrefixes(cls));
         })
-        
+
         try {
           return normalizeAsArray(classes).map(element => {
             return new DefaultVisualizationClass(element, data['@context'], null);
@@ -100,7 +98,7 @@ export class DefaultVisualizationService implements VisualizationService {
       const newKey = key.replace(/^\w+:/, '');
       return {[newKey]: obj[key]};
     });
-  } 
+  }
 
   private getModelPositions(model: Model) {
     return this.$http.get<GraphData>(apiEndpointWithName('modelPositions'), { params: { model: model.id.uri } })

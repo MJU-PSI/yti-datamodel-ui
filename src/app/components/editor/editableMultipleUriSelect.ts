@@ -3,7 +3,7 @@ import { SearchPredicateModal } from './searchPredicateModal';
 import { SearchClassModal, defaultTextForSelection } from './searchClassModal';
 import { Uri } from 'app/entities/uri';
 import { EditableForm } from 'app/components/form/editableEntityController';
-import { collectProperties } from 'yti-common-ui/utils/array';
+import { collectProperties } from '@vrk-yti/yti-common-ui';
 import { createExistsExclusion } from 'app/utils/exclusion';
 import { DataSource } from 'app/components/form/dataSource';
 import { ClassService } from 'app/services/classService';

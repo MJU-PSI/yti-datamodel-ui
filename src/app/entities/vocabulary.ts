@@ -1,13 +1,12 @@
-import { dateSerializer, identitySerializer, localizableSerializer, optional, stringSerializer } from './serializer/serializer';
-import { Uri } from './uri';
-import { glyphIconClassForType } from 'app/utils/entity';
-import { init, serialize } from './mapping';
-import { GraphNode } from './graphNode';
+import { Localizable, Status } from '@vrk-yti/yti-common-ui';
 import { entity, entityAwareOptional, uriSerializer } from 'app/entities/serializer/entitySerializer';
 import { ConceptType } from 'app/types/entity';
-import { Localizable } from 'yti-common-ui/types/localization';
-import { Status } from 'yti-common-ui/entities/status';
+import { glyphIconClassForType } from 'app/utils/entity';
 import { Moment } from 'moment';
+import { GraphNode } from './graphNode';
+import { init, serialize } from './mapping';
+import { dateSerializer, identitySerializer, localizableSerializer, optional } from './serializer/serializer';
+import { Uri } from './uri';
 
 export class Vocabulary extends GraphNode {
 
