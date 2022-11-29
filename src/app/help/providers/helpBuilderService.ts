@@ -3,7 +3,7 @@ import { ILocationService, IQService } from 'angular';
 import { IModalStackService } from 'angular-ui-bootstrap';
 import { EntityLoader, EntityLoaderService } from 'app/services/entityLoader';
 import { InteractiveHelpService } from 'app/help/services/interactiveHelpService';
-import { identity } from '@vrk-yti/yti-common-ui';
+import { identity } from '@goraresult/yti-common-ui';
 import { gettextCatalog as GettextCatalog } from 'angular-gettext';
 import { helpImportedLibrary, helpOrganization, helpVocabulary } from 'app/help/providers/data';
 

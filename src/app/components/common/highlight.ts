@@ -1,7 +1,7 @@
 import { FilterFactory, ISCEService, IScope } from 'angular';
 import { LanguageService } from 'app/services/languageService';
 import { Language, LanguageContext } from 'app/types/language';
-import { Localizable, makeSimpleSearchRegexp } from '@vrk-yti/yti-common-ui';
+import { Localizable, makeSimpleSearchRegexp } from '@goraresult/yti-common-ui';
 import { LegacyComponent } from 'app/utils/angular';
 
 @LegacyComponent({

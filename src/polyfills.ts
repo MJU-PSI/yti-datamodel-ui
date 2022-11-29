@@ -18,21 +18,19 @@
 * BROWSER POLYFILLS
 */
 
-import '@angular/localize/init';
+// import 'core-js/es7/object';
+// import 'core-js/es7/array';
 
-import 'core-js/es7/object';
-import 'core-js/es7/array';
+// /** IE10 and IE11 requires the following for NgClass support on SVG elements */
+// import 'classlist.js';  // Run `npm install --save classlist.js`.
 
-/** IE10 and IE11 requires the following for NgClass support on SVG elements */
-import 'classlist.js';  // Run `npm install --save classlist.js`.
-
-/** IE10 and IE11 requires the following for the Reflect API. */
-import 'core-js/es6/reflect';
+// /** IE10 and IE11 requires the following for the Reflect API. */
+// import 'core-js/es6/reflect';
 
 
-/** Evergreen browsers require these. **/
-// Used for reflect-metadata in JIT. If you use AOT (and only Angular decorators), you can remove.
-import 'core-js/es7/reflect';
+// /** Evergreen browsers require these. **/
+// // Used for reflect-metadata in JIT. If you use AOT (and only Angular decorators), you can remove.
+// import 'core-js/es7/reflect';
 
 
 /**
@@ -57,11 +55,11 @@ import 'core-js/es7/reflect';
  */
 // (window as any).__Zone_enable_cross_context_check = true;
 
+import '@angular/localize/init';
 /***************************************************************************************************
  * Zone JS is required by default for Angular itself.
  */
 import 'zone.js';  // Included with Angular CLI.
-
 
 /***************************************************************************************************
  * APPLICATION IMPORTS

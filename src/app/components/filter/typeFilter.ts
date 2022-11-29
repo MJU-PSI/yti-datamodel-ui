@@ -1,6 +1,6 @@
 import { SearchController, TextAnalysis } from '../../types/filter';
 import { IScope } from 'angular';
-import { isDefined } from '@vrk-yti/yti-common-ui';
+import { isDefined } from '@goraresult/yti-common-ui';
 import { ifChanged, LegacyComponent } from '../../utils/angular';
 import { Type } from '../../types/entity';
 import * as _ from 'lodash';
@@ -16,10 +16,10 @@ interface WithNormalizedType {
     defaultType: '='
   },
   template: `
-      <select id="type" 
+      <select id="type"
               class="form-control"
-              style="width: auto" 
-              ng-model="$ctrl.type" 
+              style="width: auto"
+              ng-model="$ctrl.type"
               ng-options="type | translate for type in $ctrl.types">
         <option value="" translate>All types</option>
       </select>

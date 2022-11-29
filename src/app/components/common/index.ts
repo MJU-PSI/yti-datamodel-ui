@@ -10,7 +10,7 @@ import { LanguageService } from 'app/services/languageService';
 import { LanguageContext } from 'app/types/language';
 import { OverlayService } from './overlay';
 import { upperCaseFirst } from 'change-case';
-import { Localizable } from '@vrk-yti/yti-common-ui';
+import { Localizable } from '@goraresult/yti-common-ui';
 import { AccordionComponent, AccordionGroupComponent, AccordionTranscludeDirective } from './accordion';
 import { AccordionChevronComponent } from './accordionChevron';
 import { ButtonWithOptionsComponent } from './buttonWithOptions';

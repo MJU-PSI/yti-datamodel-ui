@@ -4,7 +4,7 @@ import { SearchReferenceDataModal } from 'app/components/model/searchReferenceDa
 import { ViewReferenceDataModal } from 'app/components/model/viewReferenceDataModal';
 import { ColumnDescriptor, TableDescriptor } from 'app/components/form/editableTable';
 import { LanguageService, Localizer } from 'app/services/languageService';
-import { collectProperties, remove } from '@vrk-yti/yti-common-ui';
+import { collectProperties, remove } from '@goraresult/yti-common-ui';
 import { createExistsExclusion } from 'app/utils/exclusion';
 import { ReferenceData } from 'app/entities/referenceData';
 import { Model } from 'app/entities/model';

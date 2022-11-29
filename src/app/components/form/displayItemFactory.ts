@@ -2,7 +2,7 @@ import { ILocationService } from 'angular';
 import { gettextCatalog as GettextCatalog } from 'angular-gettext';
 import { LanguageService } from 'app/services/languageService';
 import { Uri } from 'app/entities/uri';
-import { isString, isNumber, isBoolean, Localizable } from '@vrk-yti/yti-common-ui';
+import { isString, isNumber, isBoolean, Localizable } from '@goraresult/yti-common-ui';
 import { isDifferentUrl } from 'app/utils/angular';
 import { Moment } from 'moment';
 import * as moment from 'moment';

@@ -3,7 +3,7 @@ import { LanguageService } from 'app/services/languageService';
 import { isValidLabelLength, isValidModelLabelLength, isValidString } from './validators';
 import { allLocalizations, hasLocalization } from 'app/utils/language';
 import { LanguageContext } from 'app/types/language';
-import { Localizable } from '@vrk-yti/yti-common-ui';
+import { Localizable } from '@goraresult/yti-common-ui';
 
 interface LocalizedInputAttributes extends IAttributes {
   localizedInput: 'required' | 'label' | 'modelLabel' | 'free';

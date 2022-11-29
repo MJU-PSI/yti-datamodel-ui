@@ -1,4 +1,4 @@
-import { assertNever, comparingPrimitive, containsAny, labelNameToResourceIdIdentifier, Localizable, remove, removeMatching, requireDefined, Status } from '@vrk-yti/yti-common-ui';
+import { assertNever, comparingPrimitive, containsAny, labelNameToResourceIdIdentifier, Localizable, remove, removeMatching, requireDefined, Status } from '@goraresult/yti-common-ui';
 import { Moment } from 'moment';
 import { ConstraintType, EntityConstructor, KnownPredicateType, PredicateType, SelectionType } from '../types/entity';
 import { Language, Localizer } from '../types/language';

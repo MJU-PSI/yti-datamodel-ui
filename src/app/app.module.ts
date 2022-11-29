@@ -1,13 +1,13 @@
-import { NgModule, NgZone } from '@angular/core';
+import { APP_INITIALIZER, Injectable, NgModule, NgZone } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { downgradeComponent, downgradeInjectable, UpgradeModule } from '@angular/upgrade/static';
 import {
   AjaxLoadingIndicatorComponent,
   AjaxLoadingIndicatorSmallComponent, AlertModalService, AUTHENTICATED_USER_ENDPOINT, ConfirmationModalService, DropdownComponent, ErrorModalService, ExpandableTextComponent, FilterDropdownComponent, FooterComponent, Localizer as AngularLocalizer, LOCALIZER, LoginModalService, MenuComponent, ModalService, StatusComponent, YtiCommonModule
-} from '@vrk-yti/yti-common-ui';
+} from '@goraresult/yti-common-ui';
 import * as angular from 'angular';
-import { animate, ICompileProvider, ILocationProvider, ILogProvider } from 'angular';
+import { animate, ICompileProvider, ILocationProvider, ILogProvider, IHttpProvider } from 'angular';
 import { ITooltipProvider } from 'angular-ui-bootstrap';
 import { module9 as componentsModule } from './components';
 import { module1 as commonModule } from './components/common';
@@ -80,9 +80,11 @@ import { DefaultAngularLocalizer, LanguageService } from './services/languageSer
 import { MessagingService } from './services/messaging-service';
 import { availableUILanguages } from './types/language';
 import IAnimateProvider = animate.IAnimateProvider;
-// import fiCommonPo from 'raw-loader!po-loader?format=mf!../../node_modules/@goraresult/yti-common-ui/po/fi.po';
-// import svCommonPo from 'raw-loader!po-loader?format=mf!../../node_modules/@goraresult/yti-common-ui/po/sv.po';
-// import enCommonPo from 'raw-loader!po-loader?format=mf!../../node_modules/@goraresult/yti-common-ui/po/en.po';
+import fiCommonPo from 'raw-loader!po-loader?format=mf!../../node_modules/@goraresult/yti-common-ui/po/fi.po';
+import svCommonPo from 'raw-loader!po-loader?format=mf!../../node_modules/@goraresult/yti-common-ui/po/sv.po';
+import enCommonPo from 'raw-loader!po-loader?format=mf!../../node_modules/@goraresult/yti-common-ui/po/en.po';
+import { environment } from '../environments/environment';
+import { KeycloakService } from 'keycloak-angular';
 
 require('angular-gettext');
 require('checklist-model');
@@ -115,15 +117,15 @@ function removeEmptyValues(obj: {}) {
 export const localizationStrings: { [lang: string]: { [key: string]: string } } = {
   fi: {
     ...removeEmptyValues(JSON.parse(fiPo)),
-    // ...removeEmptyValues(JSON.parse(fiCommonPo))
+    ...removeEmptyValues(JSON.parse(fiCommonPo))
   },
   sv: {
     ...removeEmptyValues(JSON.parse(svPo)),
-    // ...removeEmptyValues(JSON.parse(svCommonPo))
+    ...removeEmptyValues(JSON.parse(svCommonPo))
   },
   en: {
     ...removeEmptyValues(JSON.parse(enPo)),
-    // ...removeEmptyValues(JSON.parse(enCommonPo))
+    ...removeEmptyValues(JSON.parse(enCommonPo))
   }
 };
 
@@ -154,6 +156,7 @@ export function localizerFactory(languageService: LanguageService): AngularLocal
   return new DefaultAngularLocalizer(languageService);
 }
 
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -161,7 +164,11 @@ export function localizerFactory(languageService: LanguageService): AngularLocal
     ReactiveFormsModule,
     HttpClientModule,
     UpgradeModule,
-    YtiCommonModule,
+    YtiCommonModule.forRoot({
+      url: environment.url,
+      realm: environment.realm,
+      clientId: environment.clientId
+    }),
     VirtualScrollerModule,
     TranslateModule.forRoot({
       loader: {
@@ -295,6 +302,8 @@ mod.factory('alertModalService', downgradeInjectable(AlertModalService));
 mod.factory('datamodelConfirmationModalService', downgradeInjectable(DatamodelConfirmationModalService));
 mod.factory('errorModalService', downgradeInjectable(ErrorModalService));
 mod.factory('newDatamodelVersionModalService', downgradeInjectable(NewDatamodelVersionModalService));
+mod.factory('keycloakService', downgradeInjectable(KeycloakService));
+
 
 mod.config(routeConfig);
 
@@ -302,7 +311,9 @@ mod.config(($locationProvider: ILocationProvider,
             $logProvider: ILogProvider,
             $compileProvider: ICompileProvider,
             $animateProvider: IAnimateProvider,
-            $uibTooltipProvider: ITooltipProvider) => {
+            $uibTooltipProvider: ITooltipProvider,
+            $httpProvider: IHttpProvider
+            ) => {
   'ngInject';
   $locationProvider.html5Mode(true);
   $logProvider.debugEnabled(false);
@@ -314,6 +325,32 @@ mod.config(($locationProvider: ILocationProvider,
 
   $uibTooltipProvider.options({ appendToBody: true });
   $uibTooltipProvider.setTriggers({ 'mouseenter': 'mouseleave click' });
+
+  $httpProvider.interceptors.push(['$injector','$q',function ($injector, $q) {
+    return {
+      request: function (config) {
+        const keycloakService = $injector.get('keycloakService');
+        var deferred = $q.defer();
+        try {
+          keycloakService.getToken().then((token: string) => {
+            if (config) {
+              config.headers = config.headers || {};
+              config.headers['Authorization'] = `Bearer ${token}`;
+            }
+
+            deferred.resolve(config);
+
+          }).catch((err: any) => {
+            deferred.resolve(config);
+          })
+        } catch(e){
+          deferred.resolve(config);
+        }
+
+        return deferred.promise;
+      }
+    };
+  }]);
 });
 
 

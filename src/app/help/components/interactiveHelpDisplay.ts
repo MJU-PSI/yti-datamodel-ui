@@ -1,5 +1,5 @@
 import { NgZone } from '@angular/core';
-import { assertNever, contains, enter, esc, Optional, requireDefined, tab } from '@vrk-yti/yti-common-ui';
+import { assertNever, contains, enter, esc, Optional, requireDefined, tab } from '@goraresult/yti-common-ui';
 import { IDocumentService, ILocationService, IPromise, IScope, IWindowService } from 'angular';
 import { gettextCatalog as GettextCatalog } from 'angular-gettext';
 import { IModalStackService } from 'angular-ui-bootstrap';

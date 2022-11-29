@@ -1,5 +1,5 @@
 import { Model } from 'app/entities/model';
-import { Localizable } from '@vrk-yti/yti-common-ui';
+import { Localizable } from '@goraresult/yti-common-ui';
 import { KnownModelType } from 'app/types/entity';
 import { ConfigService } from './configService';
 import { TranslateService } from '@ngx-translate/core';

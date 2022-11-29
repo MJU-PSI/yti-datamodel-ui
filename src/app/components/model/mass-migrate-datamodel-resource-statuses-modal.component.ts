@@ -1,7 +1,7 @@
 import { Component, OnInit, Injectable } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Model } from 'app/entities/model';
-import {  } from '@vrk-yti/yti-common-ui';
+import {  } from '@goraresult/yti-common-ui';
 import {
   UserService,
   Status,
@@ -13,7 +13,7 @@ import {
   ModalService,
   ErrorModalService,
   ignoreModalClose
-} from '@vrk-yti/yti-common-ui';
+} from '@goraresult/yti-common-ui';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { ModelService } from 'app/services/modelService';

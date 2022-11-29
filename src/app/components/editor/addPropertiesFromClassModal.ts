@@ -3,7 +3,7 @@ import { IModalService, IModalServiceInstance } from 'angular-ui-bootstrap';
 import { gettextCatalog as GettextCatalog } from 'angular-gettext';
 import { LanguageService } from 'app/services/languageService';
 import { Property, Class } from 'app/entities/class';
-import { anyMatching, flatten, groupBy, stringMapToObject } from '@vrk-yti/yti-common-ui';
+import { anyMatching, flatten, groupBy, stringMapToObject } from '@goraresult/yti-common-ui';
 import { Model } from 'app/entities/model';
 
 const noExclude = (_property: Property) => false;

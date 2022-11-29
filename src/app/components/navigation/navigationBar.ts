@@ -2,7 +2,7 @@ import * as angular from 'angular';
 import { ILocationService, IScope } from 'angular';
 import { LanguageService } from 'app/services/languageService';
 import { UserService } from 'app/services/userService';
-import { LoginModalService, identity } from '@vrk-yti/yti-common-ui';
+import { LoginModalService, identity } from '@goraresult/yti-common-ui';
 import { UILanguage } from 'app/types/language';
 import { User } from 'app/entities/user';
 import { HelpSelectionModal } from 'app/components/common/helpSelectionModal';
@@ -15,6 +15,7 @@ import { ConfigService } from 'app/services/configService';
 import { Config } from 'app/entities/config';
 import { HelpService } from '../../help/providers/helpService';
 import { Subscription } from 'rxjs';
+import IInjectorService = angular.auto.IInjectorService;
 
 // const logo = require('../../../assets/logo.svg');
 
@@ -37,6 +38,7 @@ export class NavigationBarComponent {
   config: Config;
 
   private subscriptions: Subscription[] = [];
+  $injector: any;
 
   constructor($scope: IScope,
               $route: angular.route.IRouteService,
@@ -48,9 +50,12 @@ export class NavigationBarComponent {
               helpService: HelpService,
               private interactiveHelpService: InteractiveHelpService,
               private helpSelectionModal: HelpSelectionModal,
-              configService: ConfigService) {
+              configService: ConfigService,
+              $injector: IInjectorService
+              ) {
     'ngInject';
 
+    this.$injector = $injector;
     impersonationService.getFakeableUsers()
       .then(users => this.fakeableUsers = users);
 
@@ -135,7 +140,8 @@ export class NavigationBarComponent {
   }
 
   logIn() {
-    this.loginModal.open();
+    const keycloak: any = this.$injector.get('keycloakService');
+    keycloak.login();
   }
 
   canStartHelp() {

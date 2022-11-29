@@ -24,7 +24,7 @@ import {
   Exclusion
 } from '../../utils/exclusion';
 import { collectIds, glyphIconClassForType } from '../../utils/entity';
-import { areEqual, Optional, removeMatching } from '@vrk-yti/yti-common-ui';
+import { areEqual, Optional, removeMatching } from '@goraresult/yti-common-ui';
 import { AbstractPredicate, Predicate, PredicateListItem } from '../../entities/predicate';
 import { AbstractClass, Class, ClassListItem, Property } from '../../entities/class';
 import { Model } from '../../entities/model';

@@ -5,7 +5,7 @@ import { LanguageService, Localizer } from 'app/services/languageService';
 import { comparingLocalizable } from 'app/utils/comparator';
 import { EditableForm } from 'app/components/form/editableEntityController';
 import { AddNew } from 'app/components/common/searchResults';
-import { anyMatching, limit, Status, allStatuses } from '@vrk-yti/yti-common-ui';
+import { anyMatching, limit, Status, allStatuses } from '@goraresult/yti-common-ui';
 import { lowerCase, upperCaseFirst } from 'change-case';
 import { SearchController, SearchFilter } from 'app/types/filter';
 import { ifChanged } from 'app/utils/angular';

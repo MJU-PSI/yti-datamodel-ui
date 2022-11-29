@@ -1,7 +1,7 @@
 import { IScope, ITimeoutService } from 'angular';
 import { hasLocalization } from 'app/utils/language';
 import { Coordinate } from 'app/types/visualization';
-import { Localizable } from '@vrk-yti/yti-common-ui';
+import { Localizable } from '@goraresult/yti-common-ui';
 import { LanguageContext } from 'app/types/language';
 import { LegacyComponent } from 'app/utils/angular';
 

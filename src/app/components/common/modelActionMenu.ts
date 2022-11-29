@@ -2,7 +2,7 @@ import { LanguageContext } from 'app/types/language';
 import { LegacyComponent } from 'app/utils/angular';
 import { Model } from '../../entities/model';
 import { MessagingService } from '../../services/messaging-service';
-import { ConfirmationModalService, ignoreModalClose } from '@vrk-yti/yti-common-ui';
+import { ConfirmationModalService, ignoreModalClose } from '@goraresult/yti-common-ui';
 import { ErrorModal } from '../form/errorModal';
 import { Config } from '../../entities/config';
 import { Url } from '../../entities/uri';

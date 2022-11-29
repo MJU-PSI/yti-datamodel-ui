@@ -1,4 +1,4 @@
-import { ChainableComparator, Comparator, isDefined, Localizable, makeChainable, Optional, optional, primitiveComparator, property, stringComparatorIgnoringCase } from '@vrk-yti/yti-common-ui';
+import { ChainableComparator, Comparator, isDefined, Localizable, makeChainable, Optional, optional, primitiveComparator, property, stringComparatorIgnoringCase } from '@goraresult/yti-common-ui';
 import { Moment } from 'moment';
 import { Localizer } from '../types/language';
 

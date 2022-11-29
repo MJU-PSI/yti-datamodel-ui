@@ -1,6 +1,6 @@
 import { NgZone } from '@angular/core';
-import * as Iterable from '@vrk-yti/yti-common-ui';
-import { Optional } from '@vrk-yti/yti-common-ui';
+import * as Iterable from '@goraresult/yti-common-ui';
+import { Optional } from '@goraresult/yti-common-ui';
 import { IWindowService } from 'angular';
 import { Model } from 'app/entities/model';
 import { ClassInteractionListener, Coordinate } from 'app/types/visualization';

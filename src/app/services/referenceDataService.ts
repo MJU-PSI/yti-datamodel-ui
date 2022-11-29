@@ -1,4 +1,4 @@
-import { flatten, normalizeAsArray, requireDefined } from '@vrk-yti/yti-common-ui';
+import { flatten, normalizeAsArray, requireDefined } from '@goraresult/yti-common-ui';
 import { IHttpService, IPromise, IQService } from 'angular';
 import * as frames from 'app/entities/frames';
 import { ReferenceData, ReferenceDataCode, ReferenceDataServer } from 'app/entities/referenceData';

@@ -6,7 +6,7 @@ import { contextlessInternalUrl, normalizeReferrerType } from 'app/utils/entity'
 import { init } from './mapping';
 import { GraphNode } from './graphNode';
 import { uriSerializer, entityAwareOptional, entity, entityAwareList } from './serializer/entitySerializer';
-import { Localizable } from '@vrk-yti/yti-common-ui';
+import { Localizable } from '@goraresult/yti-common-ui';
 
 export interface Usage {
   id: Uri;

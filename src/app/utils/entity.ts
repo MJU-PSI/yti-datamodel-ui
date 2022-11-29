@@ -1,4 +1,4 @@
-import { anyMatching, areEqual, collectProperties, containsAny, firstMatchingValue, index, requireDefined } from '@vrk-yti/yti-common-ui';
+import { anyMatching, areEqual, collectProperties, containsAny, firstMatchingValue, index, requireDefined } from '@goraresult/yti-common-ui';
 import { IHttpPromiseCallbackArg } from 'angular';
 import { Classification } from '../entities/classification';
 import { Model, ModelListItem } from '../entities/model';

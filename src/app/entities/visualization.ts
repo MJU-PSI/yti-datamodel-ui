@@ -1,5 +1,5 @@
-import * as Iterable from '@vrk-yti/yti-common-ui';
-import { areEqual, arraysAreEqual, isDefined, Localizable } from '@vrk-yti/yti-common-ui';
+import * as Iterable from '@goraresult/yti-common-ui';
+import { areEqual, arraysAreEqual, isDefined, Localizable } from '@goraresult/yti-common-ui';
 import { Type } from 'app/types/entity';
 import { Coordinate } from 'app/types/visualization';
 import { coordinatesAreEqual, copyCoordinate, copyVertices, indexById } from 'app/utils/entity';

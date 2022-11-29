@@ -1,4 +1,4 @@
-import { filterDefined, isDefined, Localizable, normalizeAsArray } from '@vrk-yti/yti-common-ui';
+import { filterDefined, isDefined, Localizable, normalizeAsArray } from '@goraresult/yti-common-ui';
 import { Type } from 'app/types/entity';
 import { Language } from 'app/types/language';
 import { Coordinate } from 'app/types/visualization';

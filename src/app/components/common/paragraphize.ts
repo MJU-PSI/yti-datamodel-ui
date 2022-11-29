@@ -1,6 +1,6 @@
 import { FilterFactory, ISCEService } from 'angular';
 import { LanguageContext } from 'app/types/language';
-import { Localizable } from '@vrk-yti/yti-common-ui';
+import { Localizable } from '@goraresult/yti-common-ui';
 import { LegacyComponent } from 'app/utils/angular';
 
 @LegacyComponent({

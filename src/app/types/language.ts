@@ -1,5 +1,5 @@
 import { Uri } from 'app/entities/uri';
-import { Localizable } from '@vrk-yti/yti-common-ui';
+import { Localizable } from '@goraresult/yti-common-ui';
 
 // language codes according to ISO_639-1 specification (also added some from ISO_639-2)
 export type Language =

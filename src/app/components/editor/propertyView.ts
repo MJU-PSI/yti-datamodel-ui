@@ -2,7 +2,7 @@ import { IPromise, IQService, IScope } from 'angular';
 import { ClassFormComponent } from './classForm';
 import { Uri } from '../../entities/uri';
 import { LanguageService } from '../../services/languageService';
-import { allMatching, anyMatching } from '@vrk-yti/yti-common-ui';
+import { allMatching, anyMatching } from '@goraresult/yti-common-ui';
 import { hasLocalization } from '../../utils/language';
 import { Class, Property } from '../../entities/class';
 import { Model } from '../../entities/model';

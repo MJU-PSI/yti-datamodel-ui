@@ -2,7 +2,7 @@ import * as levenshtein from 'fast-levenshtein';
 import { valueContains } from 'app/utils/searchFilter';
 import { ContentExtractor, TextAnalysis } from 'app/types/filter';
 import { isLocalizable } from 'app/utils/language';
-import { isDefined } from '@vrk-yti/yti-common-ui';
+import { isDefined } from '@goraresult/yti-common-ui';
 
 export function analyze<T>(search: string, item: T, extractors: ContentExtractor<T>[]): TextAnalysis<T> {
 

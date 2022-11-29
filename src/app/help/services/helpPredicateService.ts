@@ -11,7 +11,7 @@ import * as moment from 'moment';
 import { VocabularyService } from '../../services/vocabularyService';
 import { ModelResourceStore } from './resourceStore';
 import { Concept } from '../../entities/vocabulary';
-import { flatten } from '@vrk-yti/yti-common-ui';
+import { flatten } from '@goraresult/yti-common-ui';
 import { EntityCreatorService } from './entityCreatorService';
 import { RelatedPredicate } from '../../services/predicateService';
 

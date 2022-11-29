@@ -1,5 +1,5 @@
 import { IModelFormatter, INgModelController, IQService, IScope } from 'angular';
-import { isDefined, arrowDown, arrowUp, enter, esc, pageDown, pageUp, tab, limit } from '@vrk-yti/yti-common-ui';
+import { isDefined, arrowDown, arrowUp, enter, esc, pageDown, pageUp, tab, limit } from '@goraresult/yti-common-ui';
 import { formatWithFormatters, LegacyComponent } from 'app/utils/angular';
 import { DataSource } from './dataSource';
 import { InputWithPopupController } from './inputPopup';

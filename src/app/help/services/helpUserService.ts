@@ -1,7 +1,7 @@
 import { User } from 'app/entities/user';
 import { IPromise, IQService } from 'angular';
 import { ResetableService } from './resetableService';
-import { Role, UUID } from '@vrk-yti/yti-common-ui';
+import { Role, UUID } from '@goraresult/yti-common-ui';
 import { UserService } from 'app/services/userService';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 

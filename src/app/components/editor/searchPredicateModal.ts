@@ -9,7 +9,7 @@ import { AddNew } from 'app/components/common/searchResults';
 import { glyphIconClassForType } from 'app/utils/entity';
 import { ChoosePredicateTypeModal } from './choosePredicateTypeModal';
 import { ClassService } from 'app/services/classService';
-import { collectProperties, ignoreModalClose, requireDefined } from '@vrk-yti/yti-common-ui';
+import { collectProperties, ignoreModalClose, requireDefined } from '@goraresult/yti-common-ui';
 import { combineExclusions, createDefinedByExclusion, createExistsExclusion, Exclusion } from 'app/utils/exclusion';
 import { SearchController, SearchFilter } from 'app/types/filter';
 import { AbstractPredicate, Predicate, PredicateListItem } from 'app/entities/predicate';

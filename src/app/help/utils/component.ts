@@ -1,4 +1,4 @@
-import { areEqual, assertNever, contains, Optional } from '@vrk-yti/yti-common-ui';
+import { areEqual, assertNever, contains, Optional } from '@goraresult/yti-common-ui';
 import { Click, ModifyingClick, NavigatingClick, NextCondition, Notification, Story } from 'app/help/contract';
 
 export const popupAnimationTimeInMs = 300; // should match css help-popover transition time

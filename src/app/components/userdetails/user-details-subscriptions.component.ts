@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NgbNav } from '@ng-bootstrap/ng-bootstrap';
-import { comparingPrimitive, ConfirmationModalService, ErrorModalService, ignoreModalClose, Localizable, UserService } from '@vrk-yti/yti-common-ui';
+import { comparingPrimitive, ConfirmationModalService, ErrorModalService, ignoreModalClose, Localizable, UserService } from '@goraresult/yti-common-ui';
 import { BehaviorSubject } from 'rxjs';
 import { ConfigServiceWrapper } from '../../ajs-upgraded-providers';
 import { MessagingResource } from '../../entities-messaging/messaging-resource';

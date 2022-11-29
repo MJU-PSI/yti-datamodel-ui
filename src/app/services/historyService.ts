@@ -4,7 +4,7 @@ import { GraphData } from 'app/types/entity';
 import { FrameService } from './frameService';
 import * as frames from 'app/entities/frames';
 import { Activity } from 'app/entities/version';
-import { requireDefined } from '@vrk-yti/yti-common-ui';
+import { requireDefined } from '@goraresult/yti-common-ui';
 import { apiEndpointWithName } from './config';
 
 export class HistoryService {

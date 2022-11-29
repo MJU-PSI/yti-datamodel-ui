@@ -1,4 +1,4 @@
-import { assertNever, contains, firstMatching, isDefined } from '@vrk-yti/yti-common-ui';
+import { assertNever, contains, firstMatching, isDefined } from '@goraresult/yti-common-ui';
 import { GraphNode } from './graphNode';
 import { EntityAwareSerializer } from './serializer/entitySerializer';
 import { Serializer } from './serializer/serializer';

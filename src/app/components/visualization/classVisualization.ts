@@ -1,5 +1,5 @@
 import { NgZone } from '@angular/core';
-import { arraysAreEqual, firstMatching, mapOptional, normalizeAsArray, Optional, requireDefined } from '@vrk-yti/yti-common-ui';
+import { arraysAreEqual, firstMatching, mapOptional, normalizeAsArray, Optional, requireDefined } from '@goraresult/yti-common-ui';
 import { IPromise, IQService, IScope, ITimeoutService, IWindowService } from 'angular';
 import { ConfirmationModal } from 'app/components/common/confirmationModal';
 import { ModelPageActions } from 'app/components/model/modelPage';

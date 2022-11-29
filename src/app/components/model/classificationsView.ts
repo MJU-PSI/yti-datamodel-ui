@@ -2,7 +2,7 @@ import { IScope } from 'angular';
 import { LanguageService } from '../../services/languageService';
 import { ColumnDescriptor, TableDescriptor } from '../../components/form/editableTable';
 import { createExistsExclusion } from '../../utils/exclusion';
-import { collectProperties } from '@vrk-yti/yti-common-ui';
+import { collectProperties } from '@goraresult/yti-common-ui';
 import { EditableForm } from '../../components/form/editableEntityController';
 import { Classification } from '../../entities/classification';
 import { SearchClassificationModal } from './searchClassificationModal';

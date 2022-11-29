@@ -1,4 +1,4 @@
-import { Localizable, requireDefined, Status } from '@vrk-yti/yti-common-ui';
+import { Localizable, requireDefined, Status } from '@goraresult/yti-common-ui';
 import { PredicateType, SelectionType } from 'app/types/entity';
 import { normalizePredicateType, resourceUrl } from 'app/utils/entity';
 import { Moment } from 'moment';

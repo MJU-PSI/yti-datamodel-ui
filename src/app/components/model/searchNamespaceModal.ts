@@ -3,7 +3,7 @@ import { IModalService, IModalServiceInstance } from 'angular-ui-bootstrap';
 import { LanguageService } from '../../services/languageService';
 import { ModelService } from '../../services/modelService';
 import { AddEditNamespaceModal } from './addEditNamespaceModal';
-import { comparingPrimitive } from '@vrk-yti/yti-common-ui';
+import { comparingPrimitive } from '@goraresult/yti-common-ui';
 import { LanguageContext } from '../../types/language';
 import { Exclusion } from '../../utils/exclusion';
 import { SearchController, SearchFilter, TextAnalysis } from '../../types/filter';

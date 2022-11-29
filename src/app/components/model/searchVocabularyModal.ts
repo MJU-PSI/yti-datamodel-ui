@@ -1,7 +1,7 @@
 import { IPromise, IScope } from 'angular';
 import { IModalService, IModalServiceInstance } from 'angular-ui-bootstrap';
 import { comparingLocalizable } from 'app/utils/comparator';
-import { comparingPrimitive, selectableStatuses, Status } from '@vrk-yti/yti-common-ui';
+import { comparingPrimitive, selectableStatuses, Status } from '@goraresult/yti-common-ui';
 import { LanguageService, Localizer } from 'app/services/languageService';
 import { Exclusion } from 'app/utils/exclusion';
 import { SearchController, SearchFilter } from 'app/types/filter';

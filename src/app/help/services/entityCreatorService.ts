@@ -1,5 +1,5 @@
 import { ImportedNamespace, Model } from 'app/entities/model';
-import { Localizable } from '@vrk-yti/yti-common-ui';
+import { Localizable } from '@goraresult/yti-common-ui';
 import { dateSerializer, typeSerializer } from 'app/entities/serializer/serializer';
 import { uriSerializer } from 'app/entities/serializer/entitySerializer';
 import { KnownModelType, KnownPredicateType } from 'app/types/entity';

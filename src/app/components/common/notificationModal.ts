@@ -1,7 +1,7 @@
 import { IPromise, ILocationService } from 'angular';
 import { IModalService } from 'angular-ui-bootstrap';
 import { Model } from 'app/entities/model';
-import { identity } from '@vrk-yti/yti-common-ui';
+import { identity } from '@goraresult/yti-common-ui';
 import { modalCancelHandler } from 'app/utils/angular';
 
 export class NotificationModal {
@@ -19,7 +19,7 @@ export class NotificationModal {
             <span translate>${title}</span>
           </h4>
         </div>
-        
+
         <div class="modal-body">
           <span translate>${body}</span>
         </div>

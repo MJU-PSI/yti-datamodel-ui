@@ -20,7 +20,7 @@ import { FrameService } from './frameService';
 import { proxyToInstance } from 'app/utils/proxy';
 import { InteractiveHelpService } from 'app/help/services/interactiveHelpService';
 import { InteractiveHelpValidatorService } from 'app/help/services/helpValidatorService';
-import { UserService } from '@vrk-yti/yti-common-ui';
+import { UserService } from '@goraresult/yti-common-ui';
 import { downgradeInjectable } from '@angular/upgrade/static';
 import { AuthorizationManagerService } from './authorizationManagerService';
 import { ClassificationService } from './classificationService';

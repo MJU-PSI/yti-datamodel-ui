@@ -2,7 +2,7 @@ import { createStory, createExpectedStateNextCondition, Story } from 'app/help/c
 import { modal, child } from 'app/help/utils/selector';
 import * as Modal from 'app/help/pages/modal/modal.po';
 import { AddPropertiesFromClassModalController } from 'app/components/editor/addPropertiesFromClassModal';
-import { arraysAreEqual } from '@vrk-yti/yti-common-ui';
+import { arraysAreEqual } from '@goraresult/yti-common-ui';
 import { getModalController } from 'app/help/utils/angular';
 import { onlyProperties } from 'app/help/utils/init';
 

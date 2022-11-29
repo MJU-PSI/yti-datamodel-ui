@@ -7,7 +7,7 @@ import { AddNew } from 'app/components/common/searchResults';
 import { gettextCatalog as GettextCatalog } from 'angular-gettext';
 import { EditableForm } from 'app/components/form/editableEntityController';
 import { Uri } from 'app/entities/uri';
-import { anyMatching, allMatching, Status, regularStatuses } from '@vrk-yti/yti-common-ui';
+import { anyMatching, allMatching, Status, regularStatuses } from '@goraresult/yti-common-ui';
 import * as _ from 'lodash';
 import { Exclusion } from 'app/utils/exclusion';
 import { SearchController, SearchFilter } from 'app/types/filter';

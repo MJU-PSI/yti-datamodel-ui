@@ -1,7 +1,7 @@
 import { LegacyComponent } from 'app/utils/angular';
 import { Notification, Story } from 'app/help/contract';
 import { IScope } from 'angular';
-import { requireDefined } from '@vrk-yti/yti-common-ui';
+import { requireDefined } from '@goraresult/yti-common-ui';
 import { InteractiveHelpController } from './interactiveHelpDisplay';
 import { elementPositioning, PopoverDimensionsProvider, resolveArrowClass } from 'app/help/utils/component';
 import { gettextCatalog as GettextCatalog } from 'angular-gettext';
@@ -13,7 +13,7 @@ import { gettextCatalog as GettextCatalog } from 'angular-gettext';
   },
   template: `
         <span ng-class="$ctrl.arrowClass"></span>
-      
+
         <div class="help-content-wrapper">
           <h3 ng-show="$ctrl.item.title">{{$ctrl.localizedTitle}}</h3>
           <p ng-show="$ctrl.item.content">{{$ctrl.localizedContent}}</p>

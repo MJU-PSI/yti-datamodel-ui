@@ -1,5 +1,5 @@
 import { v4 as uuid } from 'uuid';
-import { isDefined } from '@vrk-yti/yti-common-ui';
+import { isDefined } from '@goraresult/yti-common-ui';
 
 export type Url = string;
 export type Urn = string;

@@ -1,4 +1,4 @@
-import { flatten, requireDefined } from '@vrk-yti/yti-common-ui';
+import { flatten, requireDefined } from '@goraresult/yti-common-ui';
 import { IHttpService, IPromise, IQService } from 'angular';
 import { upperCaseFirst } from 'change-case';
 import * as moment from 'moment';

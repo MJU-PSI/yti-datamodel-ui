@@ -1,4 +1,4 @@
-import { ChainableComparator, Localizable } from '@vrk-yti/yti-common-ui';
+import { ChainableComparator, Localizable } from '@goraresult/yti-common-ui';
 import { ClassListItem } from '../entities/class';
 import { DefinedBy } from '../entities/definedBy';
 import { GraphNode, GraphNodes } from '../entities/graphNode';

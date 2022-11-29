@@ -2,7 +2,7 @@ import { LegacyComponent } from '../../utils/angular';
 import { SortByTableColumn, SortBy, ListItem } from '../../types/entity';
 import { defaultLabelComparator, defaultDefinedByLabelComparator, defaultCommentComparator } from '../filter/util';
 import { comparingDateAllowNull } from '../../utils/comparator';
-import { reversed } from '@vrk-yti/yti-common-ui';
+import { reversed } from '@goraresult/yti-common-ui';
 import { LanguageService, Localizer } from '../../services/languageService';
 import { Model } from '../../entities/model';
 import { Exclusion } from '../../utils/exclusion';

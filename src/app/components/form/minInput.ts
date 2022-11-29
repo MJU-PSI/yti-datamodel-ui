@@ -1,5 +1,5 @@
 import { IAttributes, IDirectiveFactory, INgModelController, IScope } from 'angular';
-import { isDefined } from '@vrk-yti/yti-common-ui';
+import { isDefined } from '@goraresult/yti-common-ui';
 
 interface MinInputScope extends IScope {
   max: number;

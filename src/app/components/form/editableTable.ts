@@ -1,6 +1,6 @@
 import { IScope } from 'angular';
 import { Url } from 'app/entities/uri';
-import { labelNameToResourceIdIdentifier } from '@vrk-yti/yti-common-ui';
+import { labelNameToResourceIdIdentifier } from '@goraresult/yti-common-ui';
 import { EditableForm } from './editableEntityController';
 import { LegacyComponent } from 'app/utils/angular';
 import { isExternalLink } from 'app/components/form/href';

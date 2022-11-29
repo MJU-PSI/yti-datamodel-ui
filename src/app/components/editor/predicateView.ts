@@ -10,7 +10,7 @@ import { LanguageContext } from 'app/types/language';
 import { EditorContainer, ModelControllerService } from 'app/components/model/modelControllerService';
 import { AuthorizationManagerService } from 'app/services/authorizationManagerService';
 import { LegacyComponent } from 'app/utils/angular';
-import { changeToRestrictedStatus } from '@vrk-yti/yti-common-ui';
+import { changeToRestrictedStatus } from '@goraresult/yti-common-ui';
 import { DatamodelConfirmationModalService } from 'app/services/confirmation-modal.service';
 
 @LegacyComponent({

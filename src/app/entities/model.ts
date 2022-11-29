@@ -1,4 +1,4 @@
-import { containsAny, Localizable, remove, requireDefined, Status } from '@vrk-yti/yti-common-ui';
+import { containsAny, Localizable, remove, requireDefined, Status } from '@goraresult/yti-common-ui';
 import * as _ from 'lodash';
 import { Moment } from 'moment';
 import { KnownModelType, Type, UseContext } from '../types/entity';

@@ -1,5 +1,5 @@
 import { IAttributes, IDirectiveFactory, IRepeatScope, IScope } from 'angular';
-import { moveElement, resetWith } from '@vrk-yti/yti-common-ui';
+import { moveElement, resetWith } from '@goraresult/yti-common-ui';
 import { LegacyDirective } from 'app/utils/angular';
 
 interface DragSortableAttributes extends IAttributes {

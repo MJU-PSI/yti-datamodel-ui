@@ -1,7 +1,7 @@
 import { GraphNode } from './graphNode';
 import { localizableSerializer, stringSerializer } from './serializer/serializer';
 import { init } from './mapping';
-import { Localizable } from '@vrk-yti/yti-common-ui';
+import { Localizable } from '@goraresult/yti-common-ui';
 import { entity, entityAwareOptional, entityAwareValueOrDefault, uriSerializer } from './serializer/entitySerializer';
 import { Uri } from './uri';
 

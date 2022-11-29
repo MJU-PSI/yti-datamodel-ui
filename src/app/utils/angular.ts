@@ -1,4 +1,4 @@
-import { allMatching, normalizeAsArray, requireDefined, valuesExcludingKeys } from '@vrk-yti/yti-common-ui';
+import { allMatching, normalizeAsArray, requireDefined, valuesExcludingKeys } from '@goraresult/yti-common-ui';
 import {
   IComponentOptions,
   IControllerConstructor,
