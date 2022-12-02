@@ -355,6 +355,7 @@ mod.config(($locationProvider: ILocationProvider,
 
 
 mod.run((gettextCatalog: any) => {
+  'ngInject';
 
   gettextCatalog.debug = true;
 

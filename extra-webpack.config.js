@@ -1,18 +1,5 @@
 const path = require('path');
-const tsconfig = require('./tsconfig.json');
-
-const config = {
-  files: [],
-  ignore: false,
-  compilerOptions: Object.assign({}, tsconfig.compilerOptions, {
-    module: 'commonjs',
-    typeRoots: [ 'node_modules/@types' ],
-    types: [ 'node', 'webpack' ]
-  })
-};
-
-require('ts-node').register(config);
-const NgAnnotatePlugin = require('./ng-annotate.plugin.ts').NgAnnotatePlugin;
+const webpack = require('webpack');
 
 module.exports = {
   resolve: {
@@ -23,10 +10,35 @@ module.exports = {
   },
   module: {
     rules: [
-      { test: /\.html$/, use: 'html-loader' }
+      {
+        test: /\.(js|ts)$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              presets: [
+                "@babel/preset-env",
+                "@babel/preset-typescript"
+              ],
+              plugins: [
+                 ["@babel/plugin-proposal-decorators",
+                  {
+                    "legacy": true
+                  }
+                ],
+                "@babel/plugin-proposal-class-properties",
+                ["angularjs-annotate", { "explicitOnly": true }]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        test: /\.html$/, exclude: /node_modules/, loader: 'html-loader'
+      }
     ]
   },
   plugins: [
-    new NgAnnotatePlugin()
   ]
 };

@@ -58,7 +58,8 @@ WORKDIR /app
 RUN echo "$VERSION" > src/version.txt
 
 # Build the dist dir containing the static files
-RUN ["npm", "run", "build", "--", "--prod",  "--output-hashing=all"]
+# RUN ["npm", "run", "build", "--", "--configuration=production"]
+RUN ["npm", "run", "build"]
 
 # Start web server and expose http
 EXPOSE 80
