@@ -5,7 +5,7 @@ import { LanguageService, Localizer } from 'app/services/languageService';
 import { comparingLocalizable } from 'app/utils/comparator';
 import { EditableForm } from 'app/components/form/editableEntityController';
 import { AddNew } from 'app/components/common/searchResults';
-import { anyMatching, limit } from 'yti-common-ui/utils/array';
+import { anyMatching, limit, Status, allStatuses } from '@goraresult/yti-common-ui';
 import { lowerCase, upperCaseFirst } from 'change-case';
 import { SearchController, SearchFilter } from 'app/types/filter';
 import { ifChanged } from 'app/utils/angular';
@@ -15,7 +15,6 @@ import { ClassType, KnownPredicateType } from 'app/types/entity';
 import { VocabularyService } from 'app/services/vocabularyService';
 import { filterAndSortSearchResults, defaultLabelComparator } from 'app/components/filter/util';
 import { Uri } from 'app/entities/uri';
-import { Status, allStatuses } from 'yti-common-ui/entities/status';
 
 const limitQueryResults = 1000;
 

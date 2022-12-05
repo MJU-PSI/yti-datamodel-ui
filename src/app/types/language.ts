@@ -1,5 +1,5 @@
 import { Uri } from 'app/entities/uri';
-import { Localizable } from 'yti-common-ui/types/localization';
+import { Localizable } from '@goraresult/yti-common-ui';
 
 // language codes according to ISO_639-1 specification (also added some from ISO_639-2)
 export type Language =
@@ -33,7 +33,7 @@ export const availableLanguages: Language[] = [
     'rm', 'rn', 'ro', 'ru', 'sa', 'sc', 'sd', 'se', 'sm', 'sg', 'sr', 'gd', 'sn',
     'si', 'sk', 'sl', 'st', 'es', 'su', 'sw', 'ss', 'sv', 'ta', 'tg', 'th', 'ti',
     'bo', 'tk', 'tl', 'tn', 'to', 'tr', 'ts', 'tt', 'tw', 'ty', 'ug', 'uk', 'ur',
-    'uz', 've', 'vi', 'vo', 'wa', 'cy', 'wo', 'fy', 'xh', 'yi', 'yo', 'za', 'zu', 
+    'uz', 've', 'vi', 'vo', 'wa', 'cy', 'wo', 'fy', 'xh', 'yi', 'yo', 'za', 'zu',
     'prs', 'smn', 'sms'
 ];
 

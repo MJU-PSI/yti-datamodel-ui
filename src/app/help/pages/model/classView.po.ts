@@ -4,7 +4,7 @@ import { KnownPredicateType } from 'app/types/entity';
 import { PredicateDetails } from 'app/services/entityLoader';
 import { Language } from 'app/types/language';
 import { predicateIdAndNameFromHelpData } from 'app/help/utils/id';
-import { Localizable } from 'yti-common-ui/types/localization';
+import { Localizable } from '@goraresult/yti-common-ui';
 import { ClassDetails } from 'app/services/entityLoader';
 import { classIdAndNameFromHelpData } from 'app/help/utils/id';
 import * as SearchClassModal from './modal/searchClassModal.po';

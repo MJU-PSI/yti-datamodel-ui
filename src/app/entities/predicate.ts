@@ -1,22 +1,16 @@
-import { SelectionType, PredicateType } from 'app/types/entity';
-import { normalizePredicateType } from 'app/utils/entity';
-import { requireDefined } from 'yti-common-ui/utils/object';
-import { resourceUrl } from 'app/utils/entity';
-import { Uri, Urn } from './uri';
-import { DefinedBy } from './definedBy';
+import { Localizable, requireDefined, Status } from '@goraresult/yti-common-ui';
+import { PredicateType, SelectionType } from 'app/types/entity';
+import { normalizePredicateType, resourceUrl } from 'app/utils/entity';
 import { Moment } from 'moment';
 import { DataType } from './dataTypes';
-import { Concept } from './vocabulary';
-import { init, serialize } from './mapping';
+import { DefinedBy } from './definedBy';
 import { GraphNode } from './graphNode';
-import {
-  uriSerializer, entityAwareList, entity,
-  entityAwareOptional
-} from './serializer/entitySerializer';
-import { localizableSerializer, dateSerializer, optional, identitySerializer } from './serializer/serializer';
+import { init, serialize } from './mapping';
 import { normalizingDefinedBySerializer } from './serializer/common';
-import { Localizable } from 'yti-common-ui/types/localization';
-import { Status } from 'yti-common-ui/entities/status';
+import { entity, entityAwareList, entityAwareOptional, uriSerializer } from './serializer/entitySerializer';
+import { dateSerializer, identitySerializer, localizableSerializer, optional } from './serializer/serializer';
+import { Uri, Urn } from './uri';
+import { Concept } from './vocabulary';
 
 export abstract class AbstractPredicate extends GraphNode {
 
@@ -75,7 +69,7 @@ export class PredicateListItem extends AbstractPredicate {
 export class Predicate extends AbstractPredicate {
 
   static predicateMappings = {
-    
+
     subPropertyOf:        { name: 'subPropertyOf',      serializer: entityAwareOptional(uriSerializer) },
     subject:              { name: 'subject',            serializer: entityAwareOptional(entity(() => Concept)) },
     equivalentProperties: { name: 'equivalentProperty', serializer: entityAwareList(uriSerializer) },
@@ -83,7 +77,7 @@ export class Predicate extends AbstractPredicate {
     editorialNote:        { name: 'editorialNote',      serializer: localizableSerializer },
     createdAt:            { name: 'created',            serializer: optional(dateSerializer) }
   };
-  
+
   subPropertyOf: Uri|null;
   subject: Concept|null;
   equivalentProperties: Uri[];

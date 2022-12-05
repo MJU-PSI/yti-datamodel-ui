@@ -1,5 +1,5 @@
 import { glyphIconClassForType } from 'app/utils/entity';
-import { containsAny } from 'yti-common-ui/utils/array';
+import { containsAny } from '@goraresult/yti-common-ui';
 import { Type } from 'app/types/entity';
 import { init } from './mapping';
 import { typeSerializer } from './serializer/serializer';

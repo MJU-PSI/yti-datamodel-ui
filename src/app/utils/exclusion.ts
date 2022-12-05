@@ -1,13 +1,12 @@
-import { SearchClassType } from 'app/types/component';
-import { WithId, WithDefinedBy, WithIdAndType } from 'app/types/entity';
-import { containsAny, arraysAreEqual, firstMatching } from 'yti-common-ui/utils/array';
-import { collectIds } from './entity';
-import { Uri } from 'app/entities/uri';
+import { arraysAreEqual, containsAny, firstMatching, isDefined } from '@goraresult/yti-common-ui';
 import { IPromise, IQService } from 'angular';
 import { DataSource } from 'app/components/form/dataSource';
-import { isDefined } from 'yti-common-ui/utils/object';
-import { Model } from 'app/entities/model';
 import { ClassListItem } from 'app/entities/class';
+import { Model } from 'app/entities/model';
+import { Uri } from 'app/entities/uri';
+import { SearchClassType } from 'app/types/component';
+import { WithDefinedBy, WithId, WithIdAndType } from 'app/types/entity';
+import { collectIds } from './entity';
 
 
 export type Exclusion<T> = (obj: T) => string|null;

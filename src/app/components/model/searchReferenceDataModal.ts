@@ -7,7 +7,7 @@ import { AddNew } from 'app/components/common/searchResults';
 import { gettextCatalog as GettextCatalog } from 'angular-gettext';
 import { EditableForm } from 'app/components/form/editableEntityController';
 import { Uri } from 'app/entities/uri';
-import { anyMatching, allMatching } from 'yti-common-ui/utils/array';
+import { anyMatching, allMatching, Status, regularStatuses } from '@goraresult/yti-common-ui';
 import * as _ from 'lodash';
 import { Exclusion } from 'app/utils/exclusion';
 import { SearchController, SearchFilter } from 'app/types/filter';
@@ -16,7 +16,6 @@ import { ReferenceData, ReferenceDataServer, ReferenceDataGroup } from 'app/enti
 import { filterAndSortSearchResults, defaultTitleComparator } from 'app/components/filter/util';
 import { LanguageContext } from 'app/types/language';
 import { Model } from 'app/entities/model';
-import { Status, regularStatuses } from 'yti-common-ui/entities/status';
 
 interface WithReferenceDatas {
   referenceDatas: ReferenceData[];
@@ -160,7 +159,7 @@ export class SearchReferenceDataModalController implements SearchController<Refe
 
   search() {
     if (this.referenceDatas) {
-      
+
       this.searchResults = [
         new AddNewReferenceData(`${this.gettextCatalog.getString('Create new reference data')} '${this.searchText}'`, this.canAddNew.bind(this)),
         ...filterAndSortSearchResults(this.referenceDatas, this.searchText, this.contentExtractors, this.searchFilters, defaultTitleComparator(this.localizer, this.exclude))

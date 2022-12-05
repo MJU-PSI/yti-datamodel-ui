@@ -1,15 +1,12 @@
-import * as _ from 'lodash';
-import { OverlayInstance, OverlayService } from 'app/components/common/overlay';
-import { IDocumentService, ILocationService, IPromise, IScope, IWindowService } from 'angular';
-import { IModalStackService } from 'angular-ui-bootstrap';
-import { assertNever, Optional, requireDefined } from 'yti-common-ui/utils/object';
-import { enter, esc, tab } from 'yti-common-ui/utils/key-code';
-import { isTargetElementInsideElement, nextUrl } from 'app/utils/angular';
-import { InteractiveHelpService } from 'app/help/services/interactiveHelpService';
-import { createScrollWithDefault, InteractiveHelp, NextCondition, Notification, Story, scrollToTop } from 'app/help/contract';
-import { ConfirmationModal } from 'app/components/common/confirmationModal';
-import { gettextCatalog as GettextCatalog } from 'angular-gettext';
 import { NgZone } from '@angular/core';
+import { assertNever, contains, enter, esc, Optional, requireDefined, tab } from '@goraresult/yti-common-ui';
+import { IDocumentService, ILocationService, IPromise, IScope, IWindowService } from 'angular';
+import { gettextCatalog as GettextCatalog } from 'angular-gettext';
+import { IModalStackService } from 'angular-ui-bootstrap';
+import { ConfirmationModal } from 'app/components/common/confirmationModal';
+import { OverlayInstance, OverlayService } from 'app/components/common/overlay';
+import { createScrollWithDefault, InteractiveHelp, NextCondition, Notification, scrollToTop, Story } from 'app/help/contract';
+import { InteractiveHelpService } from 'app/help/services/interactiveHelpService';
 import {
   arrowHeight,
   elementExists,
@@ -22,9 +19,10 @@ import {
   Positioning,
   stopEvent
 } from 'app/help/utils/component';
-import { InteractiveHelpPopoverComponent } from './interactiveHelpPopover';
+import { isTargetElementInsideElement, nextUrl } from 'app/utils/angular';
+import * as _ from 'lodash';
 import { InteractiveHelpBackdropComponent } from './interactiveHelpBackdrop';
-import { contains } from 'yti-common-ui/utils/array';
+import { InteractiveHelpPopoverComponent } from './interactiveHelpPopover';
 
 const focusableSelector = 'a[href], area[href], input:not([disabled]), ' +
   'button:not([disabled]),select:not([disabled]), textarea:not([disabled]), ' +

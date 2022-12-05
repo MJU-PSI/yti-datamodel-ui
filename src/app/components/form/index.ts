@@ -36,8 +36,8 @@ import { DragSortableDirective, DragSortableItemDirective } from './dragSortable
 import { ImplicitEditModeDirective } from './implicitEditMode';
 
 import { componentDeclaration, directiveDeclaration } from 'app/utils/angular';
-import { module as mod } from './module';
-export { module } from './module';
+import { module4 as mod } from './module';
+export { module4 } from './module';
 
 mod.component('autocomplete', componentDeclaration(AutocompleteComponent));
 mod.component('codeValueInputAutocomplete', componentDeclaration(CodeValueInputAutocompleteComponent));

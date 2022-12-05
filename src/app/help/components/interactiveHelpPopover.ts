@@ -1,6 +1,6 @@
 import { LegacyComponent } from 'app/utils/angular';
 import { Notification, Story } from 'app/help/contract';
-import { assertNever, Optional, requireDefined } from 'yti-common-ui/utils/object';
+import { assertNever, Optional, requireDefined } from '@goraresult/yti-common-ui';
 import { IDocumentService, IScope } from 'angular';
 import { arrowHeight, Dimensions, elementPositioning, isInWindow, isVisible, popupAnimationTimeInMs, Positioning, resolveArrowClass } from 'app/help/utils/component';
 import { InteractiveHelpController } from './interactiveHelpDisplay';
@@ -13,29 +13,29 @@ import { gettextCatalog as GettextCatalog } from 'angular-gettext';
   },
   template: `
         <span ng-class="$ctrl.arrowClass"></span>
-      
+
         <div class="help-content-wrapper">
           <h3 ng-show="$ctrl.title">{{$ctrl.localizedTitle}}</h3>
           <p ng-show="$ctrl.content">{{$ctrl.localizedContent}}</p>
-          
+
           <button id="help_popover_previous_button"
                   ng-show="$ctrl.showPrevious"
                   ng-disabled="!$ctrl.helpController.canMoveToPrevious()"
                   ng-click="$ctrl.helpController.moveToPreviousItem()"
                   class="small button help-navigate" translate>previous</button>
-                  
+
           <button id="help_popover_next_button"
                   ng-show="$ctrl.showNext"
                   ng-disabled="!$ctrl.helpController.canMoveToNext()"
                   ng-click="$ctrl.helpController.tryToMoveToNextItem()"
                   class="small button help-navigate" translate>next</button>
-                  
+
           <button id="help_popover_close_button"
                   ng-show="$ctrl.showClose"
                   ng-disabled="!$ctrl.helpController.canMoveToNext()"
                   ng-click="$ctrl.helpController.close(false)"
                   class="small button help-next" translate>close</button>
-                  
+
           <a id="help_popover_close_link" ng-click="$ctrl.helpController.close(true)" class="help-close">&times;</a>
         </div>
   `

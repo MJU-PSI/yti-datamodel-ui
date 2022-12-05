@@ -7,13 +7,11 @@ import { HistoryService } from 'app/services/historyService';
 import { UserService } from 'app/services/userService';
 import { Uri } from 'app/entities/uri';
 import { comparingDate } from 'app/utils/comparator';
-import { reversed } from 'yti-common-ui/utils/comparator';
-import { containsAny } from 'yti-common-ui/utils/array';
+import { reversed, containsAny, identity } from '@goraresult/yti-common-ui';
 import { Model } from 'app/entities/model';
 import { Class } from 'app/entities/class';
 import { Predicate } from 'app/entities/predicate';
 import { Entity } from 'app/entities/version';
-import { identity } from 'yti-common-ui/utils/object';
 import { modalCancelHandler } from 'app/utils/angular';
 
 export class HistoryModal {

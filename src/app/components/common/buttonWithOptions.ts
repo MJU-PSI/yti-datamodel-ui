@@ -1,5 +1,5 @@
 import { LegacyComponent } from 'app/utils/angular';
-import { labelNameToResourceIdIdentifier } from 'yti-common-ui/utils/resource';
+import { labelNameToResourceIdIdentifier } from '@goraresult/yti-common-ui';
 import { TranslateService } from '@ngx-translate/core';
 
 export interface Option {
@@ -14,24 +14,24 @@ export interface Option {
     disabled: '='
   },
   transclude: true,
-  template: `                
+  template: `
         <div ng-if="$ctrl.options.length > 1" class="btn-group pull-right" uib-dropdown>
           <button id="{{$ctrl.id + '_dropdown_title'}}"
-                  type="button" 
+                  type="button"
                   class="btn btn-link dropdown-toggle"
                   ng-disabled="$ctrl.disabled"
                   uib-dropdown-toggle>
             <ng-transclude></ng-transclude>
           </button>
-          
+
           <div uib-dropdown-menu>
             <a ng-repeat="option in $ctrl.options"
                id="{{$ctrl.formOptionIdIdentifier(option.name)}}"
-               class="dropdown-item" 
+               class="dropdown-item"
                ng-click="option.apply()">{{option.name | translate}}</a>
           </div>
         </div>
-        
+
         <button ng-if="$ctrl.options.length === 1"
                 id="{{$ctrl.formOptionIdIdentifier($ctrl.options[0].name)}}"
                 type="button"

@@ -1,6 +1,5 @@
-import { hasValue } from 'yti-common-ui/utils/object';
+import { hasValue, Localizable } from '@goraresult/yti-common-ui';
 import { availableLanguages, Language } from 'app/types/language';
-import { Localizable } from 'yti-common-ui/types/localization';
 
 export function isLocalizable(obj: any): obj is Localizable {
   return typeof obj === 'object';

@@ -19,14 +19,14 @@ export function routeConfig($routeProvider: angular.route.IRouteProvider) {
     })
     .when('/group', {
       template: '<group-page group-id="groupId"></group-page>',
-      controller($scope: any, $route: angular.route.IRouteService) {
+      controller: function($scope: any, $route: angular.route.IRouteService) {
         'ngInject';
         $scope.groupId = new Uri($route.current!.params.id, {});
       }
     })
     .when('/newModel', {
       template: '<new-model-page type="type"></new-model-page>',
-      controller($scope: any, $route: angular.route.IRouteService) {
+      controller: function($scope: any, $route: angular.route.IRouteService) {
         'ngInject';
         const params: any = $route.current!.params;
         $scope.type = params.type;
@@ -34,7 +34,7 @@ export function routeConfig($routeProvider: angular.route.IRouteProvider) {
     })
     .when('/ns/:prefix*', {
       template: '',
-      controller($location: ILocationService, $route: angular.route.IRouteService) {
+      controller: function($location: ILocationService, $route: angular.route.IRouteService) {
         'ngInject';
 
         const prefix = $route.current!.params.prefix;
@@ -53,7 +53,7 @@ export function routeConfig($routeProvider: angular.route.IRouteProvider) {
     })
     .otherwise({
       template: '',
-      controller(notificationModal: NotificationModal) {
+      controller: function(notificationModal: NotificationModal) {
         'ngInject';
         notificationModal.openPageNotFound();
       }

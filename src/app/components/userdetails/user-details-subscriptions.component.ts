@@ -1,18 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ignoreModalClose } from 'yti-common-ui/utils/modal';
-import { NgbTabset } from '@ng-bootstrap/ng-bootstrap';
+import { NgbNav } from '@ng-bootstrap/ng-bootstrap';
+import { comparingPrimitive, ConfirmationModalService, ErrorModalService, ignoreModalClose, Localizable, UserService } from '@goraresult/yti-common-ui';
 import { BehaviorSubject } from 'rxjs';
-import { MessagingResource } from '../../entities-messaging/messaging-resource';
-import { MessagingService } from '../../services/messaging-service';
-import { UserService } from 'yti-common-ui/services/user.service';
-import { LanguageService, Localizer } from '../../services/languageService';
-import { ConfirmationModalService } from 'yti-common-ui/components/confirmation-modal.component';
-import { ErrorModalService } from 'yti-common-ui/components/error-modal.component';
 import { ConfigServiceWrapper } from '../../ajs-upgraded-providers';
+import { MessagingResource } from '../../entities-messaging/messaging-resource';
 import { Config } from '../../entities/config';
+import { LanguageService, Localizer } from '../../services/languageService';
+import { MessagingService } from '../../services/messaging-service';
 import { comparingLocalizable } from '../../utils/comparator';
-import { comparingPrimitive } from 'yti-common-ui/utils/comparator';
-import { Localizable } from 'yti-common-ui/types/localization';
 
 @Component({
   selector: 'app-user-details-subscriptions',
@@ -21,7 +16,7 @@ import { Localizable } from 'yti-common-ui/types/localization';
 })
 export class UserDetailsSubscriptionsComponent implements OnInit {
 
-  @Input() tabSet: NgbTabset;
+  @Input() nav: NgbNav;
 
   messagingResources$ = new BehaviorSubject<Map<string, MessagingResource[]> | null>(null);
   subscriptionType: string;
@@ -37,11 +32,11 @@ export class UserDetailsSubscriptionsComponent implements OnInit {
   private localizer: Localizer;
 
   constructor(public languageService: LanguageService,
-              private messagingService: MessagingService,
-              private configServiceWrapper: ConfigServiceWrapper,
-              private userService: UserService,
-              private confirmationModalService: ConfirmationModalService,
-              private errorModalService: ErrorModalService) {
+    private messagingService: MessagingService,
+    private configServiceWrapper: ConfigServiceWrapper,
+    private userService: UserService,
+    private confirmationModalService: ConfirmationModalService,
+    private errorModalService: ErrorModalService) {
 
     this.localizer = languageService.createLocalizer();
 
@@ -125,7 +120,7 @@ export class UserDetailsSubscriptionsComponent implements OnInit {
   }
 
   sortApplicationResources(resourceMap: Map<string, MessagingResource[]>,
-                           applicationIdentifier: string) {
+    applicationIdentifier: string) {
     if (resourceMap.has(applicationIdentifier)) {
       // @ts-ignore
       resourceMap.get(applicationIdentifier).sort(comparingPrimitive<MessagingResource>(
@@ -166,7 +161,7 @@ export class UserDetailsSubscriptionsComponent implements OnInit {
                   this.messagingResources = messagingResources;
                 }
                 if (messagingResources.size === 0) {
-                  this.tabSet.select('user_details_info_tab');
+                  this.nav.select('user_details_info_tab');
                 }
               }
             }

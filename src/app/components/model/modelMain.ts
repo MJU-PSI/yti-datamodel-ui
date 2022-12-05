@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { NgbTabChangeEvent, NgbTabset } from '@ng-bootstrap/ng-bootstrap';
+import { NgbNavChangeEvent, NgbNav } from '@ng-bootstrap/ng-bootstrap';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { ModelAndSelection, SubRoutingHackService } from '../../services/subRoutingHackService';
 import { ModelService } from '../../services/modelService';
@@ -16,7 +16,7 @@ import { ModelPageHelpService } from '../../help/providers/modelPageHelpService'
 import { HelpService } from '../../help/providers/helpService';
 import { Config } from '../../entities/config';
 import { MessagingService } from '../../services/messaging-service';
-import { UserService } from 'yti-common-ui/services/user.service';
+import { UserService } from '@goraresult/yti-common-ui';
 import { Url } from '../../entities/uri';
 
 @Component({
@@ -28,7 +28,7 @@ import { Url } from '../../entities/uri';
   ]
 })
 export class ModelMainComponent implements OnDestroy, OnInit, EditorContainer, EditingGuard, HelpProvider {
-  @ViewChild('tabs') tabs: NgbTabset;
+  @ViewChild('nav') nav: NgbNav;
 
   model?: Model;
   loadingModelPrefix?: string;
@@ -45,12 +45,12 @@ export class ModelMainComponent implements OnDestroy, OnInit, EditorContainer, E
   hasSubscription: boolean | undefined = undefined;
 
   constructor(private subRoutingService: SubRoutingHackService, modelServiceWrapper: ModelServiceWrapper,
-              private notificationModal: NotificationModal, private confirmationModal: ConfirmationModal,
-              private languageService: LanguageService, private modelPageHelpService: ModelPageHelpService,
-              private helpService: HelpService,
-              private configServiceWrapper: ConfigServiceWrapper,
-              private messagingService: MessagingService,
-              private userService: UserService) {
+    private notificationModal: NotificationModal, private confirmationModal: ConfirmationModal,
+    private languageService: LanguageService, private modelPageHelpService: ModelPageHelpService,
+    private helpService: HelpService,
+    private configServiceWrapper: ConfigServiceWrapper,
+    private messagingService: MessagingService,
+    private userService: UserService) {
     this.modelService = modelServiceWrapper.modelService;
     this.editorContainer = this;
   }
@@ -122,13 +122,13 @@ export class ModelMainComponent implements OnDestroy, OnInit, EditorContainer, E
     this.subscriptions.forEach(s => s.unsubscribe());
   }
 
-  onTabChange(event: NgbTabChangeEvent) {
+  onNavChange(event: NgbNavChangeEvent) {
     const editing = this.editingViews();
     if (editing.length) {
       event.preventDefault();
       this.confirmationModal.openEditInProgress().then(() => {
         editing.forEach(view => view.cancelEditing());
-        this.tabs.select(event.nextId);
+        this.nav.select(event.nextId);
       }, modalCancelHandler);
     }
   }

@@ -9,11 +9,9 @@ import { LanguageContext } from 'app/types/language';
 import { EditorContainer } from './modelControllerService';
 import { AuthorizationManagerService } from 'app/services/authorizationManagerService';
 import { LegacyComponent } from 'app/utils/angular';
-import { AlertModalService } from 'yti-common-ui/components/alert-modal.component';
+import { AlertModalService, changeToRestrictedStatus, Status, ErrorModalService } from '@goraresult/yti-common-ui';
 import { TranslateService } from '@ngx-translate/core';
-import { changeToRestrictedStatus, Status } from 'yti-common-ui/entities/status';
 import { DatamodelConfirmationModalService } from 'app/services/confirmation-modal.service';
-import { ErrorModalService } from 'yti-common-ui/components/error-modal.component';
 
 @LegacyComponent({
   bindings: {

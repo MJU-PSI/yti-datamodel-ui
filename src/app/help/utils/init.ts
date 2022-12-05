@@ -1,5 +1,5 @@
 import { Property } from 'app/entities/class';
-import { anyMatching, keepMatching } from 'yti-common-ui/utils/array';
+import { anyMatching, keepMatching } from '@goraresult/yti-common-ui';
 
 export function initialInputValue(element: () => JQuery, value: string) {
   return () => {

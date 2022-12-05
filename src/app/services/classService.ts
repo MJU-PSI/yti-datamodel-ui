@@ -1,24 +1,22 @@
+import { flatten, requireDefined } from '@goraresult/yti-common-ui';
 import { IHttpService, IPromise, IQService } from 'angular';
-import * as moment from 'moment';
-import { PredicateService } from './predicateService';
 import { upperCaseFirst } from 'change-case';
-import { Uri, Urn } from '../entities/uri';
-import { reverseMapType } from '../utils/entity';
-import { expandContextWithKnownModels } from '../utils/entity';
-import { hasLocalization } from '../utils/language';
-import { Language } from '../types/language';
-import { DataSource } from '../components/form/dataSource';
+import * as moment from 'moment';
 import { modelScopeCache } from '../components/form/cache';
-import { requireDefined } from 'yti-common-ui/utils/object';
-import { GraphData, KnownPredicateType, ClassRelationType } from '../types/entity';
-import { FrameService } from './frameService';
-import * as frames from '../entities/frames';
-import { ClassListItem, Class, Property } from '../entities/class';
-import { Model } from '../entities/model';
+import { DataSource } from '../components/form/dataSource';
+import { Class, ClassListItem, Property } from '../entities/class';
 import { ExternalEntity } from '../entities/externalEntity';
-import { Predicate, Attribute, Association } from '../entities/predicate';
-import { flatten } from 'yti-common-ui/utils/array';
+import * as frames from '../entities/frames';
+import { Model } from '../entities/model';
+import { Association, Attribute, Predicate } from '../entities/predicate';
+import { Uri, Urn } from '../entities/uri';
+import { ClassRelationType, GraphData, KnownPredicateType } from '../types/entity';
+import { Language } from '../types/language';
+import { expandContextWithKnownModels, reverseMapType } from '../utils/entity';
+import { hasLocalization } from '../utils/language';
 import { apiEndpointWithName } from './config';
+import { FrameService } from './frameService';
+import { PredicateService } from './predicateService';
 
 export class RelatedClass {
   constructor(public oldClassId: Uri, public relationType: ClassRelationType) {

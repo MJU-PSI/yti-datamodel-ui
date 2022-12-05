@@ -11,7 +11,7 @@ import { Model } from 'app/entities/model';
 import { LanguageContext } from 'app/types/language';
 import { EditorContainer, ModelControllerService } from 'app/components/model/modelControllerService';
 import { AuthorizationManagerService } from 'app/services/authorizationManagerService';
-import { changeToRestrictedStatus } from 'yti-common-ui/entities/status';
+import { changeToRestrictedStatus } from '@goraresult/yti-common-ui';
 import { DatamodelConfirmationModalService } from 'app/services/confirmation-modal.service';
 
 @LegacyComponent({

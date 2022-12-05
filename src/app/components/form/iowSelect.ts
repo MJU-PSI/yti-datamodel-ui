@@ -1,6 +1,5 @@
 import { IAttributes, IDirectiveFactory, IDocumentService, IParseService, IQService, IScope, ITranscludeFunction } from 'angular';
-import { isDefined } from 'yti-common-ui/utils/object';
-import { arrowDown, arrowUp, enter, esc, pageDown, pageUp, tab } from 'yti-common-ui/utils/key-code';
+import { isDefined, arrowDown, arrowUp, enter, esc, pageDown, pageUp, tab } from '@goraresult/yti-common-ui';
 import { InputWithPopupController } from './inputPopup';
 import { LegacyComponent } from 'app/utils/angular';
 

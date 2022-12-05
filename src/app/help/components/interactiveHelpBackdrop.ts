@@ -1,6 +1,6 @@
 import { LegacyComponent } from 'app/utils/angular';
 import { Notification, Story } from 'app/help/contract';
-import { assertNever, Optional } from 'yti-common-ui/utils/object';
+import { assertNever, Optional } from '@goraresult/yti-common-ui';
 import { elementPositioning, Regions } from 'app/help/utils/component';
 import { IDocumentService } from 'angular';
 import { InteractiveHelpController } from './interactiveHelpDisplay';

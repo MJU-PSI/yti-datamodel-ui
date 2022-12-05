@@ -1,13 +1,12 @@
+import { flatten, normalizeAsArray, requireDefined } from '@goraresult/yti-common-ui';
 import { IHttpService, IPromise, IQService } from 'angular';
-import { apiEndpointWithName } from './config';
-import { Uri } from 'app/entities/uri';
-import { Language } from 'app/types/language';
-import { normalizeAsArray, flatten } from 'yti-common-ui/utils/array';
 import * as frames from 'app/entities/frames';
-import { FrameService } from './frameService';
+import { ReferenceData, ReferenceDataCode, ReferenceDataServer } from 'app/entities/referenceData';
+import { Uri } from 'app/entities/uri';
 import { GraphData } from 'app/types/entity';
-import { ReferenceDataCode, ReferenceData, ReferenceDataServer } from 'app/entities/referenceData';
-import { requireDefined } from 'yti-common-ui/utils/object';
+import { Language } from 'app/types/language';
+import { apiEndpointWithName } from './config';
+import { FrameService } from './frameService';
 
 export class ReferenceDataService {
 

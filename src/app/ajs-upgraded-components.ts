@@ -9,7 +9,7 @@ import { Class } from './entities/class';
 import { Predicate } from './entities/predicate';
 import { ListItem, SortBy, SortByTableColumn } from './types/entity';
 import { Exclusion } from './utils/exclusion';
-import { Localizable } from 'yti-common-ui/types/localization';
+import { Localizable } from '@goraresult/yti-common-ui';
 
 @Directive({
   selector: 'model-page'

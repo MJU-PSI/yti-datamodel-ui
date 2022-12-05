@@ -1,4 +1,4 @@
-import { isDefined } from 'yti-common-ui/utils/object';
+import { isDefined } from '@goraresult/yti-common-ui';
 import { Language, UILanguage } from 'app/types/language';
 
 const modelLanguageKey = 'modelLanguage';

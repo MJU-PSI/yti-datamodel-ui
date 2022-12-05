@@ -3,7 +3,7 @@ import { ClassViewComponent } from './classView';
 import { AddPropertiesFromClassModal } from './addPropertiesFromClassModal';
 import { Uri } from 'app/entities/uri';
 import { ClassService } from 'app/services/classService';
-import { isDefined, requireDefined } from 'yti-common-ui/utils/object';
+import { isDefined, requireDefined, labelNameToResourceIdIdentifier, Localizable } from '@goraresult/yti-common-ui';
 import { SearchPredicateModal } from './searchPredicateModal';
 import { EditableForm } from 'app/components/form/editableEntityController';
 import { Option } from 'app/components/common/buttonWithOptions';
@@ -15,8 +15,6 @@ import { comparingLocalizable } from 'app/utils/comparator';
 import { Class, ClassListItem, Property } from 'app/entities/class';
 import { Model } from 'app/entities/model';
 import { LegacyComponent, modalCancelHandler } from 'app/utils/angular';
-import { labelNameToResourceIdIdentifier } from 'yti-common-ui/utils/resource';
-import { Localizable } from 'yti-common-ui/types/localization';
 
 @LegacyComponent({
   template: require('./classForm.html'),

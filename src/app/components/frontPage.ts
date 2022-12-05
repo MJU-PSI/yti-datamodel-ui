@@ -12,23 +12,27 @@ import { Url } from '../entities/uri';
 import { comparingLocalizable } from '../utils/comparator';
 import { BehaviorSubject, combineLatest, concat, Observable, Subscription } from 'rxjs';
 import { fromIPromise } from '../utils/observable';
-import { anyMatching } from 'yti-common-ui/utils/array';
-import { FilterOptions } from 'yti-common-ui/components/filter-dropdown.component';
-import { Option } from 'yti-common-ui/components/dropdown.component';
+import {
+  anyMatching,
+  FilterOptions,
+  Option,
+  labelNameToResourceIdIdentifier,
+  getDataModelingMaterialIcon,
+  getInformationDomainSvgIcon,
+  selectableStatuses,
+  Status,
+  Localizable
+} from '@goraresult/yti-common-ui';
 import { KnownModelType, profileUseContexts, UseContext } from '../types/entity';
 import { gettextCatalog as GettextCatalog } from 'angular-gettext';
 import { OrganizationService } from '../services/organizationService';
 import { AuthorizationManagerService } from '../services/authorizationManagerService';
 import { Organization } from '../entities/organization';
-import { labelNameToResourceIdIdentifier } from 'yti-common-ui/utils/resource';
 import { debounceTime, skip, take } from 'rxjs/operators';
 import { InteractiveHelp } from '../help/contract';
-import { getDataModelingMaterialIcon, getInformationDomainSvgIcon } from 'yti-common-ui/utils/icons';
-import { selectableStatuses, Status } from 'yti-common-ui/entities/status';
 import { HelpService } from '../help/providers/helpService';
 import { DeepSearchResourceHitList, IndexSearchService, ModelSearchResponse } from '../services/indexSearchService';
 import { getInternalModelUrl, getInternalResourceUrl, IndexModel, IndexResource } from '../entities/index/indexEntities';
-import { Localizable } from 'yti-common-ui/types/localization';
 import { HttpErrorResponse } from '@angular/common/http';
 import { UserService } from '../services/userService';
 import { User } from '../entities/user';

@@ -1,4 +1,4 @@
-import { Localizable } from 'yti-common-ui/types/localization';
+import { Localizable } from '@goraresult/yti-common-ui';
 
 export interface MessagingUserType {
   id: string;

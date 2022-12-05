@@ -2,9 +2,7 @@ import { IModelFormatter, INgModelController, IQService, IScope } from 'angular'
 import { EditableForm } from '../../components/form/editableEntityController';
 import { arrayAsyncValidator, arrayValidator } from '../../components/form/validators';
 import { extendNgModelOptions, formatWithFormatters, LegacyComponent, validateWithValidators, ValidationResult } from '../../utils/angular';
-import { remove } from 'yti-common-ui/utils/array';
-import { enter } from 'yti-common-ui/utils/key-code';
-import { normalizeAsId } from 'yti-common-ui/utils/resource';
+import { remove, enter, normalizeAsId } from '@goraresult/yti-common-ui';
 import { isExternalLink } from 'app/components/form/href';
 
 const skipValidators = new Set<string>(['duplicate']);
@@ -192,7 +190,7 @@ export class EditableMultipleComponent<T> {
   }
 
   showLink(value: T): boolean {
-    return this.link && this.isLink(value);
+    return (this.link !== undefined) && this.isLink(value);
   }
 
   isExternalLink(link: string): boolean {

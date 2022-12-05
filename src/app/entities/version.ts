@@ -1,6 +1,6 @@
 import { Uri } from './uri';
 import { Moment } from 'moment';
-import { requireDefined } from 'yti-common-ui/utils/object';
+import { requireDefined } from '@goraresult/yti-common-ui';
 import { idToIndexMap } from 'app/utils/entity';
 import { comparingDate } from 'app/utils/comparator';
 import { init } from './mapping';

@@ -1,9 +1,14 @@
+// Vendor
+@import "~bootstrap/scss/vendor/rfs";
+// Deprecate
+@import "~bootstrap/scss/mixins/deprecate";
 @import '~@fortawesome/fontawesome-free-webfonts/scss/variables';
-@import '~yti-common-ui/theme/init';
+@import '~@goraresult/yti-common-ui/theme/init';
 @import './mixin';
 @import '~jointjs/dist/joint.css';
 @import './interactiveHelp';
 @import './classVisualization';
+
 
 $page-padding: 20px;
 

@@ -1,7 +1,7 @@
 import { IModalService } from 'angular-ui-bootstrap';
 import { ReferenceData } from 'app/entities/referenceData';
 import { LanguageContext } from 'app/types/language';
-import { identity } from 'yti-common-ui/utils/object';
+import { identity } from '@goraresult/yti-common-ui';
 import { modalCancelHandler } from 'app/utils/angular';
 
 export class ViewReferenceDataModal {
@@ -14,14 +14,14 @@ export class ViewReferenceDataModal {
     this.$uibModal.open({
       template: `
         <form class="view-reference-data">
-          
+
           <div class="modal-header">
             <h4 class="modal-title">
               <a><i ng-click="$dismiss('cancel')" class="fas fa-times"></i></a>
               <span translate>Reference data information</span>
             </h4>
           </div>
-          
+
           <div class="modal-body full-height">
             <div class="row">
               <div class="col-md-12">
@@ -29,11 +29,11 @@ export class ViewReferenceDataModal {
               </div>
             </div>
           </div>
-          
+
           <div class="modal-footer">
             <button class="btn btn-link" type="button" ng-click="$dismiss('cancel')" translate>Close</button>
           </div>
-          
+
         </form>
       `,
       size: 'md',

@@ -1,6 +1,6 @@
 import { IScope } from 'angular';
 import { Location, LocationService } from 'app/services/locationService';
-import { labelNameToResourceIdIdentifier } from 'yti-common-ui/utils/resource';
+import { labelNameToResourceIdIdentifier } from '@goraresult/yti-common-ui';
 import { LanguageService } from 'app/services/languageService';
 import { TranslateService } from '@ngx-translate/core';
 import { LegacyComponent } from 'app/utils/angular';
@@ -24,7 +24,7 @@ export class BreadcrumbComponent {
   }
 
   getIdNameFromLocation(location: Location) {
-    return location.label ? labelNameToResourceIdIdentifier(this.languageService.translate(location.label)) 
+    return location.label ? labelNameToResourceIdIdentifier(this.languageService.translate(location.label))
                           : location.localizationKey ? this.translateService.instant(location.localizationKey)
                                                      : '';
   }

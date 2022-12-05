@@ -2,7 +2,7 @@ import { LegacyComponent } from '../../utils/angular';
 import { SortByTableColumn, SortBy, ListItem } from '../../types/entity';
 import { defaultLabelComparator, defaultDefinedByLabelComparator, defaultCommentComparator } from '../filter/util';
 import { comparingDateAllowNull } from '../../utils/comparator';
-import { reversed } from 'yti-common-ui/utils/comparator';
+import { reversed } from '@goraresult/yti-common-ui';
 import { LanguageService, Localizer } from '../../services/languageService';
 import { Model } from '../../entities/model';
 import { Exclusion } from '../../utils/exclusion';
@@ -15,7 +15,7 @@ import { Exclusion } from '../../utils/exclusion';
     filterExclude: '<',
     model: '<'
   },
-  template: `    
+  template: `
     <div ng-click="$ctrl.setSortBy()">
       <button id="{{'sort_by_' + $ctrl.columnName + '_button'}}"
               type="button"
@@ -25,7 +25,7 @@ import { Exclusion } from '../../utils/exclusion';
       </button>
       <i id="{{'sort_up_' + $ctrl.columnName + '_icon'}}" class="fas fa-sort-up primary-color-item" ng-if="$ctrl.sortUp()"></i>
       <i id="{{'sort_down_' + $ctrl.columnName + '_icon'}}" class="fas fa-sort-down primary-color-item" ng-if="$ctrl.sortDown()"></i>
-    </div>    
+    </div>
   `
 })
 export class SortByColumnHeaderComponent {

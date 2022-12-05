@@ -2,7 +2,7 @@ import { IPromise, IQService } from 'angular';
 import * as moment from 'moment';
 import { Uri } from '../../entities/uri';
 import { availableLanguages } from '../../types/language';
-import { contains } from 'yti-common-ui/utils/array';
+import { contains } from '@goraresult/yti-common-ui';
 import { DataType } from '../../entities/dataTypes';
 import { parse as parseUri } from 'uri-js';
 

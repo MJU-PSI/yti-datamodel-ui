@@ -1,19 +1,17 @@
+import { contains, requireDefined, Status } from '@goraresult/yti-common-ui';
 import { IPromise, IQService } from 'angular';
 import { ImportedNamespace, Link, Model, ModelListItem } from 'app/entities/model';
-import { Language } from 'app/types/language';
 import { Uri, Urn } from 'app/entities/uri';
-import { KnownModelType } from 'app/types/entity';
-import { ModelService } from 'app/services/modelService';
-import { ResetableService } from './resetableService';
-import * as moment from 'moment';
-import { ResourceStore } from './resourceStore';
-import { requireDefined } from 'yti-common-ui/utils/object';
-import { EntityCreatorService } from './entityCreatorService';
 import { ClassificationService } from 'app/services/classificationService';
-import { contains } from 'yti-common-ui/utils/array';
-import { InteractiveHelpOrganizationService } from './helpOrganizationService';
-import { Status } from 'yti-common-ui/entities/status';
+import { ModelService } from 'app/services/modelService';
+import { KnownModelType } from 'app/types/entity';
+import { Language } from 'app/types/language';
+import * as moment from 'moment';
 import { BehaviorSubject } from 'rxjs';
+import { EntityCreatorService } from './entityCreatorService';
+import { InteractiveHelpOrganizationService } from './helpOrganizationService';
+import { ResetableService } from './resetableService';
+import { ResourceStore } from './resourceStore';
 
 export class InteractiveHelpModelService implements ModelService, ResetableService {
 

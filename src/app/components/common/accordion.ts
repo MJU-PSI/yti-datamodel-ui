@@ -1,5 +1,5 @@
 import { IAttributes, IDirectiveFactory, IScope, ITranscludeFunction } from 'angular';
-import { isDefined } from 'yti-common-ui/utils/object';
+import { isDefined } from '@goraresult/yti-common-ui';
 import { LegacyComponent } from 'app/utils/angular';
 
 @LegacyComponent({

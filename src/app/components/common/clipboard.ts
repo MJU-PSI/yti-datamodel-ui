@@ -3,7 +3,7 @@ import { EditableForm } from 'app/components/form/editableEntityController';
 import { gettextCatalog as GettextCatalog } from 'angular-gettext';
 import { LegacyComponent } from 'app/utils/angular';
 
-const clipboardImage = require('../../../assets/clippy.svg');
+const clipboardImage = '../../../assets/clippy.svg';
 
 @LegacyComponent({
   bindings: {
@@ -14,12 +14,12 @@ const clipboardImage = require('../../../assets/clippy.svg');
   },
   template: `
     <img ng-src="{{$ctrl.clipboardImage}}" class="svg-icon"
-         ng-if="$ctrl.text && !$ctrl.isEditing()" 
+         ng-if="$ctrl.text && !$ctrl.isEditing()"
          uib-tooltip="{{$ctrl.copyInfo}}"
          uib-popover="{{'Copied' | translate}}"
          popover-is-open="$ctrl.showCopiedMessage"
          popover-trigger="none"
-         ngclipboard 
+         ngclipboard
          ngclipboard-success="$ctrl.onCopy()"
          data-clipboard-text="{{$ctrl.text}}" />
     `

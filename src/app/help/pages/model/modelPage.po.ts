@@ -14,7 +14,7 @@ import * as SearchClassModal from './modal/searchClassModal.po';
 import * as AddPropertiesFromClass from './modal/addPropertiesFromClassModal.po';
 import * as ClassView from './classView.po';
 import * as ClassForm from './classForm.po';
-import { Localizable } from 'yti-common-ui/types/localization';
+import { Localizable } from '@goraresult/yti-common-ui';
 import { Language } from 'app/types/language';
 import { ClassDetails } from 'app/services/entityLoader';
 

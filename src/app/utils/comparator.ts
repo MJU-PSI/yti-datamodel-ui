@@ -1,8 +1,6 @@
+import { ChainableComparator, Comparator, isDefined, Localizable, makeChainable, Optional, optional, primitiveComparator, property, stringComparatorIgnoringCase } from '@goraresult/yti-common-ui';
 import { Moment } from 'moment';
-import { Optional, isDefined } from 'yti-common-ui/utils/object';
-import { ChainableComparator, makeChainable, optional, property, stringComparatorIgnoringCase, Comparator, primitiveComparator } from 'yti-common-ui/utils/comparator';
 import { Localizer } from '../types/language';
-import { Localizable } from 'yti-common-ui/types/localization';
 
 export function comparingDate<T>(propertyExtractor: (item: T) => Optional<Moment>): ChainableComparator<T> {
   return makeChainable(property(propertyExtractor, optional(dateComparator)));

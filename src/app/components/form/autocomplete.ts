@@ -1,10 +1,8 @@
 import { IModelFormatter, INgModelController, IQService, IScope } from 'angular';
-import { isDefined } from 'yti-common-ui/utils/object';
-import { arrowDown, arrowUp, enter, esc, pageDown, pageUp, tab } from 'yti-common-ui/utils/key-code';
+import { isDefined, arrowDown, arrowUp, enter, esc, pageDown, pageUp, tab, limit } from '@goraresult/yti-common-ui';
 import { formatWithFormatters, LegacyComponent } from 'app/utils/angular';
 import { DataSource } from './dataSource';
 import { InputWithPopupController } from './inputPopup';
-import { limit } from 'yti-common-ui/utils/array';
 
 // TODO: similarities with iowSelect
 @LegacyComponent({
@@ -167,12 +165,12 @@ export class AutocompleteComponent<T> implements InputWithPopupController<T> {
 
   autocomplete(search: string) {
     this.pendingShow = true;
-    this.$q.when(this.datasource(search)).then(data => {
+    this.$q.when(this.datasource(search)).then((data: T[]) => {
       if (this.pendingShow) {
         this.pendingShow = false;
 
         const exclude = this.excludeProvider && this.excludeProvider();
-        const included = data.filter(item => !exclude || !exclude(item));
+        const included = data.filter((item: T) => !exclude || !exclude(item));
 
         if (search) {
           this.setMatches(included.filter(item => this.match(search, item)), true);

@@ -9,7 +9,7 @@ import { Language } from "app/types/language";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { AuthorizationManagerService } from "app/services/authorizationManagerService";
-import { ErrorModalService } from "yti-common-ui/components/error-modal.component";
+import { ErrorModalService } from "@goraresult/yti-common-ui";
 import { MdEditorOption } from "ngx-markdown-editor";
 
 @Component({
@@ -216,7 +216,7 @@ export class ModelDocumentationComponent implements OnInit, OnDestroy, OnChanges
   }
 
   setEnableContentClickOption(): void {
-    // During editing clicking links is disabled, 
+    // During editing clicking links is disabled,
     // because by accidental click all changes in the editor are lost
     if (this.editing) {
       this.options.enablePreviewContentClick = false;

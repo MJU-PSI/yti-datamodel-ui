@@ -4,7 +4,7 @@ import { createConstantLocalizable } from '../utils/language';
 import { init } from './mapping';
 import { GraphNode } from './graphNode';
 import { uriSerializer, entityAwareList, entity } from './serializer/entitySerializer';
-import { Localizable } from 'yti-common-ui/types/localization';
+import { Localizable } from '@goraresult/yti-common-ui';
 import { Classification } from './classification';
 import { normalizeDefinedByType } from '../utils/entity';
 

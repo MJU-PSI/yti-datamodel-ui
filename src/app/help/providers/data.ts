@@ -1,7 +1,7 @@
 import { classIdFromPrefixAndName, conceptIdFromPrefixAndIndex, modelIdFromPrefix, predicateIdFromPrefixAndName, vocabularyIdFromPrefix } from 'app/help/utils/id';
 import { KnownModelType, KnownPredicateType } from 'app/types/entity';
 import { VocabularyWithConceptsDetails } from 'app/services/entityLoader';
-import { Localizable } from 'yti-common-ui/types/localization';
+import { Localizable } from '@goraresult/yti-common-ui';
 import { Uri } from 'app/entities/uri';
 import { OrganizationDetails } from 'app/help/services/entityCreatorService';
 

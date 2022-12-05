@@ -1,7 +1,6 @@
 import { IAttributes, IDirectiveFactory, INgModelController, IScope } from 'angular';
 import { Uri } from 'app/entities/uri';
-import { contains, containsAny, flatten } from 'yti-common-ui/utils/array';
-import { referenceEquality } from 'yti-common-ui/utils/object';
+import { contains, containsAny, flatten, referenceEquality } from '@goraresult/yti-common-ui';
 
 interface RestrictDuplicatesAttributes extends IAttributes {
   restrictDuplicates: string;

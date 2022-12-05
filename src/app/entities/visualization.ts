@@ -1,18 +1,16 @@
-import { Uri } from './uri';
+import * as Iterable from '@goraresult/yti-common-ui';
+import { areEqual, arraysAreEqual, isDefined, Localizable } from '@goraresult/yti-common-ui';
 import { Type } from 'app/types/entity';
 import { Coordinate } from 'app/types/visualization';
-import { localizableSerializer, optional, coordinateSerializer, list, typeSerializer } from './serializer/serializer';
+import { coordinatesAreEqual, copyCoordinate, copyVertices, indexById } from 'app/utils/entity';
 import { createConstantLocalizable } from 'app/utils/language';
-import { Model } from './model';
-import { copyVertices, coordinatesAreEqual, copyCoordinate, indexById } from 'app/utils/entity';
-import { arraysAreEqual } from 'yti-common-ui/utils/array';
-import { areEqual, isDefined } from 'yti-common-ui/utils/object';
-import * as Iterable from 'yti-common-ui/utils/iterable';
 import { Property } from './class';
-import { init, serialize } from './mapping';
 import { GraphNode, GraphNodes } from './graphNode';
-import { uriSerializer, entityAwareOptional, entityAwareList, entity, entityAwareMap } from './serializer/entitySerializer';
-import { Localizable } from 'yti-common-ui/types/localization';
+import { init, serialize } from './mapping';
+import { Model } from './model';
+import { entity, entityAwareList, entityAwareMap, entityAwareOptional, uriSerializer } from './serializer/entitySerializer';
+import { coordinateSerializer, list, localizableSerializer, optional, typeSerializer } from './serializer/serializer';
+import { Uri } from './uri';
 
 export interface VisualizationClass {
 

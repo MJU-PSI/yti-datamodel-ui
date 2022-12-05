@@ -1,5 +1,5 @@
 import { IRepeatScope, IScope, ITimeoutService } from 'angular';
-import { arrowDown, arrowUp, enter, pageDown, pageUp } from 'yti-common-ui/utils/key-code';
+import { arrowDown, arrowUp, enter, pageDown, pageUp } from '@goraresult/yti-common-ui';
 import { LegacyDirective, scrollToElement } from 'app/utils/angular';
 
 @LegacyDirective({

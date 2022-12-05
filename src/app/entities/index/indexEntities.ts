@@ -1,7 +1,6 @@
-import { ClassType, KnownModelType, KnownPredicateType, Type, UseContext } from '../../types/entity';
-import { mapType as utilMapType, modelUrl, modelUrl as utilModelUrl, resourceUrl } from '../../utils/entity';
-import { Status } from 'yti-common-ui/entities/status';
-import { Localizable } from 'yti-common-ui/types/localization';
+import { Localizable, Status } from '@goraresult/yti-common-ui';
+import { ClassType, KnownModelType, KnownPredicateType, UseContext } from '../../types/entity';
+import { modelUrl } from '../../utils/entity';
 import { RelativeUrl } from '../uri';
 
 export type IndexModel = {

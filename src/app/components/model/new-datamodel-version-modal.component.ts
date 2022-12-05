@@ -1,13 +1,13 @@
 import { Component, Injectable } from '@angular/core';
-import { ModalService } from 'yti-common-ui/services/modal.service';
+import { ModalService, AlertModalService, ErrorModalService } from '@goraresult/yti-common-ui';
 import { Model } from 'app/entities/model';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModelServiceWrapper } from 'app/ajs-upgraded-providers';
 import { ModelService } from 'app/services/modelService';
-import { AlertModalService } from 'yti-common-ui/components/alert-modal.component';
-import { ErrorModalService } from 'yti-common-ui/components/error-modal.component';
 import { TranslateService } from '@ngx-translate/core';
-import { IInjectorService } from '@angular/upgrade/static/src/common/angular1';
+// import { IInjectorService } from '@angular/upgrade/src/common/src/angular1';
+import IInjectorService = angular.auto.IInjectorService;
+
 
 export const rootScopeFactory = (i: IInjectorService) => i.get('$rootScope');
 
