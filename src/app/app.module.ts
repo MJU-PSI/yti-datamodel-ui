@@ -304,15 +304,16 @@ mod.factory('errorModalService', downgradeInjectable(ErrorModalService));
 mod.factory('newDatamodelVersionModalService', downgradeInjectable(NewDatamodelVersionModalService));
 mod.factory('keycloakService', downgradeInjectable(KeycloakService));
 
+
 mod.config(routeConfig);
 
 mod.config(($locationProvider: ILocationProvider,
-            $logProvider: ILogProvider,
-            $compileProvider: ICompileProvider,
-            $animateProvider: IAnimateProvider,
-            $uibTooltipProvider: ITooltipProvider,
-            $httpProvider: IHttpProvider
-            ) => {
+  $logProvider: ILogProvider,
+  $compileProvider: ICompileProvider,
+  $animateProvider: IAnimateProvider,
+  $uibTooltipProvider: ITooltipProvider,
+  $httpProvider: IHttpProvider
+) => {
   'ngInject';
   $locationProvider.html5Mode(true);
   $logProvider.debugEnabled(false);
@@ -325,7 +326,7 @@ mod.config(($locationProvider: ILocationProvider,
   $uibTooltipProvider.options({ appendToBody: true });
   $uibTooltipProvider.setTriggers({ 'mouseenter': 'mouseleave click' });
 
-  $httpProvider.interceptors.push(['$injector','$q',function ($injector, $q) {
+  $httpProvider.interceptors.push(['$injector', '$q', function ($injector, $q) {
     return {
       request: function (config) {
         const keycloakService = $injector.get('keycloakService');
@@ -342,7 +343,7 @@ mod.config(($locationProvider: ILocationProvider,
           }).catch((err: any) => {
             deferred.resolve(config);
           })
-        } catch(e){
+        } catch (e) {
           deferred.resolve(config);
         }
 

@@ -6380,19 +6380,6 @@ keycloak-js@^12.0.2:
     base64-js "1.3.1"
     js-sha256 "0.9.0"
 
-keycloak-angular@^4.0.2:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/keycloak-angular/-/keycloak-angular-4.1.0.tgz#ba6b89adaf3d7521e76c3b2269015f4550964e37"
-  integrity sha512-RPgYUjK91sqMa/c9dQgBrT/R+5do3e0M4QLrjrFrXawmWd5HgAx4W/FPjL5rxTeO4WmK7arfxrLRgVrNh7ebQA==
-  dependencies:
-    keycloak-js "^4.6.0"
-    tslib "^1.9.0"
-
-keycloak-js@^4.6.0, keycloak-js@^4.8.3:
-  version "4.8.3"
-  resolved "https://registry.yarnpkg.com/keycloak-js/-/keycloak-js-4.8.3.tgz#e065f41d144d260afa8466b5b587a65d5f308d30"
-  integrity sha512-TXoZdoOYu2ScYs58L95/xSYjsTto9KRvZ+vt6mv4Dyf4pYhYZSgwMPnmi128qj/z8sm4mL1Z8nncR6XdWgNKMQ==
-
 killable@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/killable/-/killable-1.0.1.tgz#4c8ce441187a061c7474fb87ca08e2a638194892"
