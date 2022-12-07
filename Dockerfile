@@ -10,6 +10,9 @@ RUN apk add --update git
 # Install python make and g++. They are needed when building node-sass.
 RUN apk add python2 make g++
 
+# We need this to be able to overwrite config based on environment variables.
+RUN apk add jq gawk
+
 ADD . /tmp
 WORKDIR /tmp
 RUN echo "$NPMRC" > .npmrc && yarn install && rm -f .npmrc
@@ -56,4 +59,5 @@ COPY --from=builder /tmp/dist ./dist
 
 # Start web server and expose http
 EXPOSE 80
-CMD ["nginx"]
+
+ENTRYPOINT ["/app/entrypoint.sh"]

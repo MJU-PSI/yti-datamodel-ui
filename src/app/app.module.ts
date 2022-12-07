@@ -83,7 +83,6 @@ import IAnimateProvider = animate.IAnimateProvider;
 import fiCommonPo from 'raw-loader!po-loader?format=mf!../../node_modules/@goraresult/yti-common-ui/po/fi.po';
 import svCommonPo from 'raw-loader!po-loader?format=mf!../../node_modules/@goraresult/yti-common-ui/po/sv.po';
 import enCommonPo from 'raw-loader!po-loader?format=mf!../../node_modules/@goraresult/yti-common-ui/po/en.po';
-import { environment } from '../environments/environment';
 import { KeycloakService } from 'keycloak-angular';
 
 require('angular-gettext');
@@ -164,11 +163,7 @@ export function localizerFactory(languageService: LanguageService): AngularLocal
     ReactiveFormsModule,
     HttpClientModule,
     UpgradeModule,
-    YtiCommonModule.forRoot({
-      url: environment.url,
-      realm: environment.realm,
-      clientId: environment.clientId
-    }),
+    YtiCommonModule,
     VirtualScrollerModule,
     TranslateModule.forRoot({
       loader: {
