@@ -37,9 +37,7 @@ export const availableLanguages: Language[] = [
     'prs', 'smn', 'sms'
 ];
 
-export type UILanguage = 'fi' | 'en' | 'sv';
-
-export const availableUILanguages: UILanguage[] = ['fi', 'en', 'sv'];
+export type UILanguage = Language;
 
 export interface LanguageContext {
   id: Uri;
@@ -50,6 +48,6 @@ export interface Localizer {
   language: Language;
   context?: LanguageContext;
   translate(localizable: Localizable): string;
-  getStringWithModelLanguageOrDefault(key: string|undefined|null, defaultLanguage: UILanguage): string;
+  getStringWithModelLanguageOrDefault(key: string | undefined | null, defaultLanguage: UILanguage): string;
   allUILocalizationsForKey(localizationKey: string): string[];
 }

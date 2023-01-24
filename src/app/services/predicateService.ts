@@ -1,4 +1,4 @@
-import { containsAny, flatten, requireDefined } from '@goraresult/yti-common-ui';
+import { containsAny, flatten, requireDefined, defaultLanguage } from '@goraresult/yti-common-ui';
 import { IHttpService, IPromise, IQService } from 'angular';
 import { upperCaseFirst } from 'change-case';
 import * as moment from 'moment';
@@ -31,7 +31,7 @@ export interface PredicateService {
   updatePredicate(predicate: Predicate, originalId: Uri, model: Model): IPromise<any>;
   deletePredicate(id: Uri, model: Model): IPromise<any>;
   assignPredicateToModel(predicateId: Uri, model: Model): IPromise<any>;
-  newPredicate<T extends Attribute|Association>(model: Model, predicateLabel: string, conceptID: Uri|null, type: KnownPredicateType, lang: Language): IPromise<T>;
+  newPredicate<T extends Attribute | Association>(model: Model, predicateLabel: string, conceptID: Uri | null, type: KnownPredicateType, lang: Language | string): IPromise<T>;
   newRelatedPredicate<T extends Attribute|Association>(model: Model, relatedPredicate: RelatedPredicate): IPromise<T>;
   changePredicateType(predicate: Attribute|Association, newType: KnownPredicateType, model: Model): IPromise<Attribute|Association>;
   copyPredicate(predicate: Predicate|Uri, type: KnownPredicateType, model: Model): IPromise<Predicate>;
@@ -151,7 +151,7 @@ export class DefaultPredicateService implements PredicateService {
       .then(() => this.modelPredicatesCache.delete(model.id.uri));
   }
 
-  newPredicate<T extends Attribute|Association>(model: Model, predicateLabel: string, conceptID: Uri|null, type: KnownPredicateType, lang: Language): IPromise<T> {
+  newPredicate<T extends Attribute | Association>(model: Model, predicateLabel: string, conceptID: Uri | null, type: KnownPredicateType, lang: Language | string): IPromise<T> {
 
     const params: any = {
       modelID: model.id.uri,
@@ -199,7 +199,7 @@ export class DefaultPredicateService implements PredicateService {
   }
 
   changePredicateType(predicate: Attribute|Association, newType: KnownPredicateType, model: Model) {
-    return this.newPredicate(model, '', null, newType, 'fi')
+    return this.newPredicate(model, '', null, newType, defaultLanguage)
       .then(changedPredicate => {
         changedPredicate.id = predicate.id;
         changedPredicate.label = predicate.label;

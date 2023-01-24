@@ -1,4 +1,4 @@
-import { containsAny, Localizable, remove, requireDefined, Status } from '@goraresult/yti-common-ui';
+import { containsAny, Localizable, remove, requireDefined, Status, availableLanguages } from '@goraresult/yti-common-ui';
 import * as _ from 'lodash';
 import { Moment } from 'moment';
 import { KnownModelType, Type, UseContext } from '../types/entity';
@@ -88,7 +88,7 @@ export class Model extends AbstractModel {
     contributors:       { name: 'contributor',  serializer: entityAwareList(entity(() => Organization)) },
     version:            { name: 'identifier',   serializer: optional(identitySerializer<Urn>()) },
     rootClass:          { name: 'rootResource', serializer: entityAwareOptional(uriSerializer) },
-    language:           { name: 'language',     serializer: list<Language>(languageSerializer, ['fi', 'en', 'sv']) },
+    language: { name: 'language', serializer: list<Language>(languageSerializer, availableLanguages.map((lang: { code: any; }) => { return lang.code })) },
     modifiedAt:         { name: 'modified',     serializer: optional(dateSerializer) },
     createdAt:          { name: 'created',      serializer: optional(dateSerializer) },
     useContext:         { name: 'useContext',   serializer: valueOrDefault(identitySerializer<UseContext>(), 'InformationDescription') },

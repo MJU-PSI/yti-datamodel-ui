@@ -15,7 +15,7 @@ export interface VocabularyService {
 
   searchConcepts(searchText: string, vocabulary?: Vocabulary): IPromise<Concept[]>;
 
-  createConceptSuggestion(vocabulary: Vocabulary, label: string, comment: string, lang: Language, model: Model): IPromise<Uri>;
+  createConceptSuggestion(vocabulary: Vocabulary, label: string, comment: string, lang: Language | string, model: Model): IPromise<Uri>;
 
   getConcept(id: Uri): IPromise<Concept>;
 }

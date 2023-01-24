@@ -1,6 +1,6 @@
-import { LanguageContext, UILanguage, Language, availableUILanguages, Localizer as AngularJSLocalizer } from 'app/types/language';
+import { LanguageContext, UILanguage, Language, Localizer as AngularJSLocalizer } from 'app/types/language';
 import { translate } from 'app/utils/language';
-import { Localizable, Localizer as AngularLocalizer } from '@goraresult/yti-common-ui';
+import { Localizable, Localizer as AngularLocalizer, availableLanguages, defaultLanguage } from '@goraresult/yti-common-ui';
 import { SessionService } from './sessionService';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, BehaviorSubject, Subject } from 'rxjs';
@@ -13,6 +13,10 @@ export class LanguageService {
 
   private _modelLanguage: {[entityId: string]: Language} = {};
 
+  availableLanguages: any;
+  defaultLanguage: any;
+  availableUILanguages: Language[];
+
   language$: BehaviorSubject<UILanguage>;
 
   modelLanguageChange$ = new Subject();
@@ -22,11 +26,14 @@ export class LanguageService {
               public localizationStrings: { [key: string]: { [key: string]: string } },
               private sessionService: SessionService) {
     'ngInject';
-    const translationDefaultLanguage = 'en';
-    gettextCatalog.baseLanguage = translationDefaultLanguage;
-    translateService.setDefaultLang(translationDefaultLanguage);
+    this.availableLanguages = availableLanguages;
+    this.defaultLanguage = defaultLanguage || 'en';
+    this.availableUILanguages = availableLanguages.map((lang: { code: any; }) => { return lang.code });
 
-    this.language$ = new BehaviorSubject(sessionService.UILanguage || 'fi');
+    gettextCatalog.baseLanguage = this.defaultLanguage;
+    translateService.setDefaultLang(this.defaultLanguage);
+
+    this.language$ = new BehaviorSubject(sessionService.UILanguage || this.defaultLanguage);
 
     this.language$.subscribe(lang => {
       this.sessionService.UILanguage = lang;
@@ -71,7 +78,7 @@ export class LanguageService {
   }
 
   translate(data: Localizable, context?: LanguageContext): string {
-    return translate(data, this.getModelLanguage(context), context ? context.language : availableUILanguages);
+    return translate(data, this.getModelLanguage(context), context ? context.language : this.availableUILanguages);
   }
 
   translateToGivenLanguage(localizable: Localizable, languageToUse: string|null): string {
@@ -104,7 +111,7 @@ export class LanguageService {
 
   checkForFallbackLanguages(localizable: Localizable): string | null {
 
-    const fallbackLanguages: string[] = ['en', 'fi', 'sv'];
+    const fallbackLanguages: string[] = availableLanguages.map((lang: { code: any; }) => { return lang.code });
 
     for (const language of fallbackLanguages) {
       if (this.hasLocalizationForLanguage(localizable, language)) {
@@ -155,7 +162,10 @@ export class DefaultAngularLocalizer implements AngularLocalizer {
 
 export class DefaultAngularJSLocalizer implements AngularJSLocalizer {
 
+  availableUILanguages: string[];
+
   constructor(private languageService: LanguageService, public context?: LanguageContext) {
+    this.availableUILanguages = availableLanguages.map((lang: { code: any; }) => { return lang.code });
   }
 
   get language(): Language {
@@ -187,7 +197,7 @@ export class DefaultAngularJSLocalizer implements AngularJSLocalizer {
 
     const result: string[] = [];
 
-    for (const lang of availableUILanguages) {
+    for (const lang of this.availableUILanguages) {
       const localization = this.languageService.localizationStrings[lang][localizationKey];
 
       if (localization) {

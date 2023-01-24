@@ -1,8 +1,7 @@
 import { componentDeclaration } from 'app/utils/angular';
 import { module11 as mod } from './module';
 
-import { comparingPrimitive, flatten } from '@goraresult/yti-common-ui';
-import { availableUILanguages } from 'app/types/language';
+import { comparingPrimitive, flatten, availableLanguages } from '@goraresult/yti-common-ui';
 import { InteractiveHelpBackdropComponent } from './components/interactiveHelpBackdrop';
 import { InteractiveHelpDisplay } from './components/interactiveHelpDisplay';
 import { InteractiveHelpPopoverComponent } from './components/interactiveHelpPopover';
@@ -52,6 +51,8 @@ mod.run((
   'ngInject';
 
   if (logTranslations) {
+    const availableUILanguages = availableLanguages.map((lang: { code: any; }) => { return lang.code });
+
     logTranslation(flatten(availableUILanguages.map(lang => [
       ...frontPageHelpService.getHelps(lang),
       ...modelPageHelpService.getHelps('library', 'bogusPrefix', lang),

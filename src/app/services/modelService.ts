@@ -37,7 +37,7 @@ export interface ModelService {
 
   getAllImportableNamespaces(): IPromise<ImportedNamespace[]>;
 
-  newNamespaceImport(namespace: string, prefix: string, label: string, lang: Language): IPromise<ImportedNamespace>;
+  newNamespaceImport(namespace: string, prefix: string, label: string, lang: Language | string): IPromise<ImportedNamespace>;
 
   changeStatuses(model: Model, initialStatus: Status, endStatus: Status): IPromise<any>;
 

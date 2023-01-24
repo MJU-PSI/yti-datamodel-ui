@@ -4,6 +4,7 @@ import { LanguageService } from 'app/services/languageService';
 import { isLocalizationDefined } from 'app/utils/language';
 import { Language, LanguageContext } from 'app/types/language';
 import { LegacyComponent } from 'app/utils/angular';
+import { availableLanguages } from '@goraresult/yti-common-ui';
 
 @LegacyComponent({
   bindings: {
@@ -38,14 +39,24 @@ export class ModelLanguageChooserComponent {
   }
 
   localizeLanguageName(language: Language) {
-    const key = 'data ' + language;
-    const localization = this.gettextCatalog.getString(key);
-
-    if (isLocalizationDefined(key, localization)) {
-      return localization;
+    return this.gettextCatalog.getString('data language') + ': ' + language.toUpperCase();
+/* 
+    const lang = availableLanguages.find((obj) => {
+      return obj.code === language;
+    });
+    if (lang) {
+      return this.gettextCatalog.getString('data language') + ': ' + lang.name;
     } else {
-      return this.gettextCatalog.getString('data language') + ': ' + language;
+      const key = 'data ' + language;
+      const localization = this.gettextCatalog.getString(key);
+
+      if (isLocalizationDefined(key, localization)) {
+        return localization;
+      } else {
+        return this.gettextCatalog.getString('data language') + ': ' + language;
+      }
     }
+     */
   }
 
   get language(): Language {
