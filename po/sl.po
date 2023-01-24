@@ -1,0 +1,2630 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: sl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.2.4\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Copied"
+msgstr "Kopioitu"
+
+msgid "Yes"
+msgstr "Kyllä"
+
+msgid "Cancel"
+msgstr "Peruuta"
+
+msgid "Select help topic"
+msgstr "Valitse ohjeen aihe"
+
+msgid "Close"
+msgstr "Sulje"
+
+msgid "Show history"
+msgstr "Näytä historia"
+
+msgid "${title}"
+msgstr ""
+
+msgid "${body}"
+msgstr ""
+
+msgid "Copy"
+msgstr "Kopioi"
+
+msgid "Imported namespaces"
+msgstr "Käytetyt nimiavaruudet"
+
+msgid "Defined by this model"
+msgstr "Tässä tietomallissa määritellyt"
+
+msgid "All models"
+msgstr "Kaikki tietomallit"
+
+msgid "Show classes defined in profiles"
+msgstr "Näytä profiileissa määritellyt luokat"
+
+msgid "All types"
+msgstr "Kaikki tyypit"
+
+msgid "Required"
+msgstr "Pakollinen kenttä"
+
+msgid "Status"
+msgstr "Tila"
+
+msgid "Remove"
+msgstr "Poista"
+
+msgid "Edit"
+msgstr "Muokkaa"
+
+msgid "None added"
+msgstr "Ei yhtään lisätty"
+
+msgid "Use context"
+msgstr "Sisällön tyyppi"
+
+msgid "Classifications"
+msgstr "Tietoalueet"
+
+msgid "Add classification"
+msgstr "Lisää tietoalue"
+
+msgid "Contributors"
+msgstr "Sisällöntuottajat"
+
+msgid "Add contributor"
+msgstr "Lisää sisällöntuottaja"
+
+msgid "Import namespace"
+msgstr "Lisää nimiavaruus"
+
+msgid "Links"
+msgstr "Linkit"
+
+msgid "Add link"
+msgstr "Lisää linkki"
+
+msgid "Status changed to one resource."
+msgstr "Tila vaihdettu yhteen resurssiin."
+
+msgid "Status changed to "
+msgstr "Tila vaihdettu "
+
+msgid " resources."
+msgstr " resurssiin."
+
+msgid ""
+"No resources were found with the starting status. No changes to resources "
+"statuses."
+msgstr ""
+"Tilaa ei vaihdettu yhteenkään resurssiin. Ei löytynyt resursseja "
+"vaihdettavassa tilassa."
+
+msgid "New version of datamodel is created"
+msgstr "Luotu uusi versio tietomallista"
+
+msgid "Create new version of datamodel"
+msgstr "Luo uusi versio tietomallista"
+
+msgid ""
+"Define prefix for the new version. Note that prefix is used to define the "
+"new namespace."
+msgstr ""
+"Määrittele uudelle versiolle etuliite. Annettu etuliite on osa uuden "
+"tietomallin nimiavaruutta."
+
+msgid "Save"
+msgstr "Tallenna"
+
+msgid "Reference data"
+msgstr "Koodisto"
+
+msgid "Add reference data"
+msgstr "Lisää koodisto"
+
+msgid "Technical namespaces"
+msgstr "Tekniset nimiavaruudet"
+
+msgid "Reference data information"
+msgstr "Koodiston tiedot"
+
+msgid "Update codes"
+msgstr "Päivitä koodit"
+
+msgid "Terminologies"
+msgstr "Käytetyt sanastot"
+
+msgid "Add vocabulary"
+msgstr "Lisää sanasto"
+
+msgid "Maximize"
+msgstr "Suurenna"
+
+msgid "Minimize"
+msgstr "Pienennä"
+
+msgid "previous"
+msgstr "edellinen"
+
+msgid "next"
+msgstr "seuraava"
+
+msgid "close"
+msgstr "sulje"
+
+msgid "Data Vocabularies"
+msgstr "Tietomallit"
+
+msgid "Confirm delete"
+msgstr "Poistamisen hyväksyntä"
+
+msgid "Following items are depending on the deleted"
+msgstr "Seuraavat asiat riippuvat poistettavasta"
+
+msgid "Are you sure that you want to delete?"
+msgstr "Oletko varma, että haluat poistaa?"
+
+msgid "Show"
+msgstr "Näytä"
+
+msgid "Download"
+msgstr "tallenna"
+
+msgid "Export"
+msgstr "Lataa"
+
+msgid "Historical versions"
+msgstr "Historialliset versiot"
+
+msgid "Choose action"
+msgstr "Valitse toiminto"
+
+msgid "Add email subscription"
+msgstr "Tilaa sähköposti-ilmoitukset"
+
+msgid "Remove email subscription"
+msgstr "Poista sähköposti-ilmoitukset"
+
+msgid "Update datamodel's resources' statuses"
+msgstr "Muuta tietomallin resurssien tiloja"
+
+msgid "Create new version"
+msgstr "Luo uusi versio"
+
+msgid "No referrers"
+msgstr "Ei viittauksia"
+
+msgid "Usage"
+msgstr "Viittaukset muista komponenteista"
+
+msgid "?"
+msgstr ""
+
+msgid "Select all"
+msgstr "Valitse kaikki"
+
+msgid "Deselect all"
+msgstr "Poista kaikki valinnat"
+
+msgid "Define type for class property"
+msgstr "Määrittele luokan ominaisuuden tyyppi"
+
+msgid "Choose"
+msgstr "Valitse"
+
+msgid "Add property"
+msgstr "Lisää attribuutti tai assosiaatio"
+
+msgid "No properties yet"
+msgstr "Ei vielä yhtään ominaisuutta"
+
+msgid "Additional information"
+msgstr "Lisätiedot"
+
+msgid "Logical constraints"
+msgstr "Loogiset rajoitteet"
+
+msgid "Choose class"
+msgstr "Valitse luokka"
+
+msgid "Not defined"
+msgstr "Ei määritelty"
+
+msgid "Reusable predicate information"
+msgstr "Uudelleenkäytettävän ominaisuuden tiedot"
+
+msgid "Change reusable predicate"
+msgstr "Vaihda uudelleenkäytettävä ominaisuus"
+
+msgid "Predicate information not found"
+msgstr "Uudelleenkäytettävää ominaisuutta ei löydy"
+
+msgid "Optional metadata"
+msgstr "Valinnaiset metatiedot"
+
+msgid "Technical metadata"
+msgstr "Tekninen metadata"
+
+msgid "Property pairs"
+msgstr "Ominaisuuden vastaavuudet"
+
+msgid "Reusable predicate"
+msgstr "Uudelleenkäytettävä ominaisuus"
+
+msgid "Select class"
+msgstr "Valitse luokka"
+
+msgid "Add class"
+msgstr "Lisää luokka"
+
+msgid "External classes"
+msgstr "Ulkoiset luokat"
+
+msgid "Include:"
+msgstr "Näytä myös:"
+
+msgid "All information domains"
+msgstr "Kaikki tietoalueet"
+
+msgid "All class types"
+msgstr "Kaikki luokkatyypit"
+
+msgid "All statuses"
+msgstr "Kaikki tilat"
+
+msgid "Create shape from external URI"
+msgstr "Luo luokka ulkoisesta URI-tunnisteesta"
+
+msgid "Search existing class"
+msgstr "Hae olemassaolevaa luokkaa"
+
+msgid "New class"
+msgstr "Uusi luokka"
+
+msgid "Shape from URI"
+msgstr "Tarkenna URI-tunnisteesta"
+
+msgid "Actions"
+msgstr "Toiminnot"
+
+msgid "Copy class"
+msgstr "Kopioi luokka"
+
+msgid "Create sub class"
+msgstr "Luo alaluokka"
+
+msgid "Create super class"
+msgstr "Luo yläluokka"
+
+msgid "Add namespace to model"
+msgstr "Lisää tietomalli riippuvuudeksi"
+
+msgid " without referencing concept"
+msgstr ""
+
+msgid "All vocabularies"
+msgstr "Kaikki sanastot"
+
+msgid "Concept is suggested to vocabulary"
+msgstr "Käsitettä ehdotetaan sanastoon"
+
+msgid "Select attribute or association"
+msgstr "Valitse attribuutti tai assosiaatio"
+
+msgid "Add attribute or association"
+msgstr "Lisää attribuutti tai assosiaatio"
+
+msgid "INFO_TEXT_SUBJECT_VIEW_SELECT_CONCEPT"
+msgstr "Valitse käsite sanastosta."
+
+msgid "Select concept"
+msgstr "Valitse käsite"
+
+msgid "No concept defined"
+msgstr "Käsitettä ei ole määritelty"
+
+msgid "Invalid url error"
+msgstr "Syöte ei ole URL"
+
+msgid "Invalid stem error"
+msgstr "Virheellinen URI muoto"
+
+msgid "Invalid namespace error"
+msgstr "Nimiavaruuden täytyy päättyä ‘#’ tai ‘/‘ -merkkeihin"
+
+msgid "Invalid namespace url urn error"
+msgstr ""
+"Nimiavaruuden täytyy olla URL ja päättyä ‘#’ tai ‘/‘ -merkkeihin tai olla "
+"URN-muotoinen"
+
+msgid "Invalid id error"
+msgstr "Virheellinen tunniste"
+
+msgid "Existing id error"
+msgstr "Tunniste on jo käytössä"
+
+msgid "Existing or reserved id error"
+msgstr "Tunniste on jo käytössä tai on varattu"
+
+msgid "Required error"
+msgstr "Pakollinen syöte"
+
+msgid "Required localized error"
+msgstr "Täytyy olla määritelty vähintään yhdellä kielellä"
+
+msgid "Duplicate error"
+msgstr "Syöte on jo lisätty"
+
+msgid "String error"
+msgstr "Literaalin täytyy alkaa kirjaimella"
+
+msgid "Length error"
+msgstr "Syöte on liian pitkä"
+
+msgid "Prefix error"
+msgstr ""
+"Etuliitteen tulee alkaa pienellä kirjaimella. Se saa sisältää vain pieniä "
+"kirjaimia, numeroita sekä välimerkkejä \"-\" ja \"_\". Ei ääkkösiä."
+
+msgid "Negative error"
+msgstr "Ei saa olla negatiivinen"
+
+msgid "Greater than max error"
+msgstr "Ei saa olla suurempi kuin maksimi"
+
+msgid "Less than min error"
+msgstr "Ei saa olla pienempi kuin minimi"
+
+msgid "Unknown namespace"
+msgstr "Tuntematon nimiavaruus"
+
+msgid "Id name is required"
+msgstr "Tunniste puuttuu nimiavaruuden sisältä"
+
+msgid "Must be imported namespace"
+msgstr "Nimiavaruutta ei ole lisätty riippuvuudeksi"
+
+msgid "Is not valid language code"
+msgstr "Ei ole tunnettu kielikoodi"
+
+msgid "Is not valid reference data code"
+msgstr "Ei tunnettu koodiston arvo"
+
+msgid "INFO_TEXT_FRONTPAGE_SEARCH"
+msgstr ""
+"Haku kohdistuu oletuksena tietomallien nimiin. Voit hakea myös sisällöistä "
+"käyttämällä \"Kohdista haku myös\" -toimintoa."
+
+msgid "Search term"
+msgstr "Hakusana"
+
+msgid "INFO_TEXT_FRONTPAGE_FILTER_W_CLASSIFICATION"
+msgstr ""
+"Kaikki tietomallit on luokiteltu johonkin tietoalueeseen. Tietoaluetta "
+"klikkaamalla voit suodattaa hakutuloksiin näkyviin vain tiettyyn "
+"tietoalueeseen kuuluvat tietomallit. Poistat valinnan klikkaamalla uudestaan "
+"samaa tietoaluetta."
+
+msgid "INFO_TEXT_FRONTPAGE_FILTER_RESULTS"
+msgstr ""
+"Voit suodattaa hakutuloksia organisaatiolla, tyypillä tai tilalla. "
+"Organisaatio tarkoittaa tietomallin sisällöntuottajaorganisaatiota, joka "
+"vastaa tietomallin ylläpidosta. Tyyppi tarkoittaa tietomallin tyyppiä, joka "
+"voi olla tietokomponenttikirjasto tai soveltamisprofiili. Tila tarkoittaa "
+"tietomallin hallinnan tilaa."
+
+msgid " hit"
+msgstr ""
+
+msgid "Total results"
+msgstr "Osumia yhteensä"
+
+msgid "Add model"
+msgstr "Lisää tietomalli"
+
+msgid "ADD_LIBRARY_BUTTON_TEXT"
+msgstr "Lisää tietokomponenttikirjasto"
+
+msgid "ADD_PROFILE_BUTTON_TEXT"
+msgstr "Lisää soveltamisprofiili"
+
+msgid "ToolInfo"
+msgstr ""
+"Tietomallit-työkalu on julkishallinnon organisaatioiden tietomallintajien ja "
+"tietoarkkitehtien työkalu, jolla kuvataan tietojärjestelmien ja rajapintojen "
+"tietosisältöjä ja -rakennetta. Tietomallit-työkalu tekee julkishallinnon "
+"julkisten tietojen loogisesta tietomallityöstä avointa ja julkista, minkä "
+"vuoksi tietomallien hyödyntäminen organisaatiorajojen yli helpottuu."
+
+msgid "Search model"
+msgstr "Hae tietomallia"
+
+msgid "Extend search"
+msgstr "Kohdista haku myös"
+
+msgid "to content"
+msgstr "sisältöihin"
+
+msgid "Filter with information domain"
+msgstr "Rajaa tietoalueella"
+
+msgid "Filter results"
+msgstr "Rajaa hakutuloksia"
+
+msgid "result"
+msgstr "hakutulos"
+
+msgid "results"
+msgstr "hakutulosta"
+
+msgid "Search results"
+msgstr "Hakutulokset"
+
+msgid "Maintenance content"
+msgstr ""
+"Järjestelmä on valitettavasti toistaiseksi poissa käytöstä huoltokatkon takia"
+
+msgid "Maintenance"
+msgstr "Huoltokatko"
+
+msgid "Concept information"
+msgstr "Käsitteen tiedot"
+
+msgid "Not selected"
+msgstr "Ei valittu"
+
+msgid "Choose root class"
+msgstr "Valitse juurisolmu"
+
+msgid "Clear selection"
+msgstr "poista valinta"
+
+msgid "Edit reference data"
+msgstr "Muokkaa koodistoa"
+
+msgid "Resources:"
+msgstr "Resursseja:"
+
+msgid "Enforce status transition rules"
+msgstr "Käytä tilasiirtymien validointisääntöjä."
+
+msgid "Starting status"
+msgstr "Lähtötila"
+
+msgid "Target status"
+msgstr "Kohdetila"
+
+msgid "Change resource statuses as well"
+msgstr "Muuta myös resurssien tilat"
+
+msgid ""
+"Please note that the content of this field is public. Don't use personal "
+"contact information!"
+msgstr ""
+"Huomaathan, että tämän kentän sisältö on julkista. Älä käytä "
+"henkilökohtaisia yhteystietoja!"
+
+msgid "You will receive an email notification when this resource changes."
+msgstr "Sinulle lähetetään sähköpostia, kun tähän aineistoon tulee muutoksia."
+
+msgid "Datamodel definition"
+msgstr "Tietomääritykset"
+
+msgid "Datamodel details"
+msgstr "Tietomallin tiedot"
+
+msgid "Datamodel documentation"
+msgstr "Dokumentaatio"
+
+msgid "Information domain"
+msgstr "Tietoalue"
+
+msgid "Organization"
+msgstr "Organisaatio"
+
+msgid "Browse reference data codes"
+msgstr "Selaa koodistoa"
+
+msgid "Identifier"
+msgstr "Tunniste"
+
+msgid "Title"
+msgstr "Nimi"
+
+msgid "Select domain"
+msgstr "Valitse tietoalue"
+
+msgid "Show technical namespaces"
+msgstr "Näytä tekniset nimiavaruudet"
+
+msgid "Add new namespace"
+msgstr "Luo uusi nimiavaruus"
+
+msgid "Search namespaces"
+msgstr "Hae nimiavaruuksia"
+
+msgid "Select organization"
+msgstr "Valitse organisaatio"
+
+msgid "Search reference data"
+msgstr "Hae koodistoja"
+
+msgid "All servers"
+msgstr "Kaikki palvelimet"
+
+msgid "All groups"
+msgstr "Kaikki ryhmät"
+
+msgid "Create new"
+msgstr "Luo uusi"
+
+msgid "Use selection"
+msgstr "Käytä valintaa"
+
+msgid "Search vocabularies"
+msgstr "Hae sanastoja"
+
+msgid "No search results"
+msgstr "Ei hakutuloksia"
+
+msgid "Start help"
+msgstr "Aloita ohje"
+
+msgid "Impersonate user"
+msgstr "Esiinny käyttäjänä"
+
+msgid "LOG IN"
+msgstr "KIRJAUDU SISÄÄN"
+
+msgid "LOG OUT"
+msgstr "KIRJAUDU ULOS"
+
+msgid "User details"
+msgstr "Käyttäjätiedot"
+
+msgid "Suomi.fi Terminologies"
+msgstr "Suomi.fi-sanastot"
+
+msgid "Suomi.fi Reference Data"
+msgstr "Suomi.fi-koodistot"
+
+msgid "Suomi.fi Comments"
+msgstr "Suomi.fi-kommentit"
+
+msgid "User right management"
+msgstr "Oikeuksienhallinta"
+
+msgid "Name"
+msgstr "Nimi"
+
+msgid "Email"
+msgstr "Sähköposti"
+
+msgid "Organizations and roles"
+msgstr "Organisaatiot ja roolit"
+
+msgid "Unknown organization"
+msgstr "Tuntematon organisaatio"
+
+msgid "Waiting for approval"
+msgstr "Odottaa hyväksyntää"
+
+msgid "Send access request"
+msgstr "Lähetä käyttöoikeuspyyntö"
+
+msgid "Send"
+msgstr "Lähetä"
+
+msgid ""
+"You have subscribed to be notified via email when the following resources "
+"change. To remove the subscription, click the icon next to the resource."
+msgstr ""
+"Olet tilannut seuraavien aineistojen muutoksista ilmoitukset sähköpostiisi. "
+"Poistaaksesi ilmoituksen, paina aineiston vieressä olevaa ikonia."
+
+msgid "Email notifications"
+msgstr "Sähköposti-ilmoitukset"
+
+msgid "Daily"
+msgstr "Päivittäin"
+
+msgid "Code list resources"
+msgstr "Koodistoaineistot"
+
+msgid "Terminology resources"
+msgstr "Sanastoaineistot"
+
+msgid "Datamodel resources"
+msgstr "Tietomalliaineistot"
+
+msgid "Comments resources"
+msgstr "Kommenttien aineistot"
+
+msgid "INFORMATION"
+msgstr "TIEDOT"
+
+msgid "SUBSCRIPTIONS"
+msgstr "TILAUKSET"
+
+msgid "xsd:long error"
+msgstr "Virheellinen kokonaisluku"
+
+msgid "xsd:string"
+msgstr "Teksti"
+
+msgid "rdfs:Literal"
+msgstr "Literaali"
+
+msgid "rdfs:Literal error"
+msgstr "Virheellinen literaali"
+
+msgid "rdf:langString"
+msgstr "Kieliversioitu teksti"
+
+msgid "rdf:langString error"
+msgstr "Virheellinen kieliversioitu teksti"
+
+msgid "xsd:anyURI"
+msgstr "URI"
+
+msgid "xsd:anyURI error"
+msgstr "Virheellinen URI"
+
+msgid "xsd:boolean"
+msgstr "Kytkin"
+
+msgid "xsd:boolean error"
+msgstr "Virheellinen kykin"
+
+msgid "xsd:decimal"
+msgstr "Desimaali"
+
+msgid "xsd:decimal error"
+msgstr "Virheellinen desimaali"
+
+msgid "xsd:double"
+msgstr "Desimaali (64bit)"
+
+msgid "xsd:double error"
+msgstr "Virheellinen desimaali"
+
+msgid "xsd:float"
+msgstr "Desimaali (32bit)"
+
+msgid "xsd:float error"
+msgstr "Virheellinen desimaali"
+
+msgid "xsd:integer"
+msgstr "Kokonaisluku"
+
+msgid "xsd:integer error"
+msgstr "Virheellinen kokonaisluku"
+
+msgid "xsd:long"
+msgstr "Kokonaisluku (64bit)"
+
+msgid "xsd:string error"
+msgstr "Virheellinen teksti"
+
+msgid "xsd:int"
+msgstr "Kokonaisluku (32bit)"
+
+msgid "xsd:int error"
+msgstr "Virheellinen kokonaisluku"
+
+msgid "xsd:date"
+msgstr "Päivämäärä"
+
+msgid "xsd:date error"
+msgstr "Virheellinen päivämäärä"
+
+msgid "xsd:dateTime"
+msgstr "Ajanhetki"
+
+msgid "xsd:dateTime error"
+msgstr "Virheellinen ajanhetki"
+
+msgid "xsd:time"
+msgstr "Aika"
+
+msgid "xsd:time error"
+msgstr "Virheellinen aika"
+
+msgid "xsd:gYear"
+msgstr "Vuosi"
+
+msgid "xsd:gYear error"
+msgstr "Virheellinen vuosi"
+
+msgid "xsd:gMonth"
+msgstr "Kuukausi"
+
+msgid "xsd:gMonth error"
+msgstr "Virheellinen kuukausi"
+
+msgid "xsd:gDay"
+msgstr "Päivämäärä"
+
+msgid "xsd:gDay error"
+msgstr "Virheellinen päivämäärä"
+
+msgid "xsd:hexBinary"
+msgstr "Hex binääri"
+
+msgid "xsd:hexBinary error"
+msgstr "Virheellinen hex binääri"
+
+msgid "xsd:base64Binary"
+msgstr "Base64 binääri"
+
+msgid "xsd:base64Binary error"
+msgstr "Virheellinen Base64 binääri"
+
+msgid "Guide through specializing a class"
+msgstr "Luokan erikoistamisen ohjeistus"
+
+msgid "Add classification info"
+msgstr "Tietoalueet luokittelevat tietomallit eri hallinnon aloille"
+
+msgid "Add contributor info"
+msgstr ""
+"Sisällöntuottajaorganisaatio vastaa tietomallin ylläpidosta. Kaikki "
+"organisaation tietomallintajat voivat muokata tietomalleja joille "
+"organisaatio on määritelty sisällöntuottajaksi"
+
+msgid "Add library"
+msgstr "Lisää tietoaluekohtainen tietomalli"
+
+msgid "Add library description"
+msgstr ""
+"Lisäämällä uuden tietokomponenttikirjaston voit kuvata tietoalueella "
+"yleisesti käytössä olevat tietosisällöt. Tietokomponentteja määriteltäessä "
+"voit hyödyntää kohdealueen sanastoja ja linkittää tietosisällöt "
+"kansainvälisiin standardeihin. Tietokomponenttikirjaston luokat ovat "
+"uudelleenkäytettäviä rakenteita joita voidaan käyttää sovelluskohtaisen "
+"tietosisällön määrittelyyn soveltamisprofiilissa"
+
+msgid "Add model description"
+msgstr ""
+"Täältä voit lisätä uuden toimialuekohtaisen tietomallin tai "
+"sovelluskohtaisen tietomallin"
+
+msgid "Add new property"
+msgstr "Lisää uusi attribuutti tai assosiaatio"
+
+msgid "Add new property description"
+msgstr ""
+"Attribuutti ja assosiaatio ovat luokan ominaisuuksia, joilla voidaan "
+"määritellä luokan tarkempi sisältö ja suhteet muihin luokkiin"
+
+msgid "Add profile"
+msgstr "Lisää sovelluskohtainen tietomalli"
+
+msgid "Add profile description"
+msgstr ""
+"Lisäämällä uuden soveltamisprofiilin voit kuvata haluamasi tietosisällön "
+"höydyntämällä tietokomponenttikirjastoissa määriteltyjä uudelleenkäytettäviä "
+"luokkia sekä määritellä uusia luokkia hyödyntäen toimialakohtaisia sanastoja"
+
+msgid "Add reference to namespace"
+msgstr "Lisää viite nimiavaruuteen"
+
+msgid "Add reference to namespace description"
+msgstr ""
+"Lisäämällä uuden nimiavaruuden voit linkittää luokkia tai ominaisuuksia "
+"kansainvälisiin suosituksiin"
+
+msgid "Add vocabulary description"
+msgstr ""
+"Lisäämällä tietomallille sanaston, voit hyödyntää tietoalueella käytettyjä "
+"käsitemääritelmiä tietomallien määrittelyssä"
+
+msgid "Association is here"
+msgstr "Assosiaation tiedot näkyvät täällä"
+
+msgid "Association label"
+msgstr "Assosiaation nimi"
+
+msgid "Association label info"
+msgstr "Assosiaation ihmisluettava nimi"
+
+msgid ""
+"Association target can be changed from the list or by typing the identifier"
+msgstr ""
+"Assosiaation kohde voidaan vaihtaa täältä valitsemalla uusi kohde listasta "
+"tai kirjoittamalla kenttään luokan tunniste"
+
+msgid "Association target is here"
+msgstr "Assosiaation kohde näkyy täällä"
+
+msgid "Association target must be selected from list of existing classes"
+msgstr "Assosiaation kohde täytyy valita olemassaolevien luokkien listasta"
+
+msgid "Attribute is here"
+msgstr "Attribuutin tiedot näkyvät täällä"
+
+msgid "Attribute is here info"
+msgstr ""
+"Attribuutin tiedoissa määritellään pysyvä URI tunniste, nimi, määritelmä ja "
+"tietotyyppi"
+
+msgid "Attribute label"
+msgstr "Attribuutin nimi"
+
+msgid "Attribute label info"
+msgstr "Attribuutin ihmisluettava nimi"
+
+msgid "Changes need to be saved"
+msgstr "Jos haluat tallettaa muutokset paina \"Tallenna\""
+
+msgid "Class is here"
+msgstr "Luokan tiedot näkyvät täällä"
+
+msgid "Class is here info"
+msgstr ""
+"Luokan tiedoissa määritellään luokan nimi, kuvaus, käsite johon luokka "
+"perustuu sekä luokan ominaisuudet"
+
+msgid "Classes can be modified"
+msgstr "Luokkaa voidaan muokata täältä"
+
+msgid "Classes can be seen visually here"
+msgstr "Luokat ja niiden väliset assosiaatiot näkyvät visuaalisesti täällä"
+
+msgid "Classifications are here"
+msgstr "Tietoalueet näkyvät täällä"
+
+msgid "Concept is here"
+msgstr "Käsite löytyy täältä"
+
+msgid "Concept is here info"
+msgstr "Käsitteen "
+
+msgid "Concept label"
+msgstr "Käsitteen nimi"
+
+msgid "Concept label info"
+msgstr "Käsitteen suositeltava termi"
+
+msgid "Confirm selection"
+msgstr "Hyväksy valinta"
+
+msgid "Confirm selection info"
+msgstr "Hyväksy tehdyt muutokset ja jatka"
+
+msgid "Congratulations for completing adding an association!"
+msgstr "Onnittelut assosiaation lisäämisessä onnistumisesta!"
+
+msgid "Congratulations for completing adding an attribute!"
+msgstr "Onnittelut attribuutin lisäämisessä onnistumisesta!"
+
+msgid "Congratulations for completing class assignation!"
+msgstr "Onnittelut luokan kirjastoon liittämisessä onnistumisesta!"
+
+msgid "Congratulations for completing library creation!"
+msgstr "Onnittelut tietokomponenttikirjaston luomisessa onnistumisesta!"
+
+msgid "Congratulations for completing library creation! description"
+msgstr "Voit nyt siirtyä tekemään oikeita tietokomponenttikirjastoja"
+
+msgid "Congratulations for completing namespace require!"
+msgstr "Onnittelut nimiavaruuden lisäämisessä onnistumisesta!"
+
+msgid "Congratulations for completing new class creation!"
+msgstr "Onnittelut uuden luokan lisäämisessä onnistumisesta!"
+
+msgid "Congratulations for completing profile creation!"
+msgstr "Onnittelut soveltamisprofiilin luomisessa onnistumisesta!"
+
+msgid "Congratulations for completing profile creation! description"
+msgstr "Voit nyt siirtyä tekemään oikeita soveltamisprofiileja"
+
+msgid "Congratulations for completing specialize class!"
+msgstr "Onnittelut luokan erikoistamisessa onnistumisesta!"
+
+msgid "Contributors are here"
+msgstr "Sisällöntuottajat näkyvät täällä"
+
+msgid "Definition"
+msgstr "Määritelmä"
+
+msgid "Description"
+msgstr "Kuvaus"
+
+msgid "Description info"
+msgstr "Tietosisällön kuvaus"
+
+msgid "Guide through adding an association"
+msgstr "Assosiaation lisäämisen ohjeistus"
+
+msgid "Guide through adding an attribute"
+msgstr "Attribuutin lisäämisen ohjeistus"
+
+msgid "Guide through assigning class to a library"
+msgstr "Luokan kirjastoon liittämisen ohjeistus"
+
+msgid "Guide through creating a class"
+msgstr "Uuden luokan luomisen ohjeistus"
+
+msgid "Guide through creating new library"
+msgstr "Ohje uuden tietokomponenttikirjaston luomiseen"
+
+msgid "Guide through creating new library description"
+msgstr ""
+"Tietokomponenttikirjastolla tarkoitetaan toimialakohtaisesti määriteltyä "
+"loogisen tason tietomallia, jossa määritellään uudelleenkäytettäviä "
+"tietorakenteita. Tietokomponentit linkitetään toimialueella käytettyihin "
+"kansainvälisiin ja kansallisiin standardeihin, sanastoihin ja koodistoihin"
+
+msgid "Guide through creating new profile"
+msgstr "Ohje uuden soveltamisprofiilin luomiseen"
+
+msgid "Guide through creating new profile description"
+msgstr ""
+"Soveltamisprofiililla tarkoitetaan tiettyyn käyttötapaukseen määriteltyä "
+"loogista tietomallia joka hyödyntää toimialueella määriteltyjä "
+"uudelleenkäytettäviä tietokomponentteja. Soveltamisprofilin avulla "
+"dokumentoidaan tarvittavat tietosisällöt ja tietorakenteet"
+
+msgid "Guide through requiring a namespace"
+msgstr "Nimiavaruuden lisäämisen ohjeistus"
+
+msgid "Add class description"
+msgstr "Voit lisätä uuden luokan täältä"
+
+msgid "Imported namespaces are here"
+msgstr "Lisätyt nimiavaruudet näkyvät täällä"
+
+msgid "Imported namespaces can be used to link resources to existing standards"
+msgstr ""
+"Sisällytettyjä nimiavaruuksia voidaan käyttää tietokomponenttien "
+"linkittämiseen"
+
+msgid "Library label"
+msgstr "Tietokomponenttikirjaston nimi"
+
+msgid "Library label info"
+msgstr "Tietokomponenttikirjaston ihmisluettava nimi"
+
+msgid "Model languages"
+msgstr "Tietosisällön kielet"
+
+msgid "Model languages info"
+msgstr ""
+"Kielen määrittämisen avulla tietomalli voidaan lokalisoida valituille "
+"kielille. Kieli määritellään listaamalla halutut kielet ISO-639-2 "
+"luokituksen mukaisesti"
+
+msgid "Modify class"
+msgstr "Muokkaa luokkaa"
+
+msgid "Modify library"
+msgstr "Muokkaa tietokomponenttikirjastoa"
+
+msgid "Modify library description"
+msgstr ""
+"Tietokomponenttikirjastoa voidaan muokata jos halutaan tarkentaa "
+"kuvailutietoja tai lisätä uusia sanastoja, koodistoja tai nimiavaruuksia"
+
+msgid "Modify profile"
+msgstr "Muokkaa soveltamisprofiilia"
+
+msgid "Modify profile description"
+msgstr ""
+"Soveltamisprofiilia voidaan muokata kun halutaan tarkentaa kuvailutietoja, "
+"lisätä uusia sanastoja, koodistoja tai nimiavaruuksia"
+
+msgid "Open library details"
+msgstr "Avaa tietokomponenttikirjaston tiedot"
+
+msgid "Open library details description"
+msgstr ""
+"Tietokomponenttikirjastoon liittyvät lisätiedot, kuten käytetyt sanastot ja "
+"koodistot löytyvät tämän paneelin alta. Täältä voit myös ladata "
+"tietokomponenttikirjaston eri formaateissa, kuten XML tai JSON base-skeemana"
+
+msgid "Open profile details"
+msgstr "Avaa soveltamisprofiilin tiedot"
+
+msgid "Open profile details description"
+msgstr ""
+"Soveltamisprofiiliin liittyvät lisätiedot, kuten käytetyt sanastot ja "
+"koodistot löytyvät tämän paneelin alta. Täältä voit myös ladata profiilin "
+"eri formaateissa, kuten XML tai JSON skeemana."
+
+msgid "Prefix"
+msgstr "Etuliite"
+
+msgid "Prefix info"
+msgstr ""
+"Etuliitteellä (prefix) tarkoitetaan lyhyttä tunnusta jota käytetään pysyvän "
+"URI-tunnisteen ja nimiavaruuden muodostamiseen."
+
+msgid "Profile label"
+msgstr "Soveltamisprofiilin nimi"
+
+msgid "Profile label info"
+msgstr "Soveltamisprofiilin ihmisluettava nimi"
+
+msgid "Property is here"
+msgstr "Ominaisuuden tiedot näkyvät täällä"
+
+msgid "Property is here info"
+msgstr ""
+"Ominaisuuden tiedoissa kuvataan nimi, määritelmä, arvoalue sekä käsite johon "
+"ominaisuus perustuu"
+
+msgid "Save changes"
+msgstr "Tallenna muutokset"
+
+msgid "Search for"
+msgstr "Etsi {{name}}"
+
+msgid "Search for class"
+msgstr "Etsi luokkaa"
+
+msgid "Search for class info"
+msgstr "Etsi luokan tietoja"
+
+msgid "Search for concept"
+msgstr "Etsi käsitettä"
+
+msgid "Search for concept info"
+msgstr "Hae käsitettä sanastosta"
+
+msgid "Search for info"
+msgstr "Voit hakea haluamaasi sisältöä täältä"
+
+msgid "Search for predicate"
+msgstr "Hae uudelleenkäytettävää ominaisuutta"
+
+msgid "Search for predicate info"
+msgstr "Hae tarvitsemaasi attribuuttia tai assosiaatiota"
+
+msgid "Select association target"
+msgstr "Aloita assosiaation kohteen valinta"
+
+msgid "Select class description"
+msgstr "Voit valita luokan täältä"
+
+msgid "Select concept suggest creation"
+msgstr "Ehdota uutta käsitettä sanastoon"
+
+msgid "Select concept suggest creation info"
+msgstr ""
+"Tee käsite-ehdotus jos olemassaolevaa käsitettä ei ole määriteltynä "
+"käytetyissä sanastoissa"
+
+msgid "Select name and description"
+msgstr "Valitse attribuutit nimi ja kuvaus"
+
+msgid "Select name and description info"
+msgstr "Valitaan ominaisuuksien joukosta halutut ominaisuudet"
+
+msgid "Select new association creation"
+msgstr "Valitse uuden assosiaation luominen"
+
+msgid "Select new association creation info"
+msgstr "Tee uusi assosiaatio jos et löydä uudelleenkäytettäviä ominaisuuksia"
+
+msgid "Select new attribute creation"
+msgstr "Valitse lisää uusi attribuutti"
+
+msgid "Select new attribute creation info"
+msgstr "Täältä voit tehdä uuden attribuutin"
+
+msgid "Select new creation"
+msgstr "Valitse uuden luominen"
+
+msgid "Select new creation info"
+msgstr "Tee uusi jos et löydä olemassaolevia tietomäärityksiä"
+
+msgid "Select registration number and vehicle code"
+msgstr "Valitse rekisteröintinumero ja ajoneuvonumero"
+
+msgid "Select registration number and vehicle code info"
+msgstr "Täältä voit valita käyttöön haluamasi yläluokan ominaisuudet"
+
+msgid "Select search result"
+msgstr "Valitse {{name}}"
+
+msgid "Select search result info"
+msgstr "Valitse listalta oikea arvo"
+
+msgid "Select super class"
+msgstr "Valitse yläluokka"
+
+msgid "Select the vocabulary that is missing the required concept"
+msgstr "Valitse sanasto johon haluat ehdottaa uutta käsitettä"
+
+msgid "Suggest definition or description for the concept"
+msgstr ""
+"Ehdota käsitteelle määritelmää kuvailemalla käsite mahdollisimman hyvin"
+
+msgid "Super class can be changed from the list or by typing the identifier"
+msgstr "Yläluokka voidaan vaihtaa napista tai kirjoittamalla luokan tunniste"
+
+msgid "Super class is here"
+msgstr "Yläluokka näkyy täällä"
+
+msgid "Super class must be selected from list of existing classes"
+msgstr "Yläluokka pitää valita olemassaolevien luokkien joukosta"
+
+msgid "This tutorial shows how to add Class from existing library"
+msgstr ""
+"Tässä ohjeessa näytetään olemassaolevaan luokkaan viittaaminen toisesta "
+"kirjastosta"
+
+msgid "This tutorial shows how to add association to a Class"
+msgstr "Tässä ohjeessa näytetään uuden assosiaation lisääminen luokalle"
+
+msgid "This tutorial shows how to add new attribute"
+msgstr "Tässä ohjeessa näytetään uuden attribuutin lisääminen luokalle"
+
+msgid "This tutorial shows how to create a new Class"
+msgstr "Tässä ohjeessa näytetään uuden luokan lisääminen"
+
+msgid "This tutorial shows how to create a new shape from a class"
+msgstr ""
+"Tässä ohjeessa näytetään luokan tarkentaminen olemassaolevasta luokasta"
+
+msgid "This tutorial shows how to import new namespace to the model"
+msgstr "Tässä ohjeessa näytetään nimiavaruuden lisääminen"
+
+msgid "Vocabularies are here"
+msgstr "Sanastot löytyvät täältä"
+
+msgid "Vocabularies can be used to link resources to existing concepts"
+msgstr ""
+"Sanastoja voidaan käyttää tietomallien määrittelyssä, linkittämällä ja "
+"uudelleenkäyttämällä termejä ja määritelmiä"
+
+msgid "Vocabulary"
+msgstr "Sanasto"
+
+msgid "You can add new attribute or association to the Class from here"
+msgstr ""
+"Täältä voit lisätä luokalle uuden attribuutin jonka arvoalue perustuu "
+"tietotyyppiin tai assosiaation jolla viitataan toiseen luokkaan"
+
+msgid "Copy shape"
+msgstr "Kopioi tarkennettu luokka"
+
+msgid "not found in the concept database"
+msgstr "ei löydy sanastosta"
+
+msgid "Define concept for the new class"
+msgstr "Määrittele käsite uudelle luokalle"
+
+msgid "Define concept for the shape"
+msgstr "Määrittele käsite tarkennetulle luokalle"
+
+msgid "Define concept for the new shape"
+msgstr "Määrittele käsite uudelle tarkennetulel luokalle"
+
+msgid "Define concept for the attribute"
+msgstr "Määrittele käsite attribuutille"
+
+msgid "Define concept for the new attribute"
+msgstr "Määrittele käsite uudelle attribuutille"
+
+msgid "Define concept for the association"
+msgstr "Määrittele käsite assosiaatiolle"
+
+msgid "Define concept for the new association"
+msgstr "Määrittele käsite uudelle assosiaatiolle"
+
+msgid "Create new class without referencing concept"
+msgstr "Luo uusi luokka ilman käsiteviitettä"
+
+msgid "Create new shape without referencing concept"
+msgstr "Luo uusi tarkennettu luokka ilman käsiteviitettä"
+
+msgid "Create new association without referencing concept"
+msgstr "Luo uusi assosiaatio ilman käsiteviitettä"
+
+msgid "Create new attribute without referencing concept"
+msgstr "Luo uusi attribuutti ilman käsiteviitettä"
+
+msgid "suggest"
+msgstr "ehdota"
+
+msgid "suggestion"
+msgstr "ehdotus"
+
+msgid "and create new"
+msgstr "ja luo uusi"
+
+msgid "Use"
+msgstr "Käytä"
+
+msgid "Unstable"
+msgstr "Keskeneräinen"
+
+msgid "Draft"
+msgstr "Luonnos"
+
+msgid "Recommendation"
+msgstr "Suositus"
+
+msgid "Deprecated"
+msgstr "Käytöstä poistunut"
+
+msgid "Suggestion"
+msgstr "Ehdotus"
+
+msgid "Hide"
+msgstr "Piilota"
+
+msgid "Show model details"
+msgstr "Näytä tietomallin tiedot"
+
+msgid "Hide model details"
+msgstr "Piilota tietomallin tiedot"
+
+msgid "Front page"
+msgstr "Etusivu"
+
+msgid "New library creation"
+msgstr "Uuden tietokomponenttikirjaston luonti"
+
+msgid "New profile creation"
+msgstr "Uuden soveltamisprofiilin luonti"
+
+msgid "Delete library"
+msgstr "Poista tietokomponenttikirjasto"
+
+msgid "Delete profile"
+msgstr "Poista soveltamisprofiili"
+
+msgid "group"
+msgstr "Ryhmä"
+
+msgid "model"
+msgstr "Tietokomponenttikirjasto"
+
+msgid "library"
+msgstr "Tietokomponenttikirjasto"
+
+msgid "shape"
+msgstr "Tarkennettu luokka"
+
+msgid "profile"
+msgstr "Soveltamisprofiili"
+
+msgid "class"
+msgstr "Luokka"
+
+msgid "attribute"
+msgstr "Attribuutti"
+
+msgid "association"
+msgstr "Assosiaatio"
+
+msgid "property"
+msgstr "Ominaisuus"
+
+msgid "fi"
+msgstr "Suomeksi"
+
+msgid "en"
+msgstr "Englanniksi"
+
+msgid "data language"
+msgstr "Sisällön kieli"
+
+msgid "data fi"
+msgstr "Sisältö suomeksi"
+
+msgid "data en"
+msgstr "Sisältö englanniksi"
+
+msgid "data sv"
+msgstr "Sisältö ruotsiksi"
+
+msgid "data ru"
+msgstr "Sisältö venäjäksi"
+
+msgid "Edit in progress"
+msgstr "Muokkaaminen on kesken"
+
+msgid ""
+"Are you sure that you want to continue? By continuing unsaved changes will "
+"be lost."
+msgstr ""
+"Oletko varma, että haluat jatkaa? Jatkaessasi tallentamattomat muutokset "
+"katoavat."
+
+msgid "Dialog is open"
+msgstr "Dialogi on avattuna"
+
+msgid "Are you sure that you want to close dialog?"
+msgstr "Oletko varma, että haluat sulkea dialogin?"
+
+msgid "Save visualization position"
+msgstr "Visualisoinnin sijaintien tallennus"
+
+msgid ""
+"Are you sure you want to save? Saving overrides previously saves positions."
+msgstr ""
+"Oletko varma, että haluat tallettaa? Tallettaminen korvaa edelliset "
+"sijainnit."
+
+msgid "Delete class"
+msgstr "Poista luokka"
+
+msgid "Delete shape"
+msgstr "Poista tarkennettu luokka"
+
+msgid "Delete class from this library"
+msgstr "Poista luokka tästä kirjastosta"
+
+msgid "Delete shape from this library"
+msgstr "Poista tarkennettu luokka tästä kirjastosta"
+
+msgid "Class list"
+msgstr "Luokat"
+
+msgid "Add attribute"
+msgstr "Lisää attribuutti"
+
+msgid "Delete attribute"
+msgstr "Poista attribuutti"
+
+msgid "Delete attribute from this library"
+msgstr "Poista attribuutti tästä kirjastosta"
+
+msgid "Delete attribute from this profile"
+msgstr "Poista attribuutti tästä profiilista"
+
+msgid "Attribute list"
+msgstr "Attribuutit"
+
+msgid "Add association"
+msgstr "Lisää assosiaatio"
+
+msgid "Delete association"
+msgstr "Poista assosiaatio"
+
+msgid "Delete association from this library"
+msgstr "Poista assosiaatio tästä kirjastosta"
+
+msgid "Delete association from this profile"
+msgstr "Poista assosiaatio tästä profiilista"
+
+msgid "Association list"
+msgstr "Assosiaatiot"
+
+msgid "Choose attribute"
+msgstr "Valitse attribuutti"
+
+msgid "Choose association"
+msgstr "Valitse assosiaatio"
+
+msgid "What is description?"
+msgstr "Mitä ovat yhteentoimivuuden kuvaukset?"
+
+msgid "What is description content"
+msgstr ""
+"Yhteentoimivuuden kuvaukset ovat tietomäärityksiä, joiden avulla turvataan "
+"niin ihmis- kuin koneluettava semanttinen yhteentoimivuus sekä "
+"tietojärjestelmien vaatima tekninen yhteentoimivuus sähköisissä, "
+"tietointensiivisissä palveluprosesseissa. Yhteentoimivuuden kuvaukset "
+"muodostuvat sanastoissa kuvatuista käsitteistä, semantiikaltaan näihin "
+"käsitteisiin pohjautuvista yhteiskäyttöisistä tietomäärityksistä, eli "
+"tietokomponenteista sekä edelleen näiden käyttöä eri toteutuksissa "
+"tarkentavista soveltamisprofiileista."
+
+msgid "What is method?"
+msgstr "Mikä on yhteentoimivuusmenetelmä?"
+
+msgid "What is method content"
+msgstr ""
+"Yhteentoimivuusmenetelmän avulla voidaan kuvata tietojärjestelmissä "
+"käytettävä tietosisältö ottamatta kantaa sovellusten tekniseen toteutukseen. "
+"Yhteentoimivuusmenetelmä yhdistää tietomallien, sanastojen ja koodistojen "
+"kehittämisen yhtenäiseksi kokonaisuudeksi. Menetelmä pohjautuu "
+"kansainvälisten standardien soveltamiseen, voit lukea lisää "
+"yhteentoimivuusmenetelmästä ja välineistön kehittämisestä <a href='https://"
+"confluence.csc.fi/pages/viewpage.action?pageId=51893708'>täältä.</a>"
+
+msgid "What can I do?"
+msgstr "Mitä yhteensopivuuden välineistöllä voi tehdä?"
+
+msgid "What can I do content"
+msgstr ""
+"Yhteentoimivuuden välineistö on työkalu, jolla voidaan konkreettisesti "
+"hyödyntää tietoarkkitehtuurin määrityksiä operatiivisessa toiminnassa. "
+"Tietojärjestelmällä voidaan kehittää, dokumentoida ja avoimesti julkaista "
+"yhteiskäyttöiset ja uudelleen käytettävät tietokomponentit, sekä "
+"toteutuskohtaiset tietomääritykset (Soveltamisprofiilit). Välineistöllä "
+"julkaistavat tietomääritykset on hyödynnettävissä viestinvälitykseen "
+"(rajapintaratkaisut), tietokantarakenteeksi (tietovarannot) tai "
+"sovelluskehitykseen (tietojärjestelmät)"
+
+msgid "How?"
+msgstr "Kuinka pääsen osallistumaan?"
+
+msgid "How content"
+msgstr ""
+"Välineistössä julkaistut tietomääritykset ovat vapaasti selailtavissa. "
+"Sisältöjä tietokomponenttikirjastoihin tuottavat eri kohdealueiden "
+"asiantuntijat"
+
+msgid "of group"
+msgstr "ryhmästä"
+
+msgid "of model"
+msgstr "tietokomponenttikirjastosta"
+
+msgid "of library"
+msgstr "kirjastosta"
+
+msgid "of profile"
+msgstr "soveltamisprofiilista"
+
+msgid "of class"
+msgstr "luokasta"
+
+msgid "of shape"
+msgstr "tarkennetusta luokasta"
+
+msgid "of association"
+msgstr "assosiaatiosta"
+
+msgid "of attribute"
+msgstr "attribuutista"
+
+msgid "of concept"
+msgstr "käsitteestä"
+
+msgid "of conceptSuggestion"
+msgstr "käsite-ehdotuksesta"
+
+msgid "search attribute or association"
+msgstr "Hae attribuuttia tai assosiaatiota"
+
+msgid "search class"
+msgstr "Kirjoita luokan nimi"
+
+msgid "search descriptions"
+msgstr "Etsi yhteensopivuuden kuvauksista"
+
+msgid "Search from concept database"
+msgstr "Hae sanastosta…"
+
+msgid "search namespace"
+msgstr "Hae nimiavaruutta…"
+
+msgid "search vocabulary"
+msgstr "Hae sanastoa…"
+
+msgid "search reference data"
+msgstr "Hae koodistoa…"
+
+msgid "Select attribute"
+msgstr "Valitse attribuutti"
+
+msgid "search attribute"
+msgstr "Kirjoita attribuutin nimi"
+
+msgid "Select association"
+msgstr "Valitse assosiaatio"
+
+msgid "search association"
+msgstr "Kirjoita assosiaation nimi"
+
+msgid "Use attribute"
+msgstr "Käytä attribuuttia"
+
+msgid "Use association"
+msgstr "Käytä assosiaatiota"
+
+msgid "Create and use attribute"
+msgstr "Luo attribuutti ja käytä"
+
+msgid "Create and use association"
+msgstr "Luo assosiaatio ja käytä"
+
+msgid "Unauthorized"
+msgstr "Ei oikeuksia"
+
+msgid "ID is already in use"
+msgstr "Tunniste on jo käytössä"
+
+msgid "Resource dependencies restricts removing"
+msgstr "Resurssin riippuvuudet estävät poistamisen"
+
+msgid "Unexpected error"
+msgstr "Tapahtui odottamaton virhe"
+
+msgid "Not found"
+msgstr "Ei löydy"
+
+msgid "Not removed"
+msgstr "Ei saatu poistettua"
+
+msgid "Resource status restricts removing"
+msgstr "Ei ole poistettavassa tilassa"
+
+msgid "Resource is in use"
+msgstr "On jo käytössä"
+
+msgid "Already added"
+msgstr "On jo lisätty"
+
+msgid "Write identifier"
+msgstr "Kirjoita tunniste…"
+
+msgid "Write URI"
+msgstr "Kirjoita URI…"
+
+msgid "Write URL"
+msgstr "Kirjoita URL..."
+
+msgid "Library information"
+msgstr "Tietokomponenttikirjaston tiedot"
+
+msgid "Profile information"
+msgstr "Soveltamisprofiilin tiedot"
+
+msgid "Class information"
+msgstr "Luokan tiedot"
+
+msgid "Shape information"
+msgstr "Tarkennetun luokan tiedot"
+
+msgid "Attribute information"
+msgstr "Attribuutin tiedot"
+
+msgid "Association information"
+msgstr "Assosiaation tiedot"
+
+msgid "Property information"
+msgstr "Ominaisuuden tiedot"
+
+msgid "Concept suggestion information"
+msgstr "Käsite-ehdotuksen tiedot"
+
+msgid "Class properties"
+msgstr "Luokan attribuutit ja assosiaatiot"
+
+msgid "Shape properties"
+msgstr "Tarkennetun luokan attribuutit ja assosiaatiot"
+
+msgid "Show excluded"
+msgstr "Näytä myös ne, joita ei voi lisätä"
+
+msgid "Concept"
+msgstr "Käsite"
+
+msgid "Concept suggestion"
+msgstr "Käsite-ehdotus"
+
+msgid "application/ld+json"
+msgstr "JSON-LD"
+
+msgid "text/turtle"
+msgstr "Turtle"
+
+msgid "application/xml"
+msgstr "XML"
+
+msgid "application/rdf+xml"
+msgstr "RDF"
+
+msgid "application/ld+json+context"
+msgstr "JSON-LD Context"
+
+msgid "application/schema+json"
+msgstr "JSON Schema"
+
+msgid "application/vnd+oai+openapi+json"
+msgstr "Open API 3.0.2"
+
+msgid "framed ld+json"
+msgstr "Framed JSON-LD"
+
+msgid "ld+json frame"
+msgstr "JSON-LD Frame"
+
+msgid "date format"
+msgstr "DD.MM.YYYY HH:mm"
+
+msgid "User login"
+msgstr "Käyttäjätunnus"
+
+msgid "User name"
+msgstr "Nimi"
+
+msgid "Created at"
+msgstr "Luotu"
+
+msgid "Modified at"
+msgstr "Muokattu"
+
+msgid "Member groups"
+msgstr "Käyttäjänä ryhmissä"
+
+msgid "Admin groups"
+msgstr "Pääkäyttäjänä ryhmissä"
+
+msgid "Add properties from class"
+msgstr "Lisää ominaisuudet luokasta"
+
+msgid "Add properties from super class"
+msgstr "Lisää ominaisuudet yläluokasta"
+
+msgid "Add properties from scope class"
+msgstr "Lisää ominaisuudet tarkennettavasta luokasta"
+
+msgid "Add properties from profile class"
+msgstr "Lisää ominaisuudet nostettavaan luokkaan"
+
+msgid "Add properties from external class"
+msgstr "Lisää ominaisuudet ulkoisesta luokasta"
+
+msgid "Do you want to add following properties from class?"
+msgstr "Haluatko lisätä seuraavat ominaisuudet luokasta?"
+
+msgid "Do you want to add following properties from super class?"
+msgstr "Haluatko lisätä seuraavat ominaisuudet yläluokasta?"
+
+msgid "Do you want to add following properties from scope class?"
+msgstr "Haluatko lisätä seuraavat ominaisuudet tarkennettavasta luokasta?"
+
+msgid "Do you want to add following properties from profile class?"
+msgstr "Haluatko lisätä seuraavat ominaisuudet nostettavaan luokkaan?"
+
+msgid "Do you want to add following properties from external class?"
+msgstr "Haluatko lisätä seuraavat ominaisuudet ulkoisesta luokasta?"
+
+msgid "Not imported by model"
+msgstr "Ei ole lisätty nimiavaruudeksi"
+
+msgid "Cannot import profile"
+msgstr "Soveltamisprofiili ei voi olla nimiavaruutena"
+
+msgid "Shapes are not allowed"
+msgstr "Erikoistettuja luokkia ei saa valita"
+
+msgid "Classes are not allowed"
+msgstr "Erikoistamattomia luokkia ei saa valita"
+
+msgid "Non specialized classes are not allowed"
+msgstr "Erikoistamattomia luokkia ei saavalita"
+
+msgid "Use class"
+msgstr "Käytä luokkaa"
+
+msgid "Specialize class"
+msgstr "Tarkenna luokka"
+
+msgid "Define concept for the class"
+msgstr "Määrittele käsite luokalle"
+
+msgid "Can be selected only from this library"
+msgstr "Valinta on tehtävä tietokomponenettikirjaston luokista"
+
+msgid "Can be selected only from this profile"
+msgstr "Valinta on tehtävä soveltamisprofiilin luokista"
+
+msgid "Subject"
+msgstr "Käsite"
+
+msgid "to vocabulary"
+msgstr "sanastoon"
+
+msgid "Create new class"
+msgstr "Luo uusi luokka"
+
+msgid "Create new shape"
+msgstr "Luo uusi tarkennettu luokka"
+
+msgid "Create new predicate"
+msgstr "Luo uusi ominaisuus"
+
+msgid "Create new attribute"
+msgstr "Lisää uusi attribuutti"
+
+msgid "Create new association"
+msgstr "Lisää uusi assosiaatio"
+
+msgid "New attribute"
+msgstr "Uusi attribuutti"
+
+msgid "New association"
+msgstr "Uusi assosiaatio"
+
+msgid "Copy attribute"
+msgstr "Kopioi attribuutti"
+
+msgid "Copy association"
+msgstr "Kopio assosiaatio"
+
+msgid "Create sub attribute"
+msgstr "Luo ala-attribuutti"
+
+msgid "Create sub association"
+msgstr "Luo ala-assosiaatio"
+
+msgid "Create super attribute"
+msgstr "Luo yläattribuutti"
+
+msgid "Create super association"
+msgstr "Luo yläassosiaatio"
+
+msgid "Show class information"
+msgstr "Näytä luokan tiedot"
+
+msgid "Show attribute information"
+msgstr "Näytä attribuutin tiedot"
+
+msgid "Show association information"
+msgstr "Näytä assosiaation tiedot"
+
+msgid "by referencing external uri"
+msgstr "viittaamalla ulkoiseen tunnisteeseen"
+
+msgid "Self reference not allowed"
+msgstr "Viittaus itseensä ei ole sallittu"
+
+msgid "Invalid ID"
+msgstr "Virheellinen tunniste"
+
+msgid "External class not found"
+msgstr "Ulkoista luokkaa ei löydy"
+
+msgid "External predicate not found"
+msgstr "Ulkoista ominaisuutta ei löydy"
+
+msgid "External predicate is of wrong type"
+msgstr "Ulkoinen ominaisuus on väärää tyyppiä"
+
+msgid "Input"
+msgstr "Kirjoita"
+
+msgid "Assigned to this profile"
+msgstr "Tähän profiiliin kytketyt"
+
+msgid "Assigned to this library"
+msgstr "Tähän kirjastoon kytketyt"
+
+msgid "language code"
+msgstr "kielikoodi"
+
+msgid "Internal vocabulary"
+msgstr "Sisäinen käsitteistö"
+
+msgid "Edit namespace"
+msgstr "Muokkaa nimiavaruutta"
+
+msgid "Vocabularies"
+msgstr "Sanastot"
+
+msgid "Vocabulary name"
+msgstr "Sanaston nimi"
+
+msgid "Edit link"
+msgstr "Muokkaa linkkiä"
+
+msgid "Reference data name"
+msgstr "Koodiston nimi"
+
+msgid "Reference data status"
+msgstr "Koodiston tila"
+
+msgid "Create new reference data"
+msgstr "Luo uusi koodisto"
+
+msgid "Choose reference data"
+msgstr "Valitse koodisto"
+
+msgid "Write reference data code"
+msgstr "Kirjoita koodi…"
+
+msgid "Browse concepts"
+msgstr "Selaa käsitteitä"
+
+msgid "Search concept"
+msgstr "Valitse käsite"
+
+msgid "Delete concept"
+msgstr "Poista käsite"
+
+msgid "Delete concept from this library"
+msgstr "Poista käsite tästä kirjastosta"
+
+msgid "Delete concept from this profile"
+msgstr "Poista käsite tästä profiilista"
+
+msgid "Delete conceptSuggestion"
+msgstr "Poista käsite-ehdotus"
+
+msgid "Delete conceptSuggestion from this library"
+msgstr "Poista käsite-ehdotus tästä kirjastosta"
+
+msgid "Delete conceptSuggestion from this profile"
+msgstr "Poista käsite-ehdotus tästä profiilista"
+
+msgid "URI stem"
+msgstr "URI muoto"
+
+msgid "Interoperability method description"
+msgstr ""
+"Menetelmän avulla varmistetaan, että yhteisten määritysten soveltaminen on "
+"systemaattista ja säilyttää semantiikan eri toteutuksissa, ja on siten eri "
+"toimijoiden yhtenäisesti ymmärrettävissä"
+
+msgid "Label"
+msgstr "Nimi"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Local ID"
+msgstr "Paikallinen ID"
+
+msgid "Allowed languages"
+msgstr "Sallitut kielet"
+
+msgid "In language"
+msgstr "Suomeksi"
+
+msgid "Undefined"
+msgstr "Ei määritelty"
+
+msgid "Assign reusable predicate to library"
+msgstr "Lisää viite kirjastoon"
+
+msgid "Assign reusable predicate to profile"
+msgstr "Lisää viite soveltamisprofiiliin"
+
+msgid "Assign class to library"
+msgstr "Lisää luokka kirjastoon"
+
+msgid "Specialize class to profile"
+msgstr "Tarkenna luokka soveltamisprofiiliin"
+
+msgid "Copy reusable association to library"
+msgstr "Kopioi assosiaatio kirjastoon"
+
+msgid "Copy reusable association to profile"
+msgstr "Kopioi assosiaatio soveltamisprofiiliin"
+
+msgid "Copy reusable attribute to library"
+msgstr "Kopioi attribuutti kirjastoon"
+
+msgid "Copy reusable attribute to profile"
+msgstr "Kopioi attribuutti soveltamisprofiiliin"
+
+msgid "Defined in vocabularies"
+msgstr "Määritelty sanastoissa"
+
+msgid "Change concept"
+msgstr "Vaihda käsite"
+
+msgid "Choose concept"
+msgstr "Valitse käsite"
+
+msgid "Submit error"
+msgstr "Toiminnossa tapahtui virhe"
+
+msgid "Predicate in use"
+msgstr "Predikaatti on käytössä"
+
+msgid ""
+"Predicate type cannot be changed because it is already used by following "
+"resources"
+msgstr ""
+"Predikaatin tyyppiä ei voida muuttaa koska seuraavat resurssit käyttävät sitä"
+
+msgid "Convert to association"
+msgstr "Muuta assosiaatioksi"
+
+msgid "Convert to attribute"
+msgstr "Muuta attribuutiksi"
+
+msgid "Copy \"{{text}}\" to clipboard"
+msgstr "Kopioi “{{text}}” leikepöydälle"
+
+msgid "Copy properties"
+msgstr "Kopioi ominaisuuksia"
+
+msgid "Copy properties from class"
+msgstr "Kopioi attribuutteja tai assosiaatioita luokalta"
+
+msgid "Session expired"
+msgstr "Istunto on vanhentunut"
+
+msgid "Model not found"
+msgstr "Mallia ei löydy"
+
+msgid "Group not found"
+msgstr "Ryhmää ei löydy"
+
+msgid "Page not found"
+msgstr "Sivua ei löydy"
+
+msgid "Resource not found"
+msgstr "Resurssia ei löydy"
+
+msgid "You will be redirected to the front page"
+msgstr "Sinut uudelleenohjataan etusivulle"
+
+msgid "You will be redirected to the model"
+msgstr "Sinut uudelleenohjataan mallin sivulle"
+
+msgid "Please login to perform the action"
+msgstr "Ole hyvä ja kirjaudu suorittaaksesi toiminto"
+
+msgid "Duplicate association target"
+msgstr "Assosiaation kohde on jo lisätty"
+
+msgid "No"
+msgstr "Ei"
+
+msgid "Match to content"
+msgstr "Hae sisällöstä"
+
+msgid "Unique label"
+msgstr "Yksi arvo kieltä kohden"
+
+msgid "All organizations"
+msgstr "Kaikki organisaatiot"
+
+msgid "Choose organization"
+msgstr "Valitse organisaatio"
+
+msgid "ADMIN"
+msgstr "Ylläpitäjä"
+
+msgid "DATA_MODEL_EDITOR"
+msgstr "Tietomallintaja"
+
+msgid "TERMINOLOGY_EDITOR"
+msgstr "Sanastotyöntekijä"
+
+msgid "CODE_LIST_EDITOR"
+msgstr "Koodistotyöntekijä"
+
+msgid "MEMBER"
+msgstr "Jäsen"
+
+msgid "Add new library"
+msgstr "Lisää uusi tietoaluekohtainen tietomalli"
+
+msgid "Add new profile"
+msgstr "Lisää uusi sovelluskohtainen tietomalli"
+
+msgid "InformationPool"
+msgstr "Tietovaranto"
+
+msgid "InformationSystem"
+msgstr "Tietojärjestelmä"
+
+msgid "ExchangeFormat"
+msgstr "Siirtoformaatti"
+
+msgid "InformationDescription"
+msgstr "Tietosisältö"
+
+msgid "Search"
+msgstr "Etsi"
+
+msgid "standard"
+msgstr "Kansainvälinen suositus"
+
+msgid "All model types"
+msgstr "Kaikki tietomallityypit"
+
+msgid "All use contexts"
+msgstr "Kaikki sisältötyypit"
+
+msgid "Model"
+msgstr "Tietomalli"
+
+msgid "Deep class hit"
+msgstr "Luokat"
+
+msgid "Deep shape hit"
+msgstr "Tarkennetut luokat"
+
+msgid "Deep attribute hit"
+msgstr "Attribuutit"
+
+msgid "Deep association hit"
+msgstr "Assosiaatiot"
+
+msgid "Concept status"
+msgstr "Käsitteen tila"
+
+msgid "Concept modified at"
+msgstr "Käsitettä muokattu"
+
+msgid "ADD EMAIL SUBSCRIPTION TO RESOURCE REGARDING CHANGES?"
+msgstr "TILAA SÄHKÖPOSTI-ILMOITUKSET AINEISTON MUUTOKSISTA?"
+
+msgid "REMOVE EMAIL SUBSCRIPTION TO RESOURCE?"
+msgstr "POISTETAANKO SÄHKÖPOSTITILAUS AINEISTOSTA?"
+
+msgid "ARE YOU SURE YOU WANT TO ENABLE THE NOTIFICATION EMAIL SUBSCRIPTION?"
+msgstr ""
+"OLETKO VARMA, ETTÄ HALUAT KYTKEÄ SÄHKÖPOSTIEN VASTAANOTTOON LIITTYVÄN "
+"ASETUKSEN PÄÄLLE?"
+
+msgid "ARE YOU SURE YOU WANT TO DISABLE THE NOTIFICATION EMAIL SUBSCRIPTION?"
+msgstr ""
+"OLETKO VARMA, ETTÄ HALUAT KYTKEÄ SÄHKÖPOSTIEN VASTAANOTTOON LIITTYVÄN "
+"ASETUKSEN POIS PÄÄLTÄ?"
+
+msgid "Adding subscription failed."
+msgstr "Ilmoitusten tilaus epäonnistui."
+
+msgid "Subscription deletion failed."
+msgstr "Ilmoitusten poisto epäonnistui."
+
+msgid "INFO_TEXT_EMAIL_SUBSCRIPTIONS"
+msgstr ""
+"Tällä toiminnolla valitaan, onko ilmoitustoiminto aktiivinen. Ottamalla "
+"rastin pois kohdasta “Päivittäin” voit kytkeä kaikki ilmoitukset pois päältä "
+"kerralla. Palauttamalla rastin ilmoitukset aktivoituvat jälleen."
+
+msgid "CHANGE STATUS?"
+msgstr "VAIHDA TILAA?"
+
+msgid "CHANGE_STATUS_CONFIRMATION_PARAGRAPH_1"
+msgstr "Haluatko varmasti vaihtaa tilaa?"
+
+msgid "CHANGE_STATUS_CONFIRMATION_PARAGRAPH_2"
+msgstr ""
+"Tallennuksen jälkeen et voi enää vaihtaa takaisin tiloihin keskeneräinen tai "
+"luonnos."
+
+msgid "Choose starting status"
+msgstr "Valitse lähtötila"
+
+msgid "Choose target status"
+msgstr "Valitse kohdetila"
+
+msgid "UPDATING_STATUSES_MESSAGE"
+msgstr "Muutetaan tietomallin resurssien tiloja"
+
+msgid "Change resource statuses at the same time?"
+msgstr "Vaihda samalla resurssien tilat?"
+
+msgid "CHANGE RESOURCE STATUSES TOO?"
+msgstr ""
+"Muutetaanko myös kaikki tilassa {{startStatus}} olleet resurssit tilaan "
+"{{endStatus}}?"
+
+msgid "CREATING_NEW_MODEL_VERSION_MESSAGE"
+msgstr "Luodaan uutta versiota tietomallista"
+
+msgid "Example info"
+msgstr "Esimerkkiarvo ominaisuudelle"
+
+msgid "Editorial note"
+msgstr "Muokkaajan kommentti"
+
+msgid "Editorial note info"
+msgstr ""
+
+msgid "Class id"
+msgstr "Luokan tunniste"
+
+msgid "Class id info"
+msgstr "Luokan yksilöivä curie tunniste"
+
+msgid "Shape id"
+msgstr "Tarkennetun luokan tunniste"
+
+msgid "Shape id info"
+msgstr "Tarkennetun luokan tunniste"
+
+msgid "Attribute id"
+msgstr "Attribuutin tunniste"
+
+msgid "Attribute id info"
+msgstr "Attribuutin yksilöivä curie tunniste"
+
+msgid "Association id"
+msgstr "Assosiaation tunniste"
+
+msgid "Association id info"
+msgstr "Assosiaation yksilöivä curie tunniste"
+
+msgid "Property id"
+msgstr "Ominaisuuden tunniste"
+
+msgid "Property id info"
+msgstr "Ominaisuuden yksilöivä tunniste"
+
+msgid "Class property id"
+msgstr "Luokan ominaisuuden paikallinen tunniste"
+
+msgid "Class property id info"
+msgstr ""
+"Luokan ominaisuuden toissijainen tunniste jota voidaan käyttää skeemassa tai "
+"muussa paikallisessa toteutuksessa"
+
+msgid "Class attribute id"
+msgstr "Luokan attribuutin paikallinen tunniste"
+
+msgid "Class attribute id info"
+msgstr ""
+"Luokan attribuutin toissijainen tunniste jota voidaan käyttää skeemassa tai "
+"muussa paikallisessa toteutuksessa"
+
+msgid "Class association id"
+msgstr "Luokan assosiaation paikallinen tunniste"
+
+msgid "Class association id info"
+msgstr ""
+"Luokan assosiaation toissijainen tunniste jota voidaan käyttää skeemassa tai "
+"muussa paikallisessa toteutuksessa"
+
+msgid "Concept id"
+msgstr "Käsitteen tunniste"
+
+msgid "Concept id info"
+msgstr "Käsitteen yksilöivä uri tunniste"
+
+msgid "Vocabulary id"
+msgstr "Sanaston tunniste"
+
+msgid "Vocabulary id info"
+msgstr "Sanaston lyhyt tunniste"
+
+msgid "Reference data URI"
+msgstr "Koodiston URI"
+
+msgid "Reference data URI info"
+msgstr ""
+"Koodiston URI tunniste on pysyvä ja yksilöivä viittaus koodiston sijaintiin"
+
+msgid "Max properties"
+msgstr "Ominaisuuksien enimmäismäärä"
+
+msgid "Max properties info"
+msgstr ""
+"Luokan attribuuttien tai assosiaatioiden enimmäismäärä. HUOM! Toimii vain "
+"JSON skeemoissa."
+
+msgid "Min properties"
+msgstr "Ominaisuuksien vähimmäismäärä"
+
+msgid "Min properties info"
+msgstr ""
+"Luokan attribuuttien tai assosiaatioiden vähimmäismäärä. HUOM! Toimii vain "
+"JSON skeemoissa."
+
+msgid "Group label"
+msgstr "Ryhmän nimi"
+
+msgid "Group label info"
+msgstr "Kohdealueen ryhmän nimi"
+
+msgid "Class label"
+msgstr "Luokan nimi"
+
+msgid "Class label info"
+msgstr "Luokan ihmisluettava nimi"
+
+msgid "Shape label"
+msgstr "Tarkennetun luokan nimi"
+
+msgid "Shape label info"
+msgstr "Tarkannetun luokan ihmisluettava nimi"
+
+msgid "Property label"
+msgstr "Ominaisuuden nimi"
+
+msgid "Property label info"
+msgstr "Ominaisuuden ihmisluettava nimi"
+
+msgid "Class property label"
+msgstr "Luokan ominaisuuden nimi"
+
+msgid "Class property label info"
+msgstr "Luokan ominaisuuden ihmisluettava nimi"
+
+msgid "Class attribute label"
+msgstr "Luokan attribuutin nimi"
+
+msgid "Class attribute label info"
+msgstr "Luokan attribuutin ihmisluettava nimi"
+
+msgid "Class association label"
+msgstr "Luokan assosiaation nimi"
+
+msgid "Class association label info"
+msgstr "Luokan assosiaation ihmisluettava nimi"
+
+msgid "Concept suggestion label"
+msgstr "Käsite-ehdotuksen nimi"
+
+msgid "Concept suggestion label info"
+msgstr "Ehdotettu termi käsitteelle"
+
+msgid "Concept definition"
+msgstr "Käsitteen määritelmä"
+
+msgid "Concept definition info"
+msgstr ""
+"Käsitteen määritelmä kuvaa käsitesisältöä yleisellä tasolla ottaen huomioon "
+"vain olennaiset käsitepiirteet"
+
+msgid "Concept suggestion definition"
+msgstr "Käsite-ehdotuksen määritelmä"
+
+msgid "Concept suggestion definition info"
+msgstr ""
+"Käsite-ehdotuksen määritelmä tulee voi olla taustatietoa käsitteen käytöstä "
+"tai ehdotettu hyvin muotoiltu määritelmä. Hyvin muotoiltu määritelmä esittää "
+"täsmällisesti jonkin asian merkityssisällön, ottamalla huomioon vain "
+"välttämättömät mutta kuitenkin riittävät asian piirteet"
+
+msgid "Namespace label"
+msgstr "Nimiavaruuden nimi"
+
+msgid "Namespace label info"
+msgstr "Nimiavaruuden ihmisluettava nimi"
+
+msgid "Reference data label"
+msgstr "Koodiston nimi"
+
+msgid "Reference data label info"
+msgstr "Koodisto on sovittu joukko koodiarvoja"
+
+msgid "State"
+msgstr "Tila"
+
+msgid "State info"
+msgstr "Hallintamalliin liittyvä resurssin tila"
+
+msgid "Defined by"
+msgstr "Määrittely"
+
+msgid "Defined by info"
+msgstr ""
+
+msgid "Defined by library"
+msgstr "Tietokomponenttikirjasto"
+
+msgid "Defined by library info"
+msgstr "Viite tietokomponenttikirjastoon jossa resurssi on määritelty"
+
+msgid "Defined by profile"
+msgstr "Määritelty soveltamisprofiilissa"
+
+msgid "Defined by profile info"
+msgstr "Viite soveltamisprofiiliin jossa resurssin käyttö on määritelty"
+
+msgid "Superclass"
+msgstr "Yläluokka"
+
+msgid "Superclass info"
+msgstr "Yleistettävissä oleva luokka, joka on semantiikaltaan laajempi"
+
+msgid "Superassociation"
+msgstr "Yläassosiaatio"
+
+msgid "Superassociation info"
+msgstr "Yleistettävissä oleva assosiaatio, joka on semantiikaltaan laajempi"
+
+msgid "Superattribute"
+msgstr "Yläattribuutti"
+
+msgid "Superattribute info"
+msgstr "Yleistettävissä oleva attribuutti, joka on semantiikaltaan laajempi"
+
+msgid "Superproperty"
+msgstr "Yläkäsite"
+
+msgid "Superproperty info"
+msgstr "Yleistettävissä oleva ominaisuus, joka on semantiikaltaan laajempi"
+
+msgid "Range"
+msgstr "Tietotyyppi"
+
+msgid "Range info"
+msgstr ""
+"Attribuutin tietotyyppi on valittava yhteensopivien XSD tietotyyppien "
+"joukosta"
+
+msgid "Specialized from class"
+msgstr "Tarkennettu luokasta"
+
+msgid "Specialized from class info"
+msgstr "Luokka jota soveltamisprofiilissa on tarkennettu"
+
+msgid "Example"
+msgstr "Esimerkki"
+
+msgid "Definition info"
+msgstr "Käsitteen määritelmä"
+
+msgid "Value class"
+msgstr "Kohde"
+
+msgid "Value class info"
+msgstr "Viite luokkaan joka toimii assosiaation kohteena"
+
+msgid "Predicate type"
+msgstr "Ominaisuuden tyyppi"
+
+msgid "Predicate type info"
+msgstr "Ominaisuus voi olla joko Attribuutti tai Assosiaatio"
+
+msgid "Equivalent class"
+msgstr "Vastaavat luokat"
+
+msgid "Equivalent class info"
+msgstr ""
+"Lista muualla määritellyistä luokista joilla on vastaava semanttinen merkitys"
+
+msgid "Equivalent attribute"
+msgstr "Vastaavat attribuutit"
+
+msgid "Equivalent attribute info"
+msgstr ""
+"Lista muualla määritellyistä attribuuteista joilla on vastaava semanttinen "
+"merkitys"
+
+msgid "Equivalent association"
+msgstr "Vastaavat assosiaatiot"
+
+msgid "Equivalent association info"
+msgstr ""
+"Lista muualla määritellyistä assosiaatioista joilla on vastaava semanttinen "
+"merkitys"
+
+msgid "Equivalent property"
+msgstr "Vastaavat ominaisuudet"
+
+msgid "Equivalent property info"
+msgstr ""
+"Lista muualla määritellyistä ominaisuuksista joilla on vastaava semanttinen "
+"merkitys"
+
+msgid "Broader concept"
+msgstr "Laajempi käsite"
+
+msgid "Broader concept info"
+msgstr "Käsitteeseen liittyvä yläkäsite"
+
+msgid "Internal group page"
+msgstr "Ryhmän sisäiset sivut"
+
+msgid "Internal group page info"
+msgstr "Kohdealueen ryhmän sisäiset sivut"
+
+msgid "Vocabulary info"
+msgstr ""
+
+msgid "Namespace"
+msgstr "Nimiavaruus"
+
+msgid "Namespace info"
+msgstr "Nimiavaruus jota käytetään resurssien yksilöintiin ja resolvointiin"
+
+msgid "Previous version"
+msgstr "Aiempi versio"
+
+msgid "Previous version info"
+msgstr "Linkki edeltävään versioon"
+
+msgid "Resource identifier"
+msgstr "Resurssin tunniste"
+
+msgid "Resource identifier info"
+msgstr "Käytä attribuutin arvoa resurssin pääasiallisena tunnisteena"
+
+msgid "Default value"
+msgstr "Oletusarvo"
+
+msgid "Default value info"
+msgstr ""
+"Oletusarvo, joka annetaan ominaisuudelle jos muuta arvoa ei ole määritelty"
+
+msgid "Allowed values"
+msgstr "Sallitut arvot"
+
+msgid "Allowed values info"
+msgstr "Lista ominaisuudelle sallituista arvoista"
+
+msgid "Class type"
+msgstr "Luokan tyyppi"
+
+msgid "Class type info"
+msgstr "Luokalla voi olla useita sallittuja luokkamääreitä"
+
+msgid "Fixed value"
+msgstr "Pakollinen arvo"
+
+msgid "Fixed value info"
+msgstr "Ennaltamääritelty pakollinen arvo joka täytyy löytyä datasta"
+
+msgid "Pattern"
+msgstr "Säännöllinen lauseke"
+
+msgid "Pattern info"
+msgstr ""
+"Säännöllinen lauseke jota voidaan käyttää ominaisuuden arvojen validointiin"
+
+msgid "Min count"
+msgstr "Vähimmäismäärä"
+
+msgid "Min count info"
+msgstr "Sallittujen arvojen minimimäärä"
+
+msgid "Max count"
+msgstr "Enimmäismäärä"
+
+msgid "Max count info"
+msgstr "Sallittujen arvojen enimmäismäärä"
+
+msgid "Min length"
+msgstr "Vähimmäispituus"
+
+msgid "Min length info"
+msgstr "Sallitun arvon minimipituus"
+
+msgid "Max length"
+msgstr "Enimmäispituus"
+
+msgid "Max length info"
+msgstr "Sallitun arvon enimmäispituus"
+
+msgid "XML Wrapper"
+msgstr "XML Wrapper"
+
+msgid "XML Wrapper info"
+msgstr "Muodosta XML Wrapper elementti luokan ominaisuuden tunnisteesta"
+
+msgid "XML Attribute"
+msgstr "XML Attribuutti"
+
+msgid "XML Attribute info"
+msgstr "Muodosta ominaisuudesta XML Elementin attribuutti XML skeemassa"
+
+msgid "Deactivated"
+msgstr "Deaktivoitu"
+
+msgid "Deactivated info"
+msgstr ""
+"Deaktivoitua resurssia ei käytetä skeemojen generoinnissa tai validoinnissa"
+
+msgid "Unique label info"
+msgstr ""
+"Määrittelee onko vain yksi kieliversioitu arvo sallittu yhtä kieltä kohden. "
+"Tämän avulla voidaan määritellä esimerkiksi Enimmäismäärä 2 siten että vain "
+"erikieliset arvot ovat sallittuja"
+
+msgid "Equals"
+msgstr "Yhtä kuin"
+
+msgid "Equals info"
+msgstr "Ominaisuus jonka arvo täytyy olla sama kuin tämän ominaisuuden arvo"
+
+msgid "Disjoint"
+msgstr "Eri kuin"
+
+msgid "Disjoint info"
+msgstr "Ominaisuus jonka arvo täytyy olla eri kuin tämän ominaisuuden arvo"
+
+msgid "Less than"
+msgstr "Pienempi kuin"
+
+msgid "Less than info"
+msgstr "Ominaisuus jonka arvo täytyy olla eri kuin tämän ominaisuuden arvo"
+
+msgid "Less than or equals"
+msgstr "Pienempi tai yhtä suuri kuin"
+
+msgid "Less than or equals info"
+msgstr ""
+"Ominaisuus jonka arvo täytyy olla pienempi tai yhtä suuri kuin tämän "
+"ominaisuuden arvo"
+
+msgid "Homepage"
+msgstr "Linkki"
+
+msgid "Homepage info"
+msgstr "Linkki sivustoon tai sovellukseen joissa tietosisältöjä on hyödynnetty"
+
+msgid "Title info"
+msgstr "Ihmisluettava nimi"
+
+msgid "External URI"
+msgstr "Ulkoinen tunniste"
+
+msgid "External URI info"
+msgstr "Viite ulkoiseen URI tunnisteeseen"
+
+msgid "Namespace redirection"
+msgstr "Nimiavaruuden uudelleenohjaus"
+
+msgid "Namespace redirection info"
+msgstr ""
+"Nimiavaruuden uudelleenohjauksen avulla voidaan määritellä tietomalleja "
+"joissa käytetään jotain ulkoista nimiavaruutta"
+
+msgid "Constraint classes"
+msgstr "Loogisen rajoitteen luokat"
+
+msgid "Constraint classes info"
+msgstr ""
+
+msgid "Root class"
+msgstr "Juurisolmu"
+
+msgid "Root class info"
+msgstr ""
+"Juurisolmua käytetään määrittelemään hierarkkisen tietomallin lähtöpiste, "
+"esimerkiksi XML tai JSON sanoman ensimmäinen entiteetti."
+
+msgid "Creator"
+msgstr "Luoja"
+
+msgid "Creator info"
+msgstr ""
+
+msgid "Localname"
+msgstr "Luokan paikallinen tunniste"
+
+msgid "Localname info"
+msgstr "Voidaan käyttää skeemoissa tai muissa paikallisissta toteutuksissa"
+
+msgid "Read-only"
+msgstr "Vain luku"
+
+msgid "Read-only info"
+msgstr "Attribuutti jonka arvoa ei alustuksen jälkeen saa enää muokata"
+
+msgid "API path"
+msgstr "API polku"
+
+msgid "API path info"
+msgstr ""
+"Vähintään yhdelle luokalle on määriteltävä API polku jotta Open API kuvaus "
+"voidaan tuottaa oikein. API polkuun voidaan määritellä polku- ({}) tai "
+"kyselyparametreja (?&) esimerkiksi: /org/{id}/person?name&role"
+
+msgid "Contact label"
+msgstr "Yhteydenotto"
+
+msgid "Contact label info"
+msgstr "Palautekanava tietomallille, esim. sähköpostiosoite."
+
+msgid "owl:DatatypeProperty"
+msgstr "Attribuutti"
+
+msgid "owl:ObjectProperty"
+msgstr "Assosiaatio"
+
+#~ msgid "Statuses changed."
+#~ msgstr "Tilat vaihdettu."
+
+#~ msgid "Resources in this status"
+#~ msgstr "Resursseja tässä tilassa"
+
+#~ msgid "Please wait. This could take a while..."
+#~ msgstr ""
+#~ "Ole hyvä ja odota. Mahdollisesti pitkäkestoinen prosessointi käynnissä."
+
+#~ msgid "Classes defined in profiles"
+#~ msgstr "Profiilien luokat"
+
+#~ msgid "Advanced search"
+#~ msgstr "Tarkennettu haku"

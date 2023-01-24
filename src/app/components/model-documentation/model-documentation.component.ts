@@ -9,7 +9,7 @@ import { Language } from "app/types/language";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { AuthorizationManagerService } from "app/services/authorizationManagerService";
-import { ErrorModalService } from "@goraresult/yti-common-ui";
+import { ErrorModalService, defaultLanguage } from "@goraresult/yti-common-ui";
 import { MdEditorOption } from "ngx-markdown-editor";
 
 @Component({
@@ -37,9 +37,9 @@ export class ModelDocumentationComponent implements OnInit, OnDestroy, OnChanges
   modelLanguage: Language;
   // which language should the editor bind to,
   // varies between modelLanguage and fallbackLanguage
-  activeModelLanguage: Language;
+  activeModelLanguage: Language | string;
   // selected model language, or a fallback language if there's no content
-  fallbackModelLanguage: Language;
+  fallbackModelLanguage: Language | string;
 
   options: MdEditorOption = {
     enablePreviewContentClick: true,
@@ -101,10 +101,10 @@ export class ModelDocumentationComponent implements OnInit, OnDestroy, OnChanges
         !this.modelInEdit.documentation[this.modelLanguage].length)) {
       // take list of languages from model as potential fallbacks,
       // and sort them to prefer fi
-      const fallbacks: Language[] =
+      const fallbacks: Language | string[] =
         (this.model && this.model.language && this.model.language.length) ?
-        this.model.language : ['fi'];
-      fallbacks.sort((a, b) => b === 'fi' ? 1 : -1);
+          this.model.language : [defaultLanguage];
+      fallbacks.sort((a, b) => b === defaultLanguage ? 1 : -1);
 
       this.fallbackModelLanguage = fallbacks[0];
     }

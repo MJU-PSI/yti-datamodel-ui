@@ -2,7 +2,7 @@ import * as angular from 'angular';
 import { ILocationService, IScope } from 'angular';
 import { LanguageService } from 'app/services/languageService';
 import { UserService } from 'app/services/userService';
-import { LoginModalService, identity } from '@goraresult/yti-common-ui';
+import { LoginModalService, identity, availableLanguages } from '@goraresult/yti-common-ui';
 import { UILanguage } from 'app/types/language';
 import { User } from 'app/entities/user';
 import { HelpSelectionModal } from 'app/components/common/helpSelectionModal';
@@ -26,11 +26,7 @@ export class NavigationBarComponent {
 
   // logo = logo;
 
-  availableLanguages = [
-    { code: 'fi' as UILanguage, name: 'Suomeksi (FI)' },
-    { code: 'sv' as UILanguage, name: 'På svenska (SV)' },
-    { code: 'en' as UILanguage, name: 'In English (EN)' }
-  ];
+  availableLanguages: any;
 
   helpProvider?: HelpProvider;
 
@@ -56,6 +52,7 @@ export class NavigationBarComponent {
     'ngInject';
 
     this.$injector = $injector;
+    this.availableLanguages = availableLanguages;
     impersonationService.getFakeableUsers()
       .then(users => this.fakeableUsers = users);
 

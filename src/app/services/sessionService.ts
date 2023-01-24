@@ -1,5 +1,5 @@
 import { isDefined } from '@goraresult/yti-common-ui';
-import { Language, UILanguage } from 'app/types/language';
+import { Language } from 'app/types/language';
 
 const modelLanguageKey = 'modelLanguage';
 const uiLanguageKey = 'UILanguage';
@@ -33,11 +33,11 @@ export class SessionService {
     window.sessionStorage.setItem(key, JSON.stringify(value));
   }
 
-  get UILanguage(): UILanguage {
-    return this.get<UILanguage>(uiLanguageKey);
+  get UILanguage(): string {
+    return this.get<string>(uiLanguageKey);
   }
 
-  set UILanguage(lang: UILanguage) {
+  set UILanguage(lang: string) {
     this.set(uiLanguageKey, lang);
   }
 

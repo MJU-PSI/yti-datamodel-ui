@@ -5,7 +5,7 @@ import { Language, LanguageContext } from 'app/types/language';
 import { KnownModelType, UseContext } from 'app/types/entity';
 import { LocationService } from 'app/services/locationService';
 import { Classification } from 'app/entities/classification';
-import { remove } from '@goraresult/yti-common-ui';
+import { remove, availableLanguages } from '@goraresult/yti-common-ui';
 import { Organization } from 'app/entities/organization';
 import { ErrorModal } from 'app/components/form/errorModal';
 import { Vocabulary } from 'app/entities/vocabulary';
@@ -35,7 +35,7 @@ export class NewModelPageComponent {
   importedPrefixes: () => string[];
   links: Link[] = [];
 
-  languages: Language[] = ['fi', 'en', 'sv'];
+  languages: Language[] = availableLanguages.map((lang: { code: any; }) => { return lang.code });
   type: KnownModelType;
   useContext: UseContext = 'InformationDescription';
 

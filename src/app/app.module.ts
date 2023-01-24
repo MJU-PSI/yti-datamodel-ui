@@ -4,7 +4,8 @@ import { BrowserModule, Title } from '@angular/platform-browser';
 import { downgradeComponent, downgradeInjectable, UpgradeModule } from '@angular/upgrade/static';
 import {
   AjaxLoadingIndicatorComponent,
-  AjaxLoadingIndicatorSmallComponent, AlertModalService, AUTHENTICATED_USER_ENDPOINT, ConfirmationModalService, DropdownComponent, ErrorModalService, ExpandableTextComponent, FilterDropdownComponent, FooterComponent, Localizer as AngularLocalizer, LOCALIZER, LoginModalService, MenuComponent, ModalService, StatusComponent, YtiCommonModule
+  AjaxLoadingIndicatorSmallComponent, AlertModalService, AUTHENTICATED_USER_ENDPOINT, ConfirmationModalService, DropdownComponent, ErrorModalService, ExpandableTextComponent, FilterDropdownComponent, FooterComponent, Localizer as AngularLocalizer, LOCALIZER, LoginModalService, MenuComponent, ModalService, StatusComponent, YtiCommonModule,
+  availableLanguages
 } from '@goraresult/yti-common-ui';
 import * as angular from 'angular';
 import { animate, ICompileProvider, ILocationProvider, ILogProvider, IHttpProvider } from 'angular';
@@ -36,6 +37,7 @@ import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 import enPo from 'raw-loader!po-loader?format=mf!../../po/en.po';
 import fiPo from 'raw-loader!po-loader?format=mf!../../po/fi.po';
 import svPo from 'raw-loader!po-loader?format=mf!../../po/sv.po';
+import slPo from 'raw-loader!po-loader?format=mf!../../po/sl.po';
 import { of } from 'rxjs';
 import {
   ExportDirective,
@@ -78,11 +80,11 @@ import { DatamodelConfirmationModalService } from './services/confirmation-modal
 import { IndexSearchService } from './services/indexSearchService';
 import { DefaultAngularLocalizer, LanguageService } from './services/languageService';
 import { MessagingService } from './services/messaging-service';
-import { availableUILanguages } from './types/language';
 import IAnimateProvider = animate.IAnimateProvider;
 import fiCommonPo from 'raw-loader!po-loader?format=mf!../../node_modules/@goraresult/yti-common-ui/po/fi.po';
 import svCommonPo from 'raw-loader!po-loader?format=mf!../../node_modules/@goraresult/yti-common-ui/po/sv.po';
 import enCommonPo from 'raw-loader!po-loader?format=mf!../../node_modules/@goraresult/yti-common-ui/po/en.po';
+import slCommonPo from 'raw-loader!po-loader?format=mf!../../node_modules/@goraresult/yti-common-ui/po/sl.po';
 import { KeycloakService } from 'keycloak-angular';
 
 require('angular-gettext');
@@ -125,6 +127,10 @@ export const localizationStrings: { [lang: string]: { [key: string]: string } } 
   en: {
     ...removeEmptyValues(JSON.parse(enPo)),
     ...removeEmptyValues(JSON.parse(enCommonPo))
+  },
+  sl: {
+    ...removeEmptyValues(JSON.parse(slPo)),
+    ...removeEmptyValues(JSON.parse(slCommonPo))
   }
 };
 
@@ -353,6 +359,8 @@ mod.run((gettextCatalog: any) => {
   'ngInject';
 
   gettextCatalog.debug = true;
+
+  const availableUILanguages = availableLanguages.map((lang: { code: any; }) => { return lang.code });
 
   for (const language of availableUILanguages) {
     gettextCatalog.setStrings(language, localizationStrings[language]);
