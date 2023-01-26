@@ -7,15 +7,14 @@
     "ts-node": "node -- node_modules/ts-node/dist/bin.js -P scripts/tsconfig.script.json --skip-ignore",
     "start": "ng serve --port 9000 --proxy-config proxy.conf.json",
     "start-dev": "ng serve --port 9000 --proxy-config proxy-dev.conf.json --ssl true",
-    "build:dev": "ng build && npm run babel:dev",
-    "build": "ng build --configuration=production && npm run babel",
+    "build": "ng build && npm run babel:dev",
+    "build:prod": "ng build --configuration=production",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "create-translations": "node -- node_modules/@biesbjerg/ngx-translate-extract/bin/cli.js --input ./src/app --output ./po/template.pot --format=pot --clean",
     "load-examples": "npm run ts-node -- scripts/load-examples.ts",
-    "babel:dev": "npx babel dist --out-dir dist --source-maps --ignore 'dist/assets/*','dist/configuration/*'",
-    "babel": "npx babel dist --out-dir dist --ignore 'dist/assets/*','dist/configuration/*'"
+    "babel:dev": "npx babel dist/main-es5.js -o dist/main-es5.js && npx babel dist/main-es2015.js -o dist/main-es2015.js"
   },
   "private": true,
   "dependencies": {
