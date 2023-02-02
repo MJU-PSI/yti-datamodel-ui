@@ -1,5 +1,5 @@
-import * as Iterable from '@goraresult/yti-common-ui';
-import { requireDefined } from '@goraresult/yti-common-ui';
+import * as Iterable from '@mju-psi/yti-common-ui';
+import { requireDefined } from '@mju-psi/yti-common-ui';
 import * as joint from 'jointjs';
 import { Event, EventType, Layout, Link, Node } from 'webcola';
 

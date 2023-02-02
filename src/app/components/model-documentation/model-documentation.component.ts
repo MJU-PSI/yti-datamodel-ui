@@ -9,7 +9,7 @@ import { Language } from "app/types/language";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { AuthorizationManagerService } from "app/services/authorizationManagerService";
-import { ErrorModalService, defaultLanguage } from "@goraresult/yti-common-ui";
+import { ErrorModalService, defaultLanguage } from "@mju-psi/yti-common-ui";
 import { MdEditorOption } from "ngx-markdown-editor";
 
 @Component({

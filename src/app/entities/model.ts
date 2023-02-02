@@ -1,4 +1,4 @@
-import { containsAny, Localizable, remove, requireDefined, Status, availableLanguages } from '@goraresult/yti-common-ui';
+import { containsAny, Localizable, remove, requireDefined, Status, availableLanguages } from '@mju-psi/yti-common-ui';
 import * as _ from 'lodash';
 import { Moment } from 'moment';
 import { KnownModelType, Type, UseContext } from '../types/entity';

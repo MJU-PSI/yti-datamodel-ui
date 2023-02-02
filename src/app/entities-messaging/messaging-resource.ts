@@ -1,4 +1,4 @@
-import { Localizable } from '@goraresult/yti-common-ui';
+import { Localizable } from '@mju-psi/yti-common-ui';
 import { MessagingResourceType } from '../services/messaging-api-schema';
 import { DefaultAngularJSLocalizer } from '../services/languageService';
 

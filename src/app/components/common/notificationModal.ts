@@ -1,7 +1,7 @@
 import { IPromise, ILocationService } from 'angular';
 import { IModalService } from 'angular-ui-bootstrap';
 import { Model } from 'app/entities/model';
-import { identity } from '@goraresult/yti-common-ui';
+import { identity } from '@mju-psi/yti-common-ui';
 import { modalCancelHandler } from 'app/utils/angular';
 
 export class NotificationModal {

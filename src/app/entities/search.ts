@@ -5,7 +5,7 @@ import { init } from './mapping';
 import { GraphNode } from './graphNode';
 import { uriSerializer, entityAwareOptional, entity } from './serializer/entitySerializer';
 import { localizableSerializer, optional, stringSerializer } from './serializer/serializer';
-import { Localizable } from '@goraresult/yti-common-ui';
+import { Localizable } from '@mju-psi/yti-common-ui';
 
 export class SearchResult extends GraphNode {
 

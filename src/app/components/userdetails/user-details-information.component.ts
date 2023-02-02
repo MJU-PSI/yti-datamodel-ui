@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { Role, UserService, combineSets, hasAny, Options, index } from '@goraresult/yti-common-ui';
+import { Role, UserService, combineSets, hasAny, Options, index } from '@mju-psi/yti-common-ui';
 import { Subscription } from 'rxjs';
 import { Organization } from '../../entities/organization';
 import { LanguageService } from '../../services/languageService';

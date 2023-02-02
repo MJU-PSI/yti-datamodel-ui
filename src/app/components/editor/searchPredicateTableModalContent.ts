@@ -9,7 +9,7 @@ import { modalCancelHandler } from '../../utils/angular';
 import { ShowPredicateInfoModal } from './showPredicateInfoModal';
 import { TranslateService } from '@ngx-translate/core';
 import { IPageInfo } from 'ngx-virtual-scroller';
-import { makeSimpleSearchRegexp } from '@goraresult/yti-common-ui';
+import { makeSimpleSearchRegexp } from '@mju-psi/yti-common-ui';
 
 @Component({
   selector: 'app-search-predicate-table-modal-content',

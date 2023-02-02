@@ -1,5 +1,5 @@
 import { SearchFilter, TextAnalysis } from 'app/types/filter';
-import { limit, allMatching } from '@goraresult/yti-common-ui';
+import { limit, allMatching } from '@mju-psi/yti-common-ui';
 
 const defaultSearchLimit = 100;
 

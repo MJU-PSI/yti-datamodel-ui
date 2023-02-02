@@ -5,7 +5,7 @@ import { Language, LanguageContext } from 'app/types/language';
 import { KnownModelType, UseContext } from 'app/types/entity';
 import { LocationService } from 'app/services/locationService';
 import { Classification } from 'app/entities/classification';
-import { remove, availableLanguages } from '@goraresult/yti-common-ui';
+import { remove, availableLanguages } from '@mju-psi/yti-common-ui';
 import { Organization } from 'app/entities/organization';
 import { ErrorModal } from 'app/components/form/errorModal';
 import { Vocabulary } from 'app/entities/vocabulary';

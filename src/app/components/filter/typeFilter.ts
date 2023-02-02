@@ -1,6 +1,6 @@
 import { SearchController, TextAnalysis } from '../../types/filter';
 import { IScope } from 'angular';
-import { isDefined } from '@goraresult/yti-common-ui';
+import { isDefined } from '@mju-psi/yti-common-ui';
 import { ifChanged, LegacyComponent } from '../../utils/angular';
 import { Type } from '../../types/entity';
 import * as _ from 'lodash';

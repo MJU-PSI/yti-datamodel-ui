@@ -4,7 +4,7 @@ import { isValidUri, isValidUriStem, isValidUrl } from './validators';
 import { Uri } from 'app/entities/uri';
 import { ImportedNamespace, Model } from 'app/entities/model';
 import { LanguageService } from 'app/services/languageService';
-import { anyMatching } from '@goraresult/yti-common-ui';
+import { anyMatching } from '@mju-psi/yti-common-ui';
 
 type UriInputType = 'required-namespace' | 'free-url' | 'free-uri' | 'stem';
 

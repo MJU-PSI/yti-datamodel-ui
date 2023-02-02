@@ -1,4 +1,4 @@
-import { requireDefined } from '@goraresult/yti-common-ui';
+import { requireDefined } from '@mju-psi/yti-common-ui';
 import { DefinedBy } from 'app/entities/definedBy';
 import { entityAsId, normalized } from './entitySerializer';
 import { WithIdAndType } from 'app/types/entity';

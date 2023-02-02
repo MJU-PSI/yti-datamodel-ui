@@ -1,4 +1,4 @@
-import { containsAny, flatten, requireDefined, defaultLanguage } from '@goraresult/yti-common-ui';
+import { containsAny, flatten, requireDefined, defaultLanguage } from '@mju-psi/yti-common-ui';
 import { IHttpService, IPromise, IQService } from 'angular';
 import { upperCaseFirst } from 'change-case';
 import * as moment from 'moment';

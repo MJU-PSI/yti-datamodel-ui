@@ -1,4 +1,4 @@
-import { Role, UUID } from '@goraresult/yti-common-ui';
+import { Role, UUID } from '@mju-psi/yti-common-ui';
 
 export interface User {
 

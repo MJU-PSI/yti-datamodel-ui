@@ -3,7 +3,7 @@ import { ClassViewComponent } from './classView';
 import { AddPropertiesFromClassModal } from './addPropertiesFromClassModal';
 import { Uri } from 'app/entities/uri';
 import { ClassService } from 'app/services/classService';
-import { isDefined, requireDefined, labelNameToResourceIdIdentifier, Localizable } from '@goraresult/yti-common-ui';
+import { isDefined, requireDefined, labelNameToResourceIdIdentifier, Localizable } from '@mju-psi/yti-common-ui';
 import { SearchPredicateModal } from './searchPredicateModal';
 import { EditableForm } from 'app/components/form/editableEntityController';
 import { Option } from 'app/components/common/buttonWithOptions';

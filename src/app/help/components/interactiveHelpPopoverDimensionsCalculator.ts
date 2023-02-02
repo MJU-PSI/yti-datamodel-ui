@@ -1,7 +1,7 @@
 import { LegacyComponent } from 'app/utils/angular';
 import { Notification, Story } from 'app/help/contract';
 import { IScope } from 'angular';
-import { requireDefined } from '@goraresult/yti-common-ui';
+import { requireDefined } from '@mju-psi/yti-common-ui';
 import { InteractiveHelpController } from './interactiveHelpDisplay';
 import { elementPositioning, PopoverDimensionsProvider, resolveArrowClass } from 'app/help/utils/component';
 import { gettextCatalog as GettextCatalog } from 'angular-gettext';

@@ -1,4 +1,4 @@
-import { Localizable, Status } from '@goraresult/yti-common-ui';
+import { Localizable, Status } from '@mju-psi/yti-common-ui';
 import { entity, entityAwareOptional, uriSerializer } from 'app/entities/serializer/entitySerializer';
 import { ConceptType } from 'app/types/entity';
 import { glyphIconClassForType } from 'app/utils/entity';

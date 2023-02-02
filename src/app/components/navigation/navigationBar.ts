@@ -2,7 +2,7 @@ import * as angular from 'angular';
 import { ILocationService, IScope } from 'angular';
 import { LanguageService } from 'app/services/languageService';
 import { UserService } from 'app/services/userService';
-import { LoginModalService, identity, availableLanguages } from '@goraresult/yti-common-ui';
+import { LoginModalService, identity, availableLanguages } from '@mju-psi/yti-common-ui';
 import { UILanguage } from 'app/types/language';
 import { User } from 'app/entities/user';
 import { HelpSelectionModal } from 'app/components/common/helpSelectionModal';

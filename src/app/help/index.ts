@@ -1,7 +1,7 @@
 import { componentDeclaration } from 'app/utils/angular';
 import { module11 as mod } from './module';
 
-import { comparingPrimitive, flatten, availableLanguages } from '@goraresult/yti-common-ui';
+import { comparingPrimitive, flatten, availableLanguages } from '@mju-psi/yti-common-ui';
 import { InteractiveHelpBackdropComponent } from './components/interactiveHelpBackdrop';
 import { InteractiveHelpDisplay } from './components/interactiveHelpDisplay';
 import { InteractiveHelpPopoverComponent } from './components/interactiveHelpPopover';

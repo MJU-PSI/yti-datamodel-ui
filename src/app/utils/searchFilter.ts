@@ -1,6 +1,6 @@
 import { localizableContains } from './language';
 import { isLocalizable } from './language';
-import { Localizable } from '@goraresult/yti-common-ui';
+import { Localizable } from '@mju-psi/yti-common-ui';
 
 export function valueContains(value: Localizable|string, searchString: string) {
   if (isLocalizable(value)) {

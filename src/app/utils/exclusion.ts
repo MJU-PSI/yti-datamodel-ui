@@ -1,4 +1,4 @@
-import { arraysAreEqual, containsAny, firstMatching, isDefined } from '@goraresult/yti-common-ui';
+import { arraysAreEqual, containsAny, firstMatching, isDefined } from '@mju-psi/yti-common-ui';
 import { IPromise, IQService } from 'angular';
 import { DataSource } from 'app/components/form/dataSource';
 import { ClassListItem } from 'app/entities/class';

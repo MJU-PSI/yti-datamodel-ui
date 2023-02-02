@@ -16,7 +16,7 @@ import { ModelPageHelpService } from '../../help/providers/modelPageHelpService'
 import { HelpService } from '../../help/providers/helpService';
 import { Config } from '../../entities/config';
 import { MessagingService } from '../../services/messaging-service';
-import { UserService } from '@goraresult/yti-common-ui';
+import { UserService } from '@mju-psi/yti-common-ui';
 import { Url } from '../../entities/uri';
 
 @Component({

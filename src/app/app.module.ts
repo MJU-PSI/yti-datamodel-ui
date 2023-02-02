@@ -6,7 +6,7 @@ import {
   AjaxLoadingIndicatorComponent,
   AjaxLoadingIndicatorSmallComponent, AlertModalService, AUTHENTICATED_USER_ENDPOINT, ConfirmationModalService, DropdownComponent, ErrorModalService, ExpandableTextComponent, FilterDropdownComponent, FooterComponent, Localizer as AngularLocalizer, LOCALIZER, LoginModalService, MenuComponent, ModalService, StatusComponent, YtiCommonModule,
   availableLanguages
-} from '@goraresult/yti-common-ui';
+} from '@mju-psi/yti-common-ui';
 import * as angular from 'angular';
 import { animate, ICompileProvider, ILocationProvider, ILogProvider, IHttpProvider } from 'angular';
 import { ITooltipProvider } from 'angular-ui-bootstrap';
@@ -81,10 +81,10 @@ import { IndexSearchService } from './services/indexSearchService';
 import { DefaultAngularLocalizer, LanguageService } from './services/languageService';
 import { MessagingService } from './services/messaging-service';
 import IAnimateProvider = animate.IAnimateProvider;
-import fiCommonPo from 'raw-loader!po-loader?format=mf!../../node_modules/@goraresult/yti-common-ui/po/fi.po';
-import svCommonPo from 'raw-loader!po-loader?format=mf!../../node_modules/@goraresult/yti-common-ui/po/sv.po';
-import enCommonPo from 'raw-loader!po-loader?format=mf!../../node_modules/@goraresult/yti-common-ui/po/en.po';
-import slCommonPo from 'raw-loader!po-loader?format=mf!../../node_modules/@goraresult/yti-common-ui/po/sl.po';
+import fiCommonPo from 'raw-loader!po-loader?format=mf!../../node_modules/@mju-psi/yti-common-ui/po/fi.po';
+import svCommonPo from 'raw-loader!po-loader?format=mf!../../node_modules/@mju-psi/yti-common-ui/po/sv.po';
+import enCommonPo from 'raw-loader!po-loader?format=mf!../../node_modules/@mju-psi/yti-common-ui/po/en.po';
+import slCommonPo from 'raw-loader!po-loader?format=mf!../../node_modules/@mju-psi/yti-common-ui/po/sl.po';
 import { KeycloakService } from 'keycloak-angular';
 
 require('angular-gettext');

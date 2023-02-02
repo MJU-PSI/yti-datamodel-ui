@@ -1,7 +1,7 @@
 import { IScope } from 'angular';
 import { LanguageService } from 'app/services/languageService';
 import { ColumnDescriptor, TableDescriptor } from 'app/components/form/editableTable';
-import { collectProperties } from '@goraresult/yti-common-ui';
+import { collectProperties } from '@mju-psi/yti-common-ui';
 import { EditableForm } from 'app/components/form/editableEntityController';
 import { LanguageContext } from 'app/types/language';
 import { Organization } from 'app/entities/organization';

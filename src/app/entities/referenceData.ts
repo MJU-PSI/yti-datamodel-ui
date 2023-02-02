@@ -1,4 +1,4 @@
-import { Localizable, Status } from '@goraresult/yti-common-ui';
+import { Localizable, Status } from '@mju-psi/yti-common-ui';
 import { GraphNode } from './graphNode';
 import { init, serialize } from './mapping';
 import { entity, entityAwareList, uriSerializer } from './serializer/entitySerializer';

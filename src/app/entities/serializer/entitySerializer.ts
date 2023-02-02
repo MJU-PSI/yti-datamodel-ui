@@ -1,4 +1,4 @@
-import { assertNever, isDefined, normalizeAsArray } from '@goraresult/yti-common-ui';
+import { assertNever, isDefined, normalizeAsArray } from '@mju-psi/yti-common-ui';
 import { GraphNode } from 'app/entities/graphNode';
 import { Uri } from 'app/entities/uri';
 import { EntityFactory, WithIdAndType } from 'app/types/entity';

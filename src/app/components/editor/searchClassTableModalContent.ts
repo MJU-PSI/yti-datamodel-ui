@@ -9,7 +9,7 @@ import { DisplayItemFactory, Value } from '../form/displayItemFactory';
 import { modalCancelHandler } from '../../utils/angular';
 import { ShowClassInfoModal } from './showClassInfoModal';
 import { IPageInfo } from 'ngx-virtual-scroller';
-import { makeSimpleSearchRegexp } from '@goraresult/yti-common-ui';
+import { makeSimpleSearchRegexp } from '@mju-psi/yti-common-ui';
 
 @Component({
   selector: 'app-search-class-table-modal-content',

@@ -1,4 +1,4 @@
-import { Localizable, Status } from '@goraresult/yti-common-ui';
+import { Localizable, Status } from '@mju-psi/yti-common-ui';
 import { ClassType, KnownModelType, KnownPredicateType, UseContext } from '../../types/entity';
 import { modelUrl } from '../../utils/entity';
 import { RelativeUrl } from '../uri';

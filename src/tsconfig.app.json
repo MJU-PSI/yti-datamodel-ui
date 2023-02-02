@@ -18,12 +18,12 @@
     "polyfills.ts",
     "augment.d.ts",
     "typings.d.ts",
-    "../node_modules/@goraresult/yti-common-ui/**/*.ts",
+    "../node_modules/@mju-psi/yti-common-ui/**/*.ts",
   ],
   "exclude": [
     "test.ts",
     "**/*.spec.ts",
-    "../node_modules/@goraresult/yti-common-ui/**/*.spec.ts",
-    "../node_modules/@goraresult/yti-common-ui/node_modules"
+    "../node_modules/@mju-psi/yti-common-ui/**/*.spec.ts",
+    "../node_modules/@mju-psi/yti-common-ui/node_modules"
   ]
 }

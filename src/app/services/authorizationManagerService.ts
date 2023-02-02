@@ -5,7 +5,7 @@ import { WithDefinedBy } from 'app/types/entity';
 import { Association, Attribute } from 'app/entities/predicate';
 import { Class } from 'app/entities/class';
 import { Organization } from 'app/entities/organization';
-import { selectableStatuses, Status, allowedTargetStatuses } from '@goraresult/yti-common-ui';
+import { selectableStatuses, Status, allowedTargetStatuses } from '@mju-psi/yti-common-ui';
 
 function isReference(model: Model, resource: WithDefinedBy): boolean {
   return resource.definedBy.id.notEquals(model.id);

@@ -4,7 +4,7 @@ import { LanguageService } from 'app/services/languageService';
 import { isLocalizationDefined } from 'app/utils/language';
 import { Language, LanguageContext } from 'app/types/language';
 import { LegacyComponent } from 'app/utils/angular';
-import { availableLanguages } from '@goraresult/yti-common-ui';
+import { availableLanguages } from '@mju-psi/yti-common-ui';
 
 @LegacyComponent({
   bindings: {

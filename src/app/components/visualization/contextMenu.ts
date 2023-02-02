@@ -1,4 +1,4 @@
-import { labelNameToResourceIdIdentifier, Optional, requireDefined } from '@goraresult/yti-common-ui';
+import { labelNameToResourceIdIdentifier, Optional, requireDefined } from '@mju-psi/yti-common-ui';
 import { IScope } from 'angular';
 import { ModelPageActions } from 'app/components/model/modelPage';
 import { Model } from 'app/entities/model';

@@ -1,7 +1,7 @@
 import { IScope } from 'angular';
 import { Referrer, Usage } from 'app/entities/usage';
 import { LanguageContext } from 'app/types/language';
-import { groupBy, stringMapToObject } from '@goraresult/yti-common-ui';
+import { groupBy, stringMapToObject } from '@mju-psi/yti-common-ui';
 import { LegacyComponent } from 'app/utils/angular';
 import { EditableForm } from 'app/components/form/editableEntityController';
 

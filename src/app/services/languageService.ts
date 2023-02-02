@@ -1,6 +1,6 @@
 import { LanguageContext, UILanguage, Language, Localizer as AngularJSLocalizer } from 'app/types/language';
 import { translate } from 'app/utils/language';
-import { Localizable, Localizer as AngularLocalizer, availableLanguages, defaultLanguage } from '@goraresult/yti-common-ui';
+import { Localizable, Localizer as AngularLocalizer, availableLanguages, defaultLanguage } from '@mju-psi/yti-common-ui';
 import { SessionService } from './sessionService';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, BehaviorSubject, Subject } from 'rxjs';

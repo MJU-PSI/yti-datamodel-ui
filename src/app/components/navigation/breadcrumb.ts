@@ -1,6 +1,6 @@
 import { IScope } from 'angular';
 import { Location, LocationService } from 'app/services/locationService';
-import { labelNameToResourceIdIdentifier } from '@goraresult/yti-common-ui';
+import { labelNameToResourceIdIdentifier } from '@mju-psi/yti-common-ui';
 import { LanguageService } from 'app/services/languageService';
 import { TranslateService } from '@ngx-translate/core';
 import { LegacyComponent } from 'app/utils/angular';

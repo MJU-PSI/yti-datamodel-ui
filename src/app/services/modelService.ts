@@ -1,4 +1,4 @@
-import { assertNever, requireDefined, Status } from '@goraresult/yti-common-ui';
+import { assertNever, requireDefined, Status } from '@mju-psi/yti-common-ui';
 import { IHttpService, IPromise, IQService } from 'angular';
 import { upperCaseFirst } from 'change-case';
 import * as moment from 'moment';

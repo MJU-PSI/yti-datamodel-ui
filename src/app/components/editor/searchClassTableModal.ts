@@ -10,7 +10,7 @@ import { AbstractClass, Class, ClassListItem } from '../../entities/class';
 import { Model } from '../../entities/model';
 import { ExternalEntity } from '../../entities/externalEntity';
 import { defaultLabelComparator, filterAndSortSearchResults } from '../../components/filter/util';
-import { Optional, requireDefined, selectableStatuses, Status, ignoreModalClose, contains } from '@goraresult/yti-common-ui';
+import { Optional, requireDefined, selectableStatuses, Status, ignoreModalClose, contains } from '@mju-psi/yti-common-ui';
 import { ifChanged } from '../../utils/angular';
 import { Classification } from '../../entities/classification';
 import { ClassificationService } from '../../services/classificationService';

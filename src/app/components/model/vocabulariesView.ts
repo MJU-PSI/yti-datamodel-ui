@@ -3,7 +3,7 @@ import { LanguageService } from 'app/services/languageService';
 import { ColumnDescriptor, TableDescriptor } from 'app/components/form/editableTable';
 import { SearchVocabularyModal } from './searchVocabularyModal';
 import { createExistsExclusion } from 'app/utils/exclusion';
-import { collectProperties } from '@goraresult/yti-common-ui';
+import { collectProperties } from '@mju-psi/yti-common-ui';
 import { Vocabulary } from 'app/entities/vocabulary';
 import { LegacyComponent, modalCancelHandler } from 'app/utils/angular';
 import { LanguageContext } from 'app/types/language';

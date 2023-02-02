@@ -1,4 +1,4 @@
-import { flatten, requireDefined } from '@goraresult/yti-common-ui';
+import { flatten, requireDefined } from '@mju-psi/yti-common-ui';
 import { IPromise, IQService } from 'angular';
 import * as moment from 'moment';
 import { DataSource } from '../../components/form/dataSource';

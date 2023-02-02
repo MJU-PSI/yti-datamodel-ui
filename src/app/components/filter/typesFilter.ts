@@ -1,7 +1,7 @@
 import { SearchController, TextAnalysis } from 'app/types/filter';
 import { IScope } from 'angular';
 import { Type, WithIdAndType } from 'app/types/entity';
-import { containsAny } from '@goraresult/yti-common-ui';
+import { containsAny } from '@mju-psi/yti-common-ui';
 import { ifChanged, LegacyComponent } from 'app/utils/angular';
 
 @LegacyComponent({

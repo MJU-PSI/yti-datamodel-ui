@@ -1,7 +1,7 @@
 import { IModalService } from 'angular-ui-bootstrap';
 import { Usage } from 'app/entities/usage';
 import { LanguageContext } from 'app/types/language';
-import { identity } from '@goraresult/yti-common-ui';
+import { identity } from '@mju-psi/yti-common-ui';
 import { modalCancelHandler } from 'app/utils/angular';
 
 interface UsageParameters {

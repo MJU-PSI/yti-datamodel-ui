@@ -1,4 +1,4 @@
-import { isDefined } from '@goraresult/yti-common-ui';
+import { isDefined } from '@mju-psi/yti-common-ui';
 import { UsageService } from 'app/services/usageService';
 import { ErrorModal } from 'app/components/form/errorModal';
 import { PredicateService } from 'app/services/predicateService';

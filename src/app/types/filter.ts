@@ -1,5 +1,5 @@
 import { AddNew } from 'app/components/common/searchResults';
-import { Localizable } from '@goraresult/yti-common-ui';
+import { Localizable } from '@mju-psi/yti-common-ui';
 
 export interface SearchController<T> {
   items: T[];

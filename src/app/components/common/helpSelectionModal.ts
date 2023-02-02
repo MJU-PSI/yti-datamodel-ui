@@ -1,7 +1,7 @@
 import { IModalService, IModalServiceInstance } from 'angular-ui-bootstrap';
 import { InteractiveHelp } from 'app/help/contract';
 import { InteractiveHelpDisplay } from 'app/help/components/interactiveHelpDisplay';
-import { labelNameToResourceIdIdentifier } from '@goraresult/yti-common-ui';
+import { labelNameToResourceIdIdentifier } from '@mju-psi/yti-common-ui';
 import { TranslateService } from '@ngx-translate/core';
 
 export class HelpSelectionModal {

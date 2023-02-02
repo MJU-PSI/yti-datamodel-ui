@@ -6,7 +6,7 @@ import { SearchConceptModal, EntityCreation } from './searchConceptModal';
 import { LanguageService, Localizer } from '../../services/languageService';
 import { EditableForm } from '../../components/form/editableEntityController';
 import { infoDomainMatches } from '../../utils/entity';
-import { contains, ignoreModalClose, Status, selectableStatuses } from '@goraresult/yti-common-ui';
+import { contains, ignoreModalClose, Status, selectableStatuses } from '@mju-psi/yti-common-ui';
 import { Exclusion, combineExclusions, createExistsExclusion, createDefinedByExclusion } from '../../utils/exclusion';
 import { SearchFilter, SearchController } from '../../types/filter';
 import { PredicateListItem, AbstractPredicate, Predicate } from '../../entities/predicate';

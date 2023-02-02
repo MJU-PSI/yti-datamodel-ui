@@ -1,6 +1,6 @@
 import { INgModelController, IScope } from 'angular';
 import { resolveValidator } from './validators';
-import { normalizeAsArray } from '@goraresult/yti-common-ui';
+import { normalizeAsArray } from '@mju-psi/yti-common-ui';
 import { dataTypes } from 'app/entities/dataTypes';
 import { LegacyComponent } from 'app/utils/angular';
 

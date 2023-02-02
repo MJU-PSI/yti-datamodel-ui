@@ -1,4 +1,4 @@
-import { firstMatching, identity, keepMatching, Localizable, requireDefined, Status, availableLanguages, defaultLanguage } from '@goraresult/yti-common-ui';
+import { firstMatching, identity, keepMatching, Localizable, requireDefined, Status, availableLanguages, defaultLanguage } from '@mju-psi/yti-common-ui';
 import { IPromise, IQService } from 'angular';
 import { Class, Property } from 'app/entities/class';
 import { Classification } from 'app/entities/classification';

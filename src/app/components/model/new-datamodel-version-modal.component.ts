@@ -1,5 +1,5 @@
 import { Component, Injectable } from '@angular/core';
-import { ModalService, AlertModalService, ErrorModalService } from '@goraresult/yti-common-ui';
+import { ModalService, AlertModalService, ErrorModalService } from '@mju-psi/yti-common-ui';
 import { Model } from 'app/entities/model';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModelServiceWrapper } from 'app/ajs-upgraded-providers';

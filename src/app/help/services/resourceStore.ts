@@ -1,4 +1,4 @@
-import { flatten, Optional, requireDefined } from '@goraresult/yti-common-ui';
+import { flatten, Optional, requireDefined } from '@mju-psi/yti-common-ui';
 import { IPromise, IQService } from 'angular';
 import { DefinedBy } from 'app/entities/definedBy';
 import { Model } from 'app/entities/model';

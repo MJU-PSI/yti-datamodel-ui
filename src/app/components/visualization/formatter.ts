@@ -1,4 +1,4 @@
-import { assertNever, comparingPrimitive, isDefined } from '@goraresult/yti-common-ui';
+import { assertNever, comparingPrimitive, isDefined } from '@mju-psi/yti-common-ui';
 import { Property } from 'app/entities/class';
 import { DataType } from 'app/entities/dataTypes';
 import { VisualizationClass } from 'app/entities/visualization';

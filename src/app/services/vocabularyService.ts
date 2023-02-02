@@ -8,7 +8,7 @@ import { GraphData } from 'app/types/entity';
 import * as frames from 'app/entities/frames';
 import { Vocabulary, Concept } from 'app/entities/vocabulary';
 import { Model } from 'app/entities/model';
-import { requireDefined } from '@goraresult/yti-common-ui';
+import { requireDefined } from '@mju-psi/yti-common-ui';
 
 export interface VocabularyService {
   getAllVocabularies(): IPromise<Vocabulary[]>;

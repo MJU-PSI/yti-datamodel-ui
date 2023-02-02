@@ -4,7 +4,7 @@ import { PredicateService } from '../../services/predicateService';
 import { SearchPredicateModal } from './searchPredicateModal';
 import { createDefinedByExclusion } from '../../utils/exclusion';
 import { ClassFormComponent } from './classForm';
-import { anyMatching, requireDefined } from '@goraresult/yti-common-ui';
+import { anyMatching, requireDefined } from '@mju-psi/yti-common-ui';
 import { CopyPredicateModal } from './copyPredicateModal';
 import { Property } from '../../entities/class';
 import { Model } from '../../entities/model';

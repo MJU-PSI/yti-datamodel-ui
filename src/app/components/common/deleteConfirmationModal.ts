@@ -1,7 +1,7 @@
 import { IPromise } from 'angular';
 import { IModalService } from 'angular-ui-bootstrap';
 import { UsageService } from 'app/services/usageService';
-import { anyMatching, isDefined } from '@goraresult/yti-common-ui';
+import { anyMatching, isDefined } from '@mju-psi/yti-common-ui';
 import { LanguageContext } from 'app/types/language';
 import { EditableEntity } from 'app/types/entity';
 import { Model } from 'app/entities/model';

@@ -1,7 +1,7 @@
 import { EditableForm } from './editableEntityController';
 import { Model } from 'app/entities/model';
 import { AuthorizationManagerService } from 'app/services/authorizationManagerService';
-import { Status } from '@goraresult/yti-common-ui';
+import { Status } from '@mju-psi/yti-common-ui';
 import { LegacyComponent } from 'app/utils/angular';
 
 @LegacyComponent({

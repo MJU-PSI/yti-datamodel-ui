@@ -3,7 +3,7 @@ import 'angular';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppModule } from './app/app.module';
 import { enableProdMode } from '@angular/core';
-import { YtiCommonUiConfig, YTI_COMMON_UI_CONFIG } from '@goraresult/yti-common-ui';
+import { YtiCommonUiConfig, YTI_COMMON_UI_CONFIG } from '@mju-psi/yti-common-ui';
 import { Configuration } from './configuration/configuration';
 
 require('imports-loader?define=>false!jquery-mousewheel/jquery.mousewheel')(jQuery);

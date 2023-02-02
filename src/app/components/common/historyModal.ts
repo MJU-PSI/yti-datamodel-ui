@@ -7,7 +7,7 @@ import { HistoryService } from 'app/services/historyService';
 import { UserService } from 'app/services/userService';
 import { Uri } from 'app/entities/uri';
 import { comparingDate } from 'app/utils/comparator';
-import { reversed, containsAny, identity } from '@goraresult/yti-common-ui';
+import { reversed, containsAny, identity } from '@mju-psi/yti-common-ui';
 import { Model } from 'app/entities/model';
 import { Class } from 'app/entities/class';
 import { Predicate } from 'app/entities/predicate';

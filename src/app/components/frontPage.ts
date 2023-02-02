@@ -22,7 +22,7 @@ import {
   selectableStatuses,
   Status,
   Localizable
-} from '@goraresult/yti-common-ui';
+} from '@mju-psi/yti-common-ui';
 import { KnownModelType, profileUseContexts, UseContext } from '../types/entity';
 import { gettextCatalog as GettextCatalog } from 'angular-gettext';
 import { OrganizationService } from '../services/organizationService';

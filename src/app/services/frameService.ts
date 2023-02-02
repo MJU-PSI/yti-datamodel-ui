@@ -3,7 +3,7 @@ import {
   GraphData, EntityFactory, EntityConstructor,
   EntityArrayFactory, EntityArrayConstructor
 } from 'app/types/entity';
-import { normalizeAsArray } from '@goraresult/yti-common-ui';
+import { normalizeAsArray } from '@mju-psi/yti-common-ui';
 import { GraphNode, GraphNodes } from 'app/entities/graphNode';
 
 const jsonld: any = require('jsonld');

@@ -1,6 +1,6 @@
 import { IHttpService, IPromise } from 'angular';
 import { Uri } from 'app/entities/uri';
-import { Role } from '@goraresult/yti-common-ui';
+import { Role } from '@mju-psi/yti-common-ui';
 import { apiEndpointWithName } from './config';
 
 export interface UserRequest {

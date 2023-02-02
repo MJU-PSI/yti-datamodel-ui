@@ -1,4 +1,4 @@
-import { contains, requireDefined, Status } from '@goraresult/yti-common-ui';
+import { contains, requireDefined, Status } from '@mju-psi/yti-common-ui';
 import { IPromise, IQService } from 'angular';
 import { ImportedNamespace, Link, Model, ModelListItem } from 'app/entities/model';
 import { Uri, Urn } from 'app/entities/uri';

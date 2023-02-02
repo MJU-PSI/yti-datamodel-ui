@@ -9,7 +9,7 @@ import { LanguageContext } from 'app/types/language';
 import { EditorContainer } from './modelControllerService';
 import { AuthorizationManagerService } from 'app/services/authorizationManagerService';
 import { LegacyComponent } from 'app/utils/angular';
-import { AlertModalService, changeToRestrictedStatus, Status, ErrorModalService } from '@goraresult/yti-common-ui';
+import { AlertModalService, changeToRestrictedStatus, Status, ErrorModalService } from '@mju-psi/yti-common-ui';
 import { TranslateService } from '@ngx-translate/core';
 import { DatamodelConfirmationModalService } from 'app/services/confirmation-modal.service';
 

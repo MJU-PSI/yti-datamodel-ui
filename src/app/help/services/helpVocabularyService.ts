@@ -1,4 +1,4 @@
-import { isDefined, Localizable, requireDefined } from '@goraresult/yti-common-ui';
+import { isDefined, Localizable, requireDefined } from '@mju-psi/yti-common-ui';
 import { IPromise, IQService } from 'angular';
 import { analyze } from 'app/components/filter/textAnalyzer';
 import { Uri } from 'app/entities/uri';

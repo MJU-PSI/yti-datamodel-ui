@@ -1,5 +1,5 @@
 import { LegacyComponent } from 'app/utils/angular';
-import { labelNameToResourceIdIdentifier } from '@goraresult/yti-common-ui';
+import { labelNameToResourceIdIdentifier } from '@mju-psi/yti-common-ui';
 import { TranslateService } from '@ngx-translate/core';
 
 export interface Option {
