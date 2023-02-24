@@ -86,6 +86,7 @@ import svCommonPo from 'raw-loader!po-loader?format=mf!../../node_modules/@mju-p
 import enCommonPo from 'raw-loader!po-loader?format=mf!../../node_modules/@mju-psi/yti-common-ui/po/en.po';
 import slCommonPo from 'raw-loader!po-loader?format=mf!../../node_modules/@mju-psi/yti-common-ui/po/sl.po';
 import { KeycloakService } from 'keycloak-angular';
+import { LocationStrategy, PathLocationStrategy } from '@angular/common';
 
 require('angular-gettext');
 require('checklist-model');
@@ -206,6 +207,7 @@ export function localizerFactory(languageService: LanguageService): AngularLocal
   providers: [
     { provide: AUTHENTICATED_USER_ENDPOINT, useFactory: resolveAuthenticatedUserEndpoint },
     { provide: LOCALIZER, useFactory: localizerFactory, deps: [LanguageService] },
+    { provide: LocationStrategy, useClass: PathLocationStrategy },
     languageServiceProvider,
     scopeProvider,
     routeServiceProvider,

@@ -13,7 +13,7 @@ export interface Location {
   iowUrl?(): string;
 }
 
-const frontPage = { localizationKey: 'Front page', iowUrl: () => '/' };
+const frontPage = { localizationKey: 'Front page', iowUrl: () => ' ' };
 
 export class LocationService {
 
