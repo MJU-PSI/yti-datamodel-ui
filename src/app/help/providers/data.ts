@@ -22,6 +22,7 @@ export const helpVocabulary: VocabularyWithConceptsDetails = {
     label: {
       fi: 'Julkisen hallinnon yhteinen sanasto',
       en: 'Finnish Public Sector Terminological Glossary (Controlled Vocabulary)',
+      sl: 'Terminološki glosar javnega sektorja (nadzorovani besednjak)',
       sv: 'sv test'
     },
     description: {
@@ -31,8 +32,8 @@ export const helpVocabulary: VocabularyWithConceptsDetails = {
   },
   concepts: [
     {
-      label: { fi: 'omistaja', en: 'owner', sv: 'sv test' },
-      definition: { fi: 'omistajan määritelmä', en: 'owner definition', sv: 'sv test' }
+      label: { fi: 'omistaja', en: 'owner', sl: 'lastnik', sv: 'sv test' },
+      definition: { fi: 'omistajan määritelmä', en: 'owner definition', sl: 'definicija lastnika', sv: 'sv test' }
     }
   ]
 };
@@ -44,6 +45,7 @@ export const helpImportedLibrary = {
     label: {
       fi: 'Julkishallinnon tietokomponentit',
       en: 'Finnish Public Sector Core Components',
+      sl: 'Osnovne komponente javnega sektorja',
       sv: 'sv test'
     },
     organizations: [helpOrganization.id.uri],
@@ -52,26 +54,26 @@ export const helpImportedLibrary = {
   },
   classes: {
     person: {
-      label: { fi: 'Henkilö', en: 'Person', sv: 'sv test' }
+      label: { fi: 'Henkilö', en: 'Person', sl: 'Oseba', sv: 'sv test' }
     },
     contact: {
-      label: { fi: 'Yhteystiedot', en: 'Contact', sv: 'sv test' }
+      label: { fi: 'Yhteystiedot', en: 'Contact', sl: 'Kontakt', sv: 'sv test' }
     },
     address: {
-      label: { fi: 'Osoite', en: 'Address', sv: 'sv test' }
+      label: { fi: 'Osoite', en: 'Address', sl: 'Naslov', sv: 'sv test' }
     },
     code: {
-      label: { fi: 'Koodi', en: 'Code', sv: 'sv test' }
+      label: { fi: 'Koodi', en: 'Code', sl: 'Koda', sv: 'sv test' }
     },
     vehicle: {
-      label: { fi: 'Liikenneväline', en: 'Vehicle', sv: 'sv test' },
+      label: { fi: 'Liikenneväline', en: 'Vehicle', sl: 'Vozilo', sv: 'sv test' },
       properties: [
         { predicate: predicateIdFromPrefixAndName('jhs', 'Rekisterinumero') },
         { predicate: predicateIdFromPrefixAndName('jhs', 'Lajikoodi') }
       ]
     },
     service: {
-      label: { fi: 'Palvelu', en: 'Service', sv: 'sv test' },
+      label: { fi: 'Palvelu', en: 'Service', sl: 'Storitev', sv: 'sv test' },
       properties: [
         { predicate: predicateIdFromPrefixAndName('jhs', 'Nimi') },
         { predicate: predicateIdFromPrefixAndName('jhs', 'Kuvaus') }
@@ -80,18 +82,18 @@ export const helpImportedLibrary = {
   },
   attributes: {
     registrationNumber: {
-      label: { fi: 'Rekisterinumero', en: 'Registration number', sv: 'sv test' }
+      label: { fi: 'Rekisterinumero', en: 'Registration number', sl: 'Registrska številka', sv: 'sv test' }
     },
     name: {
-      label: { fi: 'Nimi', en: 'Name', sv: 'sv test' }
+      label: { fi: 'Nimi', en: 'Name', sl: 'Ime', sv: 'sv test' }
     },
     description: {
-      label: { fi: 'Kuvaus', en: 'Description', sv: 'sv test' }
+      label: { fi: 'Kuvaus', en: 'Description', sl: 'Opis', sv: 'sv test' }
     },
   },
   associations: {
     categoryCode: {
-      label: { fi: 'Lajikoodi', en: 'Category code', sv: 'sv test' },
+      label: { fi: 'Lajikoodi', en: 'Category code', sl: 'Koda kategorije', sv: 'sv test' },
       valueClass: classIdFromPrefixAndName('jhs', 'Koodi')
     }
   }
@@ -101,8 +103,8 @@ export const helpLibrary = {
   model: {
     type: 'library' as KnownModelType,
     prefix: 'sea',
-    label: { fi: 'Merenkulun tietokomponentit', en: 'Seafaring information components', sv: 'sv test' },
-    comment: { fi: 'Merenkulun tietokomponentit', en: 'Seafaring information components', sv: 'sv test' },
+    label: { fi: 'Merenkulun tietokomponentit', en: 'Seafaring information components', sl: 'Komponente pomorskih informacij', sv: 'sv test' },
+    comment: { fi: 'Merenkulun tietokomponentit', en: 'Seafaring information components', sl: 'Komponente pomorskih informacij', sv: 'sv test' },
     organizations: [helpOrganization.id.uri],
     vocabularies: [vocabularyIdFromPrefix(helpVocabulary.vocabulary.prefix)],
     classifications: ['P16'],
@@ -111,7 +113,7 @@ export const helpLibrary = {
   importedLibrary: helpImportedLibrary.model,
   vocabulary: helpVocabulary.vocabulary,
   classification: {
-    label: { fi: 'Liikenne', en: 'Transport', sv: 'sv test' } as Localizable,
+    label: { fi: 'Liikenne', en: 'Transport', sl: 'Transport', sv: 'sv test' } as Localizable,
     id: 'http://urn.fi/URN:NBN:fi:au:ptvl:v1142'
   },
   organization: helpOrganization,
@@ -128,8 +130,8 @@ export const helpLibrary = {
     details: helpImportedLibrary.classes.address
   },
   newClass: {
-    label: { fi: 'Vene', en: 'Boat'} as Localizable,
-    comment: { fi: 'Vedessä kulkeva alus, joka on laivaa pienempi', en: 'Vehicle operating in water', sv: 'sv test' } as Localizable,
+    label: { fi: 'Vene', en: 'Boat', sl: 'Čoln'} as Localizable,
+    comment: { fi: 'Vedessä kulkeva alus, joka on laivaa pienempi', en: 'Vehicle operating in water', sl: 'Vozilo, ki deluje v vodi', sv: 'sv test' } as Localizable,
     superClass: {
       prefix: helpImportedLibrary.model.prefix,
       details: helpImportedLibrary.classes.vehicle,
@@ -146,12 +148,12 @@ export const helpLibrary = {
       },
       passengers: {
         type: 'attribute' as KnownPredicateType,
-        label: { fi: 'Matkustajien lukumäärä', en: 'Number of passengers', sv: 'sv test' } as Localizable,
-        comment: { fi: 'Matkustajien lukumäärä', en: 'Number of passengers', sv: 'sv test' } as Localizable
+        label: { fi: 'Matkustajien lukumäärä', en: 'Number of passengers', sl: 'Število potnikov', sv: 'sv test' } as Localizable,
+        comment: { fi: 'Matkustajien lukumäärä', en: 'Number of passengers', sl: 'Število potnikov', sv: 'sv test' } as Localizable
       },
       owner: {
         type: 'association' as KnownPredicateType,
-        name: { fi: 'Omistaja', en: 'Owner', sv: 'sv test' },
+        name: { fi: 'Omistaja', en: 'Owner', sl: 'Lastnik', sv: 'sv test' },
         conceptId: conceptIdFromPrefixAndIndex(helpVocabulary.vocabulary.prefix, 0),
         target: {
           prefix: helpImportedLibrary.model.prefix,
@@ -166,8 +168,8 @@ export const helpProfile = {
   model: {
     type: 'profile' as KnownModelType,
     prefix: 'plv',
-    label: { fi: 'Palveluprofiili', en: 'Service profile', sv: 'sv test' },
-    comment: { fi: 'Palveluprofiili', en: 'Service profile', sv: 'sv test' },
+    label: { fi: 'Palveluprofiili', en: 'Service profile', sl: 'Profil storitve', sv: 'sv test' },
+    comment: { fi: 'Palveluprofiili', en: 'Service profile', sl: 'Profil storitve', sv: 'sv test' },
     organizations: [helpOrganization.id.uri],
     vocabularies: [vocabularyIdFromPrefix(helpVocabulary.vocabulary.prefix)],
     classifications: ['P9'],
@@ -176,13 +178,13 @@ export const helpProfile = {
   importedLibrary: helpImportedLibrary.model,
   vocabulary: helpVocabulary.vocabulary,
   classification: {
-    label: { fi: 'Yleiset tieto- ja hallintopalvelut', en: 'General information and administrative services', sv: 'sv test' } as Localizable,
+    label: { fi: 'Yleiset tieto- ja hallintopalvelut', en: 'General information and administrative services', sl: 'Splošne informacije in administrativne storitve', sv: 'sv test' } as Localizable,
     id: 'http://urn.fi/URN:NBN:fi:au:ptvl:v1095',
   },
   organization: helpOrganization,
   newClass: {
-    label: { fi: 'Tuote', en: 'Product', sv: 'sv test'} as Localizable,
-    comment: { fi: 'Asia joka tuotetaan', en: 'Thing that is produced', sv: 'sv test' } as Localizable,
+    label: { fi: 'Tuote', en: 'Product', sl: 'Produkt', sv: 'sv test'} as Localizable,
+    comment: { fi: 'Asia joka tuotetaan', en: 'Thing that is produced', sl: 'Stvar, ki je proizvedena', sv: 'sv test' } as Localizable,
     property: {
       name: {
         type: 'attribute' as KnownPredicateType,
@@ -191,8 +193,8 @@ export const helpProfile = {
       },
       produced: {
         type: 'association' as KnownPredicateType,
-        label: { fi: 'Tuotetaan palvelussa', en: 'Produced in a service', sv: 'sv test' } as Localizable,
-        comment: { fi: 'Tapahtumaketju joka toteuttaa jotain', en: 'Event chain that produces something', sv: 'sv test' } as Localizable,
+        label: { fi: 'Tuotetaan palvelussa', en: 'Produced in a service', sl: 'Storitev', sv: 'sv test' } as Localizable,
+        comment: { fi: 'Tapahtumaketju joka toteuttaa jotain', en: 'Event chain that produces something', sl: 'Produkt kot storitev', sv: 'sv test' } as Localizable,
         target: {
           prefix: 'plv',
           details: helpImportedLibrary.classes.service

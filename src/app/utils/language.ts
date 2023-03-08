@@ -91,7 +91,7 @@ export function anyLocalization(predicate: (localized: string) => boolean, local
 }
 
 export function localizableContains(localizable: Localizable, searchString: string) {
-  return anyLocalization(localized => localized.toLowerCase().includes(searchString.toLowerCase()), localizable);
+  return anyLocalization(localized => (!!localized && !!searchString && localized.toLowerCase().includes(searchString.toLowerCase())), localizable);
 }
 
 export function hasLocalization(localizable: Localizable) {

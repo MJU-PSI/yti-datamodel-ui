@@ -23,5 +23,5 @@ export function onlyProperties(properties: Property[], expectedProperties: strin
 }
 
 export function formatSearch(name: string, length = 4) {
-  return name.toLowerCase().substring(0, Math.min(length, name.length))
+  return !!name && name.toLowerCase().substring(0, Math.min(length, name.length)) || '';
 }
