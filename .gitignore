@@ -7,6 +7,7 @@ typings/*
 **/.DS_Store
 po/*.mo
 dist
+tmp
 
 # SonarQube
 .scannerwork
