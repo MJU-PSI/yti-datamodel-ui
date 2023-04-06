@@ -14,6 +14,8 @@ import { IPromise, IQService } from 'angular';
 import { Class, Property } from 'app/entities/class';
 import { Organization } from 'app/entities/organization';
 import { Classification } from 'app/entities/classification';
+import { Configuration } from 'app/configuration.interface';
+declare let __config: Configuration;
 
 export const technicalNamespaces = {
   'schema': 'http://schema.org/',
@@ -27,7 +29,7 @@ export const technicalNamespaces = {
   'xsd': 'http://www.w3.org/2001/XMLSchema#',
   'skos': 'http://www.w3.org/2004/02/skos/core#',
   'rdfs': 'http://www.w3.org/2000/01/rdf-schema#',
-  'iow': 'http://uri.suomi.fi/datamodel/ns/iow#',
+  'iow': `${__config.datamodelDomain}/datamodel/ns/iow#`,
   'sd': 'http://www.w3.org/ns/sparql-service-description#',
   'at': 'http://publications.europa.eu/ontology/authority/',
   'sh': 'http://www.w3.org/ns/shacl#',
@@ -110,7 +112,7 @@ export class EntityCreatorService {
 
   createModel(details: ModelDetails): IPromise<Model> {
 
-    const namespace = `http://uri.suomi.fi/datamodel/ns/${details.prefix}#`;
+    const namespace = `${__config.datamodelDomain}/datamodel/ns/${details.prefix}#`;
 
     const context = {
       'rest' : {
@@ -388,7 +390,7 @@ export class EntityCreatorService {
         '@id': 'http://www.w3.org/ns/shacl#name'
       },
       'localName': {
-        '@id': 'http://uri.suomi.fi/datamodel/ns/iow#localName'
+        '@id': `${__config.datamodelDomain}/datamodel/ns/iow#localName`
       },
       'datatype': {
         '@id': 'http://www.w3.org/ns/shacl#datatype',

@@ -4,7 +4,9 @@ import { ModelService } from '../../services/modelService';
 import { Language, LanguageContext } from '../../types/language';
 import { isDefined } from '@mju-psi/yti-common-ui';
 import { ImportedNamespace } from '../../entities/model';
+import { Configuration } from 'app/configuration.interface';
 
+declare let __config: Configuration;
 const technicalNamespaces: { [prefix: string]: string } = {
   dcap: 'http://purl.org/ws-mmi-dc/terms/',
   schema: 'http://schema.org/',
@@ -17,7 +19,7 @@ const technicalNamespaces: { [prefix: string]: string } = {
   afn: 'http://jena.hpl.hp.com/ARQ/function#',
   skos: 'http://www.w3.org/2004/02/skos/core#',
   rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
-  iow: 'http://uri.suomi.fi/datamodel/ns/iow#',
+  iow: `${__config.datamodelDomain}/datamodel/ns/iow#`,
   sd: 'http://www.w3.org/ns/sparql-service-description#',
   at: 'http://publications.europa.eu/ontology/authority/',
   rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',

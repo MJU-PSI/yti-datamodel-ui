@@ -5,7 +5,7 @@ import { RelativeUrl } from '../uri';
 
 export type IndexModel = {
   /**
-   * URI, e.g., "http://uri.suomi.fi/datamodel/ns/edu".
+   * URI, e.g., "http://domain.com/datamodel/ns/edu".
    */
   id: string;
   useContext: UseContext;
@@ -28,7 +28,7 @@ export type IndexModel = {
 
 export type IndexResource = {
   /**
-   * URI, e.g., "http://uri.suomi.fi/datamodel/ns/edu#Oppiaine".
+   * URI, e.g., "http://domain.com/datamodel/ns/edu#Oppiaine".
    */
   id: string;
   /**

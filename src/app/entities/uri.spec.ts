@@ -1,4 +1,7 @@
 import { Uri } from './uri';
+import { Configuration } from 'app/configuration.interface';
+
+declare let __config: Configuration;
 
 const context = {
   'label' : {
@@ -19,16 +22,16 @@ const context = {
   'adms' : 'http://www.w3.org/ns/adms#',
   'dcam' : 'http://purl.org/dc/dcam/',
   'owl' : 'http://www.w3.org/2002/07/owl#',
-  'foo' : 'http://uri.suomi.fi/datamodel/ns/foo#',
+  'foo' : `${__config.datamodelDomain}/datamodel/ns/foo#`,
   'afn' : 'http://jena.hpl.hp.com/ARQ/function#',
   'xsd' : 'http://www.w3.org/2001/XMLSchema#',
   'skos' : 'http://www.w3.org/2004/02/skos/core#',
   'rdfs' : 'http://www.w3.org/2000/01/rdf-schema#',
-  'iow' : 'http://uri.suomi.fi/datamodel/ns/iow#',
+  'iow' : `${__config.datamodelDomain}/datamodel/ns/iow#`,
   'sd' : 'http://www.w3.org/ns/sparql-service-description#',
   'sh' : 'http://www.w3.org/ns/shacl#',
   'rdf' : 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
-  'edu' : 'http://uri.suomi.fi/datamodel/ns/edu#',
+  'edu' : `${__config.datamodelDomain}/datamodel/ns/edu#`,
   'dcterms' : 'http://purl.org/dc/terms/',
   'text' : 'http://jena.apache.org/text#',
   'prov' : 'http://www.w3.org/ns/prov#',

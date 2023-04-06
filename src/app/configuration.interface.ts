@@ -2,9 +2,10 @@ import { InjectionToken } from "@angular/core";
 
 export interface Configuration {
   production: boolean
-  url: string,
-  realm: string,
-  clientId: string
+  keycloakUrl: string,
+  keycloakRealm: string,
+  keycloakClientId: string,
+  datamodelDomain: string
 }
 
 // We use a dependency injection token to access the configuration in our application.

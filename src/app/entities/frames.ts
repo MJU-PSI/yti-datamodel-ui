@@ -1,4 +1,7 @@
 import { Uri, Urn, Url } from './uri';
+import { Configuration } from 'app/configuration.interface';
+
+declare let __config: Configuration;
 
 const inScheme = { '@id': 'http://www.w3.org/2004/02/skos/core#inScheme', '@type': '@id' };
 const subject = { '@id': 'http://purl.org/dc/terms/subject', '@type': '@id' };
@@ -26,8 +29,8 @@ const coreContext = {
   prov: 'http://www.w3.org/ns/prov#',
   versionInfo: { '@id': 'http://www.w3.org/2002/07/owl#versionInfo' },
   editorialNote: { '@id': 'http://www.w3.org/2004/02/skos/core#editorialNote', '@container': '@language' },
-  localName: { '@id': 'http://uri.suomi.fi/datamodel/ns/iow#localName' },
-  status: { '@id': 'http://uri.suomi.fi/datamodel/ns/iow#status' }
+  localName: { '@id': `${__config.datamodelDomain}/datamodel/ns/iow#localName` },
+  status: { '@id': `${__config.datamodelDomain}/datamodel/ns/iow#status` }
 };
 
 const vocabularyContext = Object.assign({}, coreContext, {
@@ -44,7 +47,7 @@ const classificationContext = Object.assign({}, coreContext, {
 
 const organizationContext = Object.assign({}, coreContext, {
   description,
-  parentOrganization: { '@id': 'http://uri.suomi.fi/datamodel/ns/iow#parentOrganization', '@type': '@id' }
+  parentOrganization: { '@id': `${__config.datamodelDomain}/datamodel/ns/iow#parentOrganization`, '@type': '@id' }
 });
 
 const referenceDataServerContext = Object.assign({}, coreContext, {
@@ -85,10 +88,10 @@ const propertyContext = Object.assign({}, coreContext, predicateContext, referen
   memberOf: { '@id': 'http://purl.org/dc/dcam/memberOf'},
   stem: { '@id': 'http://www.w3.org/ns/shacl#stem', '@type': '@id' },
   languageIn: { '@id': 'http://www.w3.org/ns/shacl#languageIn', '@container': '@list' },
-  isResourceIdentifier: { '@id': 'http://uri.suomi.fi/datamodel/ns/iow#isResourceIdentifier' },
+  isResourceIdentifier: { '@id': `${__config.datamodelDomain}/datamodel/ns/iow#isResourceIdentifier` },
   uniqueLang: { '@id': 'http://www.w3.org/ns/shacl#uniqueLang' },
-  isXmlWrapper: { '@id': 'http://uri.suomi.fi/datamodel/ns/iow#isXmlWrapper' },
-  isXmlAttribute: { '@id': 'http://uri.suomi.fi/datamodel/ns/iow#isXmlAttribute' },
+  isXmlWrapper: { '@id': `${__config.datamodelDomain}/datamodel/ns/iow#isXmlWrapper` },
+  isXmlAttribute: { '@id': `${__config.datamodelDomain}/datamodel/ns/iow#isXmlAttribute` },
   name: { '@id': 'http://www.w3.org/ns/shacl#name', '@container': '@language' },
   description: { '@id': 'http://www.w3.org/ns/shacl#description', '@container': '@language' },
   readOnlyValue: {'@id': 'http://schema.org/readonlyValue'},
@@ -111,8 +114,8 @@ const classContext = Object.assign({}, coreContext, propertyContext, conceptCont
   notCond: { '@id': 'http://www.w3.org/ns/shacl#not', '@container': '@list' },
   name: { '@id': 'http://www.w3.org/ns/shacl#name', '@container': '@language' },
   description: { '@id': 'http://www.w3.org/ns/shacl#description', '@container': '@language' },
-  minProperties: { '@id': 'http://uri.suomi.fi/datamodel/ns/iow#minProperties' },
-  maxProperties: { '@id': 'http://uri.suomi.fi/datamodel/ns/iow#maxProperties' },
+  minProperties: { '@id': `${__config.datamodelDomain}/datamodel/ns/iow#minProperties` },
+  maxProperties: { '@id': `${__config.datamodelDomain}/datamodel/ns/iow#maxProperties` },
   deactivated: {'@id': 'http://www.w3.org/ns/shacl#deactivated'},
   absolutePath: {'@id': 'http://www.w3.org/2011/http#absolutePath'},
   subject
@@ -138,13 +141,13 @@ const modelContext = Object.assign({}, coreContext, namespaceContext, referenceD
   references: { '@id': 'http://purl.org/dc/terms/references', '@type': '@id' },
   requires: { '@id': 'http://purl.org/dc/terms/requires', '@type': '@id' },
   relations: { '@id': 'http://purl.org/dc/terms/relation', '@container': '@list' },
-  codeLists: { '@id': 'http://uri.suomi.fi/datamodel/ns/iow#codeLists', '@type': '@id' },
+  codeLists: { '@id': `${__config.datamodelDomain}/datamodel/ns/iow#codeLists`, '@type': '@id' },
   language: { '@id': 'http://purl.org/dc/terms/language', '@container': '@list' },
-  useContext: { '@id': 'http://uri.suomi.fi/datamodel/ns/iow#useContext' },
-  contact: {'@id': 'http://uri.suomi.fi/datamodel/ns/iow#contact', '@container': '@language'},
+  useContext: { '@id': `${__config.datamodelDomain}/datamodel/ns/iow#useContext` },
+  contact: {'@id': `${__config.datamodelDomain}/datamodel/ns/iow#contact`, '@container': '@language'},
   wasRevisionOf : { '@id' : 'http://www.w3.org/ns/prov#wasRevisionOf',  '@type' : '@id' },
-  documentation: { '@id': 'http://uri.suomi.fi/datamodel/ns/iow#documentation', '@container': '@language' },
-  parentOrganization: { '@id': 'http://uri.suomi.fi/datamodel/ns/iow#parentOrganization', '@type' : '@id' }
+  documentation: { '@id': `${__config.datamodelDomain}/datamodel/ns/iow#documentation`, '@container': '@language' },
+  parentOrganization: { '@id': `${__config.datamodelDomain}/datamodel/ns/iow#parentOrganization`, '@type' : '@id' }
 });
 
 const usageContext = Object.assign({}, coreContext, modelContext, {
@@ -154,8 +157,8 @@ const usageContext = Object.assign({}, coreContext, modelContext, {
 const modelPositionContext = Object.assign({}, coreContext, {
   path,
   property,
-  pointXY: { '@id': 'http://uri.suomi.fi/datamodel/ns/iow#pointXY' },
-  vertexXY: { '@id': 'http://uri.suomi.fi/datamodel/ns/iow#vertexXY', '@container': '@list' }
+  pointXY: { '@id': `${__config.datamodelDomain}/datamodel/ns/iow#pointXY` },
+  vertexXY: { '@id': `${__config.datamodelDomain}/datamodel/ns/iow#vertexXY`, '@container': '@list' }
 });
 
 const searchResultContext = Object.assign({}, coreContext, modelContext, {});

@@ -2,10 +2,12 @@ import { lowerCaseFirst, upperCaseFirst } from 'change-case';
 import { ClassDetails, PredicateDetails } from 'app/services/entityLoader';
 import { Language } from 'app/types/language';
 import { KnownPredicateType } from 'app/types/entity';
+import { Configuration } from 'app/configuration.interface';
 
-const baseNamespace = 'http://uri.suomi.fi/';
-const dataModelNamespace = `${baseNamespace}datamodel/`;
-const terminologyNamespace = `${baseNamespace}terminology/`;
+declare let __config: Configuration;
+const baseNamespace = `${__config.datamodelDomain}`;
+const dataModelNamespace = `${baseNamespace}/datamodel/`;
+const terminologyNamespace = `${baseNamespace}/terminology/`;
 
 function normalizeAsId(resourceName: string) {
   return resourceName
@@ -27,7 +29,7 @@ export function conceptIdFromPrefixAndIndex(prefix: string, index: number) {
 }
 
 export function modelIdFromPrefix(modelPrefix: string) {
-  return `${dataModelNamespace}ns/${modelPrefix}`
+  return `${dataModelNamespace}ns/${modelPrefix}`;
 }
 
 export function classNameToResourceIdName(className: string) {
