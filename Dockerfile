@@ -10,6 +10,7 @@ WORKDIR /app
 COPY tmp/yti-common-ui /yti-common-ui/dist/yti-common-ui
 COPY types types
 COPY package.json /app/package.json
+COPY yarn.lock /app/yarn.lock
 RUN yarn install
 
 # Fetch dependencies
