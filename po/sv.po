@@ -595,14 +595,14 @@ msgstr "LOGGA UT"
 msgid "User details"
 msgstr "Användaruppgifter"
 
-msgid "Suomi.fi Terminologies"
-msgstr "Suomi.fi-ordlistor"
+msgid "Terminologies"
+msgstr "Ordlistor"
 
-msgid "Suomi.fi Reference Data"
-msgstr "Suomi.fi-kodlistor"
+msgid "Reference Data"
+msgstr "Kodlistor"
 
-msgid "Suomi.fi Comments"
-msgstr "Suomi.fi-kommentarer"
+msgid "Comments"
+msgstr "Kommentarer"
 
 msgid "User right management"
 msgstr "Administrering av behörigheter"
