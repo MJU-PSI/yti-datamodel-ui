@@ -7,9 +7,11 @@
       "modernizr",
       "jquery"
     ],
-    "baseUrl": "",
+    "baseUrl": "./",
     "paths": {
-      "stream": ["../node_modules/readable-stream"]
+      "stream": [
+        "../node_modules/readable-stream"
+      ]
     }
   },
   "include": [

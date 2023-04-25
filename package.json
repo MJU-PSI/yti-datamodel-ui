@@ -6,7 +6,7 @@
     "ng": "node -- node_modules/@angular/cli/bin/ng",
     "ts-node": "node -- node_modules/ts-node/dist/bin.js -P scripts/tsconfig.script.json --skip-ignore",
     "start": "ng serve --port 9000 --proxy-config proxy.conf.json",
-    "build": "ng build  --deploy-url / && npm run babel:dev",
+    "build": "ng build && npm run babel:dev",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
