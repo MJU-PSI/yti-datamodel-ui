@@ -1,9 +1,8 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgbNavChangeEvent, NgbNav } from '@ng-bootstrap/ng-bootstrap';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { ModelAndSelection, SubRoutingHackService } from '../../services/subRoutingHackService';
-import { ModelService } from '../../services/modelService';
-import { ConfigServiceWrapper, ModelServiceWrapper } from '../../ajs-upgraded-providers';
+import { DefaultModelService, ModelService } from '../../services/modelService';
 import { Model } from '../../entities/model';
 import { NotificationModal } from '../common/notificationModal';
 import { EditingGuard, EditorContainer, View } from './modelControllerService';
@@ -18,14 +17,12 @@ import { Config } from '../../entities/config';
 import { MessagingService } from '../../services/messaging-service';
 import { UserService } from '@mju-psi/yti-common-ui';
 import { Url } from '../../entities/uri';
+import { ConfigService } from 'app/services/configService';
 
 @Component({
   selector: 'app-model-main',
   styleUrls: ['./modelMain.scss'],
   templateUrl: './modelMain.html',
-  providers: [
-    SubRoutingHackService
-  ]
 })
 export class ModelMainComponent implements OnDestroy, OnInit, EditorContainer, EditingGuard, HelpProvider {
   @ViewChild('nav') nav: NgbNav;
@@ -37,21 +34,23 @@ export class ModelMainComponent implements OnDestroy, OnInit, EditorContainer, E
   namespacesInUse: Set<string> = new Set<string>();
   helps: InteractiveHelp[];
   private registeredEditingViews: View[] = [];
-  private modelService: ModelService;
   private subscriptions: Subscription[] = [];
   config: Config;
   isMessagingEnabled: boolean;
   isLoggedIn: boolean;
   hasSubscription: boolean | undefined = undefined;
 
-  constructor(private subRoutingService: SubRoutingHackService, modelServiceWrapper: ModelServiceWrapper,
-    private notificationModal: NotificationModal, private confirmationModal: ConfirmationModal,
-    private languageService: LanguageService, private modelPageHelpService: ModelPageHelpService,
+  constructor(
+    private subRoutingService: SubRoutingHackService,
+    private modelService: DefaultModelService,
+    private notificationModal: NotificationModal,
+    private confirmationModal: ConfirmationModal,
+    private languageService: LanguageService,
+    // private modelPageHelpService: ModelPageHelpService,
     private helpService: HelpService,
-    private configServiceWrapper: ConfigServiceWrapper,
+    private configService: ConfigService,
     private messagingService: MessagingService,
     private userService: UserService) {
-    this.modelService = modelServiceWrapper.modelService;
     this.editorContainer = this;
   }
 
@@ -148,12 +147,12 @@ export class ModelMainComponent implements OnDestroy, OnInit, EditorContainer, E
 
   onSubSelection(selection: { resourceCurie?: string, propertyId?: string }) {
     if (this.model) {
-      this.subRoutingService.navigateTo(this.model.prefix, selection.resourceCurie, selection.propertyId);
+      // this.subRoutingService.navigateTo(this.model.prefix, selection.resourceCurie, selection.propertyId);
     }
   }
 
   getConfigAndSubscription() {
-    this.configServiceWrapper.configService.getConfig().then(config => {
+    this.configService.getConfig().then(config => {
       this.config = config;
       this.isMessagingEnabled = config.isMessagingEnabled;
       if (this.isMessagingEnabled && this.userService.isLoggedIn()) {
@@ -230,6 +229,6 @@ export class ModelMainComponent implements OnDestroy, OnInit, EditorContainer, E
   }
 
   private setHelps() {
-    this.helps = this.model ? this.modelPageHelpService.getHelps(this.model.normalizedType, this.model.prefix, this.languageService.UILanguage) : [];
+    // this.helps = this.model ? this.modelPageHelpService.getHelps(this.model.normalizedType, this.model.prefix, this.languageService.UILanguage) : [];
   }
 }

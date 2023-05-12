@@ -1,0 +1,40 @@
+<!-- <div class="modal-header">
+  <h4 class="modal-title">
+    <a><i ng-click="$dismiss('cancel')" class="fas fa-times"></i></a>
+    <span translate>Define type for class property</span>
+  </h4>
+</div>
+
+<div class="modal-body">
+  <div class="input-group input-group-lg">
+    <div class="selectContainer">
+      <select class="form-control" ng-model="$ctrl.type" ng-options="type | translate for type in ['attribute', 'association']"></select>
+    </div>
+  </div>
+</div>
+
+<div class="modal-footer">
+  <button class="btn btn-action" type="button" ng-click="$close($ctrl.type)" translate>Choose</button>
+</div>
+ -->
+
+ <div class="modal-header">
+  <h4 class="modal-title">
+    <a><i (click)="modal.dismiss('cancel')" class="fas fa-times"></i></a>
+    <span translate>Define type for class property</span>
+  </h4>
+</div>
+
+<div class="modal-body">
+  <div class="input-group input-group-lg">
+    <div class="selectContainer">
+      <select class="form-control" [(ngModel)]="type">
+        <option *ngFor="let type of ['attribute', 'association']" [ngValue]="type" translate>{{type}}</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="modal-footer">
+  <button class="btn btn-action" type="button" (click)="modal.close(type)" translate>Choose</button>
+</div>

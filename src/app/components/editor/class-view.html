@@ -1,0 +1,39 @@
+<!-- <form name="form" class="editable-form">
+  <fieldset ng-disabled="$ctrl.persisting">
+    <div ng-if="$ctrl.class && $ctrl.model">
+      <selection-view id-prefix="'class_'" model="$ctrl.model" editable-controller="$ctrl">
+        <selection-buttons>
+          <export ng-hide="$ctrl.isEditing()" id-prefix="'class'" entity="$ctrl.class" context="$ctrl.model"></export>
+          <history button-id="'class_edit_buttons_history'" model="$ctrl.model" resource="$ctrl.class"
+                   ng-hide="$ctrl.isEditing()"></history>
+          <app-status [status]="$ctrl.class.status"></app-status>
+        </selection-buttons>
+
+        content
+        <selection-content>
+          <class-form id="{{$ctrl.id}}" class="$ctrl.editableInEdit" old-class="$ctrl.class" model="$ctrl.model" open-property-id="$ctrl.openPropertyId"></class-form>
+        </selection-content>
+      </selection-view>
+    </div>
+  </fieldset>
+</form> -->
+
+<form name="form" class="editable-form">
+  <fieldset [disabled]="persisting">
+    <div *ngIf="class && model">
+      <selection-view idPrefix="'class_'" [model]="model" [editableController]="this">
+        <selection-buttons>
+          <export *ngIf="!isEditing()" idPrefix="'class'" [entity]="class" [context]="model"></export>
+          <history buttonId="'class_edit_buttons_history'" [model]="model" [resource]="class"
+                   *ngIf="!isEditing()"></history>
+          <app-status [status]="class.status"></app-status>
+        </selection-buttons>
+
+        content
+        <selection-content>
+          <class-form [id]="id" [class]="editableInEdit" [oldClass]="class" [model]="model" [openPropertyId]="openPropertyId"></class-form>
+        </selection-content>
+      </selection-view>
+    </div>
+  </fieldset>
+</form>

@@ -1,0 +1,26 @@
+<!-- <span ng-if="!$ctrl.referrers" translate>No referrers</span>
+<ul ng-if="$ctrl.referrers">
+  <li ng-repeat="(type, referrers) in $ctrl.referrers track by $index">
+    <span>{{type | translate}}</span>
+    <ul>
+      <li ng-repeat="referrer in referrers track by referrer.id.uri">
+        {{referrer | translateLabel: $ctrl.context}} <span ng-hide="$ctrl.isShowLinks()">({{referrer.id.compact}})</span><a ng-show="$ctrl.isShowLinks()" ng-href="{{referrer.iowUrl()}}">({{referrer.id.compact}})</a>
+      </li>
+    </ul>
+  </li>
+</ul> -->
+
+<ng-container *ngIf="!referrers">
+  <span translate>No referrers</span>
+</ng-container>
+
+<ul *ngIf="referrers">
+  <li *ngFor="let ref of referrers | keyvalue">
+    <span>{{ref.type | translate}}</span>
+    <ul>
+      <li *ngFor="let referrer of ref.referrers" [attr.id]="referrer.id.uri">
+        {{referrer | translateLabel: context}} <span *ngIf="!isShowLinks()">({{referrer.id.compact}})</span><a *ngIf="isShowLinks()" [href]="referrer.iowUrl()">({{referrer.id.compact}})</a>
+      </li>
+    </ul>
+  </li>
+</ul>

@@ -1,0 +1,25 @@
+<!-- <ol class="breadcrumb">
+  <li ng-repeat="path in $ctrl.location" class="breadcrumb-item" ng-class="{active: $last}">
+    <a id="{{$ctrl.getIdNameFromLocation(path) + '_breadcrumb_link'}}" ng-if="path.iowUrl && !$last" href="{{path.iowUrl()}}">
+      <span ng-if="!path.label">{{path.localizationKey | translate}}</span>
+      <span ng-if="path.label">{{path | translateLabel}}</span>
+    </a>
+    <span ng-if="!path.iowUrl || $last">
+      <span ng-if="!path.label">{{path.localizationKey | translate}}</span>
+      <span ng-if="path.label">{{path | translateLabel}}</span>
+    </span>
+  </li>
+</ol> -->
+
+<ol class="breadcrumb">
+  <li *ngFor="let path of location; let last = last" class="breadcrumb-item" [ngClass]="{'active': last}">
+    <a id="{{getIdNameFromLocation(path) + '_breadcrumb_link'}}" *ngIf="path.iowUrl && !last" [href]="path.iowUrl()">
+      <span *ngIf="!path.label">{{path.localizationKey | translate}}</span>
+      <span *ngIf="path.label">{{path | translateLabel}}</span>
+    </a>
+    <span *ngIf="!path.iowUrl || last">
+      <span *ngIf="!path.label">{{path.localizationKey | translate}}</span>
+      <span *ngIf="path.label">{{path | translateLabel}}</span>
+    </span>
+  </li>
+</ol>

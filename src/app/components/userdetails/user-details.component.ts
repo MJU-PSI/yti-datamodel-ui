@@ -4,8 +4,9 @@ import { NgbNavChangeEvent, NgbNav } from '@ng-bootstrap/ng-bootstrap';
 import { BehaviorSubject } from 'rxjs';
 import { MessagingResource } from '../../entities-messaging/messaging-resource';
 import { MessagingService } from '../../services/messaging-service';
-import { ConfigServiceWrapper, DatamodelLocationServiceWrapper } from '../../ajs-upgraded-providers';
 import { Config } from '../../entities/config';
+import { ConfigService } from 'app/services/configService';
+import { LocationService } from 'app/services/locationService';
 
 @Component({
   selector: 'app-user-details',
@@ -28,16 +29,16 @@ export class UserDetailsComponent implements OnInit {
   messagingResources$ = new BehaviorSubject<Map<string, MessagingResource[]> | null>(null);
 
   constructor(private userService: UserService,
-    private datamodelLocationServiceWrapper: DatamodelLocationServiceWrapper,
+    private locationService: LocationService,
     private messagingService: MessagingService,
-    private configServiceWrapper: ConfigServiceWrapper) {
+    private configService: ConfigService) {
 
-    datamodelLocationServiceWrapper.locationService.atUser();
+    locationService.atUser();
   }
 
   ngOnInit() {
 
-    this.configServiceWrapper.configService.getConfig()
+    this.configService.getConfig()
       .then(config => {
         this.config = config;
 

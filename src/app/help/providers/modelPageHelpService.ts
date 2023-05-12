@@ -114,7 +114,7 @@ function addAssociation(prefix: string,
 export class ModelPageHelpService {
 
   constructor(private helpBuilderService: HelpBuilderService) {
-    'ngInject';
+    // 'ngInject';
   }
 
   getHelps(modelType: KnownModelType, currentModelPrefix: string, lang: Language): InteractiveHelp[] {

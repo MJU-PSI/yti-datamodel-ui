@@ -1,15 +1,13 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, Inject, OnDestroy } from '@angular/core';
 import { Role, UserService, combineSets, hasAny, Options, index } from '@mju-psi/yti-common-ui';
 import { Subscription } from 'rxjs';
 import { Organization } from '../../entities/organization';
 import { LanguageService } from '../../services/languageService';
 import { comparingLocalizable } from '../../utils/comparator';
-import {
-  GettextCatalogWrapper,
-  LocationServiceWrapper,
-  OrganizationServiceWrapper,
-  UserRoleServiceWrapper
-} from '../../ajs-upgraded-providers';
+import { LocationService } from 'app/services/locationService';
+import { UserRoleService } from 'app/services/userRoleService';
+import { DefaultOrganizationService, ORGANIZATION_SERVICE, OrganizationService } from 'app/services/organizationService';
+import { TranslateService } from '@ngx-translate/core';
 
 interface UserOrganizationRoles {
   organization?: Organization;
@@ -32,20 +30,20 @@ export class UserDetailsInformationComponent implements OnDestroy {
   selectedOrganization: Organization | null = null;
   requestsInOrganizations = new Map<string, Set<Role>>();
 
-  constructor(private locationServiceWrapper: LocationServiceWrapper,
+  constructor(private locationService: LocationService,
               private userService: UserService,
               private languageService: LanguageService,
-              private userRoleServiceWrapper: UserRoleServiceWrapper,
-              private organizationServiceWrapper: OrganizationServiceWrapper,
-              private gettextCatalogWrapper: GettextCatalogWrapper) {
+              private userRoleService: UserRoleService,
+              private organizationService: DefaultOrganizationService,
+              private translateService: TranslateService) {
 
     this.subscriptionToClean.push(this.userService.loggedIn$.subscribe(loggedIn => {
       if (!loggedIn) {
-        locationServiceWrapper.locationService.url('/');
+        locationService.atFrontPage();
       }
     }));
 
-    this.organizationServiceWrapper.organizationService.getOrganizations().then(organizations => {
+    this.organizationService.getOrganizations().then(organizations => {
       this.allOrganizations = organizations;
       this.allOrganizationsById = index(organizations, org => org.id.uuid);
       this.reloadUserOrganizations();
@@ -108,7 +106,7 @@ export class UserDetailsInformationComponent implements OnDestroy {
       return {
         value: org,
         name: () => org ? this.languageService.translate(org.label)
-                        : this.gettextCatalogWrapper.gettextCatalog.getString('Choose organization')
+                        : this.translateService.instant('Choose organization')
       };
     });
   }
@@ -119,7 +117,7 @@ export class UserDetailsInformationComponent implements OnDestroy {
       throw new Error('No organization selected for request');
     }
 
-    this.userRoleServiceWrapper.userRoleService.sendUserRequest(this.selectedOrganization.id)
+    this.userRoleService.sendUserRequest(this.selectedOrganization.id)
       .then(() => this.refreshRequests());
   }
 
@@ -127,7 +125,7 @@ export class UserDetailsInformationComponent implements OnDestroy {
 
     this.selectedOrganization = null;
 
-    this.userRoleServiceWrapper.userRoleService.getUserRequests().then(userRequests => {
+    this.userRoleService.getUserRequests().then(userRequests => {
 
       this.requestsInOrganizations.clear();
 

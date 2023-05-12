@@ -1,4 +1,4 @@
-<div ng-repeat="searchResult in $ctrl.searchResults | filter : $ctrl.isVisible track by $ctrl.generateSearchResultID(searchResult)"
+<!-- <div ng-repeat="searchResult in $ctrl.searchResults | filter : $ctrl.isVisible track by $ctrl.generateSearchResultID(searchResult)"
      id="{{$ctrl.generateSearchResultID(searchResult)}}"
      ng-class="['search-result', { active: $ctrl.isSelected(searchResult), disabled: searchResult.disabled, 'add-new': searchResult.isAddNew()} ]"
      title="{{$ctrl.title(searchResult)}}"
@@ -15,5 +15,27 @@
     </div>
 
     <search-result-transclude ng-hide="searchResult.isAddNew()"></search-result-transclude>
+  </div>
+</div> -->
+
+
+<!-- | filter:isVisible; trackBy:generateSearchResultID -->
+<div *ngFor="let searchResult of searchResults | filter:isVisible;"
+     [id]="generateSearchResultID(searchResult)"
+     [ngClass]="{'search-result': true, 'active': isSelected(searchResult), 'disabled': searchResult.disabled, 'add-new': searchResult.isAddNew() }"
+     [title]="title(searchResult)"
+     (click)="selectItem(searchResult)"
+     keyControlSelection>
+  <div class="content">
+    <!-- {{searchResult | json}} -->
+    <div *ngIf="searchResult.isAddNew()">
+      <span class="title">
+        <i *ngIf="searchResult.glyphiconClass" [ngClass]="searchResult.glyphiconClass"></i>
+        {{searchResult.label}}
+      </span>
+    </div>
+
+    <!-- <ng-container *searchResultTransclude="searchResult; hide: searchResult.isAddNew()"></ng-container> -->
+    <!-- <search-result-transclude *ngIf="!searchResult.isAddNew()"></search-result-transclude> -->
   </div>
 </div>

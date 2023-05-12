@@ -1,4 +1,9 @@
-<div class="alert alert-danger" role="alert" ng-if="$ctrl.error">
+<!-- <div class="alert alert-danger" role="alert" ng-if="$ctrl.error">
   <span class="fas fa-exclamation-circle" aria-hidden="true"></span>
   <span>{{$ctrl.error | translate}}</span>
+</div> -->
+
+<div class="alert alert-danger" role="alert" *ngIf="error">
+  <span class="fas fa-exclamation-circle" aria-hidden="true"></span>
+  <span>{{error | translate}}</span>
 </div>

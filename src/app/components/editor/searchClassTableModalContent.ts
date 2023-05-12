@@ -3,13 +3,13 @@ import { ListItem, SortBy } from '../../types/entity';
 import { Exclusion } from '../../utils/exclusion';
 import { Model } from '../../entities/model';
 import { AbstractClass, Class, ClassListItem } from '../../entities/class';
-import { GettextCatalogWrapper } from '../../ajs-upgraded-providers';
 import { ExternalEntity } from '../../entities/externalEntity';
 import { DisplayItemFactory, Value } from '../form/displayItemFactory';
 import { modalCancelHandler } from '../../utils/angular';
 import { ShowClassInfoModal } from './showClassInfoModal';
 import { IPageInfo } from 'ngx-virtual-scroller';
 import { makeSimpleSearchRegexp } from '@mju-psi/yti-common-ui';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-search-class-table-modal-content',
@@ -21,25 +21,25 @@ import { makeSimpleSearchRegexp } from '@mju-psi/yti-common-ui';
           <thead>
           <tr>
             <th class="name-col">
-              <sort-by-column-header [headerText]="'Name'"
+              <!-- <sort-by-column-header [headerText]="'Name'"
                                      [columnName]="'name'"
                                      [model]="model"
                                      [sortBy]="sortBy"
-                                     [filterExclude]="filterExclude"></sort-by-column-header>
+                                     [filterExclude]="filterExclude"></sort-by-column-header> -->
             </th>
             <th class="model-col">
-              <sort-by-column-header [headerText]="'Model'"
+              <!-- <sort-by-column-header [headerText]="'Model'"
                                      [columnName]="'model'"
                                      [model]="model"
                                      [sortBy]="sortBy"
-                                     [filterExclude]="filterExclude"></sort-by-column-header>
+                                     [filterExclude]="filterExclude"></sort-by-column-header> -->
             </th>
             <th class="description-col">
-              <sort-by-column-header [headerText]="'Description'"
+              <!-- <sort-by-column-header [headerText]="'Description'"
                                      [columnName]="'description'"
                                      [model]="model"
                                      [sortBy]="sortBy"
-                                     [filterExclude]="filterExclude"></sort-by-column-header>
+                                     [filterExclude]="filterExclude"></sort-by-column-header> -->
             </th>
             <!-- Showing of super class is not implemented yet. -->
             <!-- <th style="width: 20%" translate>Super class</th> -->
@@ -56,7 +56,7 @@ import { makeSimpleSearchRegexp } from '@mju-psi/yti-common-ui';
         </table>
         <div class="header-table-padding"></div>
       </div>
-      <virtual-scroller #scroll class="scroller-component" [items]="searchResults" [enableUnequalChildrenSizes]="true"
+      <!-- <virtual-scroller #scroll class="scroller-component" [items]="searchResults" [enableUnequalChildrenSizes]="true"
                         (vsEnd)="scrollEnd($event)">
         <table class="table table-sm content-table">
           <tbody #container>
@@ -98,12 +98,12 @@ import { makeSimpleSearchRegexp } from '@mju-psi/yti-common-ui';
             <td class="description-col">
               <highlight [text]="searchResult.comment" [context]="model" [search]="searchText"></highlight>
             </td>
-            <!-- Showing of super class is not implemented yet. -->
+            <! -- Showing of super class is not implemented yet. -->
             <!--
             <td>
               {{$ctrl.model.linkToResource(searchResult.superClassOf)}}
             </td>
-            -->
+            -- >
             <td *ngIf="!showOnlyExternalClasses" class="modified-at-col">
               {{showItemValue(searchResult.modifiedAt)}}
             </td>
@@ -119,7 +119,7 @@ import { makeSimpleSearchRegexp } from '@mju-psi/yti-common-ui';
           </tr>
           </tbody>
         </table>
-      </virtual-scroller>
+      </virtual-scroller> -->
     </div>
   `
 })
@@ -138,7 +138,7 @@ export class SearchClassTableModalContentComponent implements OnChanges {
 
   simpleSearchRegexp?: RegExp;
 
-  constructor(private gettextCatalogWrapper: GettextCatalogWrapper,
+  constructor(private translateService: TranslateService,
               private displayItemFactory: DisplayItemFactory,
               protected showClassInfoModal: ShowClassInfoModal) {
   }
@@ -170,21 +170,22 @@ export class SearchClassTableModalContentComponent implements OnChanges {
   itemTitle(item: AbstractClass): string {
     const disabledReason = this.exclude(item);
     if (!!disabledReason) {
-      return this.gettextCatalogWrapper.gettextCatalog.getString(disabledReason);
+      return this.translateService.instant(disabledReason);
     } else {
       return '';
     }
   }
 
   showItemValue(value: Value): string {
-    return this.displayItemFactory.create({
-      context: () => this.model,
-      value: () => value
-    }).displayValue;
+    return '';
+    // return this.displayItemFactory.create({
+    //   context: () => this.model,
+    //   value: () => value
+    // }).displayValue;
   }
 
   showClassInfo() {
-    return this.showClassInfoModal.open(this.model, this.selection!).then(null, modalCancelHandler);
+    // return this.showClassInfoModal.open(this.model, this.selection!).then(null, modalCancelHandler);
   }
 
   classInfoLinkID(item: AbstractClass) {

@@ -76,7 +76,7 @@ function createNewModel(type: KnownModelType, lang: Language): StoryLine {
 export class FrontPageHelpService {
 
   constructor(private helpBuilderService: HelpBuilderService) {
-    'ngInject';
+    // 'ngInject';
   }
 
   getHelps(lang: Language): InteractiveHelp[] {

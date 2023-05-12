@@ -1,3 +1,214 @@
+// import { LanguageContext, UILanguage, Language, Localizer as AngularJSLocalizer } from 'app/types/language';
+// import { translate } from 'app/utils/language';
+// import { Localizable, Localizer as AngularLocalizer, availableLanguages, defaultLanguage } from '@mju-psi/yti-common-ui';
+// import { SessionService } from './sessionService';
+// import { TranslateService } from '@ngx-translate/core';
+// import { Observable, BehaviorSubject, Subject } from 'rxjs';
+// import { gettextCatalog as GettextCatalog } from 'angular-gettext';
+
+// type Localizer = AngularJSLocalizer;
+// export { Localizer };
+
+// export class LanguageService {
+
+//   private _modelLanguage: {[entityId: string]: Language} = {};
+
+//   availableLanguages: any;
+//   defaultLanguage: any;
+//   availableUILanguages: Language[];
+
+//   language$: BehaviorSubject<UILanguage>;
+
+//   modelLanguageChange$ = new Subject();
+
+//   constructor(private gettextCatalog: GettextCatalog /* AngularJS */,
+//               private translateService: TranslateService /* Angular */,
+//               public localizationStrings: { [key: string]: { [key: string]: string } },
+//               private sessionService: SessionService) {
+//     'ngInject';
+//     this.availableLanguages = availableLanguages;
+//     this.defaultLanguage = defaultLanguage || 'en';
+//     this.availableUILanguages = availableLanguages.map((lang: { code: any; }) => { return lang.code });
+
+//     gettextCatalog.baseLanguage = this.defaultLanguage;
+//     translateService.setDefaultLang(this.defaultLanguage);
+
+//     this.language$ = new BehaviorSubject(sessionService.UILanguage || this.defaultLanguage);
+
+//     this.language$.subscribe(lang => {
+//       this.sessionService.UILanguage = lang;
+//       this.gettextCatalog.setCurrentLanguage(lang);
+//       this.translateService.use(lang);
+//     });
+
+//     this._modelLanguage = sessionService.modelLanguage || {};
+//   }
+
+//   get UILanguage(): UILanguage {
+//     return this.language$.getValue();
+//   }
+
+//   set UILanguage(language: UILanguage) {
+//     this.language$.next(language);
+//   }
+
+//   getModelLanguage(context?: LanguageContext): Language {
+
+//     const getUILanguageOrFirst = () => {
+//       if (context!.language.indexOf(this.UILanguage) !== -1) {
+//         return this.UILanguage;
+//       } else {
+//         return context!.language[0];
+//       }
+//     };
+
+//     if (context) {
+//       const key = context.id.uri;
+//       const language = this._modelLanguage[key];
+//       return language ? language : getUILanguageOrFirst();
+//     } else {
+//       return this.UILanguage;
+//     }
+//   }
+
+//   setModelLanguage(context: LanguageContext, language: Language) {
+//     this._modelLanguage[context.id.uri] = language;
+//     this.sessionService.modelLanguage = this._modelLanguage;
+//     this.modelLanguageChange$.next(true);
+//   }
+
+//   translate(data: Localizable, context?: LanguageContext): string {
+//     return translate(data, this.getModelLanguage(context), context ? context.language : this.availableUILanguages);
+//   }
+
+//   translateToGivenLanguage(localizable: Localizable, languageToUse: string|null): string {
+
+//     if (!localizable || !languageToUse) {
+//       return '';
+//     }
+
+//     const primaryLocalization = localizable[languageToUse];
+
+//     if (primaryLocalization) {
+//       return primaryLocalization;
+//     } else {
+
+//       const fallbackValue = this.checkForFallbackLanguages(localizable);
+
+//       if (fallbackValue != null) {
+//         return fallbackValue;
+//       }
+
+//       for (const [language, value] of Object.entries(localizable)) {
+//         if (value) {
+//           return `${value} (${language})`;
+//         }
+//       }
+
+//       return '';
+//     }
+//   }
+
+//   checkForFallbackLanguages(localizable: Localizable): string | null {
+
+//     const fallbackLanguages: string[] = availableLanguages.map((lang: { code: any; }) => { return lang.code });
+
+//     for (const language of fallbackLanguages) {
+//       if (this.hasLocalizationForLanguage(localizable, language)) {
+//         return this.fallbackLocalization(localizable, language);
+//       }
+//     }
+
+//     return null;
+//   }
+
+//   hasLocalizationForLanguage(localizable: Localizable, language: string) {
+//     const value: string = localizable[language];
+//     return value != null && value !== '';
+//   }
+
+//   fallbackLocalization(localizable: Localizable, language: string) {
+//     const value: string = localizable[language];
+//     return `${value} (${language})`;
+//   }
+
+//   createLocalizer(context?: LanguageContext) {
+//     return new DefaultAngularJSLocalizer(this, context);
+//   }
+
+//   findLocalization(language: Language, key: string) {
+//     const stringsForLang = this.localizationStrings[language];
+//     return stringsForLang ? stringsForLang[key] : null;
+//   }
+// }
+
+// export class DefaultAngularLocalizer implements AngularLocalizer {
+
+//   translateLanguage$: Observable<Language>;
+
+//   constructor(private languageService: LanguageService) {
+//     this.translateLanguage$ = languageService.language$.asObservable();
+//   }
+
+//   translate(localizable: Localizable, useUILanguage?: boolean): string {
+//     // FIXME datamodel ui doesn't have concept of ui language boolean but language context
+//     return this.languageService.translate(localizable);
+//   }
+
+//   translateToGivenLanguage(localizable: Localizable, languageToUse: string|null): string {
+//     return this.languageService.translateToGivenLanguage(localizable, languageToUse);
+//   }
+// }
+
+// export class DefaultAngularJSLocalizer implements AngularJSLocalizer {
+
+//   availableUILanguages: string[];
+
+//   constructor(private languageService: LanguageService, public context?: LanguageContext) {
+//     this.availableUILanguages = availableLanguages.map((lang: { code: any; }) => { return lang.code });
+//   }
+
+//   get language(): Language {
+//     return this.languageService.getModelLanguage(this.context);
+//   }
+
+//   translate(data: Localizable): string {
+//     return this.languageService.translate(data, this.context);
+//   }
+
+//   getStringWithModelLanguageOrDefault(key: string, defaultLanguage: UILanguage): string {
+
+//     const askedLocalization = this.languageService.findLocalization(this.language, key);
+//     if (askedLocalization) {
+//       return askedLocalization;
+//     } else {
+//       const defaultLocalization = this.languageService.findLocalization(defaultLanguage, key);
+
+//       if (!defaultLocalization) {
+//         console.log(`Localization (${key}) not found for default language (${defaultLanguage})`);
+//         return '??? ' + key;
+//       } else {
+//         return defaultLocalization;
+//       }
+//     }
+//   }
+
+//   allUILocalizationsForKey(localizationKey: string): string[] {
+
+//     const result: string[] = [];
+
+//     for (const lang of this.availableUILanguages) {
+//       const localization = this.languageService.localizationStrings[lang][localizationKey];
+
+//       if (localization) {
+//         result.push(localization);
+//       }
+//     }
+
+//     return result;
+//   }
+// }
+
 import { LanguageContext, UILanguage, Language, Localizer as AngularJSLocalizer } from 'app/types/language';
 import { translate } from 'app/utils/language';
 import { Localizable, Localizer as AngularLocalizer, availableLanguages, defaultLanguage } from '@mju-psi/yti-common-ui';
@@ -5,40 +216,45 @@ import { SessionService } from './sessionService';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, BehaviorSubject, Subject } from 'rxjs';
 import { gettextCatalog as GettextCatalog } from 'angular-gettext';
+import { Injectable } from '@angular/core';
+import { localizationStrings } from 'app/app.module';
 
 type Localizer = AngularJSLocalizer;
 export { Localizer };
 
+
+@Injectable({
+  providedIn: 'root'
+})
 export class LanguageService {
 
-  private _modelLanguage: {[entityId: string]: Language} = {};
+  private _modelLanguage: { [entityId: string]: Language } = {};
 
   availableLanguages: any;
   defaultLanguage: any;
   availableUILanguages: Language[];
+  localizationStrings: { [key: string]: { [key: string]: string } };
 
   language$: BehaviorSubject<UILanguage>;
 
-  modelLanguageChange$ = new Subject();
+  modelLanguageChange$ = new Subject<boolean>();
 
-  constructor(private gettextCatalog: GettextCatalog /* AngularJS */,
-              private translateService: TranslateService /* Angular */,
-              public localizationStrings: { [key: string]: { [key: string]: string } },
-              private sessionService: SessionService) {
-    'ngInject';
+  constructor(
+    private translateService: TranslateService,
+    private sessionService: SessionService
+  ) {
     this.availableLanguages = availableLanguages;
     this.defaultLanguage = defaultLanguage || 'en';
-    this.availableUILanguages = availableLanguages.map((lang: { code: any; }) => { return lang.code });
+    this.availableUILanguages = availableLanguages.map((lang: any) => lang.code);
+    this.localizationStrings = localizationStrings;
 
-    gettextCatalog.baseLanguage = this.defaultLanguage;
     translateService.setDefaultLang(this.defaultLanguage);
 
-    this.language$ = new BehaviorSubject(sessionService.UILanguage || this.defaultLanguage);
+    this.language$ = new BehaviorSubject<UILanguage>(sessionService.UILanguage || this.defaultLanguage);
 
-    this.language$.subscribe(lang => {
+    this.language$.subscribe((lang: UILanguage) => {
       this.sessionService.UILanguage = lang;
-      this.gettextCatalog.setCurrentLanguage(lang);
-      this.translateService.use(lang);
+      translateService.use(lang);
     });
 
     this._modelLanguage = sessionService.modelLanguage || {};
@@ -81,7 +297,7 @@ export class LanguageService {
     return translate(data, this.getModelLanguage(context), context ? context.language : this.availableUILanguages);
   }
 
-  translateToGivenLanguage(localizable: Localizable, languageToUse: string|null): string {
+  translateToGivenLanguage(localizable: Localizable, languageToUse: string | null): string {
 
     if (!localizable || !languageToUse) {
       return '';
@@ -110,8 +326,7 @@ export class LanguageService {
   }
 
   checkForFallbackLanguages(localizable: Localizable): string | null {
-
-    const fallbackLanguages: string[] = availableLanguages.map((lang: { code: any; }) => { return lang.code });
+    const fallbackLanguages: string[] = availableLanguages.map((lang: { code: any; }) => lang.code);
 
     for (const language of fallbackLanguages) {
       if (this.hasLocalizationForLanguage(localizable, language)) {
@@ -122,32 +337,33 @@ export class LanguageService {
     return null;
   }
 
-  hasLocalizationForLanguage(localizable: Localizable, language: string) {
+  hasLocalizationForLanguage(localizable: Localizable, language: string): boolean {
     const value: string = localizable[language];
-    return value != null && value !== '';
+    return !!value && value !== '';
   }
 
-  fallbackLocalization(localizable: Localizable, language: string) {
+  fallbackLocalization(localizable: Localizable, language: string): string {
     const value: string = localizable[language];
     return `${value} (${language})`;
   }
 
-  createLocalizer(context?: LanguageContext) {
+  createLocalizer(context?: LanguageContext): DefaultAngularJSLocalizer {
     return new DefaultAngularJSLocalizer(this, context);
   }
 
-  findLocalization(language: Language, key: string) {
+  findLocalization(language: Language, key: string): string | null {
     const stringsForLang = this.localizationStrings[language];
     return stringsForLang ? stringsForLang[key] : null;
   }
+
 }
 
+@Injectable()
 export class DefaultAngularLocalizer implements AngularLocalizer {
-
   translateLanguage$: Observable<Language>;
 
   constructor(private languageService: LanguageService) {
-    this.translateLanguage$ = languageService.language$.asObservable();
+    this.translateLanguage$ = languageService.language$;
   }
 
   translate(localizable: Localizable, useUILanguage?: boolean): string {
@@ -155,17 +371,17 @@ export class DefaultAngularLocalizer implements AngularLocalizer {
     return this.languageService.translate(localizable);
   }
 
-  translateToGivenLanguage(localizable: Localizable, languageToUse: string|null): string {
+  translateToGivenLanguage(localizable: Localizable, languageToUse: string | null): string {
     return this.languageService.translateToGivenLanguage(localizable, languageToUse);
   }
 }
 
-export class DefaultAngularJSLocalizer implements AngularJSLocalizer {
 
+export class DefaultAngularJSLocalizer implements AngularJSLocalizer {
   availableUILanguages: string[];
 
   constructor(private languageService: LanguageService, public context?: LanguageContext) {
-    this.availableUILanguages = availableLanguages.map((lang: { code: any; }) => { return lang.code });
+    this.availableUILanguages = availableLanguages.map(lang => lang.code);
   }
 
   get language(): Language {
@@ -177,8 +393,8 @@ export class DefaultAngularJSLocalizer implements AngularJSLocalizer {
   }
 
   getStringWithModelLanguageOrDefault(key: string, defaultLanguage: UILanguage): string {
-
     const askedLocalization = this.languageService.findLocalization(this.language, key);
+
     if (askedLocalization) {
       return askedLocalization;
     } else {
@@ -194,7 +410,6 @@ export class DefaultAngularJSLocalizer implements AngularJSLocalizer {
   }
 
   allUILocalizationsForKey(localizationKey: string): string[] {
-
     const result: string[] = [];
 
     for (const lang of this.availableUILanguages) {

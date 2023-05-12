@@ -1,4 +1,4 @@
-<div uib-dropdown class="pull-right" ng-show="$ctrl.showMenu">
+<!-- <div uib-dropdown class="pull-right" ng-show="$ctrl.showMenu">
 
   <button id="model_action_menu" class="btn btn-action dropdown-toggle" uib-dropdown-toggle>
     <span translate>Choose action</span>
@@ -32,6 +32,45 @@
             class="dropdown-item"
             type="button"
             ng-click="$ctrl.createNewDatamodelVersion()"
+            translate>Create new version</button>
+
+  </div>
+</div> -->
+
+<div ngbDropdown class="pull-right" *ngIf="showMenu">
+
+  <button id="model_action_menu" class="btn btn-action dropdown-toggle" ngbDropdownToggle>
+    <span translate>Choose action</span>
+  </button>
+
+  <div class="dropdown-menu-right" ngbDropdownMenu>
+
+    <button id="add_subscription_button"
+            *ngIf="canAddSubscription"
+            class="dropdown-item"
+            type="button"
+            (click)="addSubscription()"
+            translate>Add email subscription</button>
+
+    <button id="remove_subscription_button"
+            *ngIf="canRemoveSubscription"
+            class="dropdown-item"
+            type="button"
+            (click)="removeSubscription()"
+            translate>Remove email subscription</button>
+
+    <button id="mass_migrate_datamodel_statuses_button"
+            *ngIf="showMassMigrateDatamodelStatuses"
+            class="dropdown-item"
+            type="button"
+            (click)="massMigrateDatamodelStatuses()"
+            translate>Update datamodel's resources' statuses</button>
+
+    <button id="create_new_datamodel_version_button"
+            *ngIf="showCreateNewDatamodelVersion"
+            class="dropdown-item"
+            type="button"
+            (click)="createNewDatamodelVersion()"
             translate>Create new version</button>
 
   </div>

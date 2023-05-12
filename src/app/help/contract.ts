@@ -32,7 +32,7 @@ export type Scroll = ScrollWithDefault
                    | ScrollNone;
 
 export interface HelpEventHandler {
-  onInit?: (service: InteractiveHelpService) => IPromise<boolean>; // result boolean indicates if initialization will change location
+  onInit?: (service: InteractiveHelpService) => Promise<boolean>; // result boolean indicates if initialization will change location
   onComplete?: () => void;
   onCancel?: () => void;
 }

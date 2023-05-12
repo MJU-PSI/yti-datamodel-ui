@@ -1,4 +1,4 @@
-<div class="editable-wrap form-group">
+<!-- <div class="editable-wrap form-group">
   <editable-label data-title="$ctrl.title" input-id="$ctrl.inputId" required="$ctrl.required"></editable-label>
   <div ng-show="$ctrl.isEditing()" ng-transclude></div>
 
@@ -12,4 +12,21 @@
     <clipboard text="$ctrl.clipboard"></clipboard>
   </div>
   <error-messages ng-model-controller="$ctrl.inputNgModelCtrl"></error-messages>
+</div> -->
+
+<div class="editable-wrap form-group">
+  <editable-label [title]="title" [inputId]="inputId" [required]="required"></editable-label>
+  <div *ngIf="isEditing()">
+    <ng-content></ng-content>
+  </div>
+  <div *ngIf="!isEditing()" class="content">
+    <a *ngIf="item.href" [href]="item.href">
+      {{item.displayValue}}
+      <i *ngIf="isExternalLink(item.href)" class="fas fa-external-link-alt x-small-item"></i>
+    </a>
+    <a *ngIf="item.onClick" (click)="item.onClick()">{{item.displayValue}}</a>
+    <span *ngIf="!item.href && !item.onClick" [innerHTML]="item.displayValue | paragraphize"></span>
+    <clipboard [text]="clipboard"></clipboard>
+  </div>
+  <error-messages [ngModelController]="inputNgModelCtrl"></error-messages>
 </div>

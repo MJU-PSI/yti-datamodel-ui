@@ -1,10 +1,11 @@
+import { ElementRef, Renderer2 } from '@angular/core';
+import { NgModel } from '@angular/forms';
 import { allMatching, normalizeAsArray, requireDefined, valuesExcludingKeys } from '@mju-psi/yti-common-ui';
 import {
   IComponentOptions,
   IControllerConstructor,
   IDirective,
   IDirectiveFactory,
-  ILocationService,
   IModelFormatter,
   INgModelController,
   IPromise,
@@ -69,15 +70,15 @@ export function normalizeUrl(url: string): string {
     .replace(/\/+$/, '');
 }
 
-export function nextUrl($location: ILocationService, next: string) {
-  const base = formatApplicationBase($location, '' /* TODO parametrize base href here */);
+export function nextUrl(location: Location, next: string) {
+  const base = formatApplicationBase(location, '' /* TODO parametrize base href here */);
   return next.substr(base.length + (next.indexOf('#/') !== -1 ? 2 : 0));
 }
 
-export function formatApplicationBase($location: ILocationService, baseHref: string) {
-  const port = $location.port();
-  const portString = (port === 80 || port === 443) ? '' : (':' + $location.port());
-  return $location.protocol() + '://' + $location.host() + portString + baseHref;
+export function formatApplicationBase(location: Location, baseHref: string) {
+  const port = location.port;
+  const portString = (port === '80' || port === '443') ? '' : (':' + location.port);
+  return location.protocol + '://' + location.host + portString + baseHref;
 }
 
 export function isDifferentUrl(lhs: string, rhs: string): boolean {
@@ -92,18 +93,35 @@ export function extendNgModelOptions(ngModel: INgModelController, options: any) 
   }
 }
 
-export function scrollToElement(element: JQuery, parentContainer: JQuery) {
+// export function scrollToElement(element: JQuery, parentContainer: JQuery) {
 
-  const itemsHeight = parentContainer.height();
-  const itemsTop = parentContainer.scrollTop();
+//   const itemsHeight = parentContainer.height();
+//   const itemsTop = parentContainer.scrollTop();
+//   const itemsBottom = itemsHeight + itemsTop;
+//   const selectionOffsetTop = element.offset().top - parentContainer.offset().top + itemsTop;
+//   const selectionOffsetBottom = selectionOffsetTop +  element.outerHeight();
+
+//   if (selectionOffsetBottom > itemsBottom) {
+//     parentContainer.animate({ scrollTop: Math.ceil(selectionOffsetBottom - itemsHeight) }, 0);
+//   } else if (selectionOffsetTop < itemsTop) {
+//     parentContainer.animate({ scrollTop: Math.floor(selectionOffsetTop) }, 0);
+//   }
+// }
+
+export function scrollToElement(renderer: Renderer2, element: ElementRef, parentContainer: ElementRef): void {
+
+  const itemsHeight = parentContainer.nativeElement.clientHeight;
+  const itemsTop = parentContainer.nativeElement.scrollTop;
   const itemsBottom = itemsHeight + itemsTop;
-  const selectionOffsetTop = element.offset().top - parentContainer.offset().top + itemsTop;
-  const selectionOffsetBottom = selectionOffsetTop +  element.outerHeight();
+  const selectionOffsetTop = element.nativeElement.offsetTop - parentContainer.nativeElement.offsetTop + itemsTop;
+  const selectionOffsetBottom = selectionOffsetTop + element.nativeElement.offsetHeight;
 
   if (selectionOffsetBottom > itemsBottom) {
-    parentContainer.animate({ scrollTop: Math.ceil(selectionOffsetBottom - itemsHeight) }, 0);
+    const scrollTop = Math.ceil(selectionOffsetBottom - itemsHeight);
+    renderer.setProperty(parentContainer.nativeElement, 'scrollTop', scrollTop);
   } else if (selectionOffsetTop < itemsTop) {
-    parentContainer.animate({ scrollTop: Math.floor(selectionOffsetTop) }, 0);
+    const scrollTop = Math.floor(selectionOffsetTop);
+    renderer.setProperty(parentContainer.nativeElement, 'scrollTop', scrollTop);
   }
 }
 
@@ -126,30 +144,57 @@ export class ValidationResult<T> {
   }
 }
 
-export function validateWithValidators<T>($q: IQService, ngModelController: INgModelController, skipValidators: Set<string>, values: T[]) {
-  const result = new Map<T, boolean>();
+// export function validateWithValidators<T>($q: IQService, ngModelController: INgModelController, skipValidators: Set<string>, values: T[]) {
+//   const result = new Map<T, boolean>();
 
-  const validators = valuesExcludingKeys<Validator<T>>(ngModelController.$validators, skipValidators);
-  const asyncValidators = valuesExcludingKeys<AsyncValidator<T>>(ngModelController.$asyncValidators, skipValidators);
+//   const validators = valuesExcludingKeys<Validator<T>>(ngModelController.$validators, skipValidators);
+//   const asyncValidators = valuesExcludingKeys<AsyncValidator<T>>(ngModelController.$asyncValidators, skipValidators);
 
-  const validateSync = (item: T) => allMatching(validators, validator => validator(item));
-  const validateAsync = (item: T) => $q.all(asyncValidators.map(asyncValidator => asyncValidator(item)));
+//   const validateSync = (item: T) => allMatching(validators, validator => validator(item));
+//   const validateAsync = (item: T) => $q.all(asyncValidators.map(asyncValidator => asyncValidator(item)));
 
-  const asyncValidationResults: IPromise<any>[] = [];
+//   const asyncValidationResults: IPromise<any>[] = [];
 
-  for (const value of values) {
-    if (!validateSync(value)) {
-      result.set(value, false);
-    } else {
-      asyncValidationResults.push(validateAsync(value).then(
-        () => result.set(value, true),
-        _err => result.set(value, false)
-      ));
-    }
-  }
+//   for (const value of values) {
+//     if (!validateSync(value)) {
+//       result.set(value, false);
+//     } else {
+//       asyncValidationResults.push(validateAsync(value).then(
+//         () => result.set(value, true),
+//         _err => result.set(value, false)
+//       ));
+//     }
+//   }
 
-  return $q.all(asyncValidationResults).then(() => new ValidationResult(result));
-}
+//   return $q.all(asyncValidationResults).then(() => new ValidationResult(result));
+// }
+
+// export function validateWithValidators<T>(ngModelController: NgModel, skipValidators: Set<string>, values: T[]): Promise<ValidationResult<T>> {
+//   const result = new Map<T, boolean>();
+
+
+
+//   const validators = valuesExcludingKeys<Validator<T>>(ngModelController.validators, skipValidators);
+//   const asyncValidators = valuesExcludingKeys<AsyncValidator<T>>(ngModelController.asyncValidators, skipValidators);
+
+//   const validateSync = (item: T) => allMatching(validators, validator => validator(item));
+//   const validateAsync = (item: T) => Promise.all(asyncValidators.map(asyncValidator => asyncValidator(item)));
+
+//   const asyncValidationResults: Promise<any>[] = [];
+
+//   for (const value of values) {
+//     if (!validateSync(value)) {
+//       result.set(value, false);
+//     } else {
+//       asyncValidationResults.push(validateAsync(value).then(
+//         () => result.set(value, true),
+//         _err => result.set(value, false)
+//       ));
+//     }
+//   }
+
+//   return Promise.all(asyncValidationResults).then(() => new ValidationResult(result));
+// }
 
 export function ifChanged<T>(cb: (newItem: T, oldItem: T) => void ) {
   return (newItem: T, oldItem: T) => {

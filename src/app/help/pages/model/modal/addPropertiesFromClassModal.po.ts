@@ -1,7 +1,7 @@
 import { createStory, createExpectedStateNextCondition, Story } from 'app/help/contract';
 import { modal, child } from 'app/help/utils/selector';
 import * as Modal from 'app/help/pages/modal/modal.po';
-import { AddPropertiesFromClassModalController } from 'app/components/editor/addPropertiesFromClassModal';
+import { AddPropertiesFromClassModalComponent } from 'app/components/editor/add-properties-from-class-modal';
 import { arraysAreEqual } from '@mju-psi/yti-common-ui';
 import { getModalController } from 'app/help/utils/angular';
 import { onlyProperties } from 'app/help/utils/init';
@@ -18,7 +18,7 @@ export function selectProperties(title: string, expectProperties: string[]) {
     focus: { element: selectPropertiesElement },
     nextCondition: createExpectedStateNextCondition(() => {
 
-      const ctrl = getModalController<AddPropertiesFromClassModalController>();
+      const ctrl = getModalController<AddPropertiesFromClassModalComponent>();
 
       if (!expectProperties) {
         return true;
@@ -29,7 +29,7 @@ export function selectProperties(title: string, expectProperties: string[]) {
     initialize: () => {
       if (expectProperties) {
         try {
-          const ctrl = getModalController<AddPropertiesFromClassModalController>();
+          const ctrl = getModalController<AddPropertiesFromClassModalComponent>();
           onlyProperties(ctrl.selectedProperties, expectProperties);
         } catch (e) {
           console.log(e);

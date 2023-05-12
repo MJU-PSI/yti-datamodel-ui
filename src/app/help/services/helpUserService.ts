@@ -30,8 +30,7 @@ export class InteractiveHelpUserService implements UserService, ResetableService
 
   private _user$ = new BehaviorSubject<User>(new InteractiveHelpUser());
 
-  constructor(private $q: IQService) {
-    'ngInject';
+  constructor() {
   }
 
   get loggedIn$(): Observable<boolean> {
@@ -66,7 +65,7 @@ export class InteractiveHelpUserService implements UserService, ResetableService
     throw new Error('Should not be able to logout when in help');
   }
 
-  reset(): IPromise<any> {
-    return this.$q.when();
+  reset(): Promise<any> {
+    return Promise.resolve();
   }
 }

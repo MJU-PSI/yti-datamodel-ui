@@ -1,5 +1,10 @@
-import { IPromise } from 'angular';
+// import { IPromise } from 'angular';
+
+// export interface ResetableService {
+//   reset(): IPromise<any>;
+// }
+
 
 export interface ResetableService {
-  reset(): IPromise<any>;
+  reset(): Promise<any>;
 }

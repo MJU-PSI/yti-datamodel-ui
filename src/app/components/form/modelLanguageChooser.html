@@ -1,4 +1,4 @@
-<div uib-dropdown>
+<!-- <div uib-dropdown>
   <button class="btn btn-language" id="data_language_dropdown_button" uib-dropdown-toggle>
     {{$ctrl.localizeLanguageName($ctrl.language)}}
   </button>
@@ -9,6 +9,21 @@
             ng-click="$ctrl.language = option"
             id="{{option + '_data_language_dropdown_button'}}">
       {{$ctrl.localizeLanguageName(option)}}
+    </button>
+  </div>
+</div> -->
+
+<div ngbDropdown>
+  <button class="btn btn-language" id="data_language_dropdown_button" ngbDropdownToggle>
+    {{ localizeLanguageName(language) }}
+  </button>
+  <div ngbDropdownMenu aria-labelledby="data_language_dropdown_button" class="dropdown-menu-right">
+    <button *ngFor="let option of context.language"
+            [class.active]="option === language"
+            class="dropdown-item"
+            (click)="language = option"
+            id="{{ option + '_data_language_dropdown_button' }}">
+      {{ localizeLanguageName(option) }}
     </button>
   </div>
 </div>

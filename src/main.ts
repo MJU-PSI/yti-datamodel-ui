@@ -1,12 +1,14 @@
-import * as jQuery from 'jquery';
-import 'angular';
+// import * as jQuery from 'jquery';
+// import 'angular';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppModule } from './app/app.module';
 import { enableProdMode } from '@angular/core';
 import { YtiCommonUiConfig, YTI_COMMON_UI_CONFIG } from '@mju-psi/yti-common-ui';
 import { Configuration } from './app/configuration.interface';
 
-require('imports-loader?define=>false!jquery-mousewheel/jquery.mousewheel')(jQuery);
+import './app/extensions/form.extensions';
+
+// require('imports-loader?define=>false!jquery-mousewheel/jquery.mousewheel')(jQuery);
 
 // export const done = platformBrowserDynamic().bootstrapModule(AppModule);
 

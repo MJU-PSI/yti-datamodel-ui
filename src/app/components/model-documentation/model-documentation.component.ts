@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from "@angular/core";
-import { AuthorizationManagerServiceWrapper, ConfigServiceWrapper, ModelServiceWrapper } from "app/ajs-upgraded-providers";
 import { Config } from "app/entities/config";
 import { Model } from "app/entities/model";
 import { EditorContainer, View } from "../model/modelControllerService";
@@ -11,6 +10,7 @@ import { takeUntil } from "rxjs/operators";
 import { AuthorizationManagerService } from "app/services/authorizationManagerService";
 import { ErrorModalService, defaultLanguage } from "@mju-psi/yti-common-ui";
 import { MdEditorOption } from "ngx-markdown-editor";
+import { ConfigService } from "app/services/configService";
 
 @Component({
   selector: 'model-documentation',
@@ -54,22 +54,22 @@ export class ModelDocumentationComponent implements OnInit, OnDestroy, OnChanges
   private authorizationManagerService: AuthorizationManagerService;
 
   constructor(
-    private configServiceWrapper: ConfigServiceWrapper,
-    modelServiceWrapper: ModelServiceWrapper,
+    private configService: ConfigService,
+    @Inject('modelService') modelService: ModelService,
     // TODO: hybrid angular app problem: this should be a wrapper,
     // or the other services shouldn't be wrappers?
     private languageService: LanguageService,
-    authorizationManagerServiceWrapper: AuthorizationManagerServiceWrapper,
+    authorizationManagerService: AuthorizationManagerService,
     private errorModalService: ErrorModalService
   ) {
-    this.modelService = modelServiceWrapper.modelService;
-    this.authorizationManagerService = authorizationManagerServiceWrapper.authorizationManagerService;
+    this.modelService = modelService;
+    this.authorizationManagerService = authorizationManagerService;
   }
 
   ngOnInit() {
     this.parent.registerView(this);
 
-    this.configServiceWrapper.configService
+    this.configService
       .getConfig()
       .then(config => {
         this.config = config;

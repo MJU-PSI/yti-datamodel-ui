@@ -1,4 +1,4 @@
-<div class="search-vocabulary">
+<!-- <div class="search-vocabulary">
   <div class="modal-header">
     <h4 class="modal-title">
       <a><i ng-click="$dismiss('cancel')" class="fas fa-times"></i></a>
@@ -74,5 +74,86 @@
 
   <div class="modal-footer">
     <button type="button" class="btn btn-link cancel" ng-click="$ctrl.close()" translate>Cancel</button>
+  </div>
+</div> -->
+
+<div class="search-vocabulary">
+  <div class="modal-header">
+    <h4 class="modal-title">
+      <a><i (click)="close()" class="fas fa-times"></i></a>
+      <span translate>Search vocabularies</span>
+    </h4>
+  </div>
+
+  <div class="modal-body full-height">
+    <div class="row mb-2">
+      <div class="col-12">
+        <!-- <text-filter class="pull-left"
+                     [searchText]="searchText"
+                     [searchController]="this"
+                     [contentExtractors]="contentExtractors"
+                     [placeholder]="'search vocabulary'"></text-filter> -->
+
+        <div class="pull-left mt-2 ml-2">
+          <!-- <content-filter [searchController]="this"
+                          [contentMatchers]="contentMatchers"
+                          [contentExtractors]="contentExtractors"></content-filter> -->
+        </div>
+
+        <!-- <model-language-chooser class="pull-right" [context]="context"></model-language-chooser> -->
+      </div>
+    </div>
+
+    <div class="row mb-2">
+      <div class="col-12">
+        <select id="vocabulary_status_filter_dropdown"
+          class="form-control pull-left"
+          style="width: auto"
+          [(ngModel)]="showStatus">
+          <option [value]="null" translate>All statuses</option>
+          <option *ngFor="let status of statuses" [value]="status">{{ status | translate }}</option>
+        </select>
+
+
+        <!-- <excluded-filter [searchController]="this"
+                         [searchText]="searchText"
+                         [exclude]="exclude"></excluded-filter> -->
+      </div>
+    </div>
+
+    <div class="row full-height" style="height: calc(100% - 135px)">
+      <div class="col-12">
+        <div class="content-box">
+          <div class="search-results">
+
+            <app-ajax-loading-indicator *ngIf="loadingResults"></app-ajax-loading-indicator>
+
+            <div class="no-search-results" *ngIf="searchText && searchResults.length === 0" translate>No search results</div>
+            {{searchResults | json}}
+            <!-- <search-results *ngIf="!loadingResults" [items]="searchResults" [selected]="selected" [exclude]="exclude" (onSelect)="selectItem($event)">
+
+              <span class="title">
+                <highlight [text]="searchResult.title" [context]="context" [search]="searchText"></highlight>
+                <app-status class="pull-right" [status]="searchResult.status"></app-status>
+              </span>
+
+              <span class="body">
+                <highlight [text]="searchResult.description" [context]="context" [search]="searchText"></highlight>
+              </span>
+
+              <span class="origin">
+                <span class="pull-left">{{searchResult.id.uri}}</span>
+              </span>
+
+            </search-results> -->
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-link cancel" (click)="close()" translate>Cancel</button>
   </div>
 </div>

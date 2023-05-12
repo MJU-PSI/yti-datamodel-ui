@@ -5,6 +5,7 @@ import { availableLanguages } from '../../types/language';
 import { contains } from '@mju-psi/yti-common-ui';
 import { DataType } from '../../entities/dataTypes';
 import { parse as parseUri } from 'uri-js';
+import { AbstractControl } from '@angular/forms';
 
 export type Validator<T> = (input: T, raw?: any) =>  boolean;
 export type AsyncValidator<T> = (input: T, raw?: any) => IPromise<any>;
@@ -36,7 +37,19 @@ export function arrayAsyncValidator<T>($q: IQService, asyncValidator: AsyncValid
   };
 }
 
-export const isValidPrefix = createRegexValidator(/^[a-z][a-z0-9_\-]*[a-z0-9]$/);
+export function isValidPrefix(control: AbstractControl): { [key: string]: any } | null {
+  const prefix = control.value;
+  const invalid = prefix && !/^[a-z][a-z0-9_\-]*[a-z0-9]$/.test(prefix);
+  return invalid ? { 'prefix': true } : null;
+}
+
+export function isValidPrefixLength(control: AbstractControl): { [key: string]: any } | null {
+  const prefix = control.value;
+  const invalid = prefix && prefix.length > 10;
+  return invalid ? { 'length': true } : null;
+}
+
+// export const isValidPrefix = createRegexValidator(/^[a-z][a-z0-9_\-]*[a-z0-9]$/);
 export const isValidClassIdentifier = createRegexValidator(/^[A-Z][a-zA-Z0-9_\-]*$/);
 export const isValidPredicateIdentifier = createRegexValidator(/^[a-z][a-zA-Z0-9_\-]*$/);
 export const isValidIdentifier = createRegexValidator(/^[a-zA-Z_\-][a-zA-Z0-9_\-]*$/);
@@ -49,9 +62,9 @@ export function isValidModelLabelLength(_label: string): boolean {
   return true;
 }
 
-export function isValidPrefixLength(prefix: string): boolean {
-  return !prefix || prefix.length <= 10;
-}
+// export function isValidPrefixLength(prefix: string): boolean {
+//   return !prefix || prefix.length <= 10;
+// }
 
 export function isValidNamespace(str: string|Uri): boolean {
   return !str || str.toString().endsWith('#') || str.toString().endsWith('/');

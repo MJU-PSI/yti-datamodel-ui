@@ -1,4 +1,4 @@
-<form name="form" class="search-reference-data">
+<!-- <form name="form" class="search-reference-data">
 
   <div class="modal-header">
     <h4 class="modal-title">
@@ -54,7 +54,7 @@
                 ng-options="(status | translate) for status in $ctrl.statuses">
           <option value="" translate>All statuses</option>
         </select>
-        
+
         <excluded-filter search-controller="$ctrl"
                          search-text="$ctrl.searchText"
                          exclude="$ctrl.exclude"></excluded-filter>
@@ -129,6 +129,139 @@
     <div class="alert alert-danger" role="alert" ng-show="$ctrl.cannotConfirm">
       <span class="fas fa-exclamation-circle" aria-hidden="true"></span>
       <span>{{$ctrl.cannotConfirm | translate}}</span>
+    </div>
+  </div>
+</form> -->
+
+
+
+<form name="form" #form="ngForm" class="search-reference-data">
+  <div class="modal-header">
+    <h4 class="modal-title">
+      <a (click)="close()"><i class="fas fa-times"></i></a>
+      <span translate>Search reference data</span>
+    </h4>
+  </div>
+  <div class="modal-body full-height">
+    <div class="row mb-2">
+      <div class="col-12">
+        <text-filter class="pull-left"
+          [searchText]="searchText"
+          [searchController]="this"
+          [contentExtractors]="contentExtractors"
+          [placeholder]="'search reference data'"></text-filter>
+        <div class="pull-left mt-2 ml-2">
+          <!-- <content-filter [searchController]="this"
+            [contentExtractors]="contentExtractors"
+            [contentMatchers]="contentMatchers"></content-filter> -->
+        </div>
+        <model-language-chooser class="pull-right"
+          [context]="context"></model-language-chooser>
+      </div>
+    </div>
+    <div class="row mb-2">
+      <div class="col-12">
+        <select id="server"
+          class="form-control pull-left"
+          style="width: auto"
+          [(ngModel)]="showServer"
+          (ngModelChange)="onShowServerChange()"
+          name="showServer">
+          <option [value]="undefined" translate>All servers</option>
+          <option *ngFor="let server of referenceDataServers" [value]="server">{{ server.title | translateValue: context }}</option>
+        </select>
+        <select id="group"
+          class="form-control ml-2 pull-left"
+          style="width: auto"
+          [(ngModel)]="showGroup"
+          name="showGroup">
+          <option [value]="undefined" translate>All groups</option>
+          <option *ngFor="let group of referenceDataGroups" [value]="group">{{ group.title | translateValue: context }}</option>
+        </select>
+        <select id="reference_data_status_filter_dropdown"
+          class="form-control ml-2 pull-left"
+          style="width: auto"
+          [(ngModel)]="showStatus"
+          name="showStatus">
+          <option [value]="undefined" translate>All statuses</option>
+          <option *ngFor="let status of statuses" [value]="status">{{ status | translate }}</option>
+        </select>
+        <!-- <excluded-filter [searchController]="this"
+          [searchText]="searchText"
+          [exclude]="exclude"></excluded-filter> -->
+      </div>
+    </div>
+    <div class="row full-height" [style.height]=" 'calc(100% - 110px)' ">
+      <div class="col-6">
+        <div class="content-box">
+          <div class="search-results">
+
+            <app-ajax-loading-indicator *ngIf="loadingResults"></app-ajax-loading-indicator>
+
+            <search-results *ngIf="!loadingResults" [items]="searchResults" [selected]="selectedItem" [exclude]="exclude" (on-select)="selectItem(item)">
+
+              <ng-container *ngFor="let searchResult of searchResults">
+                <span class="title">
+                  <ajax-loading-indicator-small *ngIf="loadingSelection(searchResult)"></ajax-loading-indicator-small>
+                  <highlight [text]="searchResult.title" [context]="model" [search]="searchText"></highlight>
+                </span>
+
+                <span class="body">
+                  <highlight [text]="searchResult.description" [context]="model" [search]="searchText"></highlight>
+                </span>
+
+                <div class="origin">
+                  <span *ngFor="let group of searchResult.groups">{{group.title | translateValue: model}}{{$last ? '' : ', '}}</span>
+                </div>
+              </ng-container>
+
+
+            </search-results>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-6 search-selection">
+        <div *ngIf="!isSelectionFormData() && selection">
+          <reference-data-view data-title="Reference data information" [context]="model" [reference-data]="selection" [show-codes]="true"></reference-data-view>
+        </div>
+
+        <div *ngIf="isSelectionFormData()">
+          <editable data-title="Reference data URI" [context]="model" autofocus>
+            <div class="input-group input-group-md">
+              <input id="uri" type="text" class="form-control" required uri-input="free-url" [model]="model" [(ngModel)]="selection.uri" />
+            </div>
+          </editable>
+
+          <editable data-title="Reference data label" [context]="model">
+            <div class="input-group input-group-md">
+              <input id="label" type="text" class="form-control" required string-input="label" [model]="model" [(ngModel)]="selection.label" />
+            </div>
+          </editable>
+
+          <editable data-title="Description" [context]="model">
+            <div class="input-group input-group-md">
+              <textarea id="description" class="form-control" required string-input [model]="model" [(ngModel)]="selection.description"></textarea>
+            </div>
+          </editable>
+        </div>
+
+        <error-panel [error]="submitError"></error-panel>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-action confirm" (click)="confirm()" >
+        <span *ngIf="isSelectionFormData()" translate>Create new</span>
+        <span *ngIf="!isSelectionFormData()" translate>Use selection</span>
+      </button>
+
+      <button type="button" class="btn btn-link cancel" (click)="close()" translate>Cancel</button>
+
+      <div class="alert alert-danger" role="alert" *ngIf="cannotConfirm">
+        <span class="fas fa-exclamation-circle" aria-hidden="true"></span>
+        <span>{{cannotConfirm | translate}}</span>
+      </div>
     </div>
   </div>
 </form>

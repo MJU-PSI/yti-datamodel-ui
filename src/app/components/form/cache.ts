@@ -1,9 +1,8 @@
-import { IPromise } from 'angular';
 import { Model } from 'app/entities/model';
 
-export function modelScopeCache<T>(modelProvider: () => Model, dataProvider: (model: Model) => IPromise<T>): () => IPromise<T> {
+export function modelScopeCache<T>(modelProvider: () => Model, dataProvider: (model: Model) => Promise<T>): () => Promise<T> {
 
-  let cachedResult: IPromise<T>;
+  let cachedResult: Promise<T>;
   let previousModel: Model;
 
   return () => {

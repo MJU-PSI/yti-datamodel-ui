@@ -72,6 +72,7 @@ export const profileUseContexts: UseContext[] = ['InformationPool', 'Information
 export const libraryUseContexts: UseContext[] = ['InformationDescription'];
 
 export interface GraphData {
+  [x: string]: GraphData;
   '@context': any;
   '@graph': any;
 }

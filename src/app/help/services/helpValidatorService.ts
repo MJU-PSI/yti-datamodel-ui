@@ -1,4 +1,35 @@
-import { IPromise, IQService } from 'angular';
+// import { IPromise, IQService } from 'angular';
+// import { ValidatorService } from 'app/services/validatorService';
+// import { ResetableService } from './resetableService';
+// import { Uri } from 'app/entities/uri';
+// import { InteractiveHelpClassService } from './helpClassService';
+// import { InteractiveHelpPredicateService } from './helpPredicateService';
+
+// export class InteractiveHelpValidatorService implements ValidatorService, ResetableService {
+
+//   constructor(private $q: IQService,
+//               private helpClassService: InteractiveHelpClassService,
+//               private helpPredicateService: InteractiveHelpPredicateService) {
+//     'ngInject';
+//   }
+
+//   classDoesNotExist(id: Uri): IPromise<boolean> {
+//     return this.$q.when(!this.helpClassService.classExists(id));
+//   }
+
+//   predicateDoesNotExist(id: Uri): IPromise<boolean> {
+//     return this.$q.when(!this.helpPredicateService.predicateExists(id));
+//   }
+
+//   prefixDoesNotExists(prefix: string): IPromise<boolean> {
+//     throw new Error('prefixDoesNotExists is not yet supported operation in help');
+//   }
+
+//   reset(): IPromise<any> {
+//     return this.$q.when();
+//   }
+// }
+
 import { ValidatorService } from 'app/services/validatorService';
 import { ResetableService } from './resetableService';
 import { Uri } from 'app/entities/uri';
@@ -7,25 +38,23 @@ import { InteractiveHelpPredicateService } from './helpPredicateService';
 
 export class InteractiveHelpValidatorService implements ValidatorService, ResetableService {
 
-  constructor(private $q: IQService,
-              private helpClassService: InteractiveHelpClassService,
+  constructor(private helpClassService: InteractiveHelpClassService,
               private helpPredicateService: InteractiveHelpPredicateService) {
-    'ngInject';
   }
 
-  classDoesNotExist(id: Uri): IPromise<boolean> {
-    return this.$q.when(!this.helpClassService.classExists(id));
+  classDoesNotExist(id: Uri): Promise<boolean> {
+    return Promise.resolve(!this.helpClassService.classExists(id));
   }
 
-  predicateDoesNotExist(id: Uri): IPromise<boolean> {
-    return this.$q.when(!this.helpPredicateService.predicateExists(id));
+  predicateDoesNotExist(id: Uri): Promise<boolean> {
+    return Promise.resolve(!this.helpPredicateService.predicateExists(id));
   }
 
-  prefixDoesNotExists(prefix: string): IPromise<boolean> {
+  prefixDoesNotExists(prefix: string): Promise<boolean> {
     throw new Error('prefixDoesNotExists is not yet supported operation in help');
   }
 
-  reset(): IPromise<any> {
-    return this.$q.when();
+  reset(): Promise<any> {
+    return Promise.resolve();
   }
 }

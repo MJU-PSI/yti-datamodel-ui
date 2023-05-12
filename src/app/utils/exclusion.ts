@@ -9,30 +9,58 @@ import { WithDefinedBy, WithId, WithIdAndType } from 'app/types/entity';
 import { collectIds } from './entity';
 
 
-export type Exclusion<T> = (obj: T) => string|null;
-export type LazyExclusion<T> = (obj: T) => IPromise<string|null>;
+// export type Exclusion<T> = (obj: T) => string|null;
+// export type LazyExclusion<T> = (obj: T) => IPromise<string|null>;
 
-export function idExclusion<T extends { id: Uri }>(excludeId: Exclusion<Uri>,
-                                                   excludeItem: Exclusion<T>,
-                                                   dataSource: DataSource<T>,
-                                                   $q: IQService): LazyExclusion<Uri|T> {
+// export function idExclusion<T extends { id: Uri }>(excludeId: Exclusion<Uri>,
+//                                                    excludeItem: Exclusion<T>,
+//                                                    dataSource: DataSource<T>,
+//                                                    $q: IQService): LazyExclusion<Uri|T> {
+//   return (id: Uri) => {
+
+//     if (!id) {
+//       return $q.when(null);
+//     }
+
+//     const excludeIdReason = excludeId && excludeId(id);
+
+//     if (excludeIdReason) {
+//       return $q.when(excludeIdReason);
+//     } else if (excludeItem) {
+//       return dataSource(id.toString()).then(items => {
+//         const item = firstMatching(items, i => i.id.equals(id));
+//         return item && excludeItem(item);
+//       });
+//     } else {
+//       return $q.when(null);
+//     }
+//   };
+// }
+
+export type Exclusion<T> = (obj: T) => string | null;
+export type LazyExclusion<T> = (obj: T) => Promise<string | null>;
+
+export function idExclusion<T extends { id: Uri }>(
+  excludeId: Exclusion<Uri>,
+  excludeItem: Exclusion<T>,
+  dataSource: DataSource<T>
+): LazyExclusion<Uri | T> {
   return (id: Uri) => {
-
     if (!id) {
-      return $q.when(null);
+      return Promise.resolve(null);
     }
 
     const excludeIdReason = excludeId && excludeId(id);
 
     if (excludeIdReason) {
-      return $q.when(excludeIdReason);
+      return Promise.resolve(excludeIdReason);
     } else if (excludeItem) {
       return dataSource(id.toString()).then(items => {
         const item = firstMatching(items, i => i.id.equals(id));
         return item && excludeItem(item);
       });
     } else {
-      return $q.when(null);
+      return Promise.resolve(null);
     }
   };
 }

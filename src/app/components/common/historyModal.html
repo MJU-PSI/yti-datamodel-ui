@@ -1,4 +1,4 @@
-<!--FIXME figure out better css and remove inline styles -->
+<!-- FIXME figure out better css and remove inline styles
 
 <div class="modal-header">
   <h4 class="modal-title">
@@ -49,4 +49,54 @@
 
 <div class="modal-footer">
   <button id="close_history_view_button" class="btn btn-link" type="button" ng-click="$dismiss('cancel')" translate>Close</button>
+</div> -->
+
+
+<div class="modal-header">
+  <h4 class="modal-title">
+    <a><i id="close_history_view" (click)="dismiss()" class="fas fa-times"></i></a>
+    <span translate>Historical versions</span>
+  </h4>
+</div>
+
+<div class="modal-body"  style="height: calc(100vh - 50px);">
+
+  <div class="row mb-2">
+    <div class="col-12">
+      <model-language-chooser class="pull-right" [context]="model"></model-language-chooser>
+      <export *ngIf="selection"  id-prefix="'history'" class="pull-right mr-2" [entity]="selection" [context]="model"></export>
+    </div>
+  </div>
+
+
+  <div class="selectable-items" style="height: 100%">
+    <ul style="height: 100%; overflow-y: auto">
+      <li *ngFor="let version of versions; trackBy: version.id"
+          [id]="version.id"
+          [ngClass]="{'selection': isSelected(version)}"
+          (click)="select(version)">
+        {{version.createdAt | localizedDate}}
+        <span *ngIf="showAuthor">
+            <br />
+            {{version.createdBy}}
+          </span>
+        <ajax-loading-indicator-small *ngIf="isLoading(version)"></ajax-loading-indicator-small>
+      </li>
+    </ul>
+  </div>
+
+  <div class="form-container" style="float: left; width: calc(100% - 300px); height: calc(100% - 40px); padding-left: 20px;">
+    <form class="editable-form">
+      <div *ngIf="selection" style="height: 100%; overflow-x: hidden">
+        <model-form id="'model_history'" *ngIf="selection.isOfType('model')" [model]="selection"></model-form>
+        <class-form id="class_history" *ngIf="selection.isClass()" [class]="selection" [old-class]="selection" [model]="model" [open-property-id]="openPropertyId"></class-form>
+        <predicate-form id="predicate_history" *ngIf="selection.isPredicate()" [predicate]="selection" [old-predicate]="selection" [model]="model"></predicate-form>
+      </div>
+    </form>
+  </div>
+
+</div>
+
+<div class="modal-footer">
+  <button id="close_history_view_button" class="btn btn-link" type="button" (click)="dismiss()" translate>Close</button>
 </div>

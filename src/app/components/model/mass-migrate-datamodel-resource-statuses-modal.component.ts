@@ -1,4 +1,4 @@
-import { Component, OnInit, Injectable } from '@angular/core';
+import { Component, OnInit, Injectable, Inject } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Model } from 'app/entities/model';
 import {  } from '@mju-psi/yti-common-ui';
@@ -17,7 +17,6 @@ import {
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { ModelService } from 'app/services/modelService';
-import { ModelServiceWrapper } from 'app/ajs-upgraded-providers';
 import { DatamodelConfirmationModalService } from 'app/services/confirmation-modal.service';
 
 @Component({
@@ -47,8 +46,8 @@ export class MassMigrateDatamodelResourceStatusesModalComponent implements OnIni
               private alertModalService: AlertModalService,
               private errorModalService: ErrorModalService,
               private confirmationModal: DatamodelConfirmationModalService,
-              modelServiceWrapper: ModelServiceWrapper) {
-    this.modelService = modelServiceWrapper.modelService;
+              @Inject('modelService') modelService: ModelService) {
+    this.modelService = modelService;
   }
 
   ngOnInit() {

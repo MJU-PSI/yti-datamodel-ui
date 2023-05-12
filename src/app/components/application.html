@@ -1,13 +1,27 @@
-<ng-container ng-show="$ctrl.applicationInitialized">
+<!-- <ng-container ng-show="$ctrl.applicationInitialized">
   <navigation-bar></navigation-bar>
   <div class="container-fluid" ng-class="{ 'without-footer': !$ctrl.showFooter }">
     <breadcrumb></breadcrumb>
     <div ng-view></div>
   </div>
-  
+
   <app-footer [title]="'Data Vocabularies' | translate"
               [show-license-icon]="true"
               [version]="$ctrl.version"
               (information-click)="$ctrl.navigateToInformation()"
               ng-if="$ctrl.showFooter"></app-footer>
+</ng-container> -->
+
+<ng-container *ngIf="applicationInitialized">
+  <navigation-bar></navigation-bar>
+  <div class="container-fluid" [ngClass]="{ 'without-footer': !showFooter }">
+    <breadcrumb></breadcrumb>
+    <router-outlet></router-outlet>
+  </div>
+
+  <app-footer [title]="'Data Vocabularies' | translate"
+              [showLicenseIcon]="true"
+              [version]="version"
+              (informationClick)="navigateToInformation()"
+              *ngIf="showFooter"></app-footer>
 </ng-container>

@@ -1,20 +1,31 @@
-import { Class } from 'app/entities/class';
-import { Predicate } from 'app/entities/predicate';
-import { Model } from 'app/entities/model';
-import { LegacyComponent } from 'app/utils/angular';
+// import { Class } from 'app/entities/class';
+// import { Predicate } from 'app/entities/predicate';
+// import { Model } from 'app/entities/model';
+// import { LegacyComponent } from 'app/utils/angular';
 
-@LegacyComponent({
-  bindings: {
-    selection: '=',
-    model: '=',
-    modelPageActions: '=',
-    maximized: '='
-  },
-  template: require('./visualizationView.html')
+// @LegacyComponent({
+//   bindings: {
+//     selection: '=',
+//     model: '=',
+//     modelPageActions: '=',
+//     maximized: '='
+//   },
+//   template: require('./visualizationView.html')
+// })
+// export class VisualizationViewComponent {
+
+//   selection: Class|Predicate;
+//   model: Model;
+//   maximized: boolean;
+// }
+
+import { Component  } from '@angular/core';
+
+
+@Component({
+  selector: 'visualization-view',
+  template: ''
 })
-export class VisualizationViewComponent {
+export class VisualizationViewComponent  {
 
-  selection: Class|Predicate;
-  model: Model;
-  maximized: boolean;
 }

@@ -1,10 +1,14 @@
 import { ILocationService, IRootScopeService, route } from 'angular';
-import { LocationServiceWrapper, RouteServiceWrapper, ScopeWrapper } from '../ajs-upgraded-providers';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { Injectable, OnDestroy } from '@angular/core';
 import { isDifferentUrl, nextUrl } from '../utils/angular';
 import { Model } from '../entities/model';
 import { EditingGuard } from '../components/model/modelControllerService';
+import { LocationService } from './locationService';
+import { Location } from '@angular/common';
+import { ActivatedRoute, NavigationEnd, NavigationStart, Params, Router, UrlSegment } from '@angular/router';
+import { filter, takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 interface RouteParams {
   prefix: string;
@@ -16,18 +20,25 @@ interface RouteParams {
 export class SubRoutingHackService implements OnDestroy {
   currentSelection: BehaviorSubject<RouteData> = new BehaviorSubject(new RouteData({ prefix: '' }));
   private ajsRootScope: IRootScopeService;
-  private routeService: route.IRouteService;
-  private locationService: ILocationService;
-  private initialRoute: route.ICurrentRoute;
-  private currentRouteParams: RouteParams;
+  // private routeService: route.IRouteService;
+  // private locationService: ILocationService;
+  private initialRoute: UrlSegment[];
+  private currentRouteParams: Params;
   private subscriptions: Subscription[] = [];
   private ajsSubscriptions: (() => void)[] = [];
   private editingGuard?: EditingGuard;
 
-  constructor(scopeWrapper: ScopeWrapper, routeWrapper: RouteServiceWrapper, locationWrapper: LocationServiceWrapper) {
-    this.ajsRootScope = scopeWrapper.scope;
-    this.routeService = routeWrapper.routeService;
-    this.locationService = locationWrapper.locationService;
+  private destroy$ = new Subject();
+
+  constructor(
+    // scopeWrapper: ScopeWrapper,
+    private route: ActivatedRoute,
+    private location: Location,
+    private router: Router
+    ) {
+    // this.ajsRootScope = scopeWrapper.scope;
+    // this.routeService = routeWrapper.routeService;
+    // this.locationService = locationService;
 
     this.initSubRoutingHack();
   }
@@ -41,45 +52,86 @@ export class SubRoutingHackService implements OnDestroy {
     // The logic is mostly transferred from old AngularJS bloat modelPage.ts. The main idea is to emulate sub routing by hacking,
     // to keep the data model level stuff from re-initializing when lower level selections change.
 
-    this.initialRoute = this.routeService.current!;
-    this.currentRouteParams = this.initialRoute.params;
+    this.initialRoute = this.route.snapshot.url;
+    this.currentRouteParams = this.route.snapshot.params;
 
     const initialRouteData = new RouteData(this.currentRouteParams);
     this.currentSelection.next(initialRouteData);
 
-    this.ajsSubscriptions.push(this.ajsRootScope.$on('$locationChangeSuccess', () => {
-      if (this.locationService.path().startsWith('/model')) {
-        this.currentRouteParams = this.routeService.current!.params;
-        const newRoute = new RouteData(this.currentRouteParams);
+    // this.ajsSubscriptions.push(this.ajsRootScope.$on('$locationChangeSuccess', () => {
+    //   if (this.location.path().startsWith('/model')) {
+    //     this.currentRouteParams = this.route.snapshot.params;
+    //     const newRoute = new RouteData(this.currentRouteParams);
 
-        // FIXME: hack to prevent reload on params update
-        // https://github.com/angular/angular.js/issues/1699#issuecomment-45048054
-        // TODO: consider migration to angular-ui-router if it fixes the problem elegantly (https://ui-router.github.io/ng1/)
-        this.routeService.current = this.initialRoute;
+    //     // FIXME: hack to prevent reload on params update
+    //     // https://github.com/angular/angular.js/issues/1699#issuecomment-45048054
+    //     // TODO: consider migration to angular-ui-router if it fixes the problem elegantly (https://ui-router.github.io/ng1/)
+    //     // this.route.url = this.initialRoute;
 
-        const oldRoute = this.currentSelection.getValue();
-        const modelDiffers = oldRoute.modelPrefix !== newRoute.modelPrefix;
-        const resourceDiffers = oldRoute.resourceCurie !== newRoute.resourceCurie;
-        const propertyDiffers = oldRoute.propertyId !== newRoute.propertyId;
+    //     const oldRoute = this.currentSelection.getValue();
+    //     const modelDiffers = oldRoute.modelPrefix !== newRoute.modelPrefix;
+    //     const resourceDiffers = oldRoute.resourceCurie !== newRoute.resourceCurie;
+    //     const propertyDiffers = oldRoute.propertyId !== newRoute.propertyId;
 
-        if (modelDiffers || resourceDiffers || propertyDiffers) {
-          this.currentSelection.next(newRoute);
+    //     if (modelDiffers || resourceDiffers || propertyDiffers) {
+    //       this.currentSelection.next(newRoute);
+    //     }
+    //   } else {
+    //     if (this.currentSelection.getValue().modelPrefix) {
+    //       this.currentSelection.next(new RouteData({ prefix: '' }));
+    //     }
+    //   }
+    // }));
+
+    // this.ajsSubscriptions.push(this.ajsRootScope.$on('$locationChangeStart', (event, next, current) => {
+    //   // NOTE: isDifferentUrl utility ignores propertyId (quite classView specific functionality)
+    //   if (isDifferentUrl(current, next)) {
+    //     if (this.editingGuard) {
+    //       // this.editingGuard.attemptRouteChange(() => event.preventDefault(), () => this.location.go(nextUrl(this.location, next)));
+    //     }
+    //   }
+    // }));
+
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationStart || event instanceof NavigationEnd ))
+      .subscribe(event => {
+        if (event instanceof NavigationStart) {
+          // Navigation started
+          const currentUrl = event.url;
+          const urlAfterRedirects = this.router.parseUrl(event.url).toString();
+          if (isDifferentUrl(currentUrl, urlAfterRedirects)) {
+            if (this.editingGuard) {
+              // this.editingGuard.attemptRouteChange(() => event.preventDefault(), () => this.location.go(nextUrl(this.location, next)));
+            }
+          }
         }
-      } else {
-        if (this.currentSelection.getValue().modelPrefix) {
-          this.currentSelection.next(new RouteData({ prefix: '' }));
-        }
-      }
-    }));
 
-    this.ajsSubscriptions.push(this.ajsRootScope.$on('$locationChangeStart', (event, next, current) => {
-      // NOTE: isDifferentUrl utility ignores propertyId (quite classView specific functionality)
-      if (isDifferentUrl(current, next)) {
-        if (this.editingGuard) {
-          this.editingGuard.attemptRouteChange(() => event.preventDefault(), () => this.locationService.url(nextUrl(this.locationService, next)));
+        if (event instanceof NavigationEnd) {
+          // Navigation ended
+          if (this.location.path().startsWith('/model')) {
+            this.currentRouteParams = this.route.snapshot.params;
+            const newRoute = new RouteData(this.currentRouteParams);
+
+            // FIXME: hack to prevent reload on params update
+            // https://github.com/angular/angular.js/issues/1699#issuecomment-45048054
+            // TODO: consider migration to angular-ui-router if it fixes the problem elegantly (https://ui-router.github.io/ng1/)
+            // this.route.url = this.initialRoute;
+
+            const oldRoute = this.currentSelection.getValue();
+            const modelDiffers = oldRoute.modelPrefix !== newRoute.modelPrefix;
+            const resourceDiffers = oldRoute.resourceCurie !== newRoute.resourceCurie;
+            const propertyDiffers = oldRoute.propertyId !== newRoute.propertyId;
+
+            if (modelDiffers || resourceDiffers || propertyDiffers) {
+              this.currentSelection.next(newRoute);
+            }
+          } else {
+            if (this.currentSelection.getValue().modelPrefix) {
+              this.currentSelection.next(new RouteData({ prefix: '' }));
+            }
+          }
         }
-      }
-    }));
+      });
   }
 
   navigateTo(modelPrefix: string, resourceCurie?: string, propertyId?: string) {
@@ -101,12 +153,12 @@ export class SubRoutingHackService implements OnDestroy {
       newParams.resource !== this.currentRouteParams.resource ||
       newParams.property !== this.currentRouteParams.property) {
 
-      this.routeService.updateParams(newParams);
+      // this.routeService.updateParams(newParams);
     }
   }
 
   navigateToRoot() {
-    this.locationService.url('/');
+    this.location.go('/');
   }
 
   setGuard(guard: EditingGuard): void {
@@ -138,7 +190,7 @@ export class RouteData {
   resourceCurie?: string;
   propertyId?: string;
 
-  constructor(params: RouteParams) {
+  constructor(params: Params) {
     this.modelPrefix = params.prefix;
 
     if (params.resource) {

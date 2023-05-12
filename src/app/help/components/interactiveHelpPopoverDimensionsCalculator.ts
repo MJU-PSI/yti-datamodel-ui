@@ -1,49 +1,110 @@
-import { LegacyComponent } from 'app/utils/angular';
+// import { LegacyComponent } from 'app/utils/angular';
+// import { Notification, Story } from 'app/help/contract';
+// import { IScope } from 'angular';
+// import { requireDefined } from '@mju-psi/yti-common-ui';
+// import { InteractiveHelpController } from './interactiveHelpDisplay';
+// import { elementPositioning, PopoverDimensionsProvider, resolveArrowClass } from 'app/help/utils/component';
+// import { gettextCatalog as GettextCatalog } from 'angular-gettext';
+
+// @LegacyComponent({
+//   bindings: {
+//     item: '<',
+//     helpController: '<'
+//   },
+//   template: `
+//         <span ng-class="$ctrl.arrowClass"></span>
+
+//         <div class="help-content-wrapper">
+//           <h3 ng-show="$ctrl.item.title">{{$ctrl.localizedTitle}}</h3>
+//           <p ng-show="$ctrl.item.content">{{$ctrl.localizedContent}}</p>
+//           <button ng-show="$ctrl.helpController.showPrevious" class="small button help-navigate" translate>previous</button>
+//           <button ng-show="$ctrl.helpController.showNext" class="small button help-navigate" translate>next</button>
+//           <button ng-show="$ctrl.helpController.showClose" class="small button help-next" translate>close</button>
+//           <a class="help-close">&times;</a>
+//         </div>
+//   `
+// })
+// export class InteractiveHelpPopoverDimensionsCalculatorComponent implements PopoverDimensionsProvider {
+
+//   item: Story|Notification;
+//   helpController: InteractiveHelpController;
+//   arrowClass: string[] = [];
+
+//   constructor(private $scope: IScope,
+//               private $element: JQuery,
+//               private gettextCatalog: GettextCatalog) {
+//     'ngInject';
+//   }
+
+//   $onInit() {
+//     this.helpController.registerPopoverDimensionsProvider(this);
+//     this.$scope.$watch(() => this.item, item => this.arrowClass = resolveArrowClass(item));
+//   }
+
+//   get localizedTitle() {
+//     if (this.item) {
+//       return this.gettextCatalog.getString(this.item.title.key, this.item.title.context);
+//     }  else {
+//       return '';
+//     }
+//   }
+
+//   get localizedContent() {
+//     if (this.item && this.item.content) {
+//       return this.gettextCatalog.getString(this.item.content.key, this.item.content.context);
+//     } else {
+//       return '';
+//     }
+//   }
+
+//   getDimensions(): { width: number; height: number } {
+//     return requireDefined(elementPositioning(this.$element));
+//   }
+// }
+
+
 import { Notification, Story } from 'app/help/contract';
-import { IScope } from 'angular';
 import { requireDefined } from '@mju-psi/yti-common-ui';
 import { InteractiveHelpController } from './interactiveHelpDisplay';
 import { elementPositioning, PopoverDimensionsProvider, resolveArrowClass } from 'app/help/utils/component';
-import { gettextCatalog as GettextCatalog } from 'angular-gettext';
+import { Component, ElementRef, Input } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
-@LegacyComponent({
-  bindings: {
-    item: '<',
-    helpController: '<'
-  },
+@Component({
+  selector: 'app-interactive-help-popover-dimensions-calculator',
   template: `
-        <span ng-class="$ctrl.arrowClass"></span>
+    <span [class]="arrowClass"></span>
 
-        <div class="help-content-wrapper">
-          <h3 ng-show="$ctrl.item.title">{{$ctrl.localizedTitle}}</h3>
-          <p ng-show="$ctrl.item.content">{{$ctrl.localizedContent}}</p>
-          <button ng-show="$ctrl.helpController.showPrevious" class="small button help-navigate" translate>previous</button>
-          <button ng-show="$ctrl.helpController.showNext" class="small button help-navigate" translate>next</button>
-          <button ng-show="$ctrl.helpController.showClose" class="small button help-next" translate>close</button>
-          <a class="help-close">&times;</a>
-        </div>
+    <div class="help-content-wrapper">
+      <h3 *ngif="item?.title">{{localizedTitle}}</h3>
+      <p *ngif="item?.content">{{localizedContent}}</p>
+      <button *ngif="helpController.showPrevious" class="small button help-navigate" translate>previous</button>
+      <button *ngif="helpController.showNext" class="small button help-navigate" translate>next</button>
+      <button *ngif="helpController.showClose" class="small button help-next" translate>close</button>
+      <a class="help-close">&times;</a>
+    </div>
   `
 })
 export class InteractiveHelpPopoverDimensionsCalculatorComponent implements PopoverDimensionsProvider {
 
-  item: Story|Notification;
-  helpController: InteractiveHelpController;
+  @Input() item?: Story|Notification;
+  @Input() helpController!: InteractiveHelpController;
   arrowClass: string[] = [];
 
-  constructor(private $scope: IScope,
-              private $element: JQuery,
-              private gettextCatalog: GettextCatalog) {
-    'ngInject';
-  }
+  constructor(
+    private translateService: TranslateService,
+    private elementRef: ElementRef
+  ) {}
 
-  $onInit() {
+  ngOnInit() {
     this.helpController.registerPopoverDimensionsProvider(this);
-    this.$scope.$watch(() => this.item, item => this.arrowClass = resolveArrowClass(item));
+    // this.$scope.$watch(() => this.item, item => this.arrowClass = resolveArrowClass(item));
+    this.arrowClass = resolveArrowClass(this.item);
   }
 
   get localizedTitle() {
     if (this.item) {
-      return this.gettextCatalog.getString(this.item.title.key, this.item.title.context);
+      return this.translateService.instant(this.item.title.key, this.item.title.context);
     }  else {
       return '';
     }
@@ -51,13 +112,19 @@ export class InteractiveHelpPopoverDimensionsCalculatorComponent implements Popo
 
   get localizedContent() {
     if (this.item && this.item.content) {
-      return this.gettextCatalog.getString(this.item.content.key, this.item.content.context);
+      return this.translateService.instant(this.item.content.key, this.item.content.context);
     } else {
       return '';
     }
   }
 
   getDimensions(): { width: number; height: number } {
-    return requireDefined(elementPositioning(this.$element));
+    return requireDefined(elementPositioning(this.elementRef.nativeElement));
+  }
+
+  ngOnChanges() {
+    if (this.item) {
+      this.arrowClass = resolveArrowClass(this.item);
+    }
   }
 }

@@ -2,12 +2,12 @@ import { Component, Input, OnInit } from '@angular/core';
 import { NgbNav } from '@ng-bootstrap/ng-bootstrap';
 import { comparingPrimitive, ConfirmationModalService, ErrorModalService, ignoreModalClose, Localizable, UserService } from '@mju-psi/yti-common-ui';
 import { BehaviorSubject } from 'rxjs';
-import { ConfigServiceWrapper } from '../../ajs-upgraded-providers';
 import { MessagingResource } from '../../entities-messaging/messaging-resource';
 import { Config } from '../../entities/config';
 import { LanguageService, Localizer } from '../../services/languageService';
 import { MessagingService } from '../../services/messaging-service';
 import { comparingLocalizable } from '../../utils/comparator';
+import { ConfigService } from 'app/services/configService';
 
 @Component({
   selector: 'app-user-details-subscriptions',
@@ -33,7 +33,7 @@ export class UserDetailsSubscriptionsComponent implements OnInit {
 
   constructor(public languageService: LanguageService,
     private messagingService: MessagingService,
-    private configServiceWrapper: ConfigServiceWrapper,
+    private configService: ConfigService,
     private userService: UserService,
     private confirmationModalService: ConfirmationModalService,
     private errorModalService: ErrorModalService) {
@@ -47,7 +47,7 @@ export class UserDetailsSubscriptionsComponent implements OnInit {
 
   ngOnInit() {
 
-    this.configServiceWrapper.configService.getConfig()
+    this.configService.getConfig()
       .then(config => {
         this.config = config
         if (this.config.isMessagingEnabled && !this.userService.user.anonymous) {

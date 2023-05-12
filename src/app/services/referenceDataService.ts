@@ -1,5 +1,88 @@
+// import { flatten, normalizeAsArray, requireDefined } from '@mju-psi/yti-common-ui';
+// import { IHttpService, IPromise, IQService } from 'angular';
+// import * as frames from 'app/entities/frames';
+// import { ReferenceData, ReferenceDataCode, ReferenceDataServer } from 'app/entities/referenceData';
+// import { Uri } from 'app/entities/uri';
+// import { GraphData } from 'app/types/entity';
+// import { Language } from 'app/types/language';
+// import { apiEndpointWithName } from './config';
+// import { FrameService } from './frameService';
+
+// export class ReferenceDataService {
+
+//   // indexed by reference data id
+//   private referenceDataCodesCache = new Map<string, IPromise<ReferenceDataCode[]>>();
+
+//   constructor(private $http: IHttpService, private $q: IQService, private frameService: FrameService) {
+//     'ngInject';
+//   }
+
+//   getReferenceDataServers(): IPromise<ReferenceDataServer[]> {
+//     return this.$http.get<GraphData>(apiEndpointWithName('codeServer'))
+//       .then(response => this.deserializeReferenceDataServers(response.data!));
+//   }
+
+//   getReferenceDatasForServer(server: ReferenceDataServer): IPromise<ReferenceData[]> {
+//     return this.$http.get<GraphData>(apiEndpointWithName('codeList'), { params: { uri: server.id.uri } })
+//       .then(response => this.deserializeReferenceDatas(response.data!));
+//   }
+
+//   getReferenceDatasForServers(servers: ReferenceDataServer[]): IPromise<ReferenceData[]> {
+//     return this.$q.all(servers.map(server => this.getReferenceDatasForServer(server)))
+//       .then(referenceDatas => flatten(referenceDatas));
+//   }
+
+//   getAllReferenceDatas(): IPromise<ReferenceData[]> {
+//     return this.getReferenceDataServers().then(servers => this.getReferenceDatasForServers(servers));
+//   }
+
+//   getReferenceDataCodes(referenceData: ReferenceData|ReferenceData[], force: boolean = false): IPromise<ReferenceDataCode[]> {
+
+//     const getSingle = (rd: ReferenceData) => {
+//       const cached = this.referenceDataCodesCache.get(rd.id.uri);
+
+//       if (cached && !force) {
+//         return cached;
+//       } else {
+//         const result = this.$http.get<GraphData>(apiEndpointWithName('codeValues'), {params: {uri: rd.id.uri, force}})
+//           .then(response => this.deserializeReferenceDataCodes(response.data!));
+
+//         this.referenceDataCodesCache.set(rd.id.uri, result);
+//         return result;
+//       }
+//     };
+
+//     const internalReferenceData = normalizeAsArray(referenceData).filter(rd => !rd.isExternal());
+
+//     return this.$q.all(internalReferenceData.map(rd => getSingle(rd))).then(flatten);
+//   }
+
+//   newReferenceData(uri: Uri, label: string, description: string, lang: Language): IPromise<ReferenceData> {
+//     return this.$http.get<GraphData>(apiEndpointWithName('codeListCreator'), {params: {uri: uri.uri, label, description, lang}})
+//       .then(response => this.deserializeReferenceData(response.data!));
+//   }
+
+//   private deserializeReferenceDataServers(data: GraphData): IPromise<ReferenceDataServer[]> {
+//     return this.frameService.frameAndMapArray(data, frames.referenceDataServerFrame(data), () => ReferenceDataServer);
+//   }
+
+//   private deserializeReferenceData(data: GraphData): Promise<ReferenceData> {
+//     return this.frameService.frameAndMap(data, false, frames.referenceDataFrame(data), () => ReferenceData).then(requireDefined);
+//   }
+
+//   private deserializeReferenceDatas(data: GraphData): Promise<ReferenceData[]> {
+//     return this.frameService.frameAndMapArray(data, frames.referenceDataFrame(data), () => ReferenceData);
+//   }
+
+//   private deserializeReferenceDataCodes(data: GraphData): Promise<ReferenceDataCode[]> {
+//     return this.frameService.frameAndMapArray(data, frames.referenceDataCodeFrame(data), () => ReferenceDataCode);
+//   }
+// }
+
+
 import { flatten, normalizeAsArray, requireDefined } from '@mju-psi/yti-common-ui';
-import { IHttpService, IPromise, IQService } from 'angular';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import * as frames from 'app/entities/frames';
 import { ReferenceData, ReferenceDataCode, ReferenceDataServer } from 'app/entities/referenceData';
 import { Uri } from 'app/entities/uri';
@@ -8,35 +91,36 @@ import { Language } from 'app/types/language';
 import { apiEndpointWithName } from './config';
 import { FrameService } from './frameService';
 
+@Injectable()
 export class ReferenceDataService {
 
   // indexed by reference data id
-  private referenceDataCodesCache = new Map<string, IPromise<ReferenceDataCode[]>>();
+  private referenceDataCodesCache = new Map<string, Promise<ReferenceDataCode[]>>();
 
-  constructor(private $http: IHttpService, private $q: IQService, private frameService: FrameService) {
-    'ngInject';
+  constructor(private http: HttpClient, private frameService: FrameService) {}
+
+  getReferenceDataServers(): Promise<ReferenceDataServer[]> {
+    return this.http.get<GraphData>(apiEndpointWithName('codeServer'))
+      .toPromise()
+      .then(response => this.deserializeReferenceDataServers(response));
   }
 
-  getReferenceDataServers(): IPromise<ReferenceDataServer[]> {
-    return this.$http.get<GraphData>(apiEndpointWithName('codeServer'))
-      .then(response => this.deserializeReferenceDataServers(response.data!));
+  getReferenceDatasForServer(server: ReferenceDataServer): Promise<ReferenceData[]> {
+    return this.http.get<GraphData>(apiEndpointWithName('codeList'), { params: { uri: server.id.uri } })
+      .toPromise()
+      .then(response => this.deserializeReferenceDatas(response));
   }
 
-  getReferenceDatasForServer(server: ReferenceDataServer): IPromise<ReferenceData[]> {
-    return this.$http.get<GraphData>(apiEndpointWithName('codeList'), { params: { uri: server.id.uri } })
-      .then(response => this.deserializeReferenceDatas(response.data!));
-  }
-
-  getReferenceDatasForServers(servers: ReferenceDataServer[]): IPromise<ReferenceData[]> {
-    return this.$q.all(servers.map(server => this.getReferenceDatasForServer(server)))
+  getReferenceDatasForServers(servers: ReferenceDataServer[]): Promise<ReferenceData[]> {
+    return Promise.all(servers.map(server => this.getReferenceDatasForServer(server)))
       .then(referenceDatas => flatten(referenceDatas));
   }
 
-  getAllReferenceDatas(): IPromise<ReferenceData[]> {
+  getAllReferenceDatas(): Promise<ReferenceData[]> {
     return this.getReferenceDataServers().then(servers => this.getReferenceDatasForServers(servers));
   }
 
-  getReferenceDataCodes(referenceData: ReferenceData|ReferenceData[], force: boolean = false): IPromise<ReferenceDataCode[]> {
+  getReferenceDataCodes(referenceData: ReferenceData|ReferenceData[], force = false): Promise<ReferenceDataCode[]> {
 
     const getSingle = (rd: ReferenceData) => {
       const cached = this.referenceDataCodesCache.get(rd.id.uri);
@@ -44,37 +128,39 @@ export class ReferenceDataService {
       if (cached && !force) {
         return cached;
       } else {
-        const result = this.$http.get<GraphData>(apiEndpointWithName('codeValues'), {params: {uri: rd.id.uri, force}})
-          .then(response => this.deserializeReferenceDataCodes(response.data!));
+        const result = this.http.get<GraphData>(apiEndpointWithName('codeValues'), {params: {uri: rd.id.uri, force}})
+          .toPromise()
+          .then(response => this.deserializeReferenceDataCodes(response));
 
         this.referenceDataCodesCache.set(rd.id.uri, result);
         return result;
       }
     };
 
-    const internalReferenceData = normalizeAsArray(referenceData).filter(rd => !rd.isExternal());
+    const internalReferenceData = normalizeAsArray(referenceData).filter((rd: any) => !rd.isExternal());
 
-    return this.$q.all(internalReferenceData.map(rd => getSingle(rd))).then(flatten);
+    return Promise.all(internalReferenceData.map((rd: any) => getSingle(rd))).then(flatten);
   }
 
-  newReferenceData(uri: Uri, label: string, description: string, lang: Language): IPromise<ReferenceData> {
-    return this.$http.get<GraphData>(apiEndpointWithName('codeListCreator'), {params: {uri: uri.uri, label, description, lang}})
-      .then(response => this.deserializeReferenceData(response.data!));
+  newReferenceData(uri: Uri, label: string, description: string, lang: Language): Promise<ReferenceData> {
+    return this.http.get<GraphData>(apiEndpointWithName('codeListCreator'), {params: {uri: uri.uri, label, description, lang}})
+      .toPromise()
+      .then(response => this.deserializeReferenceData(response));
   }
 
-  private deserializeReferenceDataServers(data: GraphData): IPromise<ReferenceDataServer[]> {
+  private deserializeReferenceDataServers(data: GraphData): Promise<ReferenceDataServer[]> {
     return this.frameService.frameAndMapArray(data, frames.referenceDataServerFrame(data), () => ReferenceDataServer);
   }
 
-  private deserializeReferenceData(data: GraphData): IPromise<ReferenceData> {
+  private deserializeReferenceData(data: GraphData): Promise<ReferenceData> {
     return this.frameService.frameAndMap(data, false, frames.referenceDataFrame(data), () => ReferenceData).then(requireDefined);
   }
 
-  private deserializeReferenceDatas(data: GraphData): IPromise<ReferenceData[]> {
+  private deserializeReferenceDatas(data: GraphData): Promise<ReferenceData[]> {
     return this.frameService.frameAndMapArray(data, frames.referenceDataFrame(data), () => ReferenceData);
   }
 
-  private deserializeReferenceDataCodes(data: GraphData): IPromise<ReferenceDataCode[]> {
+  private deserializeReferenceDataCodes(data: GraphData): Promise<ReferenceDataCode[]> {
     return this.frameService.frameAndMapArray(data, frames.referenceDataCodeFrame(data), () => ReferenceDataCode);
   }
 }

@@ -1,8 +1,7 @@
-import { Component, Injectable } from '@angular/core';
+import { Component, Inject, Injectable } from '@angular/core';
 import { ModalService, AlertModalService, ErrorModalService } from '@mju-psi/yti-common-ui';
 import { Model } from 'app/entities/model';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ModelServiceWrapper } from 'app/ajs-upgraded-providers';
 import { ModelService } from 'app/services/modelService';
 import { TranslateService } from '@ngx-translate/core';
 // import { IInjectorService } from '@angular/upgrade/src/common/src/angular1';
@@ -33,8 +32,8 @@ export class NewDatamodelVersionModalComponent {
               private alertModalService: AlertModalService,
               private errorModalService: ErrorModalService,
               private translateService: TranslateService,
-              modelServiceWrapper: ModelServiceWrapper) {
-    this.modelService = modelServiceWrapper.modelService;
+              @Inject('modelService') modelService: ModelService) {
+    this.modelService = modelService;
   }
 
   get loading(): boolean {

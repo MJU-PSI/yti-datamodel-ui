@@ -1,5 +1,4 @@
 import { firstMatching, identity, keepMatching, Localizable, requireDefined, Status, availableLanguages, defaultLanguage } from '@mju-psi/yti-common-ui';
-import { IPromise, IQService } from 'angular';
 import { Class, Property } from 'app/entities/class';
 import { Classification } from 'app/entities/classification';
 import { DataType } from 'app/entities/dataTypes';
@@ -17,8 +16,11 @@ import { ModelService } from './modelService';
 import { PredicateService } from './predicateService';
 import { ResetService } from './resetService';
 import { VocabularyService } from './vocabularyService';
+import { defer, from } from 'rxjs';
+import { Injectable } from '@angular/core';
 
-export type Resolvable<T> = string|IPromise<T>|(() => IPromise<T>);
+// export type Resolvable<T> = string|IPromise<T>|(() => IPromise<T>);
+export type Resolvable<T> = string|Promise<T>|(() => Promise<T>);
 
 export interface EntityDetails {
   label?: Localizable;
@@ -116,23 +118,52 @@ export interface VocabularyWithConceptsDetails {
   concepts: ConceptDetails[];
 }
 
+// export class EntityLoaderService {
+
+//   constructor(private $q: IQService,
+//               private modelService: ModelService,
+//               private predicateService: PredicateService,
+//               private classService: ClassService,
+//               private vocabularyService: VocabularyService,
+//               private helpVocabularyService: InteractiveHelpVocabularyService|null,
+//               private helpOrganizationService: InteractiveHelpOrganizationService|null,
+//               private entityCreatorService: EntityCreatorService,
+//               private resetService: ResetService) {
+//     'ngInject';
+//   }
+
+//   create(shouldReset: boolean): EntityLoader {
+//     return new EntityLoader(
+//       this.$q,
+//       this.modelService,
+//       this.predicateService,
+//       this.classService,
+//       this.vocabularyService,
+//       this.helpVocabularyService,
+//       this.helpOrganizationService,
+//       this.entityCreatorService,
+//       this.resetService,
+//       shouldReset
+//     );
+//   }
+// }
+
+@Injectable()
 export class EntityLoaderService {
 
-  constructor(private $q: IQService,
-              private modelService: ModelService,
-              private predicateService: PredicateService,
-              private classService: ClassService,
-              private vocabularyService: VocabularyService,
-              private helpVocabularyService: InteractiveHelpVocabularyService|null,
-              private helpOrganizationService: InteractiveHelpOrganizationService|null,
-              private entityCreatorService: EntityCreatorService,
-              private resetService: ResetService) {
-    'ngInject';
-  }
+  constructor(
+    private modelService: ModelService,
+    private predicateService: PredicateService,
+    private classService: ClassService,
+    private vocabularyService: VocabularyService,
+    private helpVocabularyService: InteractiveHelpVocabularyService|null,
+    private helpOrganizationService: InteractiveHelpOrganizationService|null,
+    private entityCreatorService: EntityCreatorService,
+    private resetService: ResetService
+  ) {}
 
   create(shouldReset: boolean): EntityLoader {
     return new EntityLoader(
-      this.$q,
       this.modelService,
       this.predicateService,
       this.classService,
@@ -146,49 +177,442 @@ export class EntityLoaderService {
   }
 }
 
-export class EntityLoader {
+// export class EntityLoader {
 
-  private initialized: IPromise<any>;
-  private actions: IPromise<any>[] = [];
+//   private initialized: IPromise<any>;
+//   private actions: IPromise<any>[] = [];
+
+//   private context: any = { ...technicalNamespaces };
+
+//   constructor(private $q: IQService,
+//               private modelService: ModelService,
+//               private predicateService: PredicateService,
+//               private classService: ClassService,
+//               private vocabularyService: VocabularyService,
+//               private helpVocabularyService: InteractiveHelpVocabularyService|null,
+//               private helpOrganizationService: InteractiveHelpOrganizationService|null,
+//               private entityCreatorService: EntityCreatorService,
+//               resetService: ResetService,
+//               shouldReset: boolean) {
+//     'ngInject';
+
+//     const reset = shouldReset ? resetService.reset() : $q.when();
+
+//     const initialized = $q.defer();
+//     this.initialized = initialized.promise;
+
+//     reset.then(() => initialized.resolve());
+//   }
+
+//   private addAction<T>(action: IPromise<T>, details: any): IPromise<T> {
+//     // TODO
+//     // const withDetails = action.then(identity, failWithDetails(this.$q, details));
+//     const withDetails = action.then(identity, identity);
+//     this.actions.push(withDetails);
+//     return withDetails;
+//   }
+
+//   get result(): IPromise<any> {
+//     return this.$q.all(this.actions);
+//   }
+
+//   createModelWithResources(modelWithResources: ModelWithResourcesDetails): IPromise<any> {
+
+//     const modelPromise = this.createModel(modelWithResources.model);
+//     const promises: IPromise<any>[] = [modelPromise];
+
+//     for (const attributeDetails of Object.values(modelWithResources.attributes)) {
+//       promises.push(this.createAttribute(modelPromise, attributeDetails));
+//     }
+
+//     for (const associationDetails of Object.values(modelWithResources.associations)) {
+//       promises.push(this.createAssociation(modelPromise, associationDetails));
+//     }
+
+//     this.$q.all(promises).then(() => {
+//       for (const classDetails of Object.values(modelWithResources.classes)) {
+//         promises.push(this.createClass(modelPromise, classDetails));
+//       }
+//     });
+
+//     return this.$q.all(promises);
+//   }
+
+//   createVocabulary(vocabulary: VocabularyDetails): IPromise<Vocabulary> {
+
+//     if (!this.helpVocabularyService) {
+//       throw new Error('Vocabulary creation is only available to help');
+//     }
+
+//     return this.addAction(this.helpVocabularyService.createVocabulary(vocabulary), vocabulary);
+//   }
+
+//   createConcept(vocabulary: Resolvable<Vocabulary>, details: ConceptDetails): IPromise<Concept> {
+
+//     if (!this.helpVocabularyService) {
+//       throw new Error('Concept creation is only available to help');
+//     }
+
+//     const service = this.helpVocabularyService;
+
+//     return this.addAction(asPromise(vocabulary, id => this.getVocabulary(id))
+//       .then((v: Vocabulary) => service.createConcept(v, details)), details);
+//   }
+
+//   createVocabularyWithConcepts(details: VocabularyWithConceptsDetails): IPromise<any> {
+
+//     const vocabularyPromise = this.createVocabulary(details.vocabulary);
+//     const promises: IPromise<any>[] = [vocabularyPromise];
+
+//     for (const conceptDetails of details.concepts) {
+//       promises.push(this.createConcept(vocabularyPromise, conceptDetails));
+//     }
+
+//     return this.$q.all(promises);
+//   }
+
+//   createOrganization(organization: OrganizationDetails): IPromise<Organization> {
+
+//     if (!this.helpOrganizationService) {
+//       throw new Error('Organization creation is only available to help');
+//     }
+
+//     return this.addAction(this.helpOrganizationService.createOrganization(organization), organization);
+//   }
+
+//   createConceptSuggestion(details: ConceptSuggestionDetails, modelPromise: IPromise<Model>): IPromise<Uri> {
+//     const result = modelPromise.then((model: Model) =>
+//       this.vocabularyService.createConceptSuggestion(model.vocabularies[0], details.label, details.comment, defaultLanguage, model));
+
+//     return this.addAction(result, details);
+//   }
+
+//   getVocabulary(id: string) {
+//     return this.vocabularyService.getAllVocabularies().then(
+//       allVocabularies => requireDefined(firstMatching(allVocabularies, (voc: Vocabulary) => voc.id.toString() === id), 'vocabulary not found'))
+//   }
+
+//   createModel(details: ModelDetails): IPromise<Model> {
+
+//     const classificationsPromise = this.$q.all((details.classifications || []).map(asIdentifierPromise));
+//     const organizationsPromise = this.$q.all((details.organizations || []).map(resolvable => asUuidPromise(resolvable)));
+
+//     const result =
+//       this.initialized.then(() => this.$q.all([classificationsPromise, organizationsPromise]))
+//         .then(([classifications, organizations]) =>
+//           this.modelService.newModel(
+//             details.prefix,
+//             details.label[defaultLanguage],
+//             classifications,
+//             organizations,
+//             availableLanguages.map((lang: { code: any; }) => { return lang.code }),
+//             details.type)
+//         ).then(model => {
+
+//         setDetails(model, details);
+
+//         this.context[model.prefix] = model.namespace;
+
+//         const promises: IPromise<any>[] = [];
+
+//         for (const vocabulary of details.vocabularies || []) {
+//           promises.push(asPromise(vocabulary, (id: string) => this.getVocabulary(id))
+//             .then(importedVocabulary => model.addVocabulary(importedVocabulary))
+//           );
+//         }
+
+//         for (const namespace of details.namespaces || []) {
+
+//           if (isResolvable(namespace)) {
+
+//             const fetchImportedNamespace = (id: string) => this.modelService.getModelByUrn(id);
+
+//             promises.push(
+//               asPromise(namespace, fetchImportedNamespace)
+//                 .then(importedModel => this.entityCreatorService.createImportedNamespace(importedModel))
+//                 .then(ns => model.addImportedNamespace(ns))
+//             );
+
+//           } else if (isExternalNamespace(namespace)) {
+//             promises.push(this.modelService.newNamespaceImport(namespace.namespace, namespace.prefix, namespace.label, defaultLanguage)
+//               .then(newImportedNamespace => model.addImportedNamespace(newImportedNamespace))
+//             );
+//           } else {
+//             throw new Error('Unknown namespace: ' + namespace);
+//           }
+//         }
+
+//         return this.$q.all(promises)
+//           .then(() => this.modelService.createModel(model))
+//           .then(() => model);
+//       });
+
+//     return this.addAction(result, details);
+//   }
+
+//   assignClass(modelPromise: IPromise<Model>, klass: Resolvable<Class>): IPromise<any> {
+
+//     const classIdPromise = asIdPromise(klass, this.context);
+
+//     const result =
+//       this.$q.all([modelPromise, classIdPromise])
+//         .then(([model, classId]: [Model, Uri]) => this.classService.assignClassToModel(classId, model));
+
+//     return this.addAction(result, 'assign class');
+//   }
+
+//   specializeClass(modelPromise: IPromise<Model>, details: ShapeDetails): IPromise<Class> {
+
+//     const result =
+//       modelPromise.then(model => {
+//         const fetchClass = (id: string) => this.classService.getClass(new Uri(id, this.context), model);
+//         return asPromise(details.class, fetchClass).then(klass => [model, klass])
+//       })
+//         .then(([model, klass]: [Model, Class]) => {
+//           const fetchClass = (id: string) => this.classService.getClass(new Uri(id, this.context), model);
+//           return this.classService.newShape(klass, model, false, defaultLanguage)
+//             .then(shape => {
+//               setDetails(shape, details);
+//               setId(shape, details);
+
+//               const promises: IPromise<any>[] = [];
+
+//               for (const property of details.properties || []) {
+//                 promises.push(this.createProperty(modelPromise, property).then(prop => {
+//                   shape.addProperty(prop);
+//                 }));
+//               }
+
+//               if (details.propertyFilter && details.properties) {
+//                 throw new Error('Shape cannot declare both properties and property filter');
+//               }
+
+//               if (details.propertyFilter) {
+//                 keepMatching(shape.properties, details.propertyFilter);
+//               }
+
+//               for (const equivalentClass of details.equivalentClasses || []) {
+//                 promises.push(asIdPromise(equivalentClass, this.context)
+//                   .then(id => shape.equivalentClasses.push(id)));
+//               }
+
+//               if (details.constraint) {
+//                 shape.constraint.constraint = details.constraint.type;
+//                 shape.constraint.comment = details.constraint.comment;
+
+//                 for (const constraintShape of details.constraint.shapes) {
+//                   promises.push(asPromise(constraintShape, fetchClass)
+//                     .then(item => shape.constraint.addItem(item)));
+//                 }
+//               }
+
+//               return this.$q.all(promises)
+//                 .then(() => this.classService.createClass(shape))
+//                 .then(() => shape);
+//             });
+//         });
+
+//     return this.addAction(result, details);
+//   }
+
+//   createClass(modelPromise: IPromise<Model>, details: ClassDetails): IPromise<Class> {
+
+//     const concept = details.concept;
+//     const conceptIdPromise = isConceptSuggestion(concept)
+//       ? this.createConceptSuggestion(concept, modelPromise)
+//       : this.$q.when(null);
+
+//     const result =
+//       this.$q.all([modelPromise, conceptIdPromise])
+//         .then(([model, conceptId]: [Model, Uri]) => this.$q.all([model, this.classService.newClass(model, details.label[defaultLanguage], conceptId, defaultLanguage)]))
+//         .then(([model, klass]) => {
+
+//           const fetchClass = (id: string) => this.classService.getClass(new Uri(id, this.context), model);
+
+//           setDetails(klass, details);
+//           setId(klass, details);
+
+//           const promises: IPromise<any>[] = [];
+
+//           for (const property of details.properties || []) {
+//             promises.push(this.createProperty(modelPromise, property)
+//               .then(prop => klass.addProperty(prop)));
+//           }
+
+//           if (details.subClassOf) {
+//             promises.push(asIdPromise(details.subClassOf, this.context)
+//               .then(uri => klass.subClassOf = uri));
+//           }
+
+//           for (const equivalentClass of details.equivalentClasses || []) {
+//             promises.push(asIdPromise(equivalentClass, this.context)
+//               .then(uri => klass.equivalentClasses.push(uri)));
+//           }
+
+//           if (details.constraint) {
+//             klass.constraint.constraint = details.constraint.type;
+//             klass.constraint.comment = details.constraint.comment;
+
+//             for (const constraintShape of details.constraint.shapes) {
+//               promises.push(asPromise(constraintShape, fetchClass)
+//                 .then(item => klass.constraint.addItem(item)));
+//             }
+//           }
+
+//           return this.$q.all(promises)
+//             .then(() => this.classService.createClass(klass))
+//             .then(() => klass);
+//         });
+
+//     return this.addAction(result, details);
+//   }
+
+//   assignPredicate(modelPromise: IPromise<Model>, predicatePromise: IPromise<Predicate>): IPromise<Predicate> {
+//     const result =
+//       this.$q.all([modelPromise, predicatePromise])
+//         .then(([model, predicate]: [Model, Predicate]) =>
+//           this.predicateService.assignPredicateToModel(predicate.id, model).then(() => predicate));
+
+//     return this.addAction(result, 'assign predicate');
+//   }
+
+//   private createPredicate<T extends Attribute|Association>(modelPromise: IPromise<Model>,
+//                                                            type: KnownPredicateType,
+//                                                            details: PredicateDetails,
+//                                                            mangler: (predicate: T) => IPromise<any>): IPromise<T> {
+
+//     const concept = details.concept;
+//     const conceptIdPromise = isConceptSuggestion(concept)
+//       ? this.createConceptSuggestion(concept, modelPromise)
+//       : this.$q.when(null);
+
+//     const result =
+//       this.$q.all([modelPromise, conceptIdPromise])
+//         .then(([model, conceptId]: [Model, Uri]) => this.predicateService.newPredicate(model, details.label[defaultLanguage], conceptId, type, defaultLanguage))
+//         // TODO
+//         // .then((predicate: T) => {
+//         .then((predicate: any) => {
+//           setDetails(predicate, details);
+//           setId(predicate, details);
+
+//           const promises: IPromise<any>[] = [];
+
+//           if (details.subPropertyOf) {
+//             promises.push(asIdPromise(details.subPropertyOf, this.context)
+//               .then(uri => predicate.subPropertyOf = uri));
+//           }
+
+//           for (const equivalentProperty of details.equivalentProperties || []) {
+//             promises.push(asIdPromise(equivalentProperty, this.context)
+//               .then(uri => predicate.equivalentProperties.push(uri)));
+//           }
+
+//           promises.push(mangler(predicate));
+
+//           return this.$q.all(promises)
+//             .then(() => this.predicateService.createPredicate(predicate))
+//             .then(() => predicate);
+//         });
+
+//     return this.addAction(result, details);
+//   }
+
+//   createAttribute(modelPromise: IPromise<Model>, details: AttributeDetails): IPromise<Attribute> {
+//     return this.createPredicate<Attribute>(modelPromise, 'attribute', details, attribute => {
+//       attribute.dataType = details.dataType || 'xsd:string';
+//       return this.$q.when();
+//     });
+//   }
+
+//   createAssociation(modelPromise: IPromise<Model>, details: AssociationDetails): IPromise<Association> {
+//     return this.createPredicate<Association>(modelPromise, 'association', details, association => {
+//       if (details.valueClass) {
+//         return asIdPromise(details.valueClass, this.context).then(uri => association.valueClass = uri);
+//       } else {
+//         return this.$q.when();
+//       }
+//     });
+//   }
+
+//   createProperty(modelPromise: IPromise<Model>, details: PropertyDetails): IPromise<Property> {
+//     const result =
+//       modelPromise.then(model => {
+//         const fetchPredicate = (id: string) => this.predicateService.getPredicate(id, model);
+//         return asPromise(details.predicate, fetchPredicate).then(predicate => [model, predicate])
+//       })
+//         .then(([model, predicate]: [Model, Predicate]) => {
+//           if (predicate.normalizedType === 'property') {
+//             throw new Error('Type must not be property');
+//           }
+//           return this.classService.newProperty(predicate, predicate.normalizedType, model);
+//         })
+//         .then((property: Property) => {
+//           setDetails(property, details);
+
+//           if (details.valueClass) {
+//             asIdPromise(details.valueClass, this.context).then(classId => {
+//               property.valueClass = classId;
+//             });
+//           }
+
+//           if (details.internalId) {
+//             property.internalId = Uri.fromUUID(details.internalId);
+//           }
+
+//           if (details.dataType) {
+//             property.dataType = details.dataType;
+//           }
+
+//           property.example = details.example ? [details.example] : [];
+//           property.minCount = details.minCount || null;
+//           property.maxCount = details.maxCount || null;
+//           property.pattern = details.pattern || null;
+
+//           return property;
+//         });
+
+//     return this.addAction(result, details);
+//   }
+// }
+
+
+export class EntityLoader {
+  private initialized: Promise<void>;
+  private actions: Promise<any>[] = [];
 
   private context: any = { ...technicalNamespaces };
 
-  constructor(private $q: IQService,
-              private modelService: ModelService,
-              private predicateService: PredicateService,
-              private classService: ClassService,
-              private vocabularyService: VocabularyService,
-              private helpVocabularyService: InteractiveHelpVocabularyService|null,
-              private helpOrganizationService: InteractiveHelpOrganizationService|null,
-              private entityCreatorService: EntityCreatorService,
-              resetService: ResetService,
-              shouldReset: boolean) {
-    'ngInject';
+  constructor(
+    private modelService: ModelService,
+    private predicateService: PredicateService,
+    private classService: ClassService,
+    private vocabularyService: VocabularyService,
+    private helpVocabularyService: InteractiveHelpVocabularyService | null,
+    private helpOrganizationService: InteractiveHelpOrganizationService | null,
+    private entityCreatorService: EntityCreatorService,
+    resetService: ResetService,
+    shouldReset: boolean
+  ) {
+    const reset = shouldReset ? resetService.reset() : defer(() => Promise.resolve());
 
-    const reset = shouldReset ? resetService.reset() : $q.when();
-
-    const initialized = $q.defer();
-    this.initialized = initialized.promise;
-
-    reset.then(() => initialized.resolve());
+    const initialized = defer(() => reset.toPromise());
+    this.initialized = initialized.toPromise();
   }
 
-  private addAction<T>(action: IPromise<T>, details: any): IPromise<T> {
-    // TODO
-    // const withDetails = action.then(identity, failWithDetails(this.$q, details));
-    const withDetails = action.then(identity, identity);
+  private addAction<T>(action: Promise<T>, details: any): Promise<T> {
+    const withDetails = action.catch((error) => Promise.reject({ ...details, error }));
     this.actions.push(withDetails);
     return withDetails;
   }
 
-  get result(): IPromise<any> {
-    return this.$q.all(this.actions);
+  get result(): Promise<any> {
+    return Promise.all(this.actions);
   }
 
-  createModelWithResources(modelWithResources: ModelWithResourcesDetails): IPromise<any> {
+  createModelWithResources(modelWithResources: ModelWithResourcesDetails): Promise<any> {
 
     const modelPromise = this.createModel(modelWithResources.model);
-    const promises: IPromise<any>[] = [modelPromise];
+    const promises: Promise<any>[] = [modelPromise];
 
     for (const attributeDetails of Object.values(modelWithResources.attributes)) {
       promises.push(this.createAttribute(modelPromise, attributeDetails));
@@ -198,16 +622,16 @@ export class EntityLoader {
       promises.push(this.createAssociation(modelPromise, associationDetails));
     }
 
-    this.$q.all(promises).then(() => {
+    Promise.all(promises).then(() => {
       for (const classDetails of Object.values(modelWithResources.classes)) {
         promises.push(this.createClass(modelPromise, classDetails));
       }
     });
 
-    return this.$q.all(promises);
+    return Promise.all(promises);
   }
 
-  createVocabulary(vocabulary: VocabularyDetails): IPromise<Vocabulary> {
+  createVocabulary(vocabulary: VocabularyDetails): Promise<Vocabulary> {
 
     if (!this.helpVocabularyService) {
       throw new Error('Vocabulary creation is only available to help');
@@ -216,7 +640,21 @@ export class EntityLoader {
     return this.addAction(this.helpVocabularyService.createVocabulary(vocabulary), vocabulary);
   }
 
-  createConcept(vocabulary: Resolvable<Vocabulary>, details: ConceptDetails): IPromise<Concept> {
+  // createConcept(vocabulary: Resolvable<Vocabulary>, details: ConceptDetails): Promise<Concept> {
+
+  //   if (!this.helpVocabularyService) {
+  //     throw new Error('Concept creation is only available to help');
+  //   }
+
+  //   const service = this.helpVocabularyService;
+
+  //   return this.addAction<Concept>(from(vocabulary).pipe(
+  //       mergeMap((id: string) => this.getVocabulary(id)),
+  //       mergeMap((v: Vocabulary) => from(service.createConcept(v, details)))
+  //     ).toPromise(), details);
+  // }
+
+  createConcept(vocabulary: Resolvable<Vocabulary>, details: ConceptDetails): Promise<Concept> {
 
     if (!this.helpVocabularyService) {
       throw new Error('Concept creation is only available to help');
@@ -228,19 +666,18 @@ export class EntityLoader {
       .then((v: Vocabulary) => service.createConcept(v, details)), details);
   }
 
-  createVocabularyWithConcepts(details: VocabularyWithConceptsDetails): IPromise<any> {
-
+  createVocabularyWithConcepts(details: VocabularyWithConceptsDetails): Promise<any> {
     const vocabularyPromise = this.createVocabulary(details.vocabulary);
-    const promises: IPromise<any>[] = [vocabularyPromise];
+    const promises: Promise<any>[] = [vocabularyPromise];
 
     for (const conceptDetails of details.concepts) {
       promises.push(this.createConcept(vocabularyPromise, conceptDetails));
     }
 
-    return this.$q.all(promises);
+    return Promise.all(promises);
   }
 
-  createOrganization(organization: OrganizationDetails): IPromise<Organization> {
+  createOrganization(organization: OrganizationDetails): Promise<Organization> {
 
     if (!this.helpOrganizationService) {
       throw new Error('Organization creation is only available to help');
@@ -249,7 +686,7 @@ export class EntityLoader {
     return this.addAction(this.helpOrganizationService.createOrganization(organization), organization);
   }
 
-  createConceptSuggestion(details: ConceptSuggestionDetails, modelPromise: IPromise<Model>): IPromise<Uri> {
+  createConceptSuggestion(details: ConceptSuggestionDetails, modelPromise: Promise<Model>): Promise<Uri> {
     const result = modelPromise.then((model: Model) =>
       this.vocabularyService.createConceptSuggestion(model.vocabularies[0], details.label, details.comment, defaultLanguage, model));
 
@@ -261,13 +698,12 @@ export class EntityLoader {
       allVocabularies => requireDefined(firstMatching(allVocabularies, (voc: Vocabulary) => voc.id.toString() === id), 'vocabulary not found'))
   }
 
-  createModel(details: ModelDetails): IPromise<Model> {
-
-    const classificationsPromise = this.$q.all((details.classifications || []).map(asIdentifierPromise));
-    const organizationsPromise = this.$q.all((details.organizations || []).map(resolvable => asUuidPromise(resolvable)));
+  createModel(details: ModelDetails): Promise<Model> {
+    const classificationsPromise = Promise.all((details.classifications || []).map(asIdentifierPromise));
+    const organizationsPromise = Promise.all((details.organizations || []).map(resolvable => asUuidPromise(resolvable)));
 
     const result =
-      this.initialized.then(() => this.$q.all([classificationsPromise, organizationsPromise]))
+      this.initialized.then(() => Promise.all([classificationsPromise, organizationsPromise]))
         .then(([classifications, organizations]) =>
           this.modelService.newModel(
             details.prefix,
@@ -282,7 +718,7 @@ export class EntityLoader {
 
         this.context[model.prefix] = model.namespace;
 
-        const promises: IPromise<any>[] = [];
+        const promises: Promise<any>[] = [];
 
         for (const vocabulary of details.vocabularies || []) {
           promises.push(asPromise(vocabulary, (id: string) => this.getVocabulary(id))
@@ -311,7 +747,7 @@ export class EntityLoader {
           }
         }
 
-        return this.$q.all(promises)
+        return Promise.all(promises)
           .then(() => this.modelService.createModel(model))
           .then(() => model);
       });
@@ -319,234 +755,313 @@ export class EntityLoader {
     return this.addAction(result, details);
   }
 
-  assignClass(modelPromise: IPromise<Model>, klass: Resolvable<Class>): IPromise<any> {
-
+  assignClass(modelPromise: Promise<Model>, klass: Resolvable<Class>): Promise<any> {
     const classIdPromise = asIdPromise(klass, this.context);
 
-    const result =
-      this.$q.all([modelPromise, classIdPromise])
-        .then(([model, classId]: [Model, Uri]) => this.classService.assignClassToModel(classId, model));
+    const result = Promise.all([modelPromise, classIdPromise])
+      .then(([model, classId]: [Model, Uri]) => this.classService.assignClassToModel(classId, model));
 
     return this.addAction(result, 'assign class');
   }
 
-  specializeClass(modelPromise: IPromise<Model>, details: ShapeDetails): IPromise<Class> {
+  specializeClass(modelPromise: Promise<Model>, details: ShapeDetails): Promise<Class> {
 
     const result =
       modelPromise.then(model => {
         const fetchClass = (id: string) => this.classService.getClass(new Uri(id, this.context), model);
         return asPromise(details.class, fetchClass).then(klass => [model, klass])
       })
-        .then(([model, klass]: [Model, Class]) => {
-          const fetchClass = (id: string) => this.classService.getClass(new Uri(id, this.context), model);
-          return this.classService.newShape(klass, model, false, defaultLanguage)
-            .then(shape => {
-              setDetails(shape, details);
-              setId(shape, details);
+      .then(([model, klass]: [Model, Class]) => {
+        const fetchClass = (id: string) => this.classService.getClass(new Uri(id, this.context), model);
+        return this.classService.newShape(klass, model, false, defaultLanguage)
+          .then(shape => {
+            setDetails(shape, details);
+            setId(shape, details);
 
-              const promises: IPromise<any>[] = [];
+            const promises: Promise<any>[] = [];
 
-              for (const property of details.properties || []) {
-                promises.push(this.createProperty(modelPromise, property).then(prop => {
-                  shape.addProperty(prop);
-                }));
+            for (const property of details.properties || []) {
+              promises.push(this.createProperty(modelPromise, property).then(prop => {
+                shape.addProperty(prop);
+              }));
+            }
+
+            if (details.propertyFilter && details.properties) {
+              throw new Error('Shape cannot declare both properties and property filter');
+            }
+
+            if (details.propertyFilter) {
+              keepMatching(shape.properties, details.propertyFilter);
+            }
+
+            for (const equivalentClass of details.equivalentClasses || []) {
+              promises.push(asIdPromise(equivalentClass, this.context)
+                .then(id => shape.equivalentClasses.push(id)));
+            }
+
+            if (details.constraint) {
+              shape.constraint.constraint = details.constraint.type;
+              shape.constraint.comment = details.constraint.comment;
+
+              for (const constraintShape of details.constraint.shapes) {
+                promises.push(asPromise(constraintShape, fetchClass)
+                  .then(item => shape.constraint.addItem(item)));
               }
+            }
 
-              if (details.propertyFilter && details.properties) {
-                throw new Error('Shape cannot declare both properties and property filter');
-              }
-
-              if (details.propertyFilter) {
-                keepMatching(shape.properties, details.propertyFilter);
-              }
-
-              for (const equivalentClass of details.equivalentClasses || []) {
-                promises.push(asIdPromise(equivalentClass, this.context)
-                  .then(id => shape.equivalentClasses.push(id)));
-              }
-
-              if (details.constraint) {
-                shape.constraint.constraint = details.constraint.type;
-                shape.constraint.comment = details.constraint.comment;
-
-                for (const constraintShape of details.constraint.shapes) {
-                  promises.push(asPromise(constraintShape, fetchClass)
-                    .then(item => shape.constraint.addItem(item)));
-                }
-              }
-
-              return this.$q.all(promises)
-                .then(() => this.classService.createClass(shape))
-                .then(() => shape);
-            });
-        });
+            return Promise.all(promises)
+              .then(() => this.classService.createClass(shape))
+              .then(() => shape);
+          });
+      });
 
     return this.addAction(result, details);
   }
 
-  createClass(modelPromise: IPromise<Model>, details: ClassDetails): IPromise<Class> {
-
+  createClass(modelPromise: Promise<Model>, details: ClassDetails): Promise<Class> {
     const concept = details.concept;
     const conceptIdPromise = isConceptSuggestion(concept)
       ? this.createConceptSuggestion(concept, modelPromise)
-      : this.$q.when(null);
+      : Promise.resolve(null);
 
-    const result =
-      this.$q.all([modelPromise, conceptIdPromise])
-        .then(([model, conceptId]: [Model, Uri]) => this.$q.all([model, this.classService.newClass(model, details.label[defaultLanguage], conceptId, defaultLanguage)]))
-        .then(([model, klass]) => {
+    const result = Promise.all([modelPromise, conceptIdPromise])
+      .then(([model, conceptId]: [Model, Uri]) => Promise.all([model, this.classService.newClass(model, details.label[defaultLanguage], conceptId, defaultLanguage)]))
+      .then(([model, klass]) => {
+        const fetchClass = (id: string) => this.classService.getClass(new Uri(id, this.context), model);
 
-          const fetchClass = (id: string) => this.classService.getClass(new Uri(id, this.context), model);
+        setDetails(klass, details);
+        setId(klass, details);
 
-          setDetails(klass, details);
-          setId(klass, details);
+        const promises: Promise<any>[] = [];
 
-          const promises: IPromise<any>[] = [];
+        for (const property of details.properties || []) {
+          promises.push(this.createProperty(modelPromise, property)
+            .then(prop => klass.addProperty(prop)));
+        }
 
-          for (const property of details.properties || []) {
-            promises.push(this.createProperty(modelPromise, property)
-              .then(prop => klass.addProperty(prop)));
+        if (details.subClassOf) {
+          promises.push(asIdPromise(details.subClassOf, this.context)
+            .then(uri => klass.subClassOf = uri));
+        }
+
+        for (const equivalentClass of details.equivalentClasses || []) {
+          promises.push(asIdPromise(equivalentClass, this.context)
+            .then(uri => klass.equivalentClasses.push(uri)));
+        }
+
+        if (details.constraint) {
+          klass.constraint.constraint = details.constraint.type;
+          klass.constraint.comment = details.constraint.comment;
+
+          for (const constraintShape of details.constraint.shapes) {
+            promises.push(asPromise(constraintShape, fetchClass)
+              .then(item => klass.constraint.addItem(item)));
           }
+        }
 
-          if (details.subClassOf) {
-            promises.push(asIdPromise(details.subClassOf, this.context)
-              .then(uri => klass.subClassOf = uri));
-          }
-
-          for (const equivalentClass of details.equivalentClasses || []) {
-            promises.push(asIdPromise(equivalentClass, this.context)
-              .then(uri => klass.equivalentClasses.push(uri)));
-          }
-
-          if (details.constraint) {
-            klass.constraint.constraint = details.constraint.type;
-            klass.constraint.comment = details.constraint.comment;
-
-            for (const constraintShape of details.constraint.shapes) {
-              promises.push(asPromise(constraintShape, fetchClass)
-                .then(item => klass.constraint.addItem(item)));
-            }
-          }
-
-          return this.$q.all(promises)
-            .then(() => this.classService.createClass(klass))
-            .then(() => klass);
-        });
+        return Promise.all(promises)
+          .then(() => this.classService.createClass(klass))
+          .then(() => klass);
+      });
 
     return this.addAction(result, details);
   }
 
-  assignPredicate(modelPromise: IPromise<Model>, predicatePromise: IPromise<Predicate>): IPromise<Predicate> {
-    const result =
-      this.$q.all([modelPromise, predicatePromise])
-        .then(([model, predicate]: [Model, Predicate]) =>
-          this.predicateService.assignPredicateToModel(predicate.id, model).then(() => predicate));
+  assignPredicate(modelPromise: Promise<Model>, predicatePromise: Promise<Predicate>): Promise<Predicate> {
+    const result = Promise.all([modelPromise, predicatePromise])
+      .then(([model, predicate]: [Model, Predicate]) =>
+        this.predicateService.assignPredicateToModel(predicate.id, model).then(() => predicate));
 
     return this.addAction(result, 'assign predicate');
   }
 
-  private createPredicate<T extends Attribute|Association>(modelPromise: IPromise<Model>,
-                                                           type: KnownPredicateType,
-                                                           details: PredicateDetails,
-                                                           mangler: (predicate: T) => IPromise<any>): IPromise<T> {
+  private createPredicate<T extends Attribute|Association>(
+    modelPromise: Promise<Model>,
+    type: KnownPredicateType,
+    details: PredicateDetails,
+    mangler: (predicate: T) => Promise<any>
+  ): Promise<T> {
 
     const concept = details.concept;
     const conceptIdPromise = isConceptSuggestion(concept)
-      ? this.createConceptSuggestion(concept, modelPromise)
-      : this.$q.when(null);
+        ? this.createConceptSuggestion(concept, modelPromise)
+        : Promise.resolve(null);
 
-    const result =
-      this.$q.all([modelPromise, conceptIdPromise])
-        .then(([model, conceptId]: [Model, Uri]) => this.predicateService.newPredicate(model, details.label[defaultLanguage], conceptId, type, defaultLanguage))
-        // TODO
-        // .then((predicate: T) => {
+    const result = Promise.all([modelPromise, conceptIdPromise])
+        .then(([model, conceptId]: [Model, Uri]) =>
+            this.predicateService.newPredicate(model, details.label[defaultLanguage], conceptId, type, defaultLanguage))
         .then((predicate: any) => {
-          setDetails(predicate, details);
-          setId(predicate, details);
+            setDetails(predicate, details);
+            setId(predicate, details);
 
-          const promises: IPromise<any>[] = [];
+            const promises: Promise<any>[] = [];
 
-          if (details.subPropertyOf) {
-            promises.push(asIdPromise(details.subPropertyOf, this.context)
-              .then(uri => predicate.subPropertyOf = uri));
-          }
+            if (details.subPropertyOf) {
+                promises.push(asIdPromise(details.subPropertyOf, this.context)
+                    .then(uri => predicate.subPropertyOf = uri));
+            }
 
-          for (const equivalentProperty of details.equivalentProperties || []) {
-            promises.push(asIdPromise(equivalentProperty, this.context)
-              .then(uri => predicate.equivalentProperties.push(uri)));
-          }
+            for (const equivalentProperty of details.equivalentProperties || []) {
+                promises.push(asIdPromise(equivalentProperty, this.context)
+                    .then(uri => predicate.equivalentProperties.push(uri)));
+            }
 
-          promises.push(mangler(predicate));
+            promises.push(mangler(predicate));
 
-          return this.$q.all(promises)
-            .then(() => this.predicateService.createPredicate(predicate))
-            .then(() => predicate);
+            return Promise.all(promises)
+                .then(() => this.predicateService.createPredicate(predicate))
+                .then(() => predicate);
         });
 
-    return this.addAction(result, details);
+      return this.addAction(result, details);
   }
 
-  createAttribute(modelPromise: IPromise<Model>, details: AttributeDetails): IPromise<Attribute> {
+  createAttribute(modelPromise: Promise<Model>, details: AttributeDetails): Promise<Attribute> {
     return this.createPredicate<Attribute>(modelPromise, 'attribute', details, attribute => {
       attribute.dataType = details.dataType || 'xsd:string';
-      return this.$q.when();
+      return Promise.resolve();
     });
   }
 
-  createAssociation(modelPromise: IPromise<Model>, details: AssociationDetails): IPromise<Association> {
+  createAssociation(modelPromise: Promise<Model>, details: AssociationDetails): Promise<Association> {
     return this.createPredicate<Association>(modelPromise, 'association', details, association => {
       if (details.valueClass) {
         return asIdPromise(details.valueClass, this.context).then(uri => association.valueClass = uri);
       } else {
-        return this.$q.when();
+        return Promise.resolve();
       }
     });
   }
 
-  createProperty(modelPromise: IPromise<Model>, details: PropertyDetails): IPromise<Property> {
-    const result =
-      modelPromise.then(model => {
+  createProperty(modelPromise: Promise<Model>, details: PropertyDetails): Promise<Property> {
+    return modelPromise
+      .then(model => {
         const fetchPredicate = (id: string) => this.predicateService.getPredicate(id, model);
-        return asPromise(details.predicate, fetchPredicate).then(predicate => [model, predicate])
+        return asPromise(details.predicate, fetchPredicate).then(predicate => [model, predicate]);
       })
-        .then(([model, predicate]: [Model, Predicate]) => {
-          if (predicate.normalizedType === 'property') {
-            throw new Error('Type must not be property');
-          }
-          return this.classService.newProperty(predicate, predicate.normalizedType, model);
-        })
-        .then((property: Property) => {
-          setDetails(property, details);
+      .then(([model, predicate]: [Model, Predicate]) => {
+        if (predicate.normalizedType === 'property') {
+          throw new Error('Type must not be property');
+        }
+        return this.classService.newProperty(predicate, predicate.normalizedType, model);
+      })
+      .then((property: Property) => {
+        setDetails(property, details);
 
-          if (details.valueClass) {
-            asIdPromise(details.valueClass, this.context).then(classId => {
-              property.valueClass = classId;
-            });
-          }
+        if (details.valueClass) {
+          return asIdPromise(details.valueClass, this.context).then(classId => {
+            property.valueClass = classId;
+            return property;
+          });
+        } else {
+          return Promise.resolve(property);
+        }
+      })
+      .then((property: Property) => {
+        if (details.internalId) {
+          property.internalId = Uri.fromUUID(details.internalId);
+        }
 
-          if (details.internalId) {
-            property.internalId = Uri.fromUUID(details.internalId);
-          }
+        if (details.dataType) {
+          property.dataType = details.dataType;
+        }
 
-          if (details.dataType) {
-            property.dataType = details.dataType;
-          }
+        property.example = details.example ? [details.example] : [];
+        property.minCount = details.minCount || null;
+        property.maxCount = details.maxCount || null;
+        property.pattern = details.pattern || null;
 
-          property.example = details.example ? [details.example] : [];
-          property.minCount = details.minCount || null;
-          property.maxCount = details.maxCount || null;
-          property.pattern = details.pattern || null;
-
-          return property;
-        });
-
-    return this.addAction(result, details);
+        return property;
+      });
   }
+
+
 }
 
-function failWithDetails($q: IQService, details: any): (err: any) => IPromise<never> {
+
+// function failWithDetails($q: IQService, details: any): (err: any) => IPromise<never> {
+//   return (error: any) => {
+//     return $q.reject({ error, details });
+//   };
+// }
+
+// function setDetails(entity: { label: Localizable, comment: Localizable, status: Status|null }, details: EntityDetails) {
+//   if (details.label) {
+//     entity.label = details.label;
+//   }
+
+//   if (details.comment) {
+//     entity.comment = details.comment;
+//   }
+
+//   if (details.status) {
+//     entity.status = details.status;
+//   }
+// }
+
+// function setId(entity: { id: Uri }, details: { id?: string }) {
+//   if (details.id) {
+//     entity.id = entity.id.withName(details.id);
+//   }
+// }
+
+// function isPromise<T>(obj: any): obj is IPromise<T> {
+//   return !!(obj && obj.then);
+// }
+
+// function isPromiseProvider<T>(obj: any): obj is (() => IPromise<T>) {
+//   return typeof obj === 'function';
+// }
+
+// function isConceptSuggestion(obj: any): obj is ConceptSuggestionDetails {
+//   return typeof obj === 'object';
+// }
+
+// function isExternalNamespace(obj: any): obj is ExternalNamespaceDetails {
+//   return !!obj.label && !!obj.namespace && !!obj.prefix;
+// }
+
+// function isResolvable<T>(obj: any): obj is Resolvable<T> {
+//   return typeof obj === 'string' || isPromiseProvider(obj) || isPromise(obj);
+// }
+
+// function asMappedPromise<T, R>(resolvable: Resolvable<T>,
+//                                mapper: (input: T) => R,
+//                                fetchResource: (id: string) => IPromise<R>|R): IPromise<R> {
+//   if (isPromiseProvider<T>(resolvable)) {
+//     return resolvable().then(mapper);
+//   } else if (isPromise<T>(resolvable)) {
+//     return resolvable.then(mapper);
+//   } else {
+//     const result = fetchResource(resolvable);
+//     if (isPromise(result)) {
+//       return result;
+//     } else {
+//       return <IPromise<R>> <any> Promise.resolve(result);
+//     }
+//   }
+// }
+
+// function asPromise<T>(resolvable: Resolvable<T>, fetchResource: (id: string) => IPromise<T>): IPromise<T> {
+//   return asMappedPromise(resolvable, identity, fetchResource);
+// }
+
+// function asIdPromise<T extends { id: Uri }>(resolvable: Resolvable<T>, context: any): IPromise<Uri> {
+//   return asMappedPromise(resolvable, item => item.id, id => new Uri(id, context));
+// }
+
+// function asUuidPromise<T extends { id: Uri }>(resolvable: Resolvable<T>): IPromise<string> {
+//   return asMappedPromise(resolvable, item => item.id.uuid, identity);
+// }
+
+// function asIdentifierPromise<T extends { identifier: string }>(resolvable: Resolvable<T>): IPromise<string> {
+//   return asMappedPromise(resolvable, item => item.identifier, identity);
+// }
+
+
+function failWithDetails(details: any): (err: any) => Promise<never> {
   return (error: any) => {
-    return $q.reject({ error, details });
+    return Promise.reject({ error, details });
   };
 }
 
@@ -570,11 +1085,11 @@ function setId(entity: { id: Uri }, details: { id?: string }) {
   }
 }
 
-function isPromise<T>(obj: any): obj is IPromise<T> {
+function isPromise<T>(obj: any): obj is Promise<T> {
   return !!(obj && obj.then);
 }
 
-function isPromiseProvider<T>(obj: any): obj is (() => IPromise<T>) {
+function isPromiseProvider<T>(obj: any): obj is (() => Promise<T>) {
   return typeof obj === 'function';
 }
 
@@ -592,7 +1107,7 @@ function isResolvable<T>(obj: any): obj is Resolvable<T> {
 
 function asMappedPromise<T, R>(resolvable: Resolvable<T>,
                                mapper: (input: T) => R,
-                               fetchResource: (id: string) => IPromise<R>|R): IPromise<R> {
+                               fetchResource: (id: string) => Promise<R>|R): Promise<R> {
   if (isPromiseProvider<T>(resolvable)) {
     return resolvable().then(mapper);
   } else if (isPromise<T>(resolvable)) {
@@ -602,23 +1117,23 @@ function asMappedPromise<T, R>(resolvable: Resolvable<T>,
     if (isPromise(result)) {
       return result;
     } else {
-      return <IPromise<R>> <any> Promise.resolve(result);
+      return Promise.resolve(result) as Promise<R>;
     }
   }
 }
 
-function asPromise<T>(resolvable: Resolvable<T>, fetchResource: (id: string) => IPromise<T>): IPromise<T> {
+function asPromise<T>(resolvable: Resolvable<T>, fetchResource: (id: string) => Promise<T>): Promise<T> {
   return asMappedPromise(resolvable, identity, fetchResource);
 }
 
-function asIdPromise<T extends { id: Uri }>(resolvable: Resolvable<T>, context: any): IPromise<Uri> {
+function asIdPromise<T extends { id: Uri }>(resolvable: Resolvable<T>, context: any): Promise<Uri> {
   return asMappedPromise(resolvable, item => item.id, id => new Uri(id, context));
 }
 
-function asUuidPromise<T extends { id: Uri }>(resolvable: Resolvable<T>): IPromise<string> {
+function asUuidPromise<T extends { id: Uri }>(resolvable: Resolvable<T>): Promise<string> {
   return asMappedPromise(resolvable, item => item.id.uuid, identity);
 }
 
-function asIdentifierPromise<T extends { identifier: string }>(resolvable: Resolvable<T>): IPromise<string> {
+function asIdentifierPromise<T extends { identifier: string }>(resolvable: Resolvable<T>): Promise<string> {
   return asMappedPromise(resolvable, item => item.identifier, identity);
 }

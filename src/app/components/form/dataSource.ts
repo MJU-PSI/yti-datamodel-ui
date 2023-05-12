@@ -1,5 +1,5 @@
-import { IPromise } from 'angular';
+// import { IPromise } from 'angular';
 
 export interface DataSource<T> {
-  (search: string): IPromise<T[]>;
+  (search: string): Promise<T[]>;
 }

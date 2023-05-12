@@ -1,5 +1,5 @@
 import { anyMatching, areEqual, collectProperties, containsAny, firstMatchingValue, index, requireDefined } from '@mju-psi/yti-common-ui';
-import { IHttpPromiseCallbackArg } from 'angular';
+// import { IHttpPromiseCallbackArg } from 'angular';
 import { Classification } from '../entities/classification';
 import { Model, ModelListItem } from '../entities/model';
 import { RelativeUrl, Uri, Urn } from '../entities/uri';
@@ -154,12 +154,32 @@ export function collectIds(items: WithId[]|WithId[][]): Set<string> {
   });
 }
 
-export function expandContextWithKnownModels(model?: Model): (response: IHttpPromiseCallbackArg<GraphData>) => IHttpPromiseCallbackArg<GraphData> {
-  return (response: IHttpPromiseCallbackArg<GraphData>) => {
+// export function expandContextWithKnownModels(model?: Model): (response: IHttpPromiseCallbackArg<GraphData>) => IHttpPromiseCallbackArg<GraphData> {
+//   return (response: IHttpPromiseCallbackArg<GraphData>) => {
+//     if (model) {
+//       model.expandContextWithKnownModels(response.data!['@context']);
+//     }
+//     return response;
+//   };
+// }
+
+// export function expandContextWithKnownModels(model?: Model): (response: Promise<GraphData>) => Promise<GraphData> {
+//   return (response: Promise<GraphData>) => {
+//     return response.then(data => {
+//       if (model) {
+//         model.expandContextWithKnownModels(data['@context']);
+//       }
+//       return data;
+//     });
+//   };
+// }
+
+export function expandContextWithKnownModels(model?: Model): (data: GraphData) => GraphData {
+  return (data: GraphData) => {
     if (model) {
-      model.expandContextWithKnownModels(response.data!['@context']);
+      model.expandContextWithKnownModels(data['@context']);
     }
-    return response;
+    return data;
   };
 }
 

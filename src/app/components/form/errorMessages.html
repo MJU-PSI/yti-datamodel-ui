@@ -1,4 +1,4 @@
-
+<!--
 <div ng-if="$ctrl.isVisible()">
   <ul ng-messages="ngModelController.$error" ng-messages-multiple class="errors" ng-repeat="ngModelController in $ctrl.ngModelControllers">
     <li ng-message="url">{{'Invalid url error' | translate}}</li>
@@ -24,5 +24,33 @@
     <li ng-message="codeValue">{{'Is not valid reference data code' | translate}}</li>
 
     <li ng-message-exp="error.key" ng-repeat="error in $ctrl.dynamicErrors">{{error.message | translate}} {{error.format}}</li>
+  </ul>
+</div> -->
+
+<div *ngIf="isVisible()">
+  <ul *ngFor="let ngModelController of ngModelControllers" multiple class="errors">
+    <li *ngIf="ngModelController.hasError('url')">{{ 'Invalid url error' | translate }}</li>
+    <li *ngIf="ngModelController.hasError('stem')">{{ 'Invalid stem error' | translate }}</li>
+    <li *ngIf="ngModelController.hasError('namespace')">{{ 'Invalid namespace error' | translate }}</li>
+    <li *ngIf="ngModelController.hasError('namespaceUrlOrUrn')">{{ 'Invalid namespace url urn error' | translate }}</li>
+    <li *ngIf="ngModelController.hasError('id')">{{ 'Invalid id error' | translate }}</li>
+    <li *ngIf="ngModelController.hasError('existingId')">{{ 'Existing id error' | translate }}</li>
+    <li *ngIf="ngModelController.hasError('existingOrReservedId')">{{ 'Existing or reserved id error' | translate }}</li>
+    <li *ngIf="ngModelController.hasError('required')">{{ 'Required error' | translate }}</li>
+    <li *ngIf="ngModelController.hasError('requiredLocalized')">{{ 'Required localized error' | translate }}</li>
+    <li *ngIf="ngModelController.hasError('duplicate')">{{ 'Duplicate error' | translate }}</li>
+    <li *ngIf="ngModelController.hasError('string')">{{ 'String error' | translate }}</li>
+    <li *ngIf="ngModelController.hasError('length')">{{ 'Length error' | translate }}</li>
+    <li *ngIf="ngModelController.hasError('prefix')">{{ 'Prefix error' | translate }}</li>
+    <li *ngIf="ngModelController.hasError('negative')">{{ 'Negative error' | translate }}</li>
+    <li *ngIf="ngModelController.hasError('greaterThanMax')">{{ 'Greater than max error' | translate }}</li>
+    <li *ngIf="ngModelController.hasError('lessThanMin')">{{ 'Less than min error' | translate }}</li>
+    <li *ngIf="ngModelController.hasError('unknownNS')">{{ 'Unknown namespace' | translate }}</li>
+    <li *ngIf="ngModelController.hasError('idNameRequired')">{{ 'Id name is required' | translate }}</li>
+    <li *ngIf="ngModelController.hasError('mustBeRequiredNS')">{{ 'Must be imported namespace' | translate }}</li>
+    <li *ngIf="ngModelController.hasError('languageCode')">{{ 'Is not valid language code' | translate }}</li>
+    <li *ngIf="ngModelController.hasError('codeValue')">{{ 'Is not valid reference data code' | translate }}</li>
+
+    <!-- <li *ngFor="let error of dynamicErrors" [ngClass]="error.key">{{ error.message | translate }} {{ error.format }}</li> -->
   </ul>
 </div>

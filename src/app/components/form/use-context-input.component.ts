@@ -5,7 +5,7 @@ import { UseContext, KnownModelType } from 'app/types/entity';
 @Component({
   selector: 'app-use-context-input',
   providers: [
-    { 
+    {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => UseContextInputComponent),
       multi: true

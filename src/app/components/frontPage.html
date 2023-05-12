@@ -1,4 +1,4 @@
-<ajax-loading-indicator ng-if="$ctrl.loading"></ajax-loading-indicator>
+<!-- <ajax-loading-indicator ng-if="$ctrl.loading"></ajax-loading-indicator>
 
 <div class="yti-tool-front-page" ng-if="!$ctrl.loading">
 
@@ -147,6 +147,164 @@
                 </div>
               </div>
 
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div> -->
+
+
+<ng-container *ngIf="loading">
+  <app-ajax-loading-indicator></app-ajax-loading-indicator>
+</ng-container>
+
+<div class="yti-tool-front-page" *ngIf="!loading">
+
+  <div class="pull-right" id="add-new-datamodel" *ngIf="canAddModel()" ngbDropdown>
+    <button id="model_creation_button" class="btn btn-action" ngbDropdownToggle>
+      <span translate>Add model</span>
+    </button>
+
+    <div ngbDropdownMenu class="dropdown-menu-right" aria-labelledby="model_creation_button">
+      <button id="add_library_button" class="dropdown-item" (click)="addLibrary()" translate>ADD_LIBRARY_BUTTON_TEXT</button>
+      <button id="add_profile_button" class="dropdown-item" (click)="addProfile()" translate>ADD_PROFILE_BUTTON_TEXT</button>
+    </div>
+  </div>
+
+  <div class="tool-info"><p translate>ToolInfo</p></div>
+
+  <div>
+    <span class="search-label" translate>Search model</span>
+    <span class="fas fa-info-circle info" ngbTooltip="{{ 'INFO_TEXT_FRONTPAGE_SEARCH' | translate }}"></span>
+  </div>
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <div class="input-group input-group-lg input-group-search">
+        <input id="front_page_search_input"
+               class="form-control"
+               [ngClass]="{'is-invalid': modelsSearchError}"
+               type="text"
+               [(ngModel)]="search"
+               placeholder="{{ 'Search term' | translate }}"/>
+      </div>
+    </div>
+    <div class="col-md-6 mb-3 align-self-center d-flex align-items-center extend-search-selections">
+      <span translate>Extend search</span>:
+      <input class="ml-3" id="search_resources_checkbox" type="checkbox" [(ngModel)]="searchResources"/>
+      <label class="ml-1" for="search_resources_checkbox" translate>to content</label>
+    </div>
+  </div>
+
+  <div>
+    <span class="search-label" translate>Filter with information domain</span>
+    <span class="fas fa-info-circle info" ngbTooltip="{{ 'INFO_TEXT_FRONTPAGE_FILTER_W_CLASSIFICATION' | translate }}"></span>
+  </div>
+  <div class="row">
+
+    <div class="col-md-4">
+      <div class="information-domain-container">
+        <div class="content-box">
+          <div id="{{domain.node.id + '_classification_filter_link'}}"
+               *ngFor="let domain of informationDomains"
+               class="information-domain"
+               [ngClass]="{ active: isInformationDomainSelected(domain.node) }"
+               (click)="toggleInformationDomain(domain.node)">
+            <img [src]="informationDomainIconSrc(domain.node.identifier)"/>
+            <span class="name">{{ domain.node.label | translateValue }}</span>
+            <span class="count">({{ domain.count }})</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-8">
+      <div class="content-box result-list-container">
+        <div class="row mb-4">
+          <div class="col-md-12 result-list-filter-row">
+
+            <span class="search-label search-label-inline with-info" translate>Filter results</span>
+            <div style="padding-left: 0.2rem">
+              <span class="fas fa-info-circle info" [attr.uib-tooltip]="'INFO_TEXT_FRONTPAGE_FILTER_RESULTS' | translate"></span>
+            </div>
+
+            <div class="result-list-filter-dropdowns">
+              <app-filter-dropdown id="organization_filter_dropdown"
+                                    [options]="organizations"
+                                    [filterSubject]="organization$"></app-filter-dropdown>
+
+              <app-filter-dropdown id="model_type_filter_dropdown"
+                                    [options]="modelTypes"
+                                    [filterSubject]="modelType$"></app-filter-dropdown>
+
+              <app-filter-dropdown id="use_context_filter_dropdown"
+                                    [options]="useContexts"
+                                    [filterSubject]="useContext$"></app-filter-dropdown>
+
+              <app-filter-dropdown id="model_status_filter_dropdown"
+                                    [options]="statuses"
+                                    [filterSubject]="status$"></app-filter-dropdown>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-4">
+          <div class="col-md-12">
+            <div>
+              {{filteredModels.length}}
+              <span *ngIf="filteredModels.length === 1" translate>result</span>
+              <span *ngIf="filteredModels.length !== 1" translate>results</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <div class="result-list-item" *ngFor="let model of filteredModels">
+              <span class="type">
+                <i class="material-icons {{modelTypeIconDef(model.type).colorClass}}">{{modelTypeIconDef(model.type).name}}</i>
+                {{ model.type | translate }}
+              </span>
+
+              <app-status class="status" [status]="model.status"></app-status>
+
+              <a [attr.id]="model.prefix + '_filtered_model_link'" class="name" href="#"
+                 (click)="selectModel(model)">{{model.label | translateValue}}</a>
+
+              <div class="meta-information-row">
+                <ul class="organizations dot-separated-list">
+                  <li class="organization" *ngFor="let contributorId of model.contributor">
+                    {{ organizationLabel(contributorId) | translateValue}}
+                  </li>
+                </ul>
+
+                <span class="information-domains">
+                  <span class="badge badge-light" *ngFor="let domainId of model.isPartOf">
+                    {{informationDomainLabel(domainId) | translateValue}}
+                  </span>
+                </span>
+              </div>
+
+              <div *ngIf="model.comment | translateValue" class="description-component-container">
+                <app-expandable-text [text]="model.comment | translateValue"></app-expandable-text>
+              </div>
+
+              <div *ngIf="filteredDeepHits[model.id] && filteredDeepHits[model.id].length" class="deep-results">
+                <div class="deep-results-title" translate>Search results</div>
+                <div *ngFor="let deepHitList of filteredDeepHits[model.id]" class="deep-results-section">
+                  <div class="deep-results-section-title">{{'Deep ' + deepHitList.type + ' hit' | translate}}</div>
+                  <div class="deep-results-section-content">
+                    <a *ngFor="let deepHit of deepHitList.topHits" class="deep-results-hit" href="#"
+                       (click)="selectResource(model, deepHit)"
+                       [title]="allLanguagesLabel(deepHit.label)"
+                       [innerHTML]="deepHit.label | translateValue"></a>
+                    <span *ngIf="deepHitList.totalHitCount > deepHitList.topHits.length" class="deep-results-show-all"
+                    >({{'Total results' | translate}}: {{deepHitList.totalHitCount}})</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

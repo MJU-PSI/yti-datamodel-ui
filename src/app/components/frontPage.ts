@@ -1,54 +1,394 @@
-import { ILocationService, IScope } from 'angular';
-import { LocationService } from '../services/locationService';
-import { LanguageService } from '../services/languageService';
-import { ApplicationComponent } from './application';
+// import { ILocationService, IScope } from 'angular';
+// import { LocationService } from '../services/locationService';
+// import { LanguageService } from '../services/languageService';
+// import { ApplicationComponent } from './application';
+// import { HelpProvider } from './common/helpProvider';
+// import { FrontPageHelpService } from '../help/providers/frontPageHelpService';
+// import { LegacyComponent, modalCancelHandler } from '../utils/angular';
+// import { ModelService } from '../services/modelService';
+// import { ClassificationService } from '../services/classificationService';
+// import { Classification } from '../entities/classification';
+// import { Url } from '../entities/uri';
+// import { comparingLocalizable } from '../utils/comparator';
+// import { BehaviorSubject, combineLatest, concat, Observable, Subscription } from 'rxjs';
+// import { fromIPromise } from '../utils/observable';
+// import {
+//   anyMatching,
+//   FilterOptions,
+//   Option,
+//   labelNameToResourceIdIdentifier,
+//   getDataModelingMaterialIcon,
+//   getInformationDomainSvgIcon,
+//   selectableStatuses,
+//   Status,
+//   Localizable
+// } from '@mju-psi/yti-common-ui';
+// import { KnownModelType, profileUseContexts, UseContext } from '../types/entity';
+// import { gettextCatalog as GettextCatalog } from 'angular-gettext';
+// import { OrganizationService } from '../services/organizationService';
+// import { AuthorizationManagerService } from '../services/authorizationManagerService';
+// import { Organization } from '../entities/organization';
+// import { debounceTime, skip, take } from 'rxjs/operators';
+// import { InteractiveHelp } from '../help/contract';
+// import { HelpService } from '../help/providers/helpService';
+// import { DeepSearchResourceHitList, IndexSearchService, ModelSearchResponse } from '../services/indexSearchService';
+// import { getInternalModelUrl, getInternalResourceUrl, IndexModel, IndexResource } from '../entities/index/indexEntities';
+// import { HttpErrorResponse } from '@angular/common/http';
+// import { UserService } from '../services/userService';
+// import { User } from '../entities/user';
+
+// @LegacyComponent({
+//   template: require('./frontPage.html'),
+//   require: {
+//     applicationCtrl: '^application'
+//   }
+// })
+// export class FrontPageComponent implements HelpProvider {
+
+//   applicationCtrl: ApplicationComponent;
+
+//   helps: InteractiveHelp[] = [];
+
+//   modelTypes: FilterOptions<KnownModelType>;
+//   useContexts: FilterOptions<UseContext>;
+//   statuses: FilterOptions<Status>;
+//   organizations: FilterOptions<Organization> | undefined;
+//   organizationMap: { [id: string]: Organization } = {};
+//   informationDomains: { node: Classification, count: number }[] | undefined;
+//   informationDomainMap: { [id: string]: Classification } = {};
+
+//   search$ = new BehaviorSubject('');
+//   searchResources$ = new BehaviorSubject(true);
+//   informationDomain$ = new BehaviorSubject<Classification | null>(null);
+//   modelType$ = new BehaviorSubject<KnownModelType | null>(null);
+//   useContext$ = new BehaviorSubject<UseContext | null>(null);
+//   organization$ = new BehaviorSubject<Organization | null>(null);
+//   status$ = new BehaviorSubject<Status | null>(null);
+
+//   modelResults$ = new BehaviorSubject<ModelSearchResponse>({
+//     totalHitCount: 0, pageSize: 0, pageFrom: 0, models: [], deepHits: {}
+//   });
+//   filteredModels: IndexModel[] = [];
+//   filteredDeepHits: { [domainId: string]: DeepSearchResourceHitList[] };
+
+//   subscriptionsToClean: Subscription[] = [];
+//   modelsLoaded = false;
+//   modelsSearchError = false;
+
+//   modelTypeIconDef = getDataModelingMaterialIcon;
+//   informationDomainIconSrc = getInformationDomainSvgIcon;
+
+//   constructor($scope: IScope,
+//               private gettextCatalog: GettextCatalog,
+//               private $location: ILocationService,
+//               private locationService: LocationService,
+//               private modelService: ModelService,
+//               private languageService: LanguageService,
+//               private frontPageHelpService: FrontPageHelpService,
+//               private classificationService: ClassificationService,
+//               private organizationService: OrganizationService,
+//               private authorizationManagerService: AuthorizationManagerService,
+//               private helpService: HelpService,
+//               private indexSearchService: IndexSearchService,
+//               private userService: UserService) {
+
+//     'ngInject';
+
+//     $scope.$watch(() => languageService.UILanguage, lang => {
+//       this.helps = frontPageHelpService.getHelps(lang);
+//     });
+
+//     this.modelTypes = [null, 'library', 'profile'].map(type => {
+//       return {
+//         value: type as KnownModelType,
+//         name: () => gettextCatalog.getString(type ? type : 'All model types'),
+//         idIdentifier: () => type ? type : 'all_selected'
+//       }
+//     });
+
+//     this.useContexts = [null, ...profileUseContexts].map(type => {
+//       return {
+//         value: type as UseContext,
+//         name: () => gettextCatalog.getString(type ? type : 'All use contexts'),
+//         idIdentifier: () => type ? type : 'all_selected'
+//       }
+//     });
+
+//     this.statuses = [null, ...selectableStatuses].map(status => ({
+//       value: status,
+//       name: () => gettextCatalog.getString(status ? status : 'All statuses'),
+//       idIdentifier: () => status ? status : 'all_selected'
+//     }));
+//   }
+
+//   get loading() {
+//     return !this.modelsLoaded || !this.informationDomains || !this.organizations;
+//   }
+
+//   get search() {
+//     return this.search$.getValue();
+//   }
+
+//   set search(value: string) {
+//     this.search$.next(value);
+//   }
+
+//   get searchResources() {
+//     return this.searchResources$.getValue();
+//   }
+
+//   set searchResources(value: boolean) {
+//     this.searchResources$.next(value);
+//   }
+
+//   $onInit() {
+//     this.locationService.atFrontPage();
+//     this.helpService.registerProvider(this);
+
+//     const localizer = this.languageService.createLocalizer();
+
+//     const informationDomains$ = fromIPromise(this.classificationService.getClassifications());
+//     const organizations$ = fromIPromise(this.organizationService.getOrganizations());
+
+//     this.subscriptionsToClean.push(combineLatest(informationDomains$, organizations$, this.languageService.language$).subscribe(([informationDomains, organizations]) => {
+//       this.organizations = [null, ...organizations].map(org => {
+//         return {
+//           value: org,
+//           name: () => org ? this.languageService.translate(org.label) : this.gettextCatalog.getString('All organizations'),
+//           idIdentifier: () => org ? labelNameToResourceIdIdentifier(this.languageService.translate(org.label)) : 'all_selected',
+//           parentOrg: org && org.parentOrg ? org.parentOrg : undefined
+//         }
+//       }).filter(org => org.parentOrg === undefined);
+//       this.organizations.sort(comparingLocalizable<Option<Organization>>(localizer, c =>
+//         c.value ? c.value.label : {}));
+//       organizations.map(org => this.organizationMap[org.id.toString()] = org);
+//       informationDomains.forEach(domain => this.informationDomainMap[domain.identifier] = domain);
+//       this.subscribeModels();
+//       this.filterModels(informationDomains);
+//     }));
+//   }
+
+//   $onDestroy() {
+//     this.helpService.unregisterProvider(this);
+//     for (const subscription of this.subscriptionsToClean) {
+//       subscription.unsubscribe();
+//     }
+//   }
+
+//   isInformationDomainSelected(domain: Classification) {
+//     return this.informationDomain$.getValue() === domain;
+//   }
+
+//   toggleInformationDomain(domain: Classification) {
+//     this.informationDomain$.next(this.isInformationDomainSelected(domain) ? null : domain);
+//   }
+
+//   selectModel(model: IndexModel) {
+//     this.$location.url(getInternalModelUrl(model));
+//   }
+
+//   selectResource(model: IndexModel, resource: IndexResource) {
+//     this.$location.url(getInternalResourceUrl(model, resource));
+//   }
+
+//   canAddModel() {
+//     return this.authorizationManagerService.canAddModel();
+//   }
+
+//   addLibrary() {
+//     this.addModel('library');
+//   }
+
+//   addProfile() {
+//     this.addModel('profile');
+//   }
+
+//   addModel(type: KnownModelType) {
+//     this.$location.path('/newModel');
+//     this.$location.search({ type });
+//   }
+
+//   informationDomainLabel(id: string): Localizable {
+//     const domain: Classification | undefined = this.informationDomainMap[id];
+//     if (domain) {
+//       return domain.label;
+//     }
+//     return { en: 'Domain not found' };
+//   }
+
+//   organizationLabel(id: string): Localizable {
+//     const org: Organization | undefined = this.organizationMap['urn:uuid:' + id];
+//     if (org) {
+//       return org.label;
+//     }
+//     return { en: 'Organization not found' };
+//   }
+
+//   allLanguagesLabel(label: Localizable): string | undefined {
+//     const exp = /<\/?b>/g;
+//     const keys = Object.keys(label);
+//     if (keys.length) {
+//       return keys.map(key => label[key].replace(exp, '') + ' (' + key + ')').join('\n');
+//     }
+//     return undefined;
+//   }
+
+//   private subscribeModels(): void {
+//     const initialSearchText$: Observable<string> = this.search$.pipe(take(1));
+//     const debouncedSearchText$: Observable<string> = this.search$.pipe(skip(1), debounceTime(500));
+//     const combinedSearchText$: Observable<string> = concat(initialSearchText$, debouncedSearchText$);
+//     const searchConditions$: Observable<[string, string, boolean, User]> = combineLatest(combinedSearchText$, this.languageService.language$, this.searchResources$, this.userService.user$);
+
+//     this.subscriptionsToClean.push(searchConditions$.subscribe(([text, language, searchResources, _user]) => {
+//       this.indexSearchService.searchModels({
+//         query: text || undefined,
+//         searchResources: searchResources,
+//         sortLang: language,
+//         pageSize: 1000,
+//         pageFrom: 0
+//       }).subscribe(resp => {
+//         this.modelsSearchError = false;
+//         this.modelsLoaded = true;
+//         if (resp.totalHitCount != resp.models.length) {
+//           console.error(`Model search did not return all results. Got ${resp.models.length} (start: ${resp.pageFrom}, total hits: ${resp.totalHitCount})`);
+//         }
+//         this.modelResults$.next(resp);
+//       }, err => {
+//         if (err instanceof HttpErrorResponse && err.status >= 400 && err.status < 500) {
+//           this.modelsSearchError = true;
+//           this.modelResults$.next({
+//             totalHitCount: 0, pageSize: 0, pageFrom: 0, models: [], deepHits: {}
+//           });
+//         } else {
+//           console.error('Model search failed: ' + JSON.stringify(err));
+//         }
+//       });
+//     }));
+//   }
+
+//   private filterModels(informationDomains: Classification[]): void {
+//     const localizer = this.languageService.createLocalizer();
+
+//     this.subscriptionsToClean.push(combineLatest(combineLatest(this.modelResults$, this.languageService.language$),
+//       combineLatest(this.search$, this.informationDomain$, this.modelType$, this.useContext$, this.organization$, this.status$))
+//       .subscribe(([[modelResult, language], [search, informationDomain, modelType, useContext, org, status]]) => {
+
+//         const ignoringInformationDomain = modelResult.models.filter(model =>
+//           typeMatches(modelType, model) &&
+//           useContextMatches(useContext, model) &&
+//           organizationMatches(org, model) &&
+//           statusMatches(status, model)
+//         );
+
+//         const modelCount: (domain: Classification) => number =
+//           (domain: Classification) => ignoringInformationDomain.filter(model => informationDomainMatches(domain, model)).length;
+//         this.informationDomains = informationDomains.map(domain => ({
+//           node: domain,
+//           count: modelCount(domain)
+//         })).filter(item => item.count > 0);
+//         this.informationDomains.sort(comparingLocalizable<{ node: Classification, count: number }>(localizer, item => item.node.label));
+
+//         this.filteredModels = ignoringInformationDomain.filter(model => informationDomainMatches(informationDomain, model));
+//         this.filteredModels.sort(comparingLocalizable<IndexModel>(localizer, m => m.label));
+//         this.filteredModels.map(filteredModel => filteredModel.isPartOf.sort(comparingLocalizable<string>(localizer, id => this.informationDomainLabel(id))));
+//         this.filteredModels.map(filteredModel => {
+
+//           // remove child organization and add parent if not already exist
+//           const parentIds: string[] = [];
+//           filteredModel.contributor.forEach((contributor, index) => {
+//             const org = this.organizationMap['urn:uuid:' + contributor];
+//             if (org && org.parentOrg) {
+//               filteredModel.contributor.splice(index, 1);
+//               parentIds.push(org.parentOrg.id.uuid)
+//             }
+//           });
+
+//           filteredModel.contributor.push(...parentIds);
+//         })
+
+//         this.filteredDeepHits = {};
+//         if (modelResult.deepHits && Object.keys(modelResult.deepHits).length > 0) {
+//           const dhs = modelResult.deepHits;
+//           this.filteredModels.forEach(model => {
+//             const hit: DeepSearchResourceHitList[] | undefined = dhs[model.id];
+//             if (hit) {
+//               this.filteredDeepHits[model.id] = hit;
+//             }
+//           });
+//         }
+//       }));
+//   }
+
+//   private go(withIowUrl: { iowUrl(): Url | null }) {
+//     const url = withIowUrl.iowUrl();
+//     if (url) {
+//       this.$location.url(url);
+//     }
+//   }
+// }
+
+// function informationDomainMatches(classification: Classification | null, model: IndexModel) {
+//   return !classification || anyMatching(model.isPartOf, domain => classification.identifier === domain);
+// }
+
+// function typeMatches(type: KnownModelType | null, model: IndexModel) {
+//   return !type || model.type === type;
+// }
+
+// function useContextMatches(uc: UseContext | null, model: IndexModel) {
+//   return !uc || model.useContext === uc;
+// }
+
+// function organizationMatches(org: Organization | null, model: IndexModel) {
+//   return !org || anyMatching(model.contributor, modelOrgId => ('urn:uuid:' + modelOrgId) === org.id.toString());
+// }
+
+// function statusMatches(status: Status | null, model: IndexModel) {
+//   return !status || model.status === status;
+// }
+
+
+import { Component, OnInit, OnDestroy, Inject, INJECTOR } from '@angular/core';
+import { Location } from '@angular/common';
+import { Router } from '@angular/router';
+import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
+import { debounceTime, skip, take } from 'rxjs/operators';
+
 import { HelpProvider } from './common/helpProvider';
 import { FrontPageHelpService } from '../help/providers/frontPageHelpService';
-import { LegacyComponent, modalCancelHandler } from '../utils/angular';
-import { ModelService } from '../services/modelService';
 import { ClassificationService } from '../services/classificationService';
-import { Classification } from '../entities/classification';
-import { Url } from '../entities/uri';
-import { comparingLocalizable } from '../utils/comparator';
-import { BehaviorSubject, combineLatest, concat, Observable, Subscription } from 'rxjs';
-import { fromIPromise } from '../utils/observable';
-import {
-  anyMatching,
-  FilterOptions,
-  Option,
-  labelNameToResourceIdIdentifier,
-  getDataModelingMaterialIcon,
-  getInformationDomainSvgIcon,
-  selectableStatuses,
-  Status,
-  Localizable
-} from '@mju-psi/yti-common-ui';
-import { KnownModelType, profileUseContexts, UseContext } from '../types/entity';
-import { gettextCatalog as GettextCatalog } from 'angular-gettext';
-import { OrganizationService } from '../services/organizationService';
+import { LanguageService } from '../services/languageService';
+import { LocationService } from '../services/locationService';
 import { AuthorizationManagerService } from '../services/authorizationManagerService';
-import { Organization } from '../entities/organization';
-import { debounceTime, skip, take } from 'rxjs/operators';
-import { InteractiveHelp } from '../help/contract';
 import { HelpService } from '../help/providers/helpService';
-import { DeepSearchResourceHitList, IndexSearchService, ModelSearchResponse } from '../services/indexSearchService';
+import { IndexSearchService } from '../services/indexSearchService';
+
+import { KnownModelType, profileUseContexts, UseContext } from '../types/entity';
+import { Organization } from '../entities/organization';
+import { FilterOptions, Localizable, Option, Status, UserService } from '@mju-psi/yti-common-ui';
 import { getInternalModelUrl, getInternalResourceUrl, IndexModel, IndexResource } from '../entities/index/indexEntities';
-import { HttpErrorResponse } from '@angular/common/http';
-import { UserService } from '../services/userService';
+import { DeepSearchResourceHitList, ModelSearchResponse } from '../services/indexSearchService';
 import { User } from '../entities/user';
+import { anyMatching, getDataModelingMaterialIcon, getInformationDomainSvgIcon, labelNameToResourceIdIdentifier, selectableStatuses } from '@mju-psi/yti-common-ui';
 
-@LegacyComponent({
-  template: require('./frontPage.html'),
-  require: {
-    applicationCtrl: '^application'
-  }
+import { InteractiveHelp } from 'app/help/contract';
+import { Classification } from 'app/entities/classification';
+import { comparingLocalizable } from 'app/utils/comparator';
+import { concat } from 'rxjs';
+import { Url } from 'app/entities/uri';
+import { TranslateService } from '@ngx-translate/core';
+import { ORGANIZATION_SERVICE, OrganizationService } from 'app/services/organizationService';
+import { HttpErrorResponse } from '@angular/common/http';
+import { fromPromise } from 'rxjs/internal-compatibility';
+
+
+@Component({
+  selector: 'front-page',
+  templateUrl: './frontPage.html'
 })
-export class FrontPageComponent implements HelpProvider {
-
-  applicationCtrl: ApplicationComponent;
+export class FrontPageComponent implements OnInit, OnDestroy, HelpProvider {
 
   helps: InteractiveHelp[] = [];
-
   modelTypes: FilterOptions<KnownModelType>;
   useContexts: FilterOptions<UseContext>;
   statuses: FilterOptions<Status>;
@@ -57,8 +397,8 @@ export class FrontPageComponent implements HelpProvider {
   informationDomains: { node: Classification, count: number }[] | undefined;
   informationDomainMap: { [id: string]: Classification } = {};
 
-  search$ = new BehaviorSubject('');
-  searchResources$ = new BehaviorSubject(true);
+  search$ = new BehaviorSubject<string>('');
+  searchResources$ = new BehaviorSubject<boolean>(true);
   informationDomain$ = new BehaviorSubject<Classification | null>(null);
   modelType$ = new BehaviorSubject<KnownModelType | null>(null);
   useContext$ = new BehaviorSubject<UseContext | null>(null);
@@ -69,7 +409,7 @@ export class FrontPageComponent implements HelpProvider {
     totalHitCount: 0, pageSize: 0, pageFrom: 0, models: [], deepHits: {}
   });
   filteredModels: IndexModel[] = [];
-  filteredDeepHits: { [domainId: string]: DeepSearchResourceHitList[] };
+  filteredDeepHits: { [domainId: string]: DeepSearchResourceHitList[] } = {};
 
   subscriptionsToClean: Subscription[] = [];
   modelsLoaded = false;
@@ -78,47 +418,57 @@ export class FrontPageComponent implements HelpProvider {
   modelTypeIconDef = getDataModelingMaterialIcon;
   informationDomainIconSrc = getInformationDomainSvgIcon;
 
-  constructor($scope: IScope,
-              private gettextCatalog: GettextCatalog,
-              private $location: ILocationService,
-              private locationService: LocationService,
-              private modelService: ModelService,
-              private languageService: LanguageService,
-              private frontPageHelpService: FrontPageHelpService,
-              private classificationService: ClassificationService,
-              private organizationService: OrganizationService,
-              private authorizationManagerService: AuthorizationManagerService,
-              private helpService: HelpService,
-              private indexSearchService: IndexSearchService,
-              private userService: UserService) {
+  constructor(
+    private translateService: TranslateService,
+    private router: Router,
+    private location: Location,
+    private locationService: LocationService,
+    private languageService: LanguageService,
+    // private frontPageHelpService: FrontPageHelpService,
+    private classificationService: ClassificationService,
+    @Inject(ORGANIZATION_SERVICE) private organizationService: OrganizationService,
+    private authorizationManagerService: AuthorizationManagerService,
+    private helpService: HelpService,
+    private indexSearchService: IndexSearchService,
+    private userService: UserService
+    ) {
 
-    'ngInject';
+    // this.languageService.UILanguage.subscribe((lang: any) => {
+    //   this.helps = this.frontPageHelpService.getHelps(lang);
+    // });
 
-    $scope.$watch(() => languageService.UILanguage, lang => {
-      this.helps = frontPageHelpService.getHelps(lang);
-    });
-
-    this.modelTypes = [null, 'library', 'profile'].map(type => {
+    this.modelTypes = [null, 'library', 'profile'].map((type) => {
       return {
         value: type as KnownModelType,
-        name: () => gettextCatalog.getString(type ? type : 'All model types'),
-        idIdentifier: () => type ? type : 'all_selected'
-      }
+        name: () =>
+          this.translateService.instant(
+            type ? type : 'All model types'
+          ),
+        idIdentifier: () => (type ? type : 'all_selected')
+      };
     });
 
-    this.useContexts = [null, ...profileUseContexts].map(type => {
+    this.useContexts = [null, ...profileUseContexts].map((type) => {
       return {
         value: type as UseContext,
-        name: () => gettextCatalog.getString(type ? type : 'All use contexts'),
-        idIdentifier: () => type ? type : 'all_selected'
-      }
-    });
+        name: () =>
+          this.translateService.instant(
+            type ? type : 'All use contexts'
+          ),
+          idIdentifier: () => (type ? type : 'all_selected')
+        };
+      });
 
-    this.statuses = [null, ...selectableStatuses].map(status => ({
-      value: status,
-      name: () => gettextCatalog.getString(status ? status : 'All statuses'),
-      idIdentifier: () => status ? status : 'all_selected'
-    }));
+      this.statuses = [null, ...selectableStatuses].map((status) => {
+        return {
+          value: status,
+          name: () =>
+            this.translateService.instant(
+              status ? status : 'All statuses'
+            ),
+          idIdentifier: () => (status ? status : 'all_selected')
+        };
+      });
   }
 
   get loading() {
@@ -141,54 +491,82 @@ export class FrontPageComponent implements HelpProvider {
     this.searchResources$.next(value);
   }
 
-  $onInit() {
+  ngOnInit(): void {
     this.locationService.atFrontPage();
     this.helpService.registerProvider(this);
 
     const localizer = this.languageService.createLocalizer();
 
-    const informationDomains$ = fromIPromise(this.classificationService.getClassifications());
-    const organizations$ = fromIPromise(this.organizationService.getOrganizations());
+    const informationDomains$ = fromPromise(this.classificationService.getClassifications());
+    const organizations$ = fromPromise(this.organizationService.getOrganizations());
 
-    this.subscriptionsToClean.push(combineLatest(informationDomains$, organizations$, this.languageService.language$).subscribe(([informationDomains, organizations]) => {
-      this.organizations = [null, ...organizations].map(org => {
-        return {
-          value: org,
-          name: () => org ? this.languageService.translate(org.label) : this.gettextCatalog.getString('All organizations'),
-          idIdentifier: () => org ? labelNameToResourceIdIdentifier(this.languageService.translate(org.label)) : 'all_selected',
-          parentOrg: org && org.parentOrg ? org.parentOrg : undefined
-        }
-      }).filter(org => org.parentOrg === undefined);
-      this.organizations.sort(comparingLocalizable<Option<Organization>>(localizer, c =>
-        c.value ? c.value.label : {}));
-      organizations.map(org => this.organizationMap[org.id.toString()] = org);
-      informationDomains.forEach(domain => this.informationDomainMap[domain.identifier] = domain);
-      this.subscribeModels();
-      this.filterModels(informationDomains);
-    }));
+    this.subscriptionsToClean.push(
+      combineLatest([informationDomains$, organizations$, this.languageService.language$]).subscribe(
+        ([informationDomains, organizations]) => {
+          this.organizations = [null, ...organizations].map((org) => {
+            return {
+              value: org,
+              name: () =>
+                org
+                  ? this.languageService.translate(org.label)
+                  : this.translateService.instant('All organizations'),
+              idIdentifier: () =>
+                org
+                  ? labelNameToResourceIdIdentifier(
+                      this.languageService.translate(org.label)
+                    )
+                  : 'all_selected',
+              parentOrg: org && org.parentOrg ? org.parentOrg : undefined,
+            };
+          }).filter(org => org.parentOrg === undefined);
+
+          this.organizations.sort(comparingLocalizable<Option<Organization>>(
+            localizer,
+            c => (c.value ? c.value.label : {}),
+          ));
+
+          organizations.map((org) => {
+            this.organizationMap[org.id.toString()] = org;
+          });
+
+          informationDomains.forEach((domain) => {
+            this.informationDomainMap[domain.identifier] = domain;
+          });
+
+          this.subscribeModels();
+          this.filterModels(informationDomains);
+        },
+        (error) => {
+          this.modelsSearchError = true;
+          // this.$log.error('Failed to search for models', error);
+        },
+      ),
+    );
   }
 
-  $onDestroy() {
+  ngOnDestroy(): void {
     this.helpService.unregisterProvider(this);
     for (const subscription of this.subscriptionsToClean) {
       subscription.unsubscribe();
     }
   }
 
-  isInformationDomainSelected(domain: Classification) {
+  isInformationDomainSelected(domain: Classification): boolean {
     return this.informationDomain$.getValue() === domain;
   }
 
-  toggleInformationDomain(domain: Classification) {
-    this.informationDomain$.next(this.isInformationDomainSelected(domain) ? null : domain);
+  toggleInformationDomain(domain: Classification): void {
+    this.informationDomain$.next(
+      this.isInformationDomainSelected(domain) ? null : domain,
+    );
   }
 
-  selectModel(model: IndexModel) {
-    this.$location.url(getInternalModelUrl(model));
+  selectModel(model: IndexModel): void {
+    this.router.navigateByUrl(getInternalModelUrl(model));
   }
 
-  selectResource(model: IndexModel, resource: IndexResource) {
-    this.$location.url(getInternalResourceUrl(model, resource));
+  selectResource(model: IndexModel, resource: IndexResource): void {
+    this.router.navigateByUrl(getInternalResourceUrl(model, resource));
   }
 
   canAddModel() {
@@ -204,8 +582,7 @@ export class FrontPageComponent implements HelpProvider {
   }
 
   addModel(type: KnownModelType) {
-    this.$location.path('/newModel');
-    this.$location.search({ type });
+    this.router.navigate(['/newModel'], { queryParams: { type } });
   }
 
   informationDomainLabel(id: string): Localizable {
@@ -322,7 +699,7 @@ export class FrontPageComponent implements HelpProvider {
   private go(withIowUrl: { iowUrl(): Url | null }) {
     const url = withIowUrl.iowUrl();
     if (url) {
-      this.$location.url(url);
+      this.router.navigateByUrl(url);
     }
   }
 }
