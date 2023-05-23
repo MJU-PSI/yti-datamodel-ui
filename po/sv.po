@@ -224,6 +224,18 @@ msgstr "Välj"
 msgid "Add property"
 msgstr "Lägg till ett attribut eller en association"
 
+msgid "Add annotation"
+msgstr "Lägg till anteckning"
+
+msgid "Copy annotation from class"
+msgstr "Kopiera anteckning från klassen"
+
+msgid "Class annotations"
+msgstr "Klasskommentarer"
+
+msgid "No annotations yet"
+msgstr "Inga kommentarer än"
+
 msgid "No properties yet"
 msgstr "Inga egenskaper ännu"
 
@@ -1323,6 +1335,9 @@ msgstr "Attribut"
 msgid "association"
 msgstr "Association"
 
+msgid "annotation"
+msgstr "Annotation"
+
 msgid "property"
 msgstr "Egenskap"
 
@@ -1600,6 +1615,9 @@ msgstr "Uppgifter om attributet"
 msgid "Association information"
 msgstr "Uppgifter om associationen"
 
+msgid "Annotation information"
+msgstr "Anteckningsinformation"
+
 msgid "Property information"
 msgstr "Uppgifter om egenskapen"
 
@@ -1749,6 +1767,9 @@ msgstr "Lägg till ett nytt attribut"
 
 msgid "Create new association"
 msgstr "Lägg till en ny association"
+
+msgid "Create new annotation"
+msgstr "Skapa ny anteckning"
 
 msgid "New attribute"
 msgstr "Nytt attribut"
@@ -2629,3 +2650,6 @@ msgstr "Attribut"
 
 msgid "owl:ObjectProperty"
 msgstr "Association"
+
+msgid "Annotation value"
+msgstr "Anteckningsvärde"

@@ -11,7 +11,8 @@ export interface Option {
   bindings: {
     id: '@',
     options: '=',
-    disabled: '='
+    disabled: '=',
+    right: '='
   },
   transclude: true,
   template: `
@@ -36,6 +37,7 @@ export interface Option {
                 id="{{$ctrl.formOptionIdIdentifier($ctrl.options[0].name)}}"
                 type="button"
                 class="btn btn-link"
+                ng-class="{ 'pull-right': $ctrl.right }"
                 ng-disabled="$ctrl.disabled"
                 ng-click="$ctrl.options[0].apply()">
           {{$ctrl.options[0].name | translate}}
@@ -47,6 +49,7 @@ export class ButtonWithOptionsComponent {
   id: string;
   options: Option[];
   disabled: boolean;
+  right: boolean;
 
   constructor(private translateService: TranslateService) {
     'ngInject';

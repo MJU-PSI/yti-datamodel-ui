@@ -11,7 +11,7 @@ export class CopyPredicateModal {
     'ngInject';
   }
 
-  open(predicate: Predicate|Uri, type: 'attribute' | 'association', model: Model): IPromise<Predicate> {
+  open(predicate: Predicate|Uri, type: 'attribute' | 'association' | 'annotation', model: Model): IPromise<Predicate> {
     return this.$uibModal.open({
       template: `
         <form name="form">
@@ -67,7 +67,7 @@ export class CopyPredicateModalController {
   constructor(private $uibModalInstance: IModalServiceInstance,
               predicateService: PredicateService,
               predicate: Predicate|Uri,
-              type: 'attribute' | 'association',
+              type: 'attribute' | 'association' | 'annotation',
               public model: Model) {
     'ngInject';
     predicateService.copyPredicate(predicate, type, model).then(copied => this.predicate = copied);

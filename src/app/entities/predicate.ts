@@ -1,4 +1,4 @@
-import { Localizable, requireDefined, Status } from '@mju-psi/yti-common-ui';
+import { Localizable, requireDefined, Status, comparingPrimitive, remove } from '@mju-psi/yti-common-ui';
 import { PredicateType, SelectionType } from 'app/types/entity';
 import { normalizePredicateType, resourceUrl } from 'app/utils/entity';
 import { Moment } from 'moment';
@@ -11,6 +11,7 @@ import { entity, entityAwareList, entityAwareOptional, uriSerializer } from './s
 import { dateSerializer, identitySerializer, localizableSerializer, optional } from './serializer/serializer';
 import { Uri, Urn } from './uri';
 import { Concept } from './vocabulary';
+import { Property } from './class';
 
 export abstract class AbstractPredicate extends GraphNode {
 
@@ -54,6 +55,10 @@ export abstract class AbstractPredicate extends GraphNode {
     return this.isOfType('association');
   }
 
+  isAnnotation() {
+    return this.isOfType('annotation');
+  }
+
   iowUrl() {
     return resourceUrl(requireDefined(this.definedBy.prefix), this.id);
   }
@@ -75,7 +80,8 @@ export class Predicate extends AbstractPredicate {
     equivalentProperties: { name: 'equivalentProperty', serializer: entityAwareList(uriSerializer) },
     version:              { name: 'identifier',         serializer: optional(identitySerializer<Urn>()) },
     editorialNote:        { name: 'editorialNote',      serializer: localizableSerializer },
-    createdAt:            { name: 'created',            serializer: optional(dateSerializer) }
+    createdAt:            { name: 'created',            serializer: optional(dateSerializer) },
+    annotations:          { name: 'property',           serializer: entityAwareList(entity(() => Property)) },
   };
 
   subPropertyOf: Uri|null;
@@ -84,6 +90,7 @@ export class Predicate extends AbstractPredicate {
   version: Urn|null;
   editorialNote: Localizable;
   createdAt: Moment|null;
+  annotations: Property[];
 
   unsaved = false;
   external = false;
@@ -91,6 +98,9 @@ export class Predicate extends AbstractPredicate {
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
     init(this, Predicate.predicateMappings);
+
+    this.annotations.sort(comparingPrimitive<Property>(property => property.index));
+
   }
 
   get inUnstableState(): boolean {
@@ -100,6 +110,15 @@ export class Predicate extends AbstractPredicate {
   serializationValues(_inline: boolean, clone: boolean): {} {
     return serialize(this, clone, Object.assign({}, AbstractPredicate.abstractPredicateMappings, Predicate.predicateMappings));
   }
+
+  addAnnotation(annotation: Property): void {
+    annotation.index = this.annotations.length;
+    this.annotations.push(annotation);
+  }
+
+  removeProperty(annotation: Property): void {
+     remove(this.annotations, annotation);
+  }  
 }
 
 export class Association extends Predicate {
@@ -151,5 +170,31 @@ export class Attribute extends Predicate {
 
   serializationValues(inline: boolean, clone: boolean): {} {
     return Object.assign(super.serializationValues(inline, clone), serialize(this, clone, Attribute.attributeMappings));
+  }
+}
+
+export class Annotation extends Predicate {
+
+  static annotationMappings = {
+    dataType: { name: 'range', serializer: optional(identitySerializer<DataType>()) }
+  };
+
+  dataTypeAnnot: DataType|null;
+
+  constructor(graph: any, context: any, frame: any) {
+    super(graph, context, frame);
+    init(this, Annotation.annotationMappings);
+  }
+
+  clone(): Annotation {
+    const serialization = this.serialize(false, true);
+    const result = new Annotation(serialization['@graph'], serialization['@context'], this.frame);
+    result.unsaved = this.unsaved;
+    result.external = this.external;
+    return result;
+  }
+
+  serializationValues(inline: boolean, clone: boolean): {} {
+    return Object.assign(super.serializationValues(inline, clone), serialize(this, clone, Annotation.annotationMappings));
   }
 }

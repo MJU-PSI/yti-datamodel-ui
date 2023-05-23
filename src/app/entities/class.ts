@@ -9,7 +9,7 @@ import { DefinedBy } from './definedBy';
 import { GraphNode } from './graphNode';
 import { init, initSingle, serialize } from './mapping';
 import { Model } from './model';
-import { Association, Attribute, Predicate } from './predicate';
+import { Annotation, Association, Attribute, Predicate } from './predicate';
 import { ReferenceData } from './referenceData';
 import { normalizingDefinedBySerializer } from './serializer/common';
 import { entity, entityAwareList, entityAwareOptional, entityAwareValueOrDefault, entityOrId, uriSerializer } from './serializer/entitySerializer';
@@ -74,7 +74,7 @@ export class Class extends AbstractClass implements VisualizationClass {
     localName:         { name: 'localName',       serializer: optional(stringSerializer) },
     subClassOf:        { name: 'subClassOf',      serializer: entityAwareOptional(uriSerializer) },
     scopeClass:        { name: 'targetClass',     serializer: entityAwareOptional(uriSerializer) },
-    properties:        { name: 'property',        serializer: entityAwareList(entity(() => Property)) },
+    propertiesAll:     { name: 'property',        serializer: entityAwareList(entity(() => Property)) },
     subject:           { name: 'subject',         serializer: entityAwareOptional(entity(() => Concept)) },
     equivalentClasses: { name: 'equivalentClass', serializer: entityAwareList(uriSerializer) },
     constraint:        { name: 'constraint',      serializer: entityAwareValueOrDefault(entity(() => Constraint), {},
@@ -91,7 +91,9 @@ export class Class extends AbstractClass implements VisualizationClass {
   subClassOf: Uri|null;
   scopeClass: Uri|null;
   localName: string|null;
+  propertiesAll: Property[];
   properties: Property[];
+  annotations: Property[];
   subject: Concept|null;
   equivalentClasses: Uri[];
   constraint: Constraint;
@@ -110,11 +112,24 @@ export class Class extends AbstractClass implements VisualizationClass {
     super(graph, context, frame);
 
     init(this, Class.classMappings);
+    this.properties = [];
+    this.annotations = [];
+    for(let property of this.propertiesAll) {
+      if (property.isAnnotation()) {
+        this.annotations.push(property);
+      } else {
+        this.properties.push(property);
+      }
+    }
     this.properties.sort(comparingPrimitive<Property>(property => property.index));
+    this.annotations.sort(comparingPrimitive<Property>(property => property.index));
 
     // normalize indices
     for (let i = 0; i < this.properties.length; i++) {
       this.properties[i].index = i;
+    }
+    for (let i = 0; i < this.annotations.length; i++) {
+      this.annotations[i].index = i;
     }
   }
 
@@ -123,12 +138,28 @@ export class Class extends AbstractClass implements VisualizationClass {
   }
 
   addProperty(property: Property): void {
-    property.index = this.properties.length;
-    this.properties.push(property);
+    if (property.isAnnotation()) {
+      property.index = this.annotations.length;
+      this.annotations.push(property);
+    } else {
+      property.index = this.properties.length;
+      this.properties.push(property);
+    }
+    this.propertiesAll.push(property);
   }
 
   removeProperty(property: Property): void {
-    remove(this.properties, property);
+    if (property.isAnnotation()) {
+      remove(this.annotations, property);
+    } else {
+      remove(this.properties, property);
+    }
+    remove(this.propertiesAll, property);
+  }
+
+  removeAnnotation(property: Property): void {
+    remove(this.annotations, property);
+    remove(this.propertiesAll, property);
   }
 
   get associationPropertiesWithTarget() {
@@ -281,7 +312,7 @@ export class ConstraintListItem extends GraphNode {
 const propertyTypeSerializer = createSerializer<KnownPredicateType>((data: KnownPredicateType) => reverseMapType(data), (data: any) => {
     const predicateType = requireDefined(mapType(data));
 
-    if (predicateType !== 'association' && predicateType !== 'attribute') {
+    if (predicateType !== 'association' && predicateType !== 'attribute' && predicateType !== 'annotation') {
       throw new Error('Unknown predicate type: ' + predicateType);
     }
 
@@ -289,7 +320,7 @@ const propertyTypeSerializer = createSerializer<KnownPredicateType>((data: Known
   }
 );
 
-function resolvePredicateConstructor(framedData: any): EntityConstructor<Association|Attribute> {
+function resolvePredicateConstructor(framedData: any): EntityConstructor<Association|Attribute|Annotation> {
 
   const types = typeSerializer.deserialize(framedData['@type']);
 
@@ -297,6 +328,8 @@ function resolvePredicateConstructor(framedData: any): EntityConstructor<Associa
     return Association;
   } else if (containsAny(types, ['attribute'])) {
     return Attribute;
+  } else if (containsAny(types, ['annotation'])) {
+    return Annotation;
   } else {
     throw new Error('Incompatible predicate type: ' + types.join());
   }
@@ -338,7 +371,9 @@ export class Property extends GraphNode {
     equals:             { name: 'equals',               serializer: entityAwareList(uriSerializer) },
     disjoint:           { name: 'disjoint',             serializer: entityAwareList(uriSerializer) },
     lessThan:           { name: 'lessThan',             serializer: entityAwareList(uriSerializer) },
-    lessThanOrEquals:   { name: 'lessThanOrEquals',     serializer: entityAwareList(uriSerializer) }
+    lessThanOrEquals:   { name: 'lessThanOrEquals',     serializer: entityAwareList(uriSerializer) },
+    value:              { name: 'value',                serializer: localizableSerializer },
+    annotationLabel:    { name: 'label',                serializer: localizableSerializer }
   };
 
   internalId: Uri;
@@ -351,7 +386,7 @@ export class Property extends GraphNode {
   dataType: DataType|null;
   languageIn: Language[];
   valueClass: Uri|null;
-  predicate: Attribute|Association|Uri;
+  predicate: Attribute|Association|Uri|Annotation;
   index: number;
   minCount: number|null;
   maxCount: number|null;
@@ -374,12 +409,17 @@ export class Property extends GraphNode {
   disjoint: Uri[];
   lessThan: Uri[];
   lessThanOrEquals: Uri[];
+  value: string|null;
+  annotationLabel: Localizable;
 
   predicateType: KnownPredicateType|null = null;
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
     init(this, Property.propertyMapping);
+    if (Object.keys(this.annotationLabel).length) {
+      this.label = this.annotationLabel;
+    }
   }
 
   get predicateId() {
@@ -440,6 +480,10 @@ export class Property extends GraphNode {
 
   isAttribute() {
     return this.normalizedPredicateType === 'attribute';
+  }
+
+  isAnnotation() {
+    return this.normalizedPredicateType === 'annotation';
   }
 
   get inUnstableState(): boolean {

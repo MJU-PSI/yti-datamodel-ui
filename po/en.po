@@ -221,6 +221,18 @@ msgstr ""
 msgid "Add property"
 msgstr "Add attribute or association"
 
+msgid "Add annotation"
+msgstr ""
+
+msgid "Copy annotation from class"
+msgstr ""
+
+msgid "Class annotations"
+msgstr ""
+
+msgid "No annotations yet"
+msgstr ""
+
 msgid "No properties yet"
 msgstr ""
 
@@ -1274,6 +1286,9 @@ msgstr "Attribute"
 msgid "association"
 msgstr "Association"
 
+msgid "annotation"
+msgstr "Annotation"
+
 msgid "property"
 msgstr ""
 
@@ -1551,6 +1566,9 @@ msgstr ""
 msgid "Association information"
 msgstr ""
 
+msgid "Annotation information"
+msgstr ""
+
 msgid "Property information"
 msgstr ""
 
@@ -1699,6 +1717,9 @@ msgid "Create new attribute"
 msgstr ""
 
 msgid "Create new association"
+msgstr ""
+
+msgid "Create new annotation"
 msgstr ""
 
 msgid "New attribute"
@@ -2549,3 +2570,6 @@ msgstr "Attribute"
 
 msgid "owl:ObjectProperty"
 msgstr "Association"
+
+msgid "Annotation value"
+msgstr ""

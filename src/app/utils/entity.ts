@@ -20,6 +20,7 @@ registerType('class', ['rdfs:Class']);
 registerType('shape', ['sh:NodeShape']);
 registerType('attribute', ['owl:DatatypeProperty']);
 registerType('association', ['owl:ObjectProperty']);
+registerType('annotation', ['owl:AnnotationProperty']);
 registerType('property', ['rdf:Property', 'sh:PropertyShape']);
 registerType('model', ['owl:Ontology']);
 registerType('profile', ['dcap:DCAP']);
@@ -65,7 +66,7 @@ export function normalizeReferrerType(types: Type[]): Type|null {
 }
 
 export function normalizePredicateType(types: Type[]): PredicateType|null {
-  return firstMatchingValue<Type>(['attribute', 'association', 'property'], types) as PredicateType;
+  return firstMatchingValue<Type>(['attribute', 'association', 'property', 'annotation'], types) as PredicateType;
 }
 
 export function normalizeClassType(types: Type[]): ClassType|null {
@@ -109,7 +110,7 @@ export function contextlessInternalUrl(destination: Destination) {
       return modelUrl(requireDefined(destination.prefix));
     } else if (containsAny(destination.type, ['group'])) {
       return groupUrl(destination.id.uri);
-    } else if (containsAny(destination.type, ['association', 'attribute', 'class', 'shape'])) {
+    } else if (containsAny(destination.type, ['association', 'attribute', 'annotation', 'class', 'shape'])) {
       return resourceUrl(requireDefined(requireDefined(destination.definedBy).prefix), destination.id);
     } else {
       throw new Error('Unsupported type for url: ' + destination.type);
@@ -171,6 +172,8 @@ export function glyphIconClassForType(type: Type[]) {
     return ['fas', 'fa-server'];
   } else if (containsAny(type, ['association'])) {
     return ['fas', 'fa-arrows-alt-h'];
+  } else if (containsAny(type, ['annotation'])) {
+    return ['fas', 'fa-bars'];
   } else if (containsAny(type, ['model', 'profile'])) {
     return ['fas', 'fa-book'];
   } else if (containsAny(type, ['concept', 'conceptSuggestion'])) {

@@ -20,7 +20,8 @@ import { DatamodelConfirmationModalService } from 'app/services/confirmation-mod
     model: '=',
     modelController: '<',
     parent: '<',
-    width: '='
+    width: '=',
+    openPropertyId: '='
   },
   template: require('./predicateView.html')
 })
@@ -30,6 +31,7 @@ export class PredicateViewComponent extends EditableEntityController<Association
   model: Model;
   modelController: ModelControllerService;
   parent: EditorContainer;
+  openPropertyId: string;
 
   constructor($scope: EditableScope,
               $log: ILogService,

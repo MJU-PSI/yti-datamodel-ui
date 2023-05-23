@@ -105,7 +105,8 @@
           <div ng-if="$ctrl.externalPredicate === null">
             <editable data-title="Predicate type" ng-show="$ctrl.typeSelectable" context="$ctrl.model">
               <div class="selectContainer">
-                <select class="form-control" required ng-model="$ctrl.selection.type" ng-options="type | translate for type in ['attribute', 'association']"></select>
+                <select class="form-control" required ng-model="$ctrl.selection.type"
+                  ng-options="type | translate for type in ['attribute', 'association', 'annotation']"></select>
               </div>
             </editable>
 

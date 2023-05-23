@@ -8,8 +8,9 @@ import { anyMatching, requireDefined } from '@mju-psi/yti-common-ui';
 import { CopyPredicateModal } from './copyPredicateModal';
 import { Property } from '../../entities/class';
 import { Model } from '../../entities/model';
-import { Association, Attribute, Predicate } from '../../entities/predicate';
+import { Annotation, Association, Attribute, Predicate } from '../../entities/predicate';
 import { LegacyComponent, modalCancelHandler } from '../../utils/angular';
+import { PredicateFormComponent } from './predicateForm';
 
 @LegacyComponent({
   bindings: {
@@ -18,7 +19,8 @@ import { LegacyComponent, modalCancelHandler } from '../../utils/angular';
     model: '='
   },
   require: {
-    classForm: '^classForm'
+    classForm: '?^classForm',
+    predicateForm: '?^predicateForm'
   },
   template: require('./propertyPredicateView.html')
 })
@@ -31,6 +33,7 @@ export class PropertyPredicateViewComponent {
   changeActions: { name: string, apply: () => void }[] = [];
 
   classForm: ClassFormComponent;
+  predicateForm: PredicateFormComponent;
 
   constructor(private $scope: IScope,
               private predicateService: PredicateService,
@@ -49,7 +52,7 @@ export class PropertyPredicateViewComponent {
     this.$scope.$watch(() => this.property && this.property.predicate, predicate => {
       this.loading = true;
 
-      if (predicate instanceof Association || predicate instanceof Attribute) {
+      if (predicate instanceof Association || predicate instanceof Attribute || predicate instanceof Annotation) {
         setResult(predicate);
       } else if (predicate instanceof Uri) {
         if (this.model.isNamespaceKnownToBeNotModel(predicate.namespace)) {
@@ -64,7 +67,13 @@ export class PropertyPredicateViewComponent {
   }
 
   isEditing() {
-    return this.classForm && this.classForm.isEditing();
+    if (this.classForm) {
+      return this.classForm.isEditing();
+    } else if (this.predicateForm) {
+      return this.predicateForm.isEditing();
+    } else {
+      return false;
+    }
   }
 
   updateChangeActions() {
@@ -81,7 +90,7 @@ export class PropertyPredicateViewComponent {
       };
     };
 
-    const copyAction = (type: 'attribute'|'association') => {
+    const copyAction = (type: 'attribute'|'association'|'annotation') => {
       return {
         name: `Copy reusable ${type} to ${this.model.normalizedType}`,
         apply: () => this.copyReusablePredicateToModel(predicate || predicateId, type)
@@ -98,10 +107,11 @@ export class PropertyPredicateViewComponent {
         }
 
         if (predicate && (predicate.isAssociation() || predicate.isAttribute())) {
-          this.changeActions.push(copyAction(predicate.normalizedType as 'attribute' | 'association'));
+          this.changeActions.push(copyAction(predicate.normalizedType as 'attribute' | 'association' | 'annotation'));
         } else {
           this.changeActions.push(copyAction('attribute'));
           this.changeActions.push(copyAction('association'));
+          this.changeActions.push(copyAction('annotation'));
         }
       }
     });
@@ -127,7 +137,7 @@ export class PropertyPredicateViewComponent {
       .then(() => this.updateChangeActions());
   }
 
-  copyReusablePredicateToModel(predicateToBeCopied: Predicate|Uri, type: 'attribute'|'association') {
+  copyReusablePredicateToModel(predicateToBeCopied: Predicate|Uri, type: 'attribute'|'association'|'annotation') {
     this.copyPredicateModal.open(predicateToBeCopied, type, this.model)
       .then(copied => this.predicateService.createPredicate(copied).then(() => copied))
       .then(predicate => this.property.predicate = predicate.id, modalCancelHandler);

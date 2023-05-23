@@ -8,7 +8,7 @@ import { Class, ClassListItem, Property } from '../entities/class';
 import { ExternalEntity } from '../entities/externalEntity';
 import * as frames from '../entities/frames';
 import { Model } from '../entities/model';
-import { Association, Attribute, Predicate } from '../entities/predicate';
+import { Annotation, Association, Attribute, Predicate } from '../entities/predicate';
 import { Uri, Urn } from '../entities/uri';
 import { ClassRelationType, GraphData, KnownPredicateType } from '../types/entity';
 import { Language } from '../types/language';
@@ -288,10 +288,12 @@ export class DefaultClassService implements ClassService {
           }
         }
 
-        if (type === 'attribute' && !property.dataType) {
+        if (type === 'attribute' && !property.dataType) { // TODO annotation
           property.dataType = (predicate instanceof Attribute) ? predicate.dataType : 'xsd:string';
         } else if (type === 'association' && !property.valueClass && predicate instanceof Association) {
           property.valueClass = predicate.valueClass;
+        } else if (type === 'annotation' && predicate instanceof Annotation ) {
+          property.annotationLabel = property.label;
         }
 
         property.status = 'DRAFT';

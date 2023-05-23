@@ -9,7 +9,7 @@ import { AddNew } from 'app/components/common/searchResults';
 import { glyphIconClassForType } from 'app/utils/entity';
 import { ChoosePredicateTypeModal } from './choosePredicateTypeModal';
 import { ClassService } from 'app/services/classService';
-import { collectProperties, ignoreModalClose, requireDefined } from '@mju-psi/yti-common-ui';
+import { collectProperties, containsAny, ignoreModalClose, requireDefined } from '@mju-psi/yti-common-ui';
 import { combineExclusions, createDefinedByExclusion, createExistsExclusion, Exclusion } from 'app/utils/exclusion';
 import { SearchController, SearchFilter } from 'app/types/filter';
 import { AbstractPredicate, Predicate, PredicateListItem } from 'app/entities/predicate';
@@ -30,6 +30,7 @@ export class SearchPredicateModal {
     'ngInject';
   }
 
+  // deprecated
   openAddPredicate(model: Model, type: KnownPredicateType, exclude: Exclusion<AbstractPredicate> = noExclude): IPromise<ExternalEntity | EntityCreation | Predicate> {
     return this.openModal(model, type, undefined, exclude, false, false);
   }
@@ -41,7 +42,7 @@ export class SearchPredicateModal {
       createDefinedByExclusion(model)
     );
 
-    return this.openModal(model, null, undefined, exclude, false, true).then(predicate => {
+    return this.openModal(model, null, undefined, exclude, false, true, false).then(predicate => {
       if (predicate instanceof Predicate && predicate.normalizedType === 'property') {
         return this.choosePredicateTypeModal.open().then(type => {
           return this.classService.newProperty(predicate, type, model);
@@ -49,6 +50,12 @@ export class SearchPredicateModal {
       } else {
         return this.classService.newProperty(predicate, predicate.normalizedType as KnownPredicateType, model);
       }
+    });
+  }
+
+  openAddAnnotation(model: Model, exclude: Exclusion<AbstractPredicate> = noExclude): IPromise<Property> {
+    return this.openModal(model, 'annotation', undefined, exclude, false, true, false).then(predicate => {
+      return this.classService.newProperty(predicate, predicate.normalizedType as KnownPredicateType, model);
     });
   }
 
@@ -125,7 +132,20 @@ export class SearchPredicateController implements SearchController<PredicateList
     this.typeSelectable = !type;
 
     const appendResults = (predicates: PredicateListItem[]) => {
-      this.predicates = this.predicates.concat(predicates);
+      let filteredPredicates: PredicateListItem[] = [];
+      for (let predicate of predicates) {
+        if (this.type) {
+          if (predicate.normalizedType == this.type) {
+            filteredPredicates.push(predicate);
+          }
+        } else {
+          if (predicate.normalizedType != 'annotation') {
+            filteredPredicates.push(predicate);
+          }
+        }
+      }
+      this.predicates = this.predicates.concat(filteredPredicates);
+
       this.search();
       this.loadingResults = false;
     };
@@ -142,6 +162,10 @@ export class SearchPredicateController implements SearchController<PredicateList
     } else {
       customDataSource('').then(appendResults);
     }
+
+    this.addFilter(predicateListItem =>
+      !this.type || (this.type && containsAny([this.type], predicateListItem.item.type))
+    );
 
     $scope.$watch(() => this.selection && this.selection.id, selectionId => {
       if (selectionId && this.selection instanceof ExternalEntity) {
@@ -185,6 +209,12 @@ export class SearchPredicateController implements SearchController<PredicateList
         `${this.gettextCatalog.getString('Create new association')} '${this.searchText}'`,
         this.isAssociationAddable.bind(this),
         'association',
+        false
+      ),
+      new AddNewPredicate(
+        `${this.gettextCatalog.getString('Create new annotation')} '${this.searchText}'`,
+        this.isAnnotationAddable.bind(this),
+        'annotation',
         false
       ),
       new AddNewPredicate(
@@ -293,6 +323,10 @@ export class SearchPredicateController implements SearchController<PredicateList
 
   isAssociationAddable(): boolean {
     return !!this.searchText && !this.onlySelection && (this.typeSelectable || this.type === 'association');
+  }
+
+  isAnnotationAddable(): boolean {
+    return !!this.searchText && !this.onlySelection && (this.typeSelectable || this.type === 'annotation');
   }
 }
 

@@ -2,7 +2,7 @@
   <div class="col-md-12">
     <h4 class="pull-left">{{$ctrl.predicate.normalizedType + ' information' | capitalize | translate}}</h4>
 
-    <button ng-if="$ctrl.isEditing() && !$ctrl.predicate.unsaved"
+    <button ng-if="$ctrl.isEditing() && !$ctrl.predicate.unsaved && !$ctrl.predicate.isAnnotation()"
             id="predicate_change_type"
             type="button"
             class="btn btn-link pull-right"
@@ -33,7 +33,8 @@
       <input id="predicateId" class="form-control" type="text" required id-input="predicate" old="$ctrl.oldPredicate" ng-model="$ctrl.predicate.id" ng-disabled="!$ctrl.predicate.inUnstableState" />
     </editable>
 
-    <editable data-title="{{'Super' + $ctrl.predicate.normalizedType}}" link="$ctrl.linkToSuperproperty()" context="$ctrl.model">
+    <editable ng-if="!$ctrl.predicate.isAnnotation()" data-title="{{'Super' + $ctrl.predicate.normalizedType}}"
+      link="$ctrl.linkToSuperproperty()" context="$ctrl.model">
       <uri-select id="superPredicate" type="{{$ctrl.predicate.normalizedType}}" uri="$ctrl.predicate.subPropertyOf" model="$ctrl.model"></uri-select>
     </editable>
 
@@ -49,12 +50,65 @@
       <uri-select id="predicateValueClass" type="class" uri="$ctrl.predicate.valueClass" model="$ctrl.model" default-to-current-model="true"></uri-select>
     </editable>
 
-    <editable-multiple-uri-select id="equivalentProperty" type="{{$ctrl.predicate.normalizedType}}" ng-model="$ctrl.predicate.equivalentProperties" model="$ctrl.model" data-title="{{'Equivalent ' + $ctrl.predicate.normalizedType}}" required-by-in-use="true"></editable-multiple-uri-select>
+    <editable-multiple-uri-select ng-if="!$ctrl.predicate.isAnnotation()" id="equivalentProperty"
+      type="{{$ctrl.predicate.normalizedType}}" ng-model="$ctrl.predicate.equivalentProperties" model="$ctrl.model"
+      data-title="{{'Equivalent ' + $ctrl.predicate.normalizedType}}" required-by-in-use="true">
+    </editable-multiple-uri-select>
+    </div>
+    </div>
+    
+    <subject-view ng-if="!$ctrl.predicate.isAnnotation()" id="{{$ctrl.id + '_subject'}}" entity="$ctrl.predicate"
+      model="$ctrl.model">
+    </subject-view>
+    
+    <hr />
+    
+    <div class="row">
+      <div class="col-md-12">
+    
+        <div class="clearfix">
+          <h4 class="pull-left mb-0 mr-2">{{$ctrl.predicate.normalizedType + ' annotations' | capitalize | translate}}</h4>
+          <a ng-show="!$ctrl.isEditing()" class="btn btn-secondary-action btn-sm"
+            ng-class="{ active: $ctrl.sortAlphabetically }" uib-btn-checkbox ng-model="$ctrl.sortAlphabetically">
+            <i class="fas fa-sort-alpha-down"></i>
+          </a>
+          <button-with-options id="{{$ctrl.id + '_options_button_add_property'}}" ng-show="$ctrl.isEditing()"
+            class="add-property" options="$ctrl.addAnnotationActions" right="true">
+            <span translate>Add annotation</span>
+          </button-with-options>
+        </div>
+    
+        <accordion class="properties" ng-if="$ctrl.predicate.annotations.length > 0" open-id="$ctrl.openPropertyId"
+          drag-sortable="$ctrl.annotations" drag-disabled="!$ctrl.isEditing()" on-reorder="$ctrl.onPropertyReorder">
+          <accordion-group id="{{$ctrl.id + '_property_' + $ctrl.formLabelNameToIdName(property.label)}}"
+            ng-repeat="property in $ctrl.annotations track by property.internalId" identifier="property.internalId.uuid">
+            <accordion-heading>
+              <div id="{{property.internalId + 'header'}}" data-property-id="{{property.internalId}}"
+                class="{{'property_no_' + property.index + '_header'}}" drag-sortable-item>
+                <h5>
+                  <a ng-class="{collapsed: !isOpen()}" href>
+                    <span class="accordion-icon" ng-class="property.glyphIconClass"></span>
+                    <span>{{property | translateLabel: $ctrl.model}}</span>
+                    <accordion-chevron is-open="isOpen()"></accordion-chevron>
+                    <div class="property-ordering" ng-show="$ctrl.isEditing()">
+                      <span class="fas fa-bars"></span>
+                    </div>
+              </a>
+              </h5>
+          </div>
+        </accordion-heading>
+        
+        <accordion-body>
+          <property-view id="{{$ctrl.id + '_property_' + $ctrl.formLabelNameToIdName(property.label)}}" property="property"
+            predicate="$ctrl.predicate" model="$ctrl.model"></property-view>
+        </accordion-body>
+        </accordion-group>
+        </accordion>
+
+  <span ng-show="$ctrl.class.annotations.length === 0" translate>No annotations yet</span>
+
   </div>
-</div>
-
-
-<subject-view id="{{$ctrl.id + '_subject'}}" entity="$ctrl.predicate" model="$ctrl.model"></subject-view>
+  </div>
 
 <hr />
 

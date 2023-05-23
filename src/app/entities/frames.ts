@@ -66,7 +66,13 @@ const predicateContext = Object.assign({}, coreContext, conceptContext, {
   subPropertyOf: { '@id': 'http://www.w3.org/2000/01/rdf-schema#subPropertyOf', '@type': '@id' },
   equivalentProperty: { '@id' : 'http://www.w3.org/2002/07/owl#equivalentProperty', '@type' : '@id' },
   datatype: { '@id': 'http://www.w3.org/ns/shacl#datatype', '@type': '@id' },
-  subject
+  subject,
+  value: { '@id': 'http://www.w3.org/ns/shacl#value', '@container': '@language' },
+  property,
+  node: { '@id': 'http://www.w3.org/ns/shacl#node', '@type': '@id' },
+  path,
+  type: { '@id': 'http://purl.org/dc/terms/type', '@type': '@id' },
+  label: { '@id': 'http://www.w3.org/2000/01/rdf-schema#label', '@container': '@language' }
 });
 
 const propertyContext = Object.assign({}, coreContext, predicateContext, referenceDataContext, {
@@ -99,7 +105,8 @@ const propertyContext = Object.assign({}, coreContext, predicateContext, referen
   equals: {'@id': 'http://www.w3.org/ns/shacl#equals', '@type': '@id' },
   disjoint: {'@id': 'http://www.w3.org/ns/shacl#disjoint', '@type': '@id' },
   lessThan: {'@id': 'http://www.w3.org/ns/shacl#lessThan', '@type': '@id' },
-  lessThanOrEquals: {'@id': 'http://www.w3.org/ns/shacl#lessThanOrEquals', '@type': '@id' }
+  lessThanOrEquals: {'@id': 'http://www.w3.org/ns/shacl#lessThanOrEquals', '@type': '@id' },
+  value: { '@id': 'http://www.w3.org/ns/shacl#value', '@container': '@language' }
 });
 
 const classContext = Object.assign({}, coreContext, propertyContext, conceptContext, {
@@ -277,7 +284,7 @@ const embeddedSubject: any = {
 
 export function predicateFrame(data: any) {
   return frame(data, predicateContext, {
-    '@type': ['owl:DatatypeProperty', 'owl:ObjectProperty', 'rdf:Property'],
+    '@type': ['owl:DatatypeProperty', 'owl:ObjectProperty', 'owl:AnnotationProperty', 'rdf:Property'],
     isDefinedBy: {'@embed': '@always'},
     subject: embeddedSubject,
     equivalentProperty: {

@@ -224,6 +224,18 @@ msgstr "Valitse"
 msgid "Add property"
 msgstr "Lisää attribuutti tai assosiaatio"
 
+msgid "Add annotation"
+msgstr "Lisää huomautus"
+
+msgid "Copy annotation from class"
+msgstr "Kopioi huomautus luokasta"
+
+msgid "Class annotations"
+msgstr "Luokkamerkinnät"
+
+msgid "No annotations yet"
+msgstr "Ei vielä huomautuksia"
+
 msgid "No properties yet"
 msgstr "Ei vielä yhtään ominaisuutta"
 
@@ -1310,6 +1322,9 @@ msgstr "Attribuutti"
 msgid "association"
 msgstr "Assosiaatio"
 
+msgid "annotation"
+msgstr "Annotation"
+
 msgid "property"
 msgstr "Ominaisuus"
 
@@ -1589,6 +1604,9 @@ msgstr "Attribuutin tiedot"
 msgid "Association information"
 msgstr "Assosiaation tiedot"
 
+msgid "Annotation information"
+msgstr "Annotaatiotiedot"
+
 msgid "Property information"
 msgstr "Ominaisuuden tiedot"
 
@@ -1738,6 +1756,9 @@ msgstr "Lisää uusi attribuutti"
 
 msgid "Create new association"
 msgstr "Lisää uusi assosiaatio"
+
+msgid "Create new annotation"
+msgstr "Luo uusi huomautus"
 
 msgid "New attribute"
 msgstr "Uusi attribuutti"
@@ -2628,3 +2649,6 @@ msgstr "Assosiaatio"
 
 #~ msgid "Advanced search"
 #~ msgstr "Tarkennettu haku"
+
+msgid "Annotation value"
+msgstr "Huomautuksen arvo"

@@ -20,7 +20,7 @@ export class TypesFilterComponent {
 
   searchController: SearchController<WithIdAndType>;
 
-  types: Type[] = ['model', 'class', 'shape', 'attribute', 'association'];
+  types: Type[] = ['model', 'class', 'shape', 'attribute', 'association', 'annotation'];
   searchTypes: Type[] = this.types.slice();
 
   constructor(private $scope: IScope) {

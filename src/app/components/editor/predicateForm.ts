@@ -8,14 +8,23 @@ import { PredicateViewComponent } from './predicateView';
 import { Model } from 'app/entities/model';
 import { Association, Attribute } from 'app/entities/predicate';
 import { KnownPredicateType } from 'app/types/entity';
-import { LegacyComponent } from 'app/utils/angular';
+import { LegacyComponent, modalCancelHandler } from 'app/utils/angular';
+import { SessionService } from 'app/services/sessionService';
+import { LanguageService } from 'app/services/languageService';
+import { SearchPredicateModal } from './searchPredicateModal';
+import { Property } from 'app/entities/class';
+import { Option } from 'app/components/common/buttonWithOptions';
+import { comparingLocalizable } from 'app/utils/comparator';
+import { IScope } from 'angular';
+import { SearchClassModal } from './searchClassModal';
 
 @LegacyComponent({
   bindings: {
     id: '@',
     predicate: '=',
     oldPredicate: '=',
-    model: '='
+    model: '=',
+    openPropertyId: '='
   },
   require: {
     predicateView: '?^predicateView',
@@ -28,14 +37,66 @@ export class PredicateFormComponent {
   model: Model;
   predicate: Attribute|Association;
   oldPredicate: Attribute|Association;
+  annotations: Property[];
+  addAnnotationActions: Option[];
+  openPropertyId: string;
 
   predicateView: PredicateViewComponent;
   form: EditableForm;
 
   constructor(private predicateService: PredicateService,
               private usageService: UsageService,
+              private sessionService: SessionService,
+              private languageService: LanguageService,
+              private searchPredicateModal: SearchPredicateModal,
+              private searchClassModal: SearchClassModal,
+              private $scope: IScope,
               private errorModal: ErrorModal) {
     'ngInject';
+  }
+
+  $onInit() {
+
+    const setProperties = () => {
+      if (this.isEditing() || !this.sortAlphabetically) {
+        this.annotations = this.predicate.annotations;
+      } else {
+        this.annotations = this.predicate.annotations.slice();
+        this.annotations.sort(comparingLocalizable<Property>(this.languageService.createLocalizer(this.model), property => property.label));
+      }
+    };
+
+    this.$scope.$watchGroup([
+        () => this.predicate,
+        () => this.predicate.annotations,
+        () => this.languageService.getModelLanguage(this.model),
+        () => this.sortAlphabetically,
+        () => this.isEditing()
+      ],
+      () => setProperties());
+
+    this.addAnnotationActions = [
+      {
+        name: 'Add annotation',
+        apply: () => this.addAnnotation()
+      }
+    ];
+  }
+
+  get sortAlphabetically() {
+    return this.sessionService.sortAlphabetically || false;
+  }
+
+  set sortAlphabetically(value: boolean) {
+    this.sessionService.sortAlphabetically = value;
+  }
+
+  addAnnotation() {
+    this.searchPredicateModal.openAddAnnotation(this.model)
+      .then(property => {
+        this.predicate.addAnnotation(property);
+        this.openPropertyId = property.internalId.uuid;
+      }, modalCancelHandler);
   }
 
   isEditing() {

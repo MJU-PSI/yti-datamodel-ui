@@ -34,11 +34,13 @@ export class ClassFormComponent {
 
   class: Class;
   properties: Property[];
+  annotations: Property[];
   oldClass: Class;
   model: Model;
   openPropertyId: string;
   shouldAutofocus: boolean;
   addPropertyActions: Option[];
+  addAnnotationActions: Option[];
   localizer: Localizer;
 
   onPropertyReorder = (property: Property, index: number) => property.index = index;
@@ -62,15 +64,19 @@ export class ClassFormComponent {
     const setProperties = () => {
       if (this.isEditing() || !this.sortAlphabetically) {
         this.properties = this.class.properties;
+        this.annotations = this.class.annotations;
       } else {
         this.properties = this.class.properties.slice();
         this.properties.sort(comparingLocalizable<Property>(this.languageService.createLocalizer(this.model), property => property.label));
+        this.annotations = this.class.annotations.slice();
+        this.annotations.sort(comparingLocalizable<Property>(this.languageService.createLocalizer(this.model), property => property.label));
       }
     };
 
     this.$scope.$watchGroup([
         () => this.class,
         () => this.class.properties,
+        () => this.class.annotations,
         () => this.languageService.getModelLanguage(this.model),
         () => this.sortAlphabetically,
         () => this.isEditing()
@@ -85,6 +91,17 @@ export class ClassFormComponent {
       {
         name: 'Copy properties from class',
         apply: () => this.copyPropertiesFromClass()
+      }
+    ];
+
+    this.addAnnotationActions = [
+      {
+        name: 'Add annotation',
+        apply: () => this.addAnnotation()
+      },
+      {
+        name: 'Copy annotation from class',
+        apply: () => this.copyAnnotationsFromClass()
       }
     ];
   }
@@ -103,6 +120,19 @@ export class ClassFormComponent {
 
   set sortAlphabetically(value: boolean) {
     this.sessionService.sortAlphabetically = value;
+  }
+
+  addAnnotation() {
+    this.searchPredicateModal.openAddAnnotation(this.model)
+      .then(property => {
+        this.class.addProperty(property);
+        this.openPropertyId = property.internalId.uuid;
+      }, modalCancelHandler);
+  }
+
+  copyAnnotationsFromClass() {
+    this.searchClassModal.openWithOnlySelection(this.model, false, noExclude, _klass => 'Copy properties')
+      .then(selectedClass => this.addPropertiesFromClass(selectedClass, 'class'), modalCancelHandler);
   }
 
   addProperty() {

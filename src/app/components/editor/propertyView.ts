@@ -6,20 +6,23 @@ import { allMatching, anyMatching } from '@mju-psi/yti-common-ui';
 import { hasLocalization } from '../../utils/language';
 import { Class, Property } from '../../entities/class';
 import { Model } from '../../entities/model';
-import { Attribute, Predicate, PredicateListItem } from '../../entities/predicate';
+import { Annotation, Attribute, Predicate, PredicateListItem } from '../../entities/predicate';
 import { LegacyComponent } from '../../utils/angular';
 import { DataSource } from '../form/dataSource';
 import { PredicateService } from '../../services/predicateService';
+import { PredicateFormComponent } from './predicateForm';
 
 @LegacyComponent({
   bindings: {
     id: '@',
     property: '=',
     class: '=',
+    predicate: '=',
     model: '='
   },
   require: {
-    classForm: '^classForm'
+    classForm: '?^classForm',
+    predicateForm: '?^predicateForm'
   },
   template: require('./propertyView.html')
 })
@@ -27,9 +30,11 @@ export class PropertyViewComponent {
 
   property: Property;
   class: Class;
+  predicate: Predicate;
   model: Model;
 
   classForm: ClassFormComponent;
+  predicateForm: PredicateFormComponent;
 
   comparablePropertiesDataSource: DataSource<PredicateListItem>;
 
@@ -44,7 +49,7 @@ export class PropertyViewComponent {
       const predicateCache: { [id: string]: IPromise<Predicate | null> } = {};
 
       const arrayOfPromises: (IPromise<Predicate | null>)[] = this.comparableProperties.map(prop => prop.predicate).filter(predicate => {
-        if (predicate instanceof Attribute) {
+        if (predicate instanceof Attribute || predicate instanceof Annotation) {
           return !search || predicate.id.toString().toLowerCase().indexOf(search.toLowerCase()) >= 0;
         } else if (predicate instanceof Uri) {
           return !search || predicate.toString().toLowerCase().indexOf(search.toLowerCase()) >= 0;
@@ -53,6 +58,8 @@ export class PropertyViewComponent {
       }).map(predicate => {
         if (predicate instanceof Attribute) {
           return this.$q.resolve(predicate as Attribute);
+        } else if (predicate instanceof Annotation) {
+          return this.$q.resolve(predicate as Annotation);
         } else if (predicate instanceof Uri) {
           const str = predicate.toString();
           if (!predicateCache[str]) {
@@ -142,6 +149,8 @@ export class PropertyViewComponent {
         return 'Attribute information';
       case 'association':
         return 'Association information';
+      case 'annotation':
+        return 'Annotation information';
       default:
         return 'Property information';
     }
@@ -158,11 +167,22 @@ export class PropertyViewComponent {
     }
 
     this.$scope.$watchCollection(() => this.class && this.class.properties, (oldProperties) => {
+      if (oldProperties) {
+        const isPropertyAdded = allMatching(oldProperties, p => this.property.internalId.notEquals(p.internalId));
 
-      const isPropertyAdded = allMatching(oldProperties, p => this.property.internalId.notEquals(p.internalId));
+        if (this.isOpen() && isPropertyAdded) {
+          this.scrollTo();
+        }
+      }
+    });
 
-      if (this.isOpen() && isPropertyAdded) {
-        this.scrollTo();
+    this.$scope.$watchCollection(() => this.predicate && this.predicate.annotations, (oldAnnotations) => {
+      if (oldAnnotations) {
+        const isAnnotationAdded = allMatching(oldAnnotations, p => this.property.internalId.notEquals(p.internalId));
+
+        if (this.isOpen() && isAnnotationAdded) {
+          this.scrollTo();
+        }
       }
     });
   }
@@ -180,11 +200,23 @@ export class PropertyViewComponent {
   }
 
   isOpen() {
-    return this.classForm && this.classForm.openPropertyId === this.property.internalId.uuid;
+    if (this.classForm) {
+      return this.classForm.openPropertyId && this.classForm.openPropertyId === this.property.internalId.uuid;
+    } else if (this.predicateForm) {
+      return this.predicateForm.openPropertyId && this.predicateForm.openPropertyId === this.property.internalId.uuid;
+    } else {
+      return false;
+    }
   }
 
   isEditing() {
-    return this.classForm && this.classForm.isEditing();
+    if (this.classForm) {
+      return this.classForm.isEditing();
+    } else if (this.predicateForm) {
+      return this.predicateForm.isEditing();
+    } else {
+      return false;
+    }
   }
 
   valueClassExclude = (valueClass: Uri) =>
@@ -203,7 +235,11 @@ export class PropertyViewComponent {
   }
 
   removeProperty(property: Property) {
-    this.class.removeProperty(property);
+    if (this.class) {
+      this.class.removeProperty(property);
+    } else if (this.predicate) {
+      this.predicate.removeProperty(property);
+    }
   }
 
   linkToValueClass() {

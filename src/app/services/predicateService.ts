@@ -6,7 +6,7 @@ import { modelScopeCache } from '../components/form/cache';
 import { DataSource } from '../components/form/dataSource';
 import * as frames from '../entities/frames';
 import { Model } from '../entities/model';
-import { Association, Attribute, Predicate, PredicateListItem } from '../entities/predicate';
+import { Annotation, Association, Attribute, Predicate, PredicateListItem } from '../entities/predicate';
 import { typeSerializer } from '../entities/serializer/serializer';
 import { Uri, Urn } from '../entities/uri';
 import { EntityFactory, GraphData, KnownPredicateType, PredicateRelationType } from '../types/entity';
@@ -290,6 +290,8 @@ export class DefaultPredicateService implements PredicateService {
         return Association;
       } else if (containsAny(types, ['attribute'])) {
         return Attribute;
+      } else if (containsAny(types, ['annotation'])) {
+        return Annotation;
       } else if (containsAny(types, ['property'])) {
         return Predicate;
       } else {

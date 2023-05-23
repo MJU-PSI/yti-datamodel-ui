@@ -44,7 +44,8 @@ export type PredicateType = KnownPredicateType
                           | 'property';
 
 export type KnownPredicateType = 'attribute'
-                               | 'association';
+                               | 'association'
+                               | 'annotation';
 
 export type ConceptType = 'concept'
 

@@ -267,8 +267,12 @@ class SearchPredicateTableController implements SearchController<PredicateListIt
     return !!this.searchText && (this.typeSelectable || this.type === 'association');
   }
 
+  isAnnotationAddable(): boolean {
+    return !!this.searchText && (this.typeSelectable || this.type === 'annotation');
+  }
+
   canAddNew(): boolean {
-    return this.isAttributeAddable() || this.isAssociationAddable();
+    return this.isAttributeAddable() || this.isAssociationAddable() || this.isAnnotationAddable();
   }
 
   showItemValue(value: Value) {

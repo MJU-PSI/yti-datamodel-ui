@@ -83,6 +83,7 @@ export class ModelPageComponent implements ModelPageActions, ModelControllerServ
   classes: SelectableItem[] = [];
   associations: SelectableItem[] = [];
   attributes: SelectableItem[] = [];
+  annotations: SelectableItem[] = [];
   namespacesInUse: Set<string> = new Set<string>();
   selectionWidth: number;
   visualizationMaximized = false;
@@ -91,7 +92,8 @@ export class ModelPageComponent implements ModelPageActions, ModelControllerServ
   tabs = [
     new Tab('class', () => this.classes, this),
     new Tab('attribute', () => this.attributes, this),
-    new Tab('association', () => this.associations, this)
+    new Tab('association', () => this.associations, this),
+    new Tab('annotation', () => this.annotations, this)
   ];
 
   constructor($scope: IScope,
@@ -205,8 +207,10 @@ export class ModelPageComponent implements ModelPageActions, ModelControllerServ
   sortPredicates() {
     this.associations.sort(this.selectableItemComparator);
     this.attributes.sort(this.selectableItemComparator);
+    this.annotations.sort(this.selectableItemComparator);
     setOverlaps(this.associations);
     setOverlaps(this.attributes);
+    setOverlaps(this.annotations);
   }
 
   isSelected(selection: SelectableItem) {
@@ -237,6 +241,7 @@ export class ModelPageComponent implements ModelPageActions, ModelControllerServ
     removeMatching(this.classes, item => matchesIdentity(item, selection));
     removeMatching(this.attributes, item => matchesIdentity(item, selection));
     removeMatching(this.associations, item => matchesIdentity(item, selection));
+    removeMatching(this.annotations, item => matchesIdentity(item, selection));
 
     for (const changeListener of this.changeListeners) {
       changeListener.onDelete(selection);
@@ -263,7 +268,7 @@ export class ModelPageComponent implements ModelPageActions, ModelControllerServ
       this.addPredicate(
         type,
         combineExclusions<AbstractPredicate>(
-          createExistsExclusion(collectIds([this.attributes, this.associations])),
+          createExistsExclusion(collectIds([this.attributes, this.associations, this.annotations])),
           createDefinedByExclusion(this.model)),
         noPredicateExclude
       );
@@ -469,7 +474,7 @@ export class ModelPageComponent implements ModelPageActions, ModelControllerServ
     // const searchPredicateModal = () => this.searchPredicateModal.openAddPredicate(this.model, type, exclusion);
 
     // CURRENT FEATURE: Search predicate table view modal
-    const searchPredicateModal = () => this.searchPredicateTableModal.openAddPredicate(this.model, type, exclusion, filterExclusion, collectIds([this.attributes, this.associations]));
+    const searchPredicateModal = () => this.searchPredicateTableModal.openAddPredicate(this.model, type, exclusion, filterExclusion, collectIds([this.attributes, this.associations, this.annotations]));
 
     this.createOrAssignEntity(
       () => searchPredicateModal(),
@@ -578,6 +583,7 @@ export class ModelPageComponent implements ModelPageActions, ModelControllerServ
       .then(() => {
 
         const resources: WithDefinedBy[] = [
+          ...this.annotations,
           ...this.associations,
           ...this.attributes,
           ...this.classes
@@ -636,6 +642,10 @@ export class ModelPageComponent implements ModelPageActions, ModelControllerServ
         this.associations = _.chain(predicates)
           .filter(predicate => predicate.isOfType('association'))
           .map(association => new SelectableItem(association, this))
+          .value();
+        this.annotations = _.chain(predicates)
+          .filter(predicate => predicate.isOfType('annotation'))
+          .map(annotation => new SelectableItem(annotation, this))
           .value();
         this.sortPredicates();
       });
