@@ -1,4 +1,4 @@
-<div>
+<!-- <div>
   <form name="form" class="editable-form">
     <fieldset ng-if="$ctrl.model" ng-disabled="$ctrl.persisting">
       <div class="main-editable-content">
@@ -9,6 +9,23 @@
         </editable-entity-buttons>
 
         <model-form id="$ctrl.id" model="$ctrl.editableInEdit" namespaces-in-use="$ctrl.namespacesInUse" status-changed="$ctrl.statusChanged" change-resource-statuses-too="$ctrl.changeResourceStatusesToo"></model-form>
+      </div>
+    </fieldset>
+  </form>
+</div> -->
+
+<div>
+  <form name="form" class="editable-form" #form="ngForm">
+    <fieldset *ngIf="model" [disabled]="persisting">
+      <div class="main-editable-content">
+        <editable-entity-buttons [context]="model" [editableController]="this" [idPrefix]="'model_edit_buttons_'" [form]="form">
+          <app-status [status]="model.status"></app-status>
+          <history [buttonId]="'model_edit_buttons_history'" [model]="model" [resource]="model"
+                   *ngIf="!isEditing()"></history>
+        </editable-entity-buttons>
+
+        <model-form [id]="id" [model]="editableInEdit" [namespacesInUse]="namespacesInUse"
+                    [statusChanged]="statusChanged" [changeResourceStatusesToo]="changeResourceStatusesToo"></model-form>
       </div>
     </fieldset>
   </form>

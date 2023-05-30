@@ -160,6 +160,8 @@ import { Predicate } from 'app/entities/predicate';
 import { LanguageContext } from 'app/types/language';
 import { apiEndpointWithName } from 'app/services/config';
 import { GraphNode } from '../../entities/graphNode';
+import { NgForm } from '@angular/forms';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 const exportOptions = [
   { type: 'application/ld+json', extension: 'json' },
@@ -189,13 +191,15 @@ function isValidType(entity: EntityType, typeArray: (typeof GraphNode)[]) {
 }
 
 @Component({
-  selector: 'app-export',
+  selector: 'export',
   templateUrl: './export.html'
 })
 export class ExportComponent {
+
   @Input() entity: Model | Class | Predicate;
   @Input() context: LanguageContext;
   @Input() idPrefix?: string;
+  @Input() form?: NgForm;
 
   downloads: { name: string, filename: string, href: string, hrefRaw: string, onClick?: () => void }[];
 
@@ -206,7 +210,8 @@ export class ExportComponent {
 
   private idCleanerExpression = /[^a-zA-Z0-9_-]/g;
 
-  constructor(private languageService: LanguageService) {}
+  constructor(private languageService: LanguageService,
+              private sanitizer: DomSanitizer) {}
 
   ngOnChanges() {
     if (this.entity && this.context) {
@@ -301,5 +306,13 @@ export class ExportComponent {
       return this.idPrefix + '_export_' + thing.replace(this.idCleanerExpression, '_');
     }
     return undefined;
+  }
+
+  isEditing() {
+    return this.form && this.form.form.editing;
+  }
+
+  sanitizeUrl(url: string): SafeUrl {
+    return this.sanitizer.bypassSecurityTrustUrl(url);
   }
 }

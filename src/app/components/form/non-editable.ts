@@ -75,9 +75,9 @@
 
 import { Component, Input, OnInit } from '@angular/core';
 import { DisplayItem, DisplayItemFactory, Value } from './displayItemFactory';
-import { EditableForm } from './editableEntityController';
 import { LanguageContext } from 'app/types/language';
 import { isExternalLink } from 'app/components/form/href';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'non-editable',
@@ -92,11 +92,9 @@ export class NonEditableComponent implements OnInit {
   @Input() valueAsLocalizationKey: boolean;
   @Input() context: LanguageContext;
   @Input() clipboard: string;
+  @Input() form: NgForm;
 
   item: DisplayItem;
-
-  @Input()
-  form: EditableForm;
 
   constructor(private displayItemFactory: DisplayItemFactory) { }
 
@@ -107,18 +105,18 @@ export class NonEditableComponent implements OnInit {
     const onClick = this.onClick ? (value: Value) => clickHandler && clickHandler({value}) : undefined;
 
 
-    // this.item = this.displayItemFactory.create({
-    //   context: () => this.context,
-    //   value: () => this.value,
-    //   link: () => this.link,
-    //   valueAsLocalizationKey: this.valueAsLocalizationKey,
-    //   hideLinks: () => this.isEditing(),
-    //   onClick: onClick
-    // });
+    this.item = this.displayItemFactory.create({
+      context: () => this.context,
+      value: () => this.value,
+      link: () => this.link,
+      valueAsLocalizationKey: this.valueAsLocalizationKey,
+      hideLinks: () => this.isEditing(),
+      onClick: onClick
+    });
   }
 
   isEditing() {
-    return this.form && this.form.editing;
+    return this.form && this.form.form.editing;
   }
 
   get style(): {} {

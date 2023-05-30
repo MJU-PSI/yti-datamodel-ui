@@ -1,4 +1,4 @@
-<form name="form" class="search-predicate">
+<!-- <form name="form" class="search-predicate">
 
   <div class="modal-header  no-padding-bottom">
     <h4 class="modal-title">
@@ -140,6 +140,167 @@
             class="btn btn-secondary-action"
             ng-click="$ctrl.addNamespaceToModel($ctrl.selectedItem)"
             ng-show="$ctrl.notDefinedByThisModel($ctrl.selectedItem)"
+            translate>
+      Add namespace to model
+    </button>
+  </div>
+</form>
+ -->
+
+
+
+
+
+
+<form name="form" class="search-predicate">
+
+  <div class="modal-header  no-padding-bottom">
+    <h4 class="modal-title">
+
+      <div>
+        <span>{{('Add ' + type) | translate}}</span>
+      </div>
+    </h4>
+    <model-language-chooser class="pull-right mr-4" [context]="model"></model-language-chooser>
+    <a><i (click)="close()" class="fas fa-times"></i></a>
+  </div>
+
+  <div class="modal-body" style="min-height: 400px;">
+    <div class="search-table-modal-search-row">
+
+      <text-filter class="search-row-search-text"
+                   [search-text]="searchText"
+                   [search-controller]="this"
+                   [content-extractors]="contentExtractors"
+                   [placeholder]="'search ' + type"></text-filter>
+
+      <div class="search-row-selections">
+        <content-filter class="search-row-content-selection"
+                        [search-controller]="this"
+                        [content-matchers]="contentMatchers"
+                        [content-extractors]="contentExtractors"></content-filter>
+      </div>
+
+      <excluded-filter [search-controller]="this"
+                       [search-text]="searchText"
+                       [exclude]="filterExclude"></excluded-filter>
+    </div>
+
+    <div class="row flex-shrink-0">
+      <div class="col-12 limit-select-widths">
+        <model-filter class="pull-left mr-2 mb-2"
+                      [search-controller]="this"
+                      type="predicate"
+                      [model]="model"
+                      [model-type]="showModelType"></model-filter>
+
+        <type-filter class="pull-left mr-2 mb-2"
+                     [search-controller]="this"
+                     *ngIf="typeSelectable"
+                     label="Predicate type"
+                     [default-type]="type"></type-filter>
+
+        <select id="predicate_information_domain_filter_dropdown"
+                class="form-control pull-left mr-2 mb-2"
+                style="width: auto"
+                [(ngModel)]="showInfoDomain">
+          <option [ngValue]="undefined" translate>All information domains</option>
+          <option *ngFor="let infoDomain of infoDomains" [ngValue]="infoDomain.label | translateValue: model">
+            {{ infoDomain.label | translateValue: model }}
+          </option>
+        </select>
+
+        <select id="predicate_model_type_filter_dropdown"
+                class="form-control pull-left mr-2 mb-2"
+                style="width: auto"
+                [(ngModel)]="showModelType">
+          <option [ngValue]="undefined" translate>All types</option>
+          <option *ngFor="let modelType of modelTypes" [ngValue]="modelType | translate">
+            {{ modelType | translate }}
+          </option>
+        </select>
+
+        <select id="predicate_status_filter_dropdown"
+                class="form-control pull-left mb-2"
+                style="width: auto"
+                [(ngModel)]="showStatus">
+          <option [ngValue]="undefined" translate>All statuses</option>
+          <option *ngFor="let status of statuses" [ngValue]="status | translate">
+            {{ status | translate }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="content-box search-results-table-container">
+      <ajax-loading-indicator *ngIf="loadingResults"></ajax-loading-indicator>
+      <app-search-predicate-table-modal-content *ngIf="!loadingResults" [sort-by]="sortBy" [model]="model"
+                                                [filter-exclude]="filterExclude"
+                                                [search-text]="searchText" [search-results]="
+                                                [selected-item]="selectedItem" [selection]="selection"
+                                                (item-selected)="selectItem($event)"
+                                                [exclude]="exclude"
+                                                [type]="type">
+      </app-search-predicate-table-modal-content>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+
+    <button id="confirm_predicate_button"
+            type="button"
+            class="btn btn-action confirm"
+            (click)="confirm()"
+            [disabled]="!selection || cannotConfirm || (form.editing && (form.invalid || form.pending))">
+      {{ 'Use ' + type | translate }}
+    </button>
+
+    <button id="create_predicate_button"
+            type="button"
+            class="btn btn-secondary-action"
+            (click)="createNew(type)"
+            *ngIf="canAddNew()">
+      + {{ 'New ' + type | translate }}
+    </button>
+
+    <div class="pull-right dropup" ngbDropdown>
+      <button id="{{ 'predicate_' + selection.id + '_actions_button' }}"
+              class="btn btn-language dropdown-toggle"
+              [disabled]="!isSelectionPredicate()"
+              ngbDropdownToggle>
+        <span translate>Actions</span>
+      </button>
+
+      <div ngbDropdownMenu class="dropdown-menu-right" [attr.aria-labelledby]="'predicate_' + selection.id + '_actions_button'">
+        <button id="{{ 'copy_predicate_' + selection.id + '_button' }}"
+                class="dropdown-item"
+                (click)="copyPredicate(selection)">
+          {{ 'Copy ' + type | translate }}
+        </button>
+        <button id="{{ 'create_sub_predicate_' + selection.id + '_button' }}"
+                class="dropdown-item"
+                (click)="createSubPredicate(selection)">
+          {{ 'Create sub ' + type | translate }}
+        </button>
+        <button id="{{ 'create_super_predicate_' + selection.id + '_button' }}"
+                class="dropdown-item"
+                (click)="createSuperPredicate(selection)">
+          {{ 'Create super ' + type | translate }}
+        </button>
+      </div>
+    </div>
+
+    <button type="button" class="btn btn-link cancel" (click)="close()" translate>Cancel</button>
+
+    <div class="alert alert-danger" role="alert" *ngIf="cannotConfirm">
+      <span class="fas fa-exclamation-circle" aria-hidden="true"></span>
+      <span>{{ cannotConfirm | translate }}</span>
+    </div>
+
+    <button id="add_namespace_to_model_button"
+            class="btn btn-secondary-action"
+            (click)="addNamespaceToModel(selectedItem)"
+            *ngIf="notDefinedByThisModel(selectedItem)"
             translate>
       Add namespace to model
     </button>

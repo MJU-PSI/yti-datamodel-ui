@@ -59,7 +59,7 @@
   </h4>
 </div>
 
-<div class="modal-body"  style="height: calc(100vh - 50px);">
+<div class="modal-body" style="height: calc(100vh - 225px)">
 
   <div class="row mb-2">
     <div class="col-12">
@@ -69,28 +69,30 @@
   </div>
 
 
-  <div class="selectable-items" style="height: 100%">
-    <ul style="height: 100%; overflow-y: auto">
-      <li *ngFor="let version of versions; trackBy: version.id"
-          [id]="version.id"
-          [ngClass]="{'selection': isSelected(version)}"
-          (click)="select(version)">
-        {{version.createdAt | localizedDate}}
-        <span *ngIf="showAuthor">
-            <br />
-            {{version.createdBy}}
-          </span>
-        <ajax-loading-indicator-small *ngIf="isLoading(version)"></ajax-loading-indicator-small>
-      </li>
-    </ul>
+  <div style="float: left; width: 300px; height: calc(100% - 40px); border: 1px solid #A5ACB0">
+    <div class="selectable-items" style="height: 100%">
+      <ul style="height: 100%; overflow-y: auto">
+        <li *ngFor="let version of versions; trackBy: trackByVersionId"
+            [id]="version.id"
+            [ngClass]="{'selection': isSelected(version)}"
+            (click)="select(version)">
+          {{version.createdAt | localizedDate}}
+          <span *ngIf="showAuthor">
+              <br />
+              {{version.createdBy}}
+            </span>
+          <app-ajax-loading-indicator-small *ngIf="isLoading(version)"></app-ajax-loading-indicator-small>
+        </li>
+      </ul>
+    </div>
   </div>
 
-  <div class="form-container" style="float: left; width: calc(100% - 300px); height: calc(100% - 40px); padding-left: 20px;">
+  <div style="float: left; width: calc(100% - 300px); height: calc(100% - 40px); padding-left: 20px;">
     <form class="editable-form">
       <div *ngIf="selection" style="height: 100%; overflow-x: hidden">
         <model-form id="'model_history'" *ngIf="selection.isOfType('model')" [model]="selection"></model-form>
-        <class-form id="class_history" *ngIf="selection.isClass()" [class]="selection" [old-class]="selection" [model]="model" [open-property-id]="openPropertyId"></class-form>
-        <predicate-form id="predicate_history" *ngIf="selection.isPredicate()" [predicate]="selection" [old-predicate]="selection" [model]="model"></predicate-form>
+        <!-- <class-form id="class_history" *ngIf="selection.isClass()" [class]="selection" [oldClass]="selection" [model]="model" [openPropertyId]="openPropertyId"></class-form> -->
+        <!-- <predicate-form id="predicate_history" *ngIf="selection.isPredicate()" [predicate]="selection" [oldPredicate]="selection" [model]="model"></predicate-form> -->
       </div>
     </form>
   </div>

@@ -12,7 +12,7 @@
 </div> -->
 
 <div *ngIf="item.displayValue" class="editable-wrap" [ngStyle]="style">
-  <editable-label [data-title]="title"></editable-label>
+  <editable-label [title]="title"></editable-label>
   <div class="content">
     <a *ngIf="item.href" [href]="item.href">
       {{item.displayValue}}

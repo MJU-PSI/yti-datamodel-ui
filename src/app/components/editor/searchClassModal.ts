@@ -245,12 +245,256 @@
 // }
 
 
-import { Injectable  } from '@angular/core';
+import { Component, Injectable, ViewChild } from '@angular/core';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { SearchConceptModal, EntityCreation } from './searchConceptModal';
+import { ClassService } from 'app/services/classService';
+import { LanguageService, Localizer } from 'app/services/languageService';
+import { AddNew } from 'app/components/common/searchResults';
+import { gettextCatalog as GettextCatalog } from 'angular-gettext';
+import { EditableForm } from 'app/components/form/editableEntityController';
+import { glyphIconClassForType } from 'app/utils/entity';
+import { Exclusion } from 'app/utils/exclusion';
+import { SearchFilter, SearchController } from 'app/types/filter';
+import { AbstractClass, Class, ClassListItem } from 'app/entities/class';
+import { Model } from 'app/entities/model';
+import { ExternalEntity } from 'app/entities/externalEntity';
+import { filterAndSortSearchResults, defaultLabelComparator } from 'app/components/filter/util';
+import { Optional, requireDefined, ignoreModalClose } from '@mju-psi/yti-common-ui';
+import { NgForm } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 
+export const noExclude = (_item: AbstractClass) => null;
+export const defaultTextForSelection = (_klass: Class) => 'Use class';
 
 @Injectable({
   providedIn: 'root'
 })
-export class SearchClassModal  {
+export class SearchClassModal {
 
+  constructor(private modalService: NgbModal) { }
+
+  private openModal(
+    model: Model,
+    exclude: Exclusion<AbstractClass>,
+    defaultToCurrentModel: boolean,
+    onlySelection: boolean,
+    textForSelection: (klass: Optional<Class | ExternalEntity>) => string,
+    requiredByInUse: boolean = false
+  ) {
+    const modalRef = this.modalService.open(SearchClassController, {
+      size: 'lg',
+      backdrop: 'static'
+    });
+
+    modalRef.componentInstance.model = model;
+    modalRef.componentInstance.exclude = exclude;
+    modalRef.componentInstance.defaultToCurrentModel = defaultToCurrentModel;
+    modalRef.componentInstance.onlySelection = onlySelection;
+    modalRef.componentInstance.textForSelection = textForSelection;
+    modalRef.componentInstance.requiredByInUse = requiredByInUse;
+
+    return modalRef.result;
+
+  }
+
+  open(
+    model: Model,
+    exclude: Exclusion<AbstractClass>,
+    textForSelection: (klass: Optional<Class | ExternalEntity>) => string
+  ): Promise<ExternalEntity | EntityCreation | Class> {
+    return this.openModal(model, exclude, false, false, textForSelection);
+  }
+
+  openWithOnlySelection(
+    model: Model,
+    defaultToCurrentModel: boolean,
+    exclude: Exclusion<AbstractClass>,
+    textForSelection: (klass: Optional<Class | ExternalEntity>) => string = defaultTextForSelection,
+    requiredByInUse: boolean = false
+  ): Promise<Class> {
+    return this.openModal(model, exclude, defaultToCurrentModel, true, textForSelection, requiredByInUse);
+  }
+}
+
+
+@Component({
+  selector: 'search-class',
+  templateUrl: './searchClassModal.html'
+})
+class SearchClassController implements SearchController<ClassListItem> {
+
+  public model: Model;
+  public exclude: Exclusion<AbstractClass>;
+  public defaultToCurrentModel: boolean;
+  public onlySelection: boolean;
+  public textForSelection: (klass: Optional<Class | ExternalEntity>) => string;
+  public requiredByInUse: boolean;
+
+  @ViewChild(NgForm, {static: true}) private form: NgForm;
+
+  private classes: ClassListItem[] = [];
+
+  searchResults: (ClassListItem|AddNewClass)[] = [];
+  selection: Class|ExternalEntity;
+  searchText = '';
+  cannotConfirm: string|null;
+  loadingResults: boolean;
+  selectedItem: ClassListItem|AddNewClass;
+  excludeError: string|null = null;
+
+  // undefined means not fetched, null means does not exist
+  externalClass: Class|null|undefined;
+
+  private localizer: Localizer;
+
+  contentMatchers = [
+    { name: 'Label', extractor: (klass: ClassListItem) => klass.label },
+    { name: 'Description', extractor: (klass: ClassListItem) => klass.comment },
+    { name: 'Identifier', extractor: (klass: ClassListItem) => klass.id.compact }
+  ];
+
+  contentExtractors = this.contentMatchers.map(m => m.extractor);
+
+  searchFilters: SearchFilter<ClassListItem>[] = [];
+
+  constructor(private classService: ClassService,
+              languageService: LanguageService,
+              private searchConceptModal: SearchConceptModal,
+              private translateService: TranslateService,
+              private activeModal: NgbActiveModal) {
+
+    this.localizer = languageService.createLocalizer(this.model);
+    this.loadingResults = true;
+
+    const appendResults = (classes: ClassListItem[]) => {
+      this.classes = this.classes.concat(classes);
+      this.search();
+      this.loadingResults = false;
+    };
+
+    if (this.requiredByInUse) {
+      classService.getRequiredByClasses(this.model).then(appendResults);
+    } else {
+      classService.getAllClasses(this.model).then(appendResults);
+    }
+
+    if (this.model.isOfType('profile')) {
+      classService.getExternalClassesForModel(this.model).then(appendResults);
+    }
+
+    // $scope.$watch(() => this.selection && this.selection.id, selectionId => {
+    //   if (selectionId && this.selection instanceof ExternalEntity) {
+    //     this.externalClass = undefined;
+    //     classService.getExternalClass(selectionId, this.model).then(klass => this.externalClass = klass);
+    //   }
+    // });
+  }
+
+  get items() {
+    return this.classes;
+  }
+
+  addFilter(searchFilter: SearchFilter<ClassListItem>) {
+    this.searchFilters.push(searchFilter);
+  }
+
+  isSelectionExternalEntity(): boolean {
+    return this.selection instanceof ExternalEntity;
+  }
+
+  search() {
+    this.searchResults = [
+      new AddNewClass(
+        `${this.translateService.instant('Create new class')} '${this.searchText}'`,
+        this.canAddNew.bind(this),
+        false
+      ),
+      new AddNewClass(
+        `${this.translateService.instant('Create new shape')} ${this.translateService.instant('by referencing external uri')}`,
+        () => this.canAddNew() && this.model.isOfType('profile'),
+        true),
+      ...filterAndSortSearchResults(this.classes, this.searchText, this.contentExtractors, this.searchFilters, defaultLabelComparator(this.localizer, this.exclude))
+    ];
+  }
+
+  canAddNew() {
+    return !this.onlySelection && !!this.searchText;
+  }
+
+  selectItem(item: AbstractClass|AddNewClass) {
+    this.selectedItem = item;
+    this.externalClass = undefined;
+    this.excludeError = null;
+    this.form.form.editing = false;
+    this.form.form.markAsPristine();
+
+    if (item instanceof AddNewClass) {
+      if (item.external) {
+        this.form.form.editing = true;
+        this.selection = new ExternalEntity(this.localizer.language, this.searchText, 'class');
+      } else {
+        this.createNewClass();
+      }
+    } else {
+      this.cannotConfirm = this.exclude(item);
+
+      if (this.model.isNamespaceKnownToBeNotModel(item.definedBy.id.toString())) {
+        this.classService.getExternalClass(item.id, this.model).then(result => {
+          this.selection = requireDefined(result); // TODO check if result can actually be null
+        });
+      } else {
+        this.classService.getClass(item.id, this.model).then(result => this.selection = result);
+      }
+    }
+  }
+
+  loadingSelection(item: ClassListItem|AddNewClass) {
+    const selection = this.selection;
+    if (item instanceof ClassListItem) {
+      return item === this.selectedItem && (!selection || (selection instanceof Class && !item.id.equals(selection.id)));
+    } else {
+      return false;
+    }
+  }
+
+  isExternalClassPending() {
+    return this.isSelectionExternalEntity() && this.externalClass === undefined;
+  }
+
+  confirm() {
+    const selection = this.selection;
+
+    if (selection instanceof Class) {
+      this.activeModal.close(this.selection);
+    } else if (selection instanceof ExternalEntity) {
+      if (this.externalClass) {
+        const exclude = this.exclude(this.externalClass);
+        if (exclude) {
+          this.excludeError = exclude;
+        } else {
+          this.activeModal.close(this.externalClass);
+        }
+      } else {
+        this.activeModal.close(selection);
+      }
+    } else {
+      throw new Error('Unsupported selection: ' + selection);
+    }
+  }
+
+  close() {
+    this.activeModal.dismiss('cancel');
+  }
+
+  createNewClass() {
+    return this.searchConceptModal.openNewEntityCreation(this.model.vocabularies, this.model, 'class', this.searchText)
+      .then(conceptCreation => this.activeModal.close(conceptCreation), ignoreModalClose);
+  }
+}
+
+class AddNewClass extends AddNew {
+  constructor(public label: string, public show: () => boolean, public external: boolean) {
+    super(label, show, glyphIconClassForType(['class']));
+  }
 }

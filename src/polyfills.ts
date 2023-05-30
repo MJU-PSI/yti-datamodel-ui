@@ -69,7 +69,7 @@ import 'zone.js';  // Included with Angular CLI.
 
 
 import './svgShim';
-import 'proxy-polyfill';
+// import 'proxy-polyfill';
 require('css.escape');
 import './vendor/canvas-ToBlob';
 import * as jQuery from 'jquery';

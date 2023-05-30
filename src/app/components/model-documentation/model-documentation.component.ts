@@ -2,7 +2,7 @@ import { Component, EventEmitter, Inject, Input, OnChanges, OnDestroy, OnInit, O
 import { Config } from "app/entities/config";
 import { Model } from "app/entities/model";
 import { EditorContainer, View } from "../model/modelControllerService";
-import { ModelService } from "app/services/modelService";
+import { DefaultModelService, ModelService } from "app/services/modelService";
 import { LanguageService } from "app/services/languageService";
 import { Language } from "app/types/language";
 import { Subject } from "rxjs";
@@ -50,21 +50,17 @@ export class ModelDocumentationComponent implements OnInit, OnDestroy, OnChanges
 
   destroy$: Subject<boolean> = new Subject<boolean>();
 
-  private modelService: ModelService;
-  private authorizationManagerService: AuthorizationManagerService;
+
 
   constructor(
     private configService: ConfigService,
-    @Inject('modelService') modelService: ModelService,
+    private modelService: DefaultModelService,
     // TODO: hybrid angular app problem: this should be a wrapper,
     // or the other services shouldn't be wrappers?
     private languageService: LanguageService,
-    authorizationManagerService: AuthorizationManagerService,
+    private authorizationManagerService: AuthorizationManagerService,
     private errorModalService: ErrorModalService
-  ) {
-    this.modelService = modelService;
-    this.authorizationManagerService = authorizationManagerService;
-  }
+  ) {}
 
   ngOnInit() {
     this.parent.registerView(this);

@@ -18,7 +18,7 @@ import { DisplayItemFactory } from "./displayItemFactory";
 import { DragSortableDirective, DragSortableItemDirective } from "./dragSortable";
 import { EditableEntityButtonsComponent } from "./editableEntityButtons";
 import { EditableTableComponent } from "./editableTable";
-import { ErrorModal } from "./errorModal";
+import { ErrorModal, ErrorModalContentComponent } from "./errorModal";
 import { ExcludeValidatorDirective } from "./excludeValidator";
 import { ErrorPanelComponent } from "./errorPanel";
 import { HrefDirective } from "./href";
@@ -47,6 +47,9 @@ import { IowComponentsModelModule } from "../model/module";
 import { UseContextDropdownComponent } from "./use-context-dropdown.component";
 import { IowComponentsCommonModule } from "../common/module";
 import { ModelLanguageChooserComponent } from "./modelLanguageChooser";
+import { YtiCommonModule } from "@mju-psi/yti-common-ui";
+import { LocalizedInputDirective } from "./localizedInput";
+import { EditableStateSelectComponent } from "./editableStateSelect";
 
 @NgModule({
   declarations: [
@@ -91,7 +94,10 @@ import { ModelLanguageChooserComponent } from "./modelLanguageChooser";
     UseContextInputComponent,
     UseContextDropdownComponent,
     LanguageInputComponent,
-    ModelLanguageChooserComponent
+    ModelLanguageChooserComponent,
+    ErrorModalContentComponent,
+    LocalizedInputDirective,
+    EditableStateSelectComponent
   ],
   imports: [
     CommonModule,
@@ -99,6 +105,7 @@ import { ModelLanguageChooserComponent } from "./modelLanguageChooser";
     ReactiveFormsModule,
     NgbModule,
     TranslateModule,
+    YtiCommonModule,
     IowServicesModule,
     IowComponentsCommonModule
   ],
@@ -149,7 +156,9 @@ import { ModelLanguageChooserComponent } from "./modelLanguageChooser";
     UseContextInputComponent,
     UseContextDropdownComponent,
     LanguageInputComponent,
-    ModelLanguageChooserComponent
+    ModelLanguageChooserComponent,
+    LocalizedInputDirective,
+    EditableStateSelectComponent
   ]
 })
 export class IowComponentsFormModule { }

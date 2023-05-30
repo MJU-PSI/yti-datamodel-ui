@@ -1,7 +1,7 @@
 import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgbNavChangeEvent, NgbNav } from '@ng-bootstrap/ng-bootstrap';
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { ModelAndSelection, SubRoutingHackService } from '../../services/subRoutingHackService';
+import { ModelAndSelection, RouteData, SubRoutingHackService } from '../../services/subRoutingHackService';
 import { DefaultModelService, ModelService } from '../../services/modelService';
 import { Model } from '../../entities/model';
 import { NotificationModal } from '../common/notificationModal';
@@ -18,6 +18,8 @@ import { MessagingService } from '../../services/messaging-service';
 import { UserService } from '@mju-psi/yti-common-ui';
 import { Url } from '../../entities/uri';
 import { ConfigService } from 'app/services/configService';
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-model-main',
@@ -47,16 +49,19 @@ export class ModelMainComponent implements OnDestroy, OnInit, EditorContainer, E
     private confirmationModal: ConfirmationModal,
     private languageService: LanguageService,
     // private modelPageHelpService: ModelPageHelpService,
-    private helpService: HelpService,
+    // private helpService: HelpService,
     private configService: ConfigService,
     private messagingService: MessagingService,
-    private userService: UserService) {
+    private userService: UserService,
+    private route: ActivatedRoute,
+    private location: Location) {
     this.editorContainer = this;
   }
 
   ngOnInit(): void {
-    this.helpService.registerProvider(this);
+    // this.helpService.registerProvider(this);
     this.subRoutingService.setGuard(this);
+    this.subRoutingService.initSubRoutingHack();
 
     this.isLoggedIn = this.userService.isLoggedIn();
 
@@ -64,59 +69,142 @@ export class ModelMainComponent implements OnDestroy, OnInit, EditorContainer, E
       this.setHelps();
     }));
 
-    this.subscriptions.push(this.subRoutingService.currentSelection.subscribe(selection => {
-      if (selection.modelPrefix) {
-        if (this.model && this.model.prefix === selection.modelPrefix) {
-          this.loadingModelPrefix = undefined;
-          const oldModelAndSelection = this.currentModelAndSelection.getValue();
-          const newModelAndSelection = ModelAndSelection.fromModelAndRoute(this.model, selection);
-          if (!oldModelAndSelection.equals(newModelAndSelection)) {
-            this.currentModelAndSelection.next(newModelAndSelection);
-          }
-        } else {
-          this.loadingModelPrefix = selection.modelPrefix;
-          // TODO: Is this "clear while waiting" a good thing to do? Would it be better to hold onto the old one until loading succeeds?
-          this.model = undefined;
-          if (this.currentModelAndSelection.getValue().model) {
-            this.currentModelAndSelection.next(new ModelAndSelection());
-          }
-          this.modelService.getModelByPrefix(selection.modelPrefix).then(model => {
-            if (this.loadingModelPrefix === model.prefix) {
-              this.loadingModelPrefix = undefined;
-              this.model = model;
-              this.getConfigAndSubscription();
-              const newestSelection = this.subRoutingService.currentSelection.getValue();
-              if (newestSelection.modelPrefix === model.prefix) {
-                const oldModelAndSelection = this.currentModelAndSelection.getValue();
-                const newModelAndSelection = ModelAndSelection.fromModelAndRoute(model, newestSelection);
-                if (!oldModelAndSelection.equals(newModelAndSelection)) {
-                  this.currentModelAndSelection.next(newModelAndSelection);
-                  this.setHelps();
-                }
-              } else {
-                // Really weird, on the brink of "cannot happen", as this.loadingModelPrefix should match selection subject quite closely.
-                console.error('Model "' + model.prefix + '" was loaded according to the plan, but selection does not match: "' + newestSelection.modelPrefix + '"');
-              }
-            } else {
-              // Ignore the result, the selection was changed again before earlier one was fetched.
-            }
-          }).catch(reason => {
-            console.error('Model loading failed: ' + reason);
-            this.notificationModal.openModelNotFound();
-          });
-        }
-      } else {
-        this.loadingModelPrefix = undefined;
+    this.route.params.subscribe(params => {
+      console.log(params);
+
+      this.modelService.getModelByPrefix(params.prefix).then(model => {
+        this.loadingModelPrefix = params.prefix;
+        // TODO: Is this "clear while waiting" a good thing to do? Would it be better to hold onto the old one until loading succeeds?
         this.model = undefined;
         if (this.currentModelAndSelection.getValue().model) {
           this.currentModelAndSelection.next(new ModelAndSelection());
         }
-      }
-    }));
+        if (this.loadingModelPrefix === model.prefix) {
+          this.loadingModelPrefix = undefined;
+          this.model = model;
+          this.getConfigAndSubscription();
+          const newestSelection = new RouteData(params);
+          if (newestSelection.modelPrefix === model.prefix) {
+            const oldModelAndSelection = this.currentModelAndSelection.getValue();
+            const newModelAndSelection = ModelAndSelection.fromModelAndRoute(model, newestSelection);
+            if (!oldModelAndSelection.equals(newModelAndSelection)) {
+              this.currentModelAndSelection.next(newModelAndSelection);
+
+            }
+          } else {
+            // Really weird, on the brink of "cannot happen", as this.loadingModelPrefix should match selection subject quite closely.
+            console.error('Model "' + model.prefix + '" was loaded according to the plan, but selection does not match: "' + newestSelection.modelPrefix + '"');
+          }
+        } else {
+        }
+      });
+    });
+
+
+    // this.subscriptions.push(this.subRoutingService.currentSelection.subscribe(selection => {
+    //   if (selection.modelPrefix) {
+    //     if (this.model && this.model.prefix === selection.modelPrefix) {
+    //       this.loadingModelPrefix = undefined;
+    //       const oldModelAndSelection = this.currentModelAndSelection.getValue();
+    //       const newModelAndSelection = ModelAndSelection.fromModelAndRoute(this.model, selection);
+    //       if (!oldModelAndSelection.equals(newModelAndSelection)) {
+    //         this.currentModelAndSelection.next(newModelAndSelection);
+    //       }
+    //     } else {
+    //       this.loadingModelPrefix = selection.modelPrefix;
+    //       // TODO: Is this "clear while waiting" a good thing to do? Would it be better to hold onto the old one until loading succeeds?
+    //       this.model = undefined;
+    //       if (this.currentModelAndSelection.getValue().model) {
+    //         this.currentModelAndSelection.next(new ModelAndSelection());
+    //       }
+    //       this.modelService.getModelByPrefix(selection.modelPrefix).then(model => {
+    //         if (this.loadingModelPrefix === model.prefix) {
+    //           this.loadingModelPrefix = undefined;
+    //           this.model = model;
+    //           this.getConfigAndSubscription();
+    //           const newestSelection = this.subRoutingService.currentSelection.getValue();
+    //           if (newestSelection.modelPrefix === model.prefix) {
+    //             const oldModelAndSelection = this.currentModelAndSelection.getValue();
+    //             const newModelAndSelection = ModelAndSelection.fromModelAndRoute(model, newestSelection);
+    //             if (!oldModelAndSelection.equals(newModelAndSelection)) {
+    //               this.currentModelAndSelection.next(newModelAndSelection);
+    //               this.setHelps();
+    //             }
+    //           } else {
+    //             // Really weird, on the brink of "cannot happen", as this.loadingModelPrefix should match selection subject quite closely.
+    //             console.error('Model "' + model.prefix + '" was loaded according to the plan, but selection does not match: "' + newestSelection.modelPrefix + '"');
+    //           }
+    //         } else {
+    //           // Ignore the result, the selection was changed again before earlier one was fetched.
+    //         }
+    //       }).catch(reason => {
+    //         console.error('Model loading failed: ' + reason);
+    //         this.notificationModal.openModelNotFound();
+    //       });
+    //     }
+    //   } else {
+    //     this.loadingModelPrefix = undefined;
+    //     this.model = undefined;
+    //     if (this.currentModelAndSelection.getValue().model) {
+    //       this.currentModelAndSelection.next(new ModelAndSelection());
+    //     }
+    //   }
+    // }));
+
+
+    this.subRoutingService.currentSelection.subscribe(selection => {
+        if (selection.modelPrefix) {
+          if (this.model && this.model.prefix === selection.modelPrefix) {
+            this.loadingModelPrefix = undefined;
+            const oldModelAndSelection = this.currentModelAndSelection.getValue();
+            const newModelAndSelection = ModelAndSelection.fromModelAndRoute(this.model, selection);
+            if (!oldModelAndSelection.equals(newModelAndSelection)) {
+              this.currentModelAndSelection.next(newModelAndSelection);
+            }
+          } else {
+            this.loadingModelPrefix = selection.modelPrefix;
+            // TODO: Is this "clear while waiting" a good thing to do? Would it be better to hold onto the old one until loading succeeds?
+            this.model = undefined;
+            if (this.currentModelAndSelection.getValue().model) {
+              this.currentModelAndSelection.next(new ModelAndSelection());
+            }
+            this.modelService.getModelByPrefix(selection.modelPrefix).then(model => {
+              if (this.loadingModelPrefix === model.prefix) {
+                this.loadingModelPrefix = undefined;
+                this.model = model;
+                this.getConfigAndSubscription();
+                const newestSelection = this.subRoutingService.currentSelection.getValue();
+                if (newestSelection.modelPrefix === model.prefix) {
+                  const oldModelAndSelection = this.currentModelAndSelection.getValue();
+                  const newModelAndSelection = ModelAndSelection.fromModelAndRoute(model, newestSelection);
+                  if (!oldModelAndSelection.equals(newModelAndSelection)) {
+                    this.currentModelAndSelection.next(newModelAndSelection);
+                    this.setHelps();
+                  }
+                } else {
+                  // Really weird, on the brink of "cannot happen", as this.loadingModelPrefix should match selection subject quite closely.
+                  console.error('Model "' + model.prefix + '" was loaded according to the plan, but selection does not match: "' + newestSelection.modelPrefix + '"');
+                }
+              } else {
+                // Ignore the result, the selection was changed again before earlier one was fetched.
+              }
+            }).catch(reason => {
+              console.error('Model loading failed: ' + reason);
+              this.notificationModal.openModelNotFound();
+            });
+          }
+        } else {
+          this.loadingModelPrefix = undefined;
+          this.model = undefined;
+          if (this.currentModelAndSelection.getValue().model) {
+            this.currentModelAndSelection.next(new ModelAndSelection());
+          }
+        }
+      })
   }
 
   ngOnDestroy(): void {
-    this.helpService.unregisterProvider(this);
+    // this.helpService.unregisterProvider(this);
     this.subRoutingService.unsetGuard(this);
     this.subscriptions.forEach(s => s.unsubscribe());
   }
@@ -147,7 +235,7 @@ export class ModelMainComponent implements OnDestroy, OnInit, EditorContainer, E
 
   onSubSelection(selection: { resourceCurie?: string, propertyId?: string }) {
     if (this.model) {
-      // this.subRoutingService.navigateTo(this.model.prefix, selection.resourceCurie, selection.propertyId);
+      this.subRoutingService.navigateTo(this.model.prefix, selection.resourceCurie, selection.propertyId);
     }
   }
 

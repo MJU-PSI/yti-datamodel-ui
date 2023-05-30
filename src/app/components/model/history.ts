@@ -32,10 +32,10 @@
 // }
 
 import { Component, Input } from '@angular/core';
-import { HistoryModal } from './historyModal';
 import { Model } from 'app/entities/model';
 import { Class } from 'app/entities/class';
 import { Predicate } from 'app/entities/predicate';
+import { HistoryModal } from './historyModal';
 
 @Component({
   selector: 'history',

@@ -7,7 +7,7 @@
 import { NgModule } from "@angular/core";
 import { IowComponentsEditorModule } from "../editor/module";
 import { AddEditLinkModal, AddEditLinkModalComponent } from "./addEditLinkModal";
-import { AddEditNamespaceModal } from "./addEditNamespaceModal";
+import { AddEditNamespaceModal, AddEditNamespaceModalComponent } from "./addEditNamespaceModal";
 import { ClassificationsViewComponent } from "./classificationsView";
 import { ContributorsViewComponent } from "./contributorsView";
 import { DividerComponent } from "./divider";
@@ -43,6 +43,12 @@ import { TranslateModule } from "@ngx-translate/core";
 import { IowComponentsFormModule } from "../form/module";
 import { IowComponentsCommonModule } from "../common/module";
 import { IowComponentsFilterModule } from "../filter/module";
+import { ModelDocumentationComponent } from "../model-documentation/model-documentation.component";
+import { LMarkdownEditorModule } from "ngx-markdown-editor";
+import { ModelViewComponent } from "./modelView";
+import { EditableRootClassComponent } from "./editableRootClass";
+import { HistoryModal, HistoryModalContentComponent } from "./historyModal";
+import { HistoryComponent } from "./history";
 
 @NgModule({
   declarations: [
@@ -69,7 +75,13 @@ import { IowComponentsFilterModule } from "../filter/module";
     SearchVocabularyController,
     SearchReferenceDataModalComponent,
     AddEditLinkModalComponent,
-    SearchNamespaceModalComponent
+    SearchNamespaceModalComponent,
+    AddEditNamespaceModalComponent,
+    ModelDocumentationComponent,
+    ModelViewComponent,
+    EditableRootClassComponent,
+    HistoryComponent,
+    HistoryModalContentComponent
   ],
   imports: [
     CommonModule,
@@ -80,7 +92,8 @@ import { IowComponentsFilterModule } from "../filter/module";
     IowComponentsEditorModule,
     IowComponentsFormModule,
     IowComponentsCommonModule,
-    IowComponentsFilterModule
+    IowComponentsFilterModule,
+    LMarkdownEditorModule
   ],
   providers: [
     AddEditLinkModal,
@@ -94,7 +107,8 @@ import { IowComponentsFilterModule } from "../filter/module";
     SearchVocabularyModal,
     SubRoutingHackService,
     ViewReferenceDataModal,
-    DefaultModelService
+    DefaultModelService,
+    HistoryModal
   ],
   exports: [
     ClassificationsViewComponent,
@@ -114,7 +128,10 @@ import { IowComponentsFilterModule } from "../filter/module";
     ReferenceDatasViewComponent,
     ReferenceDataViewComponent,
     TechnicalNamespacesComponent,
-    VocabulariesViewComponent
+    VocabulariesViewComponent,
+    ModelDocumentationComponent,
+    ModelViewComponent,
+    EditableRootClassComponent
   ]
 })
 export class IowComponentsModelModule { }

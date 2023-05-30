@@ -113,8 +113,8 @@ import { LanguageService } from 'app/services/languageService';
 import { ColumnDescriptor, TableDescriptor } from 'app/components/form/editableTable';
 import { Link } from 'app/entities/model';
 import { LanguageContext } from 'app/types/language';
-import { EditableForm } from 'app/components/form/editableEntityController';
 import { NgForm } from '@angular/forms';
+import { modalCancelHandler } from 'app/utils/angular';
 
 interface WithLinks {
   links: Link[];
@@ -153,6 +153,10 @@ export class LinksViewComponent {
     this.descriptor = new LinkTableDescriptor(this.addEditLinkModal, this.value, this.context, this.languageService);
   }
 
+  ngDoCheck() {
+    this.descriptor = new LinkTableDescriptor(this.addEditLinkModal, this.value, this.context, this.languageService);
+  }
+
   isEditing(): boolean {
     return this.form && this.form.form.editing;
   }
@@ -162,7 +166,7 @@ export class LinksViewComponent {
       .then((link: Link) => {
         this.value.addLink(link);
         this.expanded = true;
-      }, () => {});
+      }, modalCancelHandler);
   }
 }
 

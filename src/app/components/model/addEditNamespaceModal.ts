@@ -212,13 +212,14 @@
 // }
 
 
-import { Component, Injectable } from '@angular/core';
+import { Component, Injectable, OnInit, ViewChild } from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { DefaultModelService, ModelService } from '../../services/modelService';
 import { Language, LanguageContext } from '../../types/language';
 import { isDefined } from '@mju-psi/yti-common-ui';
 import { ImportedNamespace } from '../../entities/model';
 import { Configuration } from 'app/configuration.interface';
+import { NgForm } from '@angular/forms';
 
 declare let __config: Configuration;
 const technicalNamespaces: { [prefix: string]: string } = {
@@ -281,12 +282,11 @@ export class AddEditNamespaceModal {
 
   private open(context: LanguageContext, language: Language, namespaceToEdit: ImportedNamespace | null, reservedPrefixes: string[], usedNamespaces: string[]): Promise<ImportedNamespace> {
     const modalRef = this.modalService.open(AddEditNamespaceModalComponent, { size: 'sm' });
-    const instance = modalRef.componentInstance;
-    instance.context = context;
-    instance.language = language;
-    instance.namespaceToEdit = namespaceToEdit;
-    instance.reservedPrefixes = reservedPrefixes;
-    instance.usedNamespaces = usedNamespaces;
+    modalRef.componentInstance.context = context;
+    modalRef.componentInstance.language = language;
+    modalRef.componentInstance.namespaceToEdit = namespaceToEdit;
+    modalRef.componentInstance.reservedPrefixes = reservedPrefixes;
+    modalRef.componentInstance.usedNamespaces = usedNamespaces;
     return modalRef.result;
   }
 }
@@ -296,7 +296,7 @@ export class AddEditNamespaceModal {
   selector: 'app-add-edit-namespace',
   templateUrl: './addEditNamespaceModal.html'
 })
-export class AddEditNamespaceModalComponent {
+export class AddEditNamespaceModalComponent implements OnInit {
   namespace: string;
   prefix: string;
   label: string;
@@ -307,6 +307,8 @@ export class AddEditNamespaceModalComponent {
   namespaceBeforeForced: string | null = null;
   prefixBeforeForced: string | null = null;
 
+  @ViewChild('form', {static: true}) form!: NgForm;
+
   public context: LanguageContext;
   public language: Language;
   public namespaceToEdit: ImportedNamespace | null;
@@ -315,13 +317,59 @@ export class AddEditNamespaceModalComponent {
 
   constructor(private activeModal: NgbActiveModal,
               private modelService: DefaultModelService) {
+  }
 
+  ngOnInit(){
     this.edit = !!this.namespaceToEdit;
 
     if (this.namespaceToEdit) {
       this.namespace = this.namespaceToEdit.namespace;
       this.prefix = this.namespaceToEdit.prefix;
       this.label = this.namespaceToEdit.label[this.language];
+    }
+
+    this.form.form.editing = true;
+  }
+
+  onPrefixChange() {
+    if (this.prefixModifiable()) {
+
+      const namespaceOverrideWasOn = isDefined(this.namespaceBeforeForced);
+      let namespaceOverrideSwitchedOn = false;
+
+      for (const [prefix, ns] of Object.entries(technicalNamespaces)) {
+        if (prefix === this.prefix) {
+          namespaceOverrideSwitchedOn = true;
+          this.namespaceBeforeForced = this.namespace || '';
+          this.namespace = ns;
+        }
+      }
+
+      if (namespaceOverrideWasOn && !namespaceOverrideSwitchedOn) {
+        this.namespace = this.namespaceBeforeForced!;
+        this.namespaceBeforeForced = null;
+      }
+    }
+  }
+
+  onNamespaceChange() {
+    if (this.namespaceModifiable()) {
+
+      const prefixOverrideWasOn = isDefined(this.prefixBeforeForced);
+      let prefixOverrideSwitchedOn = false;
+
+      for (const [prefix, ns] of Object.entries(technicalNamespaces)) {
+        if (ns === this.namespace) {
+          prefixOverrideSwitchedOn = true;
+          this.prefixBeforeForced = this.prefix || '';
+          this.prefix = prefix;
+        }
+      }
+
+      if (prefixOverrideWasOn && !prefixOverrideSwitchedOn) {
+        this.prefix = this.prefixBeforeForced!;
+        this.prefixBeforeForced = null;
+      }
     }
   }
 
@@ -342,11 +390,11 @@ export class AddEditNamespaceModalComponent {
   }
 
   namespaceModifiable() {
-    return (!this.edit || this.namespaceToEdit!.namespaceModifiable) && !this.namespaceBeforeForced;
+    return (!this.edit || this.namespaceToEdit!.namespaceModifiable) && !isDefined(this.namespaceBeforeForced);
   }
 
   prefixModifiable() {
-    return (!this.edit || this.namespaceToEdit!.prefixModifiable) && !this.prefixBeforeForced;
+    return (!this.edit || this.namespaceToEdit!.prefixModifiable) && !isDefined(this.prefixBeforeForced);
   }
 
   create() {
@@ -369,7 +417,7 @@ export class AddEditNamespaceModalComponent {
   }
 
   private mangleAsTechnicalIfNecessary(ns: ImportedNamespace) {
-    const isTechnical = this.namespaceBeforeForced || this.prefixBeforeForced;
+    const isTechnical = isDefined(this.namespaceBeforeForced) || isDefined(this.prefixBeforeForced);
 
     if (isTechnical) {
       ns.convertAsTechnical();

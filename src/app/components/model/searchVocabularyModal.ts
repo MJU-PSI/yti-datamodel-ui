@@ -149,6 +149,7 @@ export class SearchVocabularyModal {
   templateUrl: './searchVocabularyModal.html'
 })
 export class SearchVocabularyController implements SearchController<Vocabulary> {
+
   exclude: Exclusion<Vocabulary>;
   context: LanguageContext;
 
@@ -156,7 +157,7 @@ export class SearchVocabularyController implements SearchController<Vocabulary> 
   vocabularies: Vocabulary[] = [];
   searchText = '';
   loadingResults = true;
-  showStatus: Status | null = null;
+  showStatus: Status | null;
   private localizer: Localizer;
 
   contentMatchers = [
@@ -203,6 +204,10 @@ export class SearchVocabularyController implements SearchController<Vocabulary> 
 
   get statuses() {
     return selectableStatuses;
+  }
+
+  onShowStatusChange() {
+    this.search();
   }
 
   search() {

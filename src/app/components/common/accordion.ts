@@ -107,11 +107,13 @@
 
 import {
   Component,
+  ContentChild,
   ContentChildren,
   Directive,
   Input,
   QueryList,
   TemplateRef,
+  ViewChild,
   ViewContainerRef,
 } from '@angular/core';
 
@@ -147,6 +149,27 @@ export class AccordionTranscludeDirective {
 }
 
 @Component({
+  selector: 'accordion',
+  template: `<ng-content></ng-content>`,
+})
+export class AccordionComponent {
+  @Input() openId: any;
+  @Input() animate = false;
+
+  isOpen(id: any) {
+    return this.openId === id;
+  }
+
+  toggleVisibility(id: any) {
+    if (this.isOpen(id)) {
+      this.openId = null;
+    } else {
+      this.openId = id;
+    }
+  }
+}
+
+@Component({
   selector: 'accordion-group',
   template: `
       <div class="card" [class.show]="isOpen()">
@@ -156,7 +179,7 @@ export class AccordionTranscludeDirective {
         <div [class]="{ 'card-body': true, 'show': isOpen() }" *ngIf="isAnimate()">
           <ng-content select="[accordionBody]"></ng-content>
         </div>
-        <div class="collapse" [class]="{ 'show': isOpen() }" *ngIf="!isAnimate()">
+        <div class="collapse" *ngIf="!isAnimate() && isOpen()">
           <div class="card-body">
             <ng-content select="[accordionBody]"></ng-content>
           </div>
@@ -167,8 +190,7 @@ export class AccordionTranscludeDirective {
 export class AccordionGroupComponent {
   @Input() id: string;
   @Input() identifier: any;
-
-  accordion: AccordionComponent;
+  @Input() accordion: AccordionComponent
 
   @ContentChildren(AccordionTranscludeDirective)
   transcludeContents: QueryList<AccordionTranscludeDirective>;
@@ -195,24 +217,4 @@ export class AccordionGroupComponent {
   }
 }
 
-@Component({
-  selector: 'accordion',
-  template: `<ng-content></ng-content>`,
-})
-export class AccordionComponent {
-  @Input() openId: any;
-  @Input() animate = false;
-
-  isOpen(id: any) {
-    return this.openId === id;
-  }
-
-  toggleVisibility(id: any) {
-    if (this.isOpen(id)) {
-      this.openId = null;
-    } else {
-      this.openId = id;
-    }
-  }
-}
 

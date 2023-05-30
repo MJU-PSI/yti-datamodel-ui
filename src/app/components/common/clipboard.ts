@@ -52,14 +52,16 @@
 // }
 
 
-import { Component, Inject, InjectionToken, Input } from '@angular/core';
+import { Component, Inject, InjectionToken, Input, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { EditableForm } from '../form/editableEntityController';
+import { NgForm } from '@angular/forms';
 
 const clipboardImage = '../../../assets/clippy.svg';
 
 export const EDITABLE_FORM_TOKEN = new InjectionToken<EditableForm>('editable form');
 
+// TODO ALES  -      [cdkCopyToClipboard]="text"
 @Component({
   selector: 'clipboard',
   template: `
@@ -67,28 +69,24 @@ export const EDITABLE_FORM_TOKEN = new InjectionToken<EditableForm>('editable fo
     *ngIf="text && !isEditing()"
     [attr.aria-label]="copyInfo"
     [ngbTooltip]="copyInfo"
-    [cdkCopyToClipboard]="text"
+
     (cdkCopyToClipboardSuccess)="onCopy()"
     (cdkCopyToClipboardCopied)="showCopiedMessage = true;"
     (click)="showCopiedMessage = false" />
-  `,
-  providers: [
-    { provide: EDITABLE_FORM_TOKEN, useValue: null }
-  ]
+  `
 })
 export class ClipboardComponent {
 
   @Input() text: string;
+  @ViewChild(NgForm) form: NgForm;
 
   showCopiedMessage = false;
   clipboardImage = clipboardImage;
 
-  constructor(@Inject(EDITABLE_FORM_TOKEN) private form: EditableForm,
-              private translateService: TranslateService
-   ) { }
+  constructor(private translateService: TranslateService) { }
 
   isEditing() {
-    return this.form && this.form.editing;
+    return this.form && this.form.form.editing;
   }
 
   get copyInfo() {

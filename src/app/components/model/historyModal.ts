@@ -89,14 +89,13 @@
 
 import { Component, Inject, Injectable } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ClassService } from 'app/services/classService';
-import { PredicateService } from 'app/services/predicateService';
-import { ModelService } from 'app/services/modelService';
+import { ClassService, DefaultClassService } from 'app/services/classService';
+import { DefaultPredicateService, PredicateService } from 'app/services/predicateService';
+import { DefaultModelService, ModelService } from 'app/services/modelService';
 import { HistoryService } from 'app/services/historyService';
-import { UserService } from 'app/services/userService';
 import { Uri } from 'app/entities/uri';
 import { comparingDate } from 'app/utils/comparator';
-import { reversed, containsAny, identity } from '@mju-psi/yti-common-ui';
+import { reversed, containsAny, identity, UserService } from '@mju-psi/yti-common-ui';
 import { Model } from 'app/entities/model';
 import { Class } from 'app/entities/class';
 import { Predicate } from 'app/entities/predicate';
@@ -111,18 +110,13 @@ export class HistoryModal {
 
   constructor(private modalService: NgbModal) {}
 
-  open(model: Model, resource: Class | Predicate | Model) {
-    this.modalService.open(HistoryModalContentComponent, {
-      size: resource instanceof Model ? 'lg' : 'md',
-      centered: true,
-      backdrop: 'static',
-      keyboard: false,
-      windowClass: 'history-modal',
-      beforeDismiss: () => {
-        modalCancelHandler('cancel');
-        return false;
-      }
-    }).componentInstance.setData(model, resource);
+  open(model: Model, resource: Class | Predicate | Model): Promise<boolean> {
+    const modalRef = this.modalService.open(HistoryModalContentComponent, { size: resource instanceof Model ? 'lg' : 'md', backdrop: 'static', keyboard: false });
+    const instance = modalRef.componentInstance as HistoryModalContentComponent;
+    instance.model = model;
+    instance.resource = resource;
+
+    return modalRef.result;
   }
 }
 
@@ -141,17 +135,15 @@ export class HistoryModalContentComponent {
   resource: Class | Predicate | Model;
 
   constructor(private historyService: HistoryService,
-              @Inject('classService') private classService: ClassService,
-              @Inject('predicateService') private predicateService: PredicateService,
-              @Inject('modelService') private modelService: ModelService,
-              @Inject('userService') private userService: UserService,
+              private classService: DefaultClassService,
+              private predicateService: DefaultPredicateService,
+              private modelService: DefaultModelService,
+              private userService: UserService,
               private activeModal: NgbActiveModal) {
     this.showAuthor = this.userService.isLoggedIn();
   }
 
-  setData(model: Model, resource: Class | Predicate | Model) {
-    this.model = model;
-    this.resource = resource;
+  ngOnInit(){
     this.loadHistory();
   }
 
@@ -198,6 +190,9 @@ export class HistoryModalContentComponent {
     this.activeModal.dismiss('cancel');
   }
 
+  trackByVersionId(index: number, version: any): string {
+    return version.id;
+  }
 
 }
 

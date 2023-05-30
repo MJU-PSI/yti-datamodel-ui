@@ -164,7 +164,7 @@ import { isDefined, requireDefined, labelNameToResourceIdIdentifier, Localizable
 import { SearchPredicateModal } from './searchPredicateModal';
 import { EditableForm } from 'app/components/form/editableEntityController';
 import { Option } from 'app/components/common/buttonWithOptions';
-import { SearchClassModal } from './searchClassModal';
+import { noExclude, SearchClassModal } from './searchClassModal';
 import { SessionService } from 'app/services/sessionService';
 import { LanguageService } from 'app/services/languageService';
 import { Localizer } from 'app/types/language';
@@ -198,12 +198,12 @@ export class ClassFormComponent implements OnInit {
   form: EditableForm;
 
   constructor(
-              // private classService: DefaultClassService,
+              private classService: DefaultClassService,
               private sessionService: SessionService,
               private languageService: LanguageService,
-              // private searchPredicateModal: SearchPredicateModal,
-              // private searchClassModal: SearchClassModal,
-              // private addPropertiesFromClassModal: AddPropertiesFromClassModal
+              private searchPredicateModal: SearchPredicateModal,
+              private searchClassModal: SearchClassModal,
+              private addPropertiesFromClassModal: AddPropertiesFromClassModal
               ) {}
 
   ngOnInit() {
@@ -255,9 +255,9 @@ export class ClassFormComponent implements OnInit {
   }
 
   copyPropertiesFromClass(): void {
-    // this.searchClassModal.openWithOnlySelection(this.model, false, noExclude)
-    //   .then(selectedClass => this.addPropertiesFromClass(selectedClass, 'class'))
-    //   .catch(modalCancelHandler);
+    this.searchClassModal.openWithOnlySelection(this.model, false, noExclude)
+      .then(selectedClass => this.addPropertiesFromClass(selectedClass, 'class'))
+      .catch(modalCancelHandler);
   }
 
   addPropertiesFromClass(klass: Class, classType: string): void {
@@ -265,17 +265,17 @@ export class ClassFormComponent implements OnInit {
       const existingPredicates = new Set<string>(this.class.properties.map(property => property.predicateId.uri));
       const exclude = (property: Property) => existingPredicates.has(property.predicateId.uri);
 
-      // this.addPropertiesFromClassModal.open(klass, classType, this.model, exclude)
-      //   .then(properties => properties.forEach((property: Property) => this.class.addProperty(property)));
+      this.addPropertiesFromClassModal.open(klass, classType, this.model, exclude)
+        .then(properties => properties.forEach((property: Property) => this.class.addProperty(property)));
     }
   }
 
   addPropertiesFromClassId(id: Uri, classType: string): void {
-    // this.classService.getInternalOrExternalClass(id, this.model)
-    //   .then(klassOrNull => {
-    //     const klass = requireDefined(klassOrNull); // TODO check if class can actually be null
-    //     this.addPropertiesFromClass(klass, classType);
-    //   });
+    this.classService.getInternalOrExternalClass(id, this.model)
+      .then(klassOrNull => {
+        const klass = requireDefined(klassOrNull); // TODO check if class can actually be null
+        this.addPropertiesFromClass(klass, classType);
+      });
   }
 
   linkToIdClass() {

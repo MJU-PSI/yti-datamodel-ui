@@ -79,8 +79,14 @@ export function isValidUrl(url: string|Uri): boolean {
   }
 }
 
-export function isValidNamespaceUrlOrUrn(str: string|Uri) {
-  return isValidNamespace(str) && isValidUrl(str) || isValidUrn(str.toString());
+// export function isValidNamespaceUrlOrUrn(str: string|Uri): boolean {
+//   return isValidNamespace(str) && isValidUrl(str) || isValidUrn(str.toString());
+// }
+
+export function isValidNamespaceUrlOrUrn(control: AbstractControl): { [key: string]: any } | null {
+  const str = control.value;
+  const valid = isValidNamespace(str) && isValidUrl(str) || isValidUrn(str.toString());
+  return valid ? null : { 'namespaceUrlOrUrn': true };
 }
 
 export function isValidUri(uri: string|Uri, toleratedErrors: string[] = []): boolean {

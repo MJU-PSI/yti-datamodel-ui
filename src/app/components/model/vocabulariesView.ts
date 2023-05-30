@@ -129,6 +129,7 @@ import { EditableForm } from 'app/components/form/editableEntityController';
 import { TranslateService } from '@ngx-translate/core';
 import { DisplayItemFactory, Value } from 'app/components/form/displayItemFactory';
 import { NgForm } from '@angular/forms';
+import { modalCancelHandler } from 'app/utils/angular';
 
 interface WithVocabularies {
   vocabularies: Vocabulary[];
@@ -174,6 +175,16 @@ export class VocabulariesViewComponent {
     );
   }
 
+  ngDoCheck() {
+      this.descriptor = new VocabularyTableDescriptor(
+        this.value,
+        this.context,
+        this.languageService,
+        this.translateService,
+        this.displayItemFactory
+      );
+  }
+
   isEditing() {
     return this.form && this.form.form.editing;
   }
@@ -190,7 +201,7 @@ export class VocabulariesViewComponent {
       .then((vocabulary: Vocabulary) => {
         this.value.addVocabulary(vocabulary);
         this.expanded = true;
-      });
+      }, modalCancelHandler);
   }
 }
 

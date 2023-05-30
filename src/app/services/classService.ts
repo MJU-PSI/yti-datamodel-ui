@@ -349,7 +349,9 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { parseMessage } from '@angular/localize/src/utils';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class DefaultClassService implements ClassService {
 
   private modelClassesCache = new Map<string, ClassListItem[]>();
@@ -486,10 +488,8 @@ export class DefaultClassService implements ClassService {
 
     return this.http.get<GraphData>(apiEndpointWithName('classCreator'), {params})
       .toPromise()
-      .then(response => {
-        model.expandContextWithKnownModels(response.context);
-        return this.deserializeClass(response, false);
-      })
+      .then(expandContextWithKnownModels(model))
+      .then((response: any) => this.deserializeClass(response.data, false))
       .then((klass: Class) => {
         klass.definedBy = model.asDefinedBy();
         klass.unsaved = true;
@@ -507,10 +507,8 @@ export class DefaultClassService implements ClassService {
 
     return this.http.get<GraphData>(apiEndpointWithName('relatedClassCreator'), {params})
       .toPromise()
-      .then(response => {
-        model.expandContextWithKnownModels(response.context);
-        return this.deserializeClass(response, false);
-      })
+      .then(expandContextWithKnownModels(model))
+      .then((response: any) => this.deserializeClass(response.data, false))
       .then((klass: Class) => {
         klass.definedBy = model.asDefinedBy();
         klass.unsaved = true;

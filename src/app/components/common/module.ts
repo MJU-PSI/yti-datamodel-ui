@@ -13,9 +13,8 @@ import { FloatDirective } from './float';
 import { HighlightComponent } from './highlight';
 import { ParagraphizeComponent, ParagraphizePipe } from './paragraphize';
 import { TranslateValuePipe } from '../pipe/translate-value.pipe';
-import { HistoryComponent } from './history';
 import { KeyControlDirective, KeyControlSelectionDirective } from './keyControl';
-import { SearchResultTranscludeDirective, SearchResultsComponent } from './searchResults';
+import { SearchResultContentDirective, SearchResultTranscludeDirective, SearchResultsComponent } from './searchResults';
 import { CommonModule } from '@angular/common';
 import { UsageComponent } from './usage.component';
 import { UsagePanelComponent } from './usage-panel.component';
@@ -23,7 +22,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { NgIfBodyDirective } from './ngIfBody';
 import { ConfirmationModal } from './confirmationModal';
 import { DeleteConfirmationModal, DeleteConfirmationModalComponent } from './delete-confirmation-modal';
-import { HistoryModal, HistoryModalContentComponent } from './historyModal';
 import { NotificationModal, NotificationModalComponent } from './notificationModal';
 import { HelpSelectionModal, HelpSelectionModalComponent } from './helpSelectionModal';
 import { TranslateLabelPipe } from '../pipe/translate-label.pipe';
@@ -33,6 +31,12 @@ import { LocalizedDatePipe } from '../pipe/localized-data.pipe';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { OrderByPipe } from '../pipe/order-by.pipe';
 import { FilterPipe } from '../pipe/filter.pipe';
+import { OrderByFnPipe } from '../pipe/order-by-fn.pipe';
+import { FilterFnPipe } from '../pipe/filter-fn.pipe';
+import { CheckboxGroupComponent } from './checkbox-group.component';
+import { CheckboxComponent } from './checkbox.component';
+import { FormsModule } from '@angular/forms';
+import { YtiCommonModule } from '@mju-psi/yti-common-ui';
 
 
 @NgModule({
@@ -50,16 +54,15 @@ import { FilterPipe } from '../pipe/filter.pipe';
     ParagraphizeComponent,
     ParagraphizePipe,
     TranslateValuePipe,
-    HistoryComponent,
     KeyControlDirective,
     KeyControlSelectionDirective,
     SearchResultsComponent,
     SearchResultTranscludeDirective,
+    SearchResultContentDirective,
     UsageComponent,
     UsagePanelComponent,
     NgIfBodyDirective,
     DeleteConfirmationModalComponent,
-    HistoryModalContentComponent,
     NotificationModalComponent,
     HelpSelectionModalComponent,
     TranslateLabelPipe,
@@ -67,19 +70,25 @@ import { FilterPipe } from '../pipe/filter.pipe';
     TrustAsHtmlPipe,
     LocalizedDatePipe,
     OrderByPipe,
-    FilterPipe
+    FilterPipe,
+    OrderByFnPipe,
+    FilterFnPipe,
+    CheckboxGroupComponent,
+    CheckboxComponent
   ],
   imports: [
     CommonModule,
+    FormsModule,
     NgbModule,
-    TranslateModule
+    TranslateModule,
+    YtiCommonModule
   ],
   providers: [
     ConfirmationModal,
     DeleteConfirmationModal,
-    HistoryModal,
     NotificationModal,
-    HelpSelectionModal
+    HelpSelectionModal,
+    TranslateValuePipe
   ],
   exports: [
     AccordionComponent,
@@ -95,16 +104,15 @@ import { FilterPipe } from '../pipe/filter.pipe';
     ParagraphizeComponent,
     ParagraphizePipe,
     TranslateValuePipe,
-    HistoryComponent,
     KeyControlDirective,
     KeyControlSelectionDirective,
     SearchResultsComponent,
     SearchResultTranscludeDirective,
+    SearchResultContentDirective,
     UsageComponent,
     UsagePanelComponent,
     NgIfBodyDirective,
     DeleteConfirmationModalComponent,
-    HistoryModalContentComponent,
     NotificationModalComponent,
     HelpSelectionModalComponent,
     TranslateLabelPipe,
@@ -112,7 +120,11 @@ import { FilterPipe } from '../pipe/filter.pipe';
     TrustAsHtmlPipe,
     LocalizedDatePipe,
     OrderByPipe,
-    FilterPipe
+    FilterPipe,
+    OrderByFnPipe,
+    FilterFnPipe,
+    CheckboxGroupComponent,
+    CheckboxComponent
   ]
 })
 export class IowComponentsCommonModule { }

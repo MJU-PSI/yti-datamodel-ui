@@ -14,7 +14,7 @@
                   ngbTooltip="{{ 'You will receive an email notification when this resource changes.' | translate }}"></span>
           </div>
           <model-language-chooser class="nameButtonRowButton" [context]="model"></model-language-chooser>
-          <export-component class="ml-2 nameButtonRowButton" [idPrefix]="'model'" [entity]="model" [context]="model"></export-component>
+          <export class="ml-2 nameButtonRowButton" [idPrefix]="'model'" [entity]="model" [context]="model"></export>
           <model-action-menu class="ml-2 nameButtonRowButton"
                              [isMessagingEnabled]="isMessagingEnabled"
                              [hasSubscription]="hasSubscription"
@@ -31,13 +31,15 @@
           <span class="inRowTitle"><span translate>Information domain</span>:</span>
           <span class="information-domains">
             <span class="badge badge-light" *ngFor="let domain of model!.classifications">
-              {{domain.label | translateValue:true}}
+              <!-- TODO ALES - zakaj je bilo prej  translateValue:true -->
+              {{domain.label | translateValue}}
             </span>
           </span>
           <span class="inRowTitle"><span translate>Organization</span>:</span>
           <ul class="organizations dot-separated-list">
             <li class="organization" *ngFor="let contributor of model!.contributors">
-              {{(contributor.parentOrg ? contributor.parentOrg.label : contributor.label) | translateValue:true}}
+              <!-- TODO ALES - zakaj je bilo prej  translateValue:true -->
+              {{(contributor.parentOrg ? contributor.parentOrg.label : contributor.label) | translateValue}}
             </li>
           </ul>
         </div>

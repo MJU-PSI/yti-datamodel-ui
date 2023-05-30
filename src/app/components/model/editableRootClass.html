@@ -1,4 +1,4 @@
-<div class="editable-wrap">
+<!-- <div class="editable-wrap">
   <div style="clear: both">
     <editable-label ng-show="$ctrl.model.rootClass || $ctrl.isEditing()" data-title="'Root class'"></editable-label>
     <span ng-show="$ctrl.isEditing() && !$ctrl.model.rootClass" translate>Not selected</span>
@@ -6,4 +6,14 @@
   </div>
   <button ng-show="$ctrl.isEditing()" type="button" class="btn btn-action btn-sm" ng-click="$ctrl.selectClass()" translate>Choose root class</button>
   <button ng-show="$ctrl.isEditing() && $ctrl.model.rootClass" type="button" class="btn btn-action btn-sm" ng-click="$ctrl.removeClass()" translate>Clear selection</button>
+</div> -->
+
+<div class="editable-wrap">
+  <div style="clear: both">
+    <editable-label *ngIf="model.rootClass || isEditing()" [title]="'Root class'"></editable-label>
+    <span *ngIf="isEditing() && !model.rootClass" translate>Not selected</span>
+    <span *ngIf="model.rootClass">{{ model.rootClass.compact }}</span>
+  </div>
+  <button *ngIf="isEditing()" type="button" class="btn btn-action btn-sm" (click)="selectClass()" translate>Choose root class</button>
+  <button *ngIf="isEditing() && model.rootClass" type="button" class="btn btn-action btn-sm" (click)="removeClass()" translate>Clear selection</button>
 </div>

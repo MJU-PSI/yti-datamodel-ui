@@ -44,18 +44,9 @@ const routes: Routes = [
   //   // component: RedirectResolver
   // },
   {
-    path: 'model/:prefix/:resource?/:property?',
+    path: 'model/:prefix',
     component: ModelMainComponent
-  },
-  {
-    path: 'model/:prefix/',
-    component: ModelMainComponent
-  },
-  // {
-  //   path: '**',
-  //   // component: PageNotFoundComponent,
-  //   pathMatch: 'full'
-  // }
+  }
 ];
 
 @NgModule({

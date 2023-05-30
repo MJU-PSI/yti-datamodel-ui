@@ -103,7 +103,9 @@ import { Injectable } from '@angular/core';
 import { GraphData, EntityFactory, EntityConstructor, EntityArrayFactory, EntityArrayConstructor } from 'app/types/entity';
 import { normalizeAsArray } from '@mju-psi/yti-common-ui';
 import { GraphNode, GraphNodes } from 'app/entities/graphNode';
-import * as jsonld from 'jsonld';
+// import * as jsonld from 'jsonld';
+
+const jsonld: any = require('jsonld');
 
 @Injectable({
   providedIn: 'root'
@@ -117,9 +119,9 @@ export class FrameService {
       return Promise.reject('Data and frame are required.');
     }
 
-    return jsonld.frame(data, frame).then(
-      (framed: jsonld.NodeObject) => framed as GraphData,
-      (error) => {
+    return jsonld.promises.frame(data, frame).then(
+      (framed: GraphData) => framed,
+      (error: any) => {
         console.error('Error framing data:', error);
         return Promise.reject(error);
       }

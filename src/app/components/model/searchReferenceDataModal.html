@@ -151,9 +151,9 @@
           [contentExtractors]="contentExtractors"
           [placeholder]="'search reference data'"></text-filter>
         <div class="pull-left mt-2 ml-2">
-          <!-- <content-filter [searchController]="this"
+          <content-filter [searchController]="this"
             [contentExtractors]="contentExtractors"
-            [contentMatchers]="contentMatchers"></content-filter> -->
+            [contentMatchers]="contentMatchers"></content-filter>
         </div>
         <model-language-chooser class="pull-right"
           [context]="context"></model-language-chooser>
@@ -165,30 +165,32 @@
           class="form-control pull-left"
           style="width: auto"
           [(ngModel)]="showServer"
-          (ngModelChange)="onShowServerChange()"
+          (ngModelChange)="onShowServerChange($event)"
           name="showServer">
-          <option [value]="undefined" translate>All servers</option>
-          <option *ngFor="let server of referenceDataServers" [value]="server">{{ server.title | translateValue: context }}</option>
+          <option [ngValue]="undefined" translate>All servers</option>
+          <option *ngFor="let server of referenceDataServers" [ngValue]="server">{{ server.title | translateValue: context }}</option>
         </select>
         <select id="group"
           class="form-control ml-2 pull-left"
           style="width: auto"
           [(ngModel)]="showGroup"
+          (ngModelChange)="onShowGroupChange()"
           name="showGroup">
-          <option [value]="undefined" translate>All groups</option>
-          <option *ngFor="let group of referenceDataGroups" [value]="group">{{ group.title | translateValue: context }}</option>
+          <option [ngValue]="undefined" translate>All groups</option>
+          <option *ngFor="let group of referenceDataGroups" [ngValue]="group">{{ group.title | translateValue: context }}</option>
         </select>
         <select id="reference_data_status_filter_dropdown"
           class="form-control ml-2 pull-left"
           style="width: auto"
           [(ngModel)]="showStatus"
+          (ngModelChange)="onShowStatusChange()"
           name="showStatus">
-          <option [value]="undefined" translate>All statuses</option>
-          <option *ngFor="let status of statuses" [value]="status">{{ status | translate }}</option>
+          <option [ngValue]="undefined" translate>All statuses</option>
+          <option *ngFor="let status of statuses" [ngValue]="status">{{ status | translate }}</option>
         </select>
-        <!-- <excluded-filter [searchController]="this"
+        <excluded-filter [searchController]="this"
           [searchText]="searchText"
-          [exclude]="exclude"></excluded-filter> -->
+          [exclude]="exclude"></excluded-filter>
       </div>
     </div>
     <div class="row full-height" [style.height]=" 'calc(100% - 110px)' ">
@@ -200,7 +202,7 @@
 
             <search-results *ngIf="!loadingResults" [items]="searchResults" [selected]="selectedItem" [exclude]="exclude" (on-select)="selectItem(item)">
 
-              <ng-container *ngFor="let searchResult of searchResults">
+              <ng-template searchResultContent let-searchResult="searchResult">
                 <span class="title">
                   <ajax-loading-indicator-small *ngIf="loadingSelection(searchResult)"></ajax-loading-indicator-small>
                   <highlight [text]="searchResult.title" [context]="model" [search]="searchText"></highlight>
@@ -213,8 +215,7 @@
                 <div class="origin">
                   <span *ngFor="let group of searchResult.groups">{{group.title | translateValue: model}}{{$last ? '' : ', '}}</span>
                 </div>
-              </ng-container>
-
+              </ng-template>
 
             </search-results>
           </div>

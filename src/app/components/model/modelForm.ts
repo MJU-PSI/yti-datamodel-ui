@@ -40,13 +40,35 @@
 //   }
 // }
 
-import { Component  } from '@angular/core';
-
+import { Component, Input } from '@angular/core';
+import { Model } from 'app/entities/model';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'model-form',
-  template: ''
+  templateUrl: 'modelForm.html'
 })
-export class ModelFormComponent  {
+export class ModelFormComponent {
+  @Input() id: string;
+  @Input() model: Model;
+  @Input() namespacesInUse?: Set<string>;
+  @Input() form: NgForm;
+  @Input() statusChanged: boolean;
+  @Input() changeResourceStatusesToo: boolean;
 
+  get allowProfiles(): boolean {
+    return this.model.isOfType('profile');
+  }
+
+  get previousModelLink(): string | null {
+    return this.model.previousModel ? this.model.previousModel.uri : null;
+  }
+
+  isEditing(): boolean {
+    return this.form && this.form.form.editing;
+  }
+
+  showChangeResourceStatusesCheckbox(): boolean {
+    return this.form?.form.editing && this.statusChanged;
+  }
 }

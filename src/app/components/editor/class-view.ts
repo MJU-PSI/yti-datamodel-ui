@@ -153,9 +153,9 @@
 // }
 
 
-import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
-import { EditableEntityController, EditableScope, Rights } from 'app/components/form/editableEntityController';
-import { ClassService } from 'app/services/classService';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { EditableEntityController, Rights } from 'app/components/form/editableEntityController';
+import { DefaultClassService } from 'app/services/classService';
 import { SearchPredicateModal } from './searchPredicateModal';
 import { DeleteConfirmationModal } from 'app/components/common/delete-confirmation-modal';
 import { ErrorModal } from 'app/components/form/errorModal';
@@ -169,7 +169,7 @@ import { DatamodelConfirmationModalService } from 'app/services/confirmation-mod
 import { modalCancelHandler } from 'app/utils/angular';
 
 @Component({
-  selector: 'app-class-view',
+  selector: 'class-view',
   templateUrl: './class-view.html'
 })
 export class ClassViewComponent extends EditableEntityController<Class> implements OnInit, OnDestroy {
@@ -182,17 +182,15 @@ export class ClassViewComponent extends EditableEntityController<Class> implemen
   @Input() openPropertyId!: string;
 
   constructor(
-    @Inject('editableScope') protected editableScope: EditableScope,
-    // private readonly logService: ILogService,
-    private readonly searchPredicateModal: SearchPredicateModal,
-    private readonly datamodelConfirmationModalService: DatamodelConfirmationModalService,
+    private searchPredicateModal: SearchPredicateModal,
+    private datamodelConfirmationModalService: DatamodelConfirmationModalService,
     deleteConfirmationModal: DeleteConfirmationModal,
     errorModal: ErrorModal,
-    @Inject('classService') private readonly classService: ClassService,
+    private classService: DefaultClassService,
     userService: UserService,
-    private readonly authorizationManagerService: AuthorizationManagerService,
+    private authorizationManagerService: AuthorizationManagerService,
   ) {
-    super(editableScope, deleteConfirmationModal, errorModal, userService);
+    super(deleteConfirmationModal, errorModal, userService);
   }
 
   ngOnInit(): void {
@@ -205,11 +203,11 @@ export class ClassViewComponent extends EditableEntityController<Class> implemen
   }
 
   addProperty(): void {
-    // this.searchPredicateModal.openAddProperty(this.model, this.editableInEdit!)
-    //   .then(property => {
-    //     this.editableInEdit!.addProperty(property);
-    //     this.openPropertyId = property.internalId.uuid;
-    //   }, modalCancelHandler);
+    this.searchPredicateModal.openAddProperty(this.model, this.editableInEdit!)
+      .then(property => {
+        this.editableInEdit!.addProperty(property);
+        this.openPropertyId = property.internalId.uuid;
+      }, modalCancelHandler);
   }
 
   create(entity: Class): Promise<any> {

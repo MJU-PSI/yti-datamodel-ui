@@ -111,9 +111,9 @@
           {{'Add new namespace' | translate}}
         </button>
 
-        <!-- <excluded-filter [searchController]="this"
+        <excluded-filter [searchController]="this"
                          [exclude]="exclude"
-                         [searchText]="searchText"></excluded-filter> -->
+                         [searchText]="searchText"></excluded-filter>
       </div>
     </div>
 
@@ -129,13 +129,17 @@
                             [exclude]="exclude"
                             (onSelect)="selectItem($event)">
 
-              <span class="title">
-                <highlight [text]="searchResult.label" [context]="context" [search]="searchText"></highlight>
-              </span>
+              <ng-template searchResultContent let-searchResult="searchResult">
 
-              <span class="body">
-                <!-- <span [innerHTML]="searchResult.namespace | highlight: searchText"></span> -->
-              </span>
+                <span class="title">
+                  <highlight [text]="searchResult.label" [context]="context" [search]="searchText"></highlight>
+                </span>
+
+                <span class="body">
+                  <span [innerHTML]="searchResult.namespace | highlight: searchText"></span>
+                </span>
+
+              </ng-template>
 
             </search-results>
           </div>

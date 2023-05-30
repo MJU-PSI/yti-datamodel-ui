@@ -1,4 +1,4 @@
-<div class="row">
+<!-- <div class="row">
   <div class="col-12">
     <div class="panel-left">
       <div class="selection-box" float always="true">
@@ -77,6 +77,81 @@
                               model-page-actions="$ctrl"
                               maximized="$ctrl.visualizationMaximized">
           </visualization-view>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+ -->
+
+
+ <div class="row">
+  <div class="col-12">
+    <div class="panel-left">
+      <!-- TODO ALES - float direktiva se ne dela -->
+      <!-- float always="true" -->
+      <div class="selection-box" >
+        <ul ngbNav #nav="ngbNav" class="nav-tabs nav-fill">
+          <li *ngFor="let tab of tabs" class="nav-item" [ngbNavItem]="tab.type + '_tab_heading_link'" [id]="tab.type + '_tab_heading_link'">
+            <a ngbNavLink class="nav-link">
+              <p>{{ tab.type | translate }}</p>
+            </a>
+
+            <ng-template ngbNavContent>
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="selectable-actions">
+                    <button [id]="'add_new_' + tab.type + '_button'" *ngIf="canEdit()" type="button"
+                      class="btn btn-action btn-md add-new-button" (click)="tab.addNew()">
+                      <span>{{ tab.addLabel | translate }}</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="selectable-items">
+                    <ul [ngClass]="{'has-button': canEdit()}">
+                      <li *ngFor="let item of tab.items(); let i = index" [id]="item.id.uri + '_tabset_link'"
+                        [ngClass]="{'selection': isSelected(item)}" (click)="selectResource(item)">
+                        {{ item.label }} <ajax-loading-indicator-small *ngIf="isLoading(item)"></ajax-loading-indicator-small>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+          </li>
+        </ul>
+        <div [ngbNavOutlet]="nav"></div>
+      </div>
+    </div>
+
+    <div class="panel-right">
+      <div class="selection-container" [ngStyle]="{ 'width': selectionWidth }">
+
+        {{resource | json}}
+        <class-view id="class" *ngIf="resource?.isClass()" [parent]="parent" [dataClass]="resource"
+          [openPropertyId]="propertyId" [model]="model" [modelController]="modelController">
+        </class-view>
+
+        <!-- <predicate-view id="predicate" *ngIf="resource?.isPredicate()" [parent]="parent" [predicate]="resource"
+          [model]="model" [model-controller]="modelController">
+        </predicate-view> -->
+      </div>
+
+      <div class="visualization-container" [ngStyle]="{ 'width': visualizationWidth }">
+        <div float width="auto">
+
+          <divider *ngIf="resource" [selection-width]="selectionWidth"></divider>
+
+          <!-- <visualization-view *ngIf="model" [ngClass]="{ 'without-divider': !resource, 'maximized': visualizationMaximized }"
+            [selection]="resource" [model]="model" [model-page-actions]="modelPageActions"
+            [maximized]="visualizationMaximized">
+          </visualization-view> -->
         </div>
       </div>
 

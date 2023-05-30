@@ -131,7 +131,7 @@ interface WithClassifications {
       </button>
       <span *ngIf="required && isEditing()" class="fas fa-asterisk" [title]="'Required' | translate"></span >
     </h4>
-    <editable-table id="'classifications'" [descriptor]="descriptor" [expanded]="expanded" [form]="form"></editable-table>
+    <editable-table id="classifications" [descriptor]="descriptor" [expanded]="expanded" [form]="form"></editable-table>
     `,
 })
 export class ClassificationsViewComponent implements OnInit {
@@ -215,7 +215,7 @@ class ClassificationTableDescriptor extends TableDescriptor<Classification> {
     this.value.removeClassification(classification);
   }
 
-  orderBy(c: Classification): string {
-    return this.languageService.translate(c.label);
+  orderBy(c: Classification, c1: Classification): number {
+    return this.languageService.translate(c.label).localeCompare(this.languageService.translate(c1.label));
   }
 }

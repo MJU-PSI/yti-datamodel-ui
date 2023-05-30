@@ -133,9 +133,18 @@ export class AddEditLinkModalComponent implements OnInit {
   @ViewChild(NgForm, {static: true}) form: NgForm;
 
   constructor(private modalInstance: NgbActiveModal,
-    private modelService: DefaultModelService) {}
+              private modelService: DefaultModelService) {
+  }
 
   ngOnInit(): void {
+    this.edit = !!this.linkToEdit;
+
+    if (this.linkToEdit) {
+      this.title = this.linkToEdit.title[this.lang];
+      this.description = this.linkToEdit.description[this.lang];
+      this.homepage = this.linkToEdit.homepage;
+    }
+
     this.form.form.editing = true;
   }
 
@@ -156,7 +165,9 @@ export class AddEditLinkModalComponent implements OnInit {
       this.modalInstance.close(this.linkToEdit);
     } else {
       this.modelService.newLink(this.title, this.description, this.homepage, this.lang)
-        .then(link => this.modalInstance.close(link));
+        .then(link => {
+          this.modalInstance.close(link)
+        });
     }
   }
 

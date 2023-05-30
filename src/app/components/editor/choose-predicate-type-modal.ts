@@ -29,7 +29,7 @@ import { KnownPredicateType } from 'app/types/entity';
 @Injectable({
   providedIn: 'root'
 })
-export class ChoosePredicateTypeModalService {
+export class ChoosePredicateTypeModal {
 
   type: KnownPredicateType = 'attribute';
 

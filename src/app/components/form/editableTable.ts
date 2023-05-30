@@ -26,7 +26,7 @@ export abstract class TableDescriptor<T> {
     return true;
   }
 
-  orderBy(_value: T): any {
+  orderBy(_value: T, _value1: T): any {
     return undefined;
   }
 }
@@ -211,8 +211,8 @@ import { NgForm } from '@angular/forms';
           </tr>
         </thead>
         <tbody>
-          <tr [id]="id + '_' + normalizeValueForId(properties[0].nameExtractor(value)) + '_drag_sortable_item'"
-              *ngFor="let value of values | filter: filter |  orderBy: orderBy; let i = index"
+          <tr id="{{id + '_' + normalizeValueForId(properties[0].nameExtractor(value)) + '_drag_sortable_item'}}"
+              *ngFor="let value of values | filterFn: filter | orderByFn: orderBy; let i = index"
               [ngClass]="{'expandable-table': true, 'collapsed': limit && i >= limit}">
             <td [ngClass]="property.cssClass" *ngFor="let property of properties">
               <span *ngIf="!property.hrefExtractor && !property.onClick">{{property.nameExtractor(value, isEditing())}}</span>
@@ -263,7 +263,7 @@ export class EditableTableComponent<T> {
   visibleValues: number;
 
   filter = (value: T) => this.descriptor.filter(value);
-  orderBy = (value: T) => this.descriptor.orderBy(value);
+  orderBy = (value: T, value1: T) => this.descriptor.orderBy(value, value1);
 
 
   ngOnChanges(changes: SimpleChanges) {

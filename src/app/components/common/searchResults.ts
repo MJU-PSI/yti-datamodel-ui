@@ -142,7 +142,7 @@
 //   };
 // };
 
-import { Component, Input, Output, EventEmitter, Directive, TemplateRef, ViewContainerRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, Directive, TemplateRef, ViewContainerRef, ContentChild } from '@angular/core';
 import { ConfirmationModal } from './confirmationModal';
 import { Uri } from 'app/entities/uri';
 import { Exclusion } from 'app/utils/exclusion';
@@ -150,6 +150,23 @@ import { WithId } from 'app/types/entity';
 import { modalCancelHandler } from 'app/utils/angular';
 import { labelNameToResourceIdIdentifier } from '@mju-psi/yti-common-ui';
 import { TranslateService } from '@ngx-translate/core';
+
+@Directive({
+  selector: '[searchResultContent]'
+})
+export class SearchResultContentDirective<T extends WithId> {
+
+  // @Input('searchResultContent')
+  // set searchResult(value: SearchResult<T>) {
+  //   this.viewRef.clear();
+  //   this.viewRef.createEmbeddedView(this.templateRef, {
+  //     searchResult: value,
+  //   });
+  // }
+  // constructor(public templateRef: TemplateRef<any>, private viewRef: ViewContainerRef) {}
+  constructor(public templateRef: TemplateRef<any>) {}
+}
+
 
 export abstract class AddNew {
 
@@ -197,7 +214,10 @@ export class SearchResultsComponent<T extends WithId> {
   @Input() exclude!: Exclusion<T>;
   @Input() selected!: T | AddNew;
   @Input() editInProgress!: () => boolean;
-  @Output() onSelect = new EventEmitter<{ item: T | AddNew }>();
+  // @Output() onSelect = new EventEmitter<{item: T | AddNew}>();
+  @Output() onSelect = new EventEmitter<T | AddNew>();
+
+  @ContentChild(SearchResultContentDirective) content!: SearchResultContentDirective<T>;
 
   searchResults: (SearchResult<T> | AddNew)[];
   id = Uri.randomUUID();
@@ -209,7 +229,7 @@ export class SearchResultsComponent<T extends WithId> {
   }
 
   ngOnChanges() {
-    // this.generateSearchResults();
+    this.generateSearchResults();
   }
 
   generateSearchResults() {
@@ -219,18 +239,15 @@ export class SearchResultsComponent<T extends WithId> {
       } else {
         const disabledReason = this.exclude && this.exclude(item);
         const a = new SearchResult(item, disabledReason);
-        console.log(a.isAddNew());
         return a;
       }
     });
-    console.log(this.searchResults);
   }
 
   isVisible(item: SearchResult<T> | AddNew) {
     if (item instanceof AddNew) {
       return item.show();
     } else {
-      console.log("isaddnew: ", item.isAddNew());
       return true;
     }
   }
@@ -242,7 +259,8 @@ export class SearchResultsComponent<T extends WithId> {
   selectItem(item: SearchResult<T> | AddNew) {
     const doSelection = () => {
       this.selected = item.unwrap();
-      this.onSelect.emit({ item: this.selected });
+      // this.onSelect.emit({ item: this.selected });
+      this.onSelect.emit( this.selected);
     };
 
     if (this.editInProgress && this.editInProgress()) {
@@ -261,7 +279,6 @@ export class SearchResultsComponent<T extends WithId> {
   }
 
   generateSearchResultID(item: SearchResult<T> | AddNew): string {
-    console.log("generateSearchResultID isaddnew: ", item.isAddNew());
     return item.isAddNew() ? `${ 'create_new_' }${ labelNameToResourceIdIdentifier((item as AddNew).label) }${ '_link' }`
     : `${ item.id.toString() }${ '_search_result_link' }`;
   }
@@ -303,4 +320,6 @@ export class SearchResultTranscludeDirective<T extends WithId> {
 
   constructor(private templateRef: TemplateRef<SearchResultScope<T>>, private viewRef: ViewContainerRef) { }
 }
+
+
 

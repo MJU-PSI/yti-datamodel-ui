@@ -1,11 +1,10 @@
-import { IFormController, ILogService, IPromise, IScope } from 'angular';
 import { DeleteConfirmationModal } from 'app/components/common/delete-confirmation-modal';
 import { isModalCancel } from 'app/utils/angular';
 import { ErrorModal } from './errorModal';
 import { LanguageContext } from 'app/types/language';
 import { EditableEntity } from 'app/types/entity';
 import { ignoreModalClose, UserService } from '@mju-psi/yti-common-ui';
-import { Inject, OnInit } from '@angular/core';
+import { OnInit, ViewChild } from '@angular/core';
 
 // export interface EditableForm extends IFormController {
 //   editing: boolean;
@@ -18,7 +17,7 @@ import { Inject, OnInit } from '@angular/core';
 //   //       going to edit mode.
 //   pendingEdit?: boolean;
 // }
-import { AbstractControl } from '@angular/forms';
+import { AbstractControl, NgForm } from '@angular/forms';
 import { Component, NgModule } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -196,13 +195,14 @@ export abstract class EditableEntityController<T extends EditableEntity> impleme
 
   editableInEdit: T | null = null;
   persisting: boolean;
+  editableBefore: T | null = null;;
+
+  @ViewChild(NgForm, {static: true}) public form: NgForm
 
   constructor(
-    @Inject('editableScope') protected editableScope: EditableScope,
-    // private logService: ILLoogService,
     protected deleteConfirmationModal: DeleteConfirmationModal,
     private errorModal: ErrorModal,
-    @Inject('userService') protected userService: UserService
+    protected userService: UserService
   ) { }
 
   ngOnInit(): void {
@@ -212,8 +212,17 @@ export abstract class EditableEntityController<T extends EditableEntity> impleme
       }
     });
 
-    // TODO ALES - PREVERI
-    // this.getEditable()!.subscribe(editable => this.select(editable));
+  }
+
+  ngDoCheck() {
+    const editable = this.getEditable();
+    if (editable !== this.editableBefore) {
+      // The `getEditable` function has changed, perform your logic here
+      // You can access the new editable item using `editable` variable
+
+      this.editableBefore = editable; // Update the reference for future comparisons
+      this.select(editable);
+    }
   }
 
   abstract create(entity: T): Promise<any>;
@@ -240,7 +249,7 @@ export abstract class EditableEntityController<T extends EditableEntity> impleme
 
     if (editable && editable.unsaved) {
       // XXX: prevent problems with unsaved navigation confirmation
-      this.editableScope.form.pendingEdit = true;
+      this.form.form.pendingEdit = true;
       setTimeout(() => this.edit());
     } else {
       this.cancelEditing();
@@ -261,8 +270,8 @@ export abstract class EditableEntityController<T extends EditableEntity> impleme
           this.persisting = false;
         }, (err: any) => {
           if (err) {
-            // this.logService.error(err);
-            // this.errorModal.openSubmitError((err.data && err.data.errorMessage) || 'Unexpected error');
+            console.error(err);
+            this.errorModal.openSubmitError((err.data && err.data.errorMessage) || 'Unexpected error');
           }
           this.persisting = false;
         });
@@ -300,8 +309,8 @@ export abstract class EditableEntityController<T extends EditableEntity> impleme
       this.persisting = false;
     }, err => {
       if (!isModalCancel(err)) {
-        // this.logger.error(err);
-        // this.errorModal.openSubmitError((err.data && err.data.errorMessage) || 'Unexpected error');
+        console.error(err);
+        this.errorModal.openSubmitError((err.data && err.data.errorMessage) || 'Unexpected error');
       }
       this.persisting = false;
     });
@@ -314,20 +323,20 @@ export abstract class EditableEntityController<T extends EditableEntity> impleme
 
   cancelEditing(): void {
     if (this.isEditing()) {
-      this.editableScope.form.editing = false;
-      this.editableScope.form.markAsPristine();
+      this.form.form.editing = false;
+      this.form.form.markAsPristine();
       const editable = this.getEditable();
       this.select(editable!.unsaved ? null : editable);
     }
   }
 
   edit(): void {
-    this.editableScope.form.pendingEdit = undefined;
-    this.editableScope.form.editing = true;
+    this.form.form.pendingEdit = undefined;
+    this.form.form.editing = true;
   }
 
   isEditing(): boolean {
-    return this.editableScope.form && this.editableScope.form.editing;
+    return this.form.form && this.form.form.editing;
   }
 
   canEdit(): boolean {

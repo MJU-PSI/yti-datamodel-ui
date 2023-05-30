@@ -1,45 +1,80 @@
-import { EditableForm } from './editableEntityController';
+// import { EditableForm } from './editableEntityController';
+// import { Model } from 'app/entities/model';
+// import { AuthorizationManagerService } from 'app/services/authorizationManagerService';
+// import { Status } from '@mju-psi/yti-common-ui';
+// import { LegacyComponent } from 'app/utils/angular';
+
+// @LegacyComponent({
+//   bindings: {
+//     state: '=',
+//     model: '=',
+//     id: '@'
+//   },
+//   template: `
+//       <div class="form-group">
+
+//         <label translate>Status</label>
+
+//         <iow-select ng-if="$ctrl.isEditing()" id="{{$ctrl.id}}" id-prefix="$ctrl.id" options="state in $ctrl.getStates()" ng-model="$ctrl.state">
+//           <span>{{state | translate}}</span>
+//         </iow-select>
+
+//         <p ng-if="!$ctrl.isEditing()" class="form-control-static">{{$ctrl.state | translate}}</p>
+//       </div>
+//     `,
+//   require: {
+//     form: '?^form'
+//   }
+// })
+// export class EditableStateSelectComponent {
+
+//   model: Model;
+//   state: Status;
+//   id: string;
+
+//   form: EditableForm;
+
+//   constructor(private authorizationManagerService: AuthorizationManagerService) {
+//     'ngInject';
+//   }
+
+//   isEditing() {
+//     return this.form && this.form.editing;
+//   }
+
+//   getStates() {
+//     return this.authorizationManagerService.getAllowedStatuses(this.state);
+//   }
+// }
+
+
+import { Component, Input } from '@angular/core';
 import { Model } from 'app/entities/model';
 import { AuthorizationManagerService } from 'app/services/authorizationManagerService';
 import { Status } from '@mju-psi/yti-common-ui';
-import { LegacyComponent } from 'app/utils/angular';
+import { NgForm } from '@angular/forms';
 
-@LegacyComponent({
-  bindings: {
-    state: '=',
-    model: '=',
-    id: '@'
-  },
+@Component({
+  selector: 'editable-state-select',
   template: `
-      <div class="form-group">
-
-        <label translate>Status</label>
-
-        <iow-select ng-if="$ctrl.isEditing()" id="{{$ctrl.id}}" id-prefix="$ctrl.id" options="state in $ctrl.getStates()" ng-model="$ctrl.state">
-          <span>{{state | translate}}</span>
-        </iow-select>
-
-        <p ng-if="!$ctrl.isEditing()" class="form-control-static">{{$ctrl.state | translate}}</p>
-      </div>
-    `,
-  require: {
-    form: '?^form'
-  }
+    <div class="form-group">
+      <label translate >Status</label>
+      <iow-select *ngIf="isEditing()" [id]="id" [idPrefix]="id" [options]="getStates()" [(ngModel)]="state">
+       <span>{{ state | translate }}</span >
+      </iow-select>
+      <p *ngIf="!isEditing()" class="form-control-static">{{ state | translate }}</p >
+    </div>`
 })
 export class EditableStateSelectComponent {
+  @Input() model: Model;
+  @Input() state: Status;
+  @Input() id: string;
+  @Input() form: NgForm;
 
-  model: Model;
-  state: Status;
-  id: string;
-
-  form: EditableForm;
-
-  constructor(private authorizationManagerService: AuthorizationManagerService) {
-    'ngInject';
-  }
+  constructor(private authorizationManagerService: AuthorizationManagerService) { }
 
   isEditing() {
-    return this.form && this.form.editing;
+    return this.form && this.form.form.editing;
   }
 
   getStates() {

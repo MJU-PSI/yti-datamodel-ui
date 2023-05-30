@@ -12,10 +12,14 @@
 // };
 
 import { Directive } from '@angular/core';
+import { NgModel } from '@angular/forms';
 
 @Directive({
-  selector: 'ignore-dirty,[ignore-dirty]',
+  selector: '[ignoreDirty]',
 })
 export class IgnoreDirtyDirective {
-
+  constructor(private ngModel: NgModel) {
+    this.ngModel.control!.markAsPristine = () => {};
+    this.ngModel.control!.markAsDirty();
+  }
 }

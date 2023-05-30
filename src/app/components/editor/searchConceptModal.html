@@ -1,4 +1,4 @@
-<form name="form" class="search-concept">
+<!-- <form name="form" class="search-concept">
 
   <div class="modal-header">
     <h4 class="modal-title">
@@ -123,6 +123,144 @@
             id="searchConceptModalCancelButton"
             class="btn btn-link cancel"
             ng-click="$ctrl.close()" translate>Cancel</button>
+  </div>
+
+</form> -->
+
+
+<form name="form" class="search-concept" #form="ngForm">
+
+  <div class="modal-header">
+    <h4 class="modal-title">
+      <a><i (click)="close()" class="fas fa-times"></i></a>
+      {{ defineConceptTitle | translate }}
+    </h4>
+  </div>
+
+  <div class="modal-body full-height">
+
+    <div class="row mb-2">
+      <div class="col-12">
+
+        <text-filter class="pull-left"
+                     [searchText]="searchText"
+                     [searchController]="this"
+                     [contentExtractors]="contentExtractors"
+                     [placeholder]="'Search from concept database'"></text-filter>
+
+        <model-language-chooser class="pull-right"
+                                [context]="model"></model-language-chooser>
+      </div>
+    </div>
+
+    <div class="row mb-2">
+      <div class="col-12">
+        <select id="vocabulary"
+                class="form-control pull-left"
+                style="width: auto"
+                [(ngModel)]="selectedVocabulary"
+                ignore-dirty
+                [ngModelOptions]="{ standalone: true }"
+                *ngFor="let vocabulary of vocabularies">
+          <option [ngValue]="undefined" translate>All vocabularies</option>
+          <option [ngValue]="vocabulary" translate>{{ vocabulary.title | translateValue: model }}</option>
+        </select>
+
+        <select id="concept_status_filter_dropdown"
+                class="form-control ml-2 pull-left"
+                style="width: auto"
+                [(ngModel)]="showStatus"
+                [ngModelOptions]="{ standalone: true }"
+                *ngFor="let status of statuses">
+          <option [ngValue]="undefined" translate>All statuses</option>
+          <option [ngValue]="status" translate>{{ status | translate }}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row full-height" style="height: calc(100% - 110px)">
+      <div class="col-6">
+        <div class="content-box">
+          <div class="search-results">
+
+            <ajax-loading-indicator *ngIf="loadingResults"></ajax-loading-indicator>
+
+            <search-results *ngIf="!loadingResults"
+                            [items]="searchResults"
+                            [selected]="selectedItem"
+                            (onSelect)="selectItem($event)"
+                            [editInProgress]="editInProgress">
+
+              <span class="title">
+                <highlight [text]="searchResult.label" [context]="model" [search]="searchText"></highlight>
+                <app-status class="pull-right" [status]="searchResult.status"></app-status>
+                <ajax-loading-indicator-small *ngIf="loadingSelection(searchResult)"></ajax-loading-indicator-small>
+              </span>
+
+              <div class="origin">
+                <span class="pull-left">{{ searchResult.vocabulary.title | translateValue }}</span>
+              </div>
+            </search-results>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="col-6 search-selection">
+
+        <div *ngIf="selection">
+
+          <div *ngIf="isSelectionAddWithoutConceptData()">
+            <p>
+              <span>{{ 'Create new ' + type + ' without referencing concept' | translate }}</span>
+            </p>
+          </div>
+
+          <concept-form *ngIf="isSelectionConcept()" [concept]="selection" [model]="model"></concept-form>
+
+          <div *ngIF="isSelectionNewConceptData()">
+
+            <editable title="Vocabulary" [context]="model" autofocus>
+              <select id="vocabularySelection"
+                      class="form-control"
+                      required
+                      [(ngModel)]="selection.vocabulary"
+                      *ngFor="let vocabulary of vocabularies">
+                <option [ngValue]="vocabulary" translate>{{ vocabulary.title | translateValue: model}}</option>
+              </select>
+            </editable>
+
+            <editable title="Concept label" [context]="model">
+              <input id="conceptLabel" type="text" class="form-control" required stringInput="label" [(ngModel)]="selection.label" />
+            </editable>
+
+            <editable title="Definition" [context]="model">
+              <textarea id="conceptDefinition" class="form-control" required stringInput [(ngModel)]="selection.definition"></textarea>
+            </editable>
+
+            <br />
+            <p><span translate>Concept is suggested to vocabulary</span> {{selection.vocabulary.title | translateValue: model}}</p>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="modal-footer">
+
+    <button type="button"
+            id="searchConceptModalConfirmButton"
+            class="btn btn-action confirm"
+            (click)="confirm()"
+            [disabled]="!selection || form.invalid || form.pending">{{buttonTitle | translate}}</button>
+
+    <button type="button"
+            id="searchConceptModalCancelButton"
+            class="btn btn-link cancel"
+            (click)="close()" translate>Cancel</button>
   </div>
 
 </form>

@@ -118,7 +118,7 @@ import { ifChanged, modalCancelHandler } from '../../utils/angular';
 
 
 import { Component, Injectable } from '@angular/core';
-import { NgbModal, NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { LanguageService } from '../../services/languageService';
 import { DefaultModelService } from '../../services/modelService';
 import { AddEditNamespaceModal } from './addEditNamespaceModal';
@@ -140,13 +140,13 @@ export class SearchNamespaceModal {
   }
 
   open(context: LanguageContext, reservedPrefixes: string[], usedNamespaces: string[], exclude: Exclusion<ImportedNamespace> = noExclude): Promise<ImportedNamespace> {
-    const modalRef: NgbModalRef = this.modalService.open(SearchNamespaceModalComponent, { size: 'md' });
+    const modalRef = this.modalService.open(SearchNamespaceModalComponent, { size: 'md' });
     modalRef.componentInstance.context = context;
     modalRef.componentInstance.reservedPrefixes = reservedPrefixes;
     modalRef.componentInstance.usedNamespaces = usedNamespaces;
     modalRef.componentInstance.exclude = exclude;
 
-    return modalRef.result;
+   return modalRef.result;
   }
 }
 
@@ -170,14 +170,14 @@ export class SearchNamespaceModalComponent implements SearchController<ImportedN
   exclude: Exclusion<ImportedNamespace>;
 
   constructor(
-    public modal: NgbActiveModal,
-    modelService: DefaultModelService,
+    private modal: NgbActiveModal,
+    private modelService: DefaultModelService,
     private languageService: LanguageService,
     private addEditNamespaceModal: AddEditNamespaceModal
   ) {
     this.loadingResults = true;
 
-    modelService.getAllImportableNamespaces().then(result => {
+    this.modelService.getAllImportableNamespaces().then(result => {
       this.namespaces = result;
       this.search();
       this.loadingResults = false;
@@ -230,7 +230,7 @@ export class SearchNamespaceModalComponent implements SearchController<ImportedN
     const language = this.languageService.getModelLanguage(this.context);
 
     this.addEditNamespaceModal.openAdd(this.context, language, this.reservedPrefixes, this.usedNamespaces)
-      .then(ns => this.modal.close(ns), modalCancelHandler);
+      .then(ns => this.modal.close(ns), () => {});
   }
 
   close() {

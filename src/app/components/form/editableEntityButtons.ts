@@ -23,14 +23,21 @@
 //     return this.idPrefix ? this.idPrefix + button : undefined;
 //   }
 // }
-
-import { Component  } from '@angular/core';
-
+import { Component, Input } from '@angular/core';
+import { EditableEntityController, EditableForm } from './editableEntityController';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'editable-entity-buttons',
-  template: ''
+  templateUrl: './editableEntityButtons.html'
 })
-export class EditableEntityButtonsComponent  {
+export class EditableEntityButtonsComponent {
+  @Input() editableController: EditableEntityController<any>;
+  @Input() context: any;
+  @Input() idPrefix?: string;
+  @Input() form: NgForm; // Assuming EditableForm is imported and provided correctly
 
+  id(button: string): string | undefined {
+    return this.idPrefix ? this.idPrefix + button : undefined;
+  }
 }

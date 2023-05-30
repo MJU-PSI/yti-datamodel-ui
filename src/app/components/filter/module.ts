@@ -15,6 +15,7 @@ import { IowServicesModule } from "app/services/module";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { IowComponentsCommonModule } from "../common/module";
 import { TranslateModule } from "@ngx-translate/core";
+import { BrowserModule } from "@angular/platform-browser";
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { TranslateModule } from "@ngx-translate/core";
     TypesFilterComponent
   ],
   imports: [
+    BrowserModule,
     FormsModule,
     NgbModule,
     TranslateModule,
@@ -35,7 +37,7 @@ import { TranslateModule } from "@ngx-translate/core";
   ],
   providers: [
     IowServicesModule
-  ], 
+  ],
   exports: [
     TextFilterComponent,
     ContentFilterComponent,

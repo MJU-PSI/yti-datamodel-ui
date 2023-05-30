@@ -102,8 +102,8 @@
 //   };
 // };
 
-import { Directive, ElementRef, Input, OnChanges, OnInit, Renderer2 } from '@angular/core';
-import { NG_VALIDATORS, AbstractControl, ValidationErrors, Validator, NgModel } from '@angular/forms';
+import { Directive, ElementRef, HostListener, Input, OnChanges, OnInit, Renderer2, forwardRef } from '@angular/core';
+import { NG_VALIDATORS, AbstractControl, ValidationErrors, Validator, NgModel, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { isValidUri, isValidUriStem, isValidUrl } from './validators';
 import { Uri } from 'app/entities/uri';
 import { ImportedNamespace } from 'app/entities/model';
@@ -178,12 +178,21 @@ export function createValidators(type: UriInputType, withNamespacesProvider: () 
       provide: NG_VALIDATORS,
       useExisting: UriInputDirective,
       multi: true
+    },
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => UriInputDirective),
+      multi: true
     }
   ]
 })
-export class UriInputDirective implements OnInit, OnChanges, Validator {
+export class UriInputDirective implements ControlValueAccessor, OnInit, OnChanges, Validator {
   @Input() uriInput: UriInputType;
   @Input() model: any;
+
+  private innerValue: Uri | null = null;
+  private onChange: any = () => {};
+  private onTouched: any = () => {};
 
   constructor(
     private languageService: LanguageService,
@@ -191,6 +200,34 @@ export class UriInputDirective implements OnInit, OnChanges, Validator {
     private renderer: Renderer2,
     private elementRef: ElementRef
   ) {}
+
+  @HostListener('input', ['$event.target.value'])
+  onInput(value: string) {
+    this.innerValue = new Uri(value, {}); // Create an instance of Uri from the input value
+    this.onChange(this.innerValue);
+  }
+
+  writeValue(value: any): void {
+    if (value instanceof Uri) {
+      this.innerValue = value;
+      this.elementRef.nativeElement.value = value.uri;
+    } else {
+      this.innerValue = null;
+      this.elementRef.nativeElement.value = '';
+    }
+  }
+
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: any): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.elementRef.nativeElement.disabled = isDisabled;
+  }
 
   ngOnInit() {
     if (!this.uriInput) {

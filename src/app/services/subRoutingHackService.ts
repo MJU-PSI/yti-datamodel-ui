@@ -1,13 +1,12 @@
-import { ILocationService, IRootScopeService, route } from 'angular';
+import { IRootScopeService } from 'angular';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { Injectable, OnDestroy } from '@angular/core';
-import { isDifferentUrl, nextUrl } from '../utils/angular';
+import { isDifferentUrl } from '../utils/angular';
 import { Model } from '../entities/model';
 import { EditingGuard } from '../components/model/modelControllerService';
-import { LocationService } from './locationService';
 import { Location } from '@angular/common';
 import { ActivatedRoute, NavigationEnd, NavigationStart, Params, Router, UrlSegment } from '@angular/router';
-import { filter, takeUntil } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
 interface RouteParams {
@@ -16,12 +15,12 @@ interface RouteParams {
   property?: string;
 }
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class SubRoutingHackService implements OnDestroy {
   currentSelection: BehaviorSubject<RouteData> = new BehaviorSubject(new RouteData({ prefix: '' }));
-  private ajsRootScope: IRootScopeService;
-  // private routeService: route.IRouteService;
-  // private locationService: ILocationService;
+  private locationService: Location;
   private initialRoute: UrlSegment[];
   private currentRouteParams: Params;
   private subscriptions: Subscription[] = [];
@@ -31,16 +30,10 @@ export class SubRoutingHackService implements OnDestroy {
   private destroy$ = new Subject();
 
   constructor(
-    // scopeWrapper: ScopeWrapper,
     private route: ActivatedRoute,
     private location: Location,
     private router: Router
     ) {
-    // this.ajsRootScope = scopeWrapper.scope;
-    // this.routeService = routeWrapper.routeService;
-    // this.locationService = locationService;
-
-    this.initSubRoutingHack();
   }
 
   ngOnDestroy(): void {
@@ -93,7 +86,7 @@ export class SubRoutingHackService implements OnDestroy {
     // }));
 
     this.router.events
-      .pipe(filter(event => event instanceof NavigationStart || event instanceof NavigationEnd ))
+      // .pipe(filter(event => event instanceof NavigationStart || event instanceof NavigationEnd ))
       .subscribe(event => {
         if (event instanceof NavigationStart) {
           // Navigation started
@@ -109,22 +102,22 @@ export class SubRoutingHackService implements OnDestroy {
         if (event instanceof NavigationEnd) {
           // Navigation ended
           if (this.location.path().startsWith('/model')) {
-            this.currentRouteParams = this.route.snapshot.params;
-            const newRoute = new RouteData(this.currentRouteParams);
 
-            // FIXME: hack to prevent reload on params update
-            // https://github.com/angular/angular.js/issues/1699#issuecomment-45048054
-            // TODO: consider migration to angular-ui-router if it fixes the problem elegantly (https://ui-router.github.io/ng1/)
-            // this.route.url = this.initialRoute;
+            this.route.params.subscribe(params => {
+              this.currentRouteParams = params;
+              const newRoute = new RouteData(this.currentRouteParams);
 
-            const oldRoute = this.currentSelection.getValue();
-            const modelDiffers = oldRoute.modelPrefix !== newRoute.modelPrefix;
-            const resourceDiffers = oldRoute.resourceCurie !== newRoute.resourceCurie;
-            const propertyDiffers = oldRoute.propertyId !== newRoute.propertyId;
+              const oldRoute = this.currentSelection.getValue();
+              const modelDiffers = oldRoute.modelPrefix !== newRoute.modelPrefix;
+              const resourceDiffers = oldRoute.resourceCurie !== newRoute.resourceCurie;
+              const propertyDiffers = oldRoute.propertyId !== newRoute.propertyId;
 
-            if (modelDiffers || resourceDiffers || propertyDiffers) {
-              this.currentSelection.next(newRoute);
-            }
+              if (modelDiffers || resourceDiffers || propertyDiffers) {
+                this.currentSelection.next(newRoute);
+              }
+            });
+
+
           } else {
             if (this.currentSelection.getValue().modelPrefix) {
               this.currentSelection.next(new RouteData({ prefix: '' }));

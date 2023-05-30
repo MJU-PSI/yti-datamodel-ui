@@ -26,8 +26,8 @@
      [title]="title(searchResult)"
      (click)="selectItem(searchResult)"
      keyControlSelection>
+
   <div class="content">
-    <!-- {{searchResult | json}} -->
     <div *ngIf="searchResult.isAddNew()">
       <span class="title">
         <i *ngIf="searchResult.glyphiconClass" [ngClass]="searchResult.glyphiconClass"></i>
@@ -35,7 +35,7 @@
       </span>
     </div>
 
-    <!-- <ng-container *searchResultTransclude="searchResult; hide: searchResult.isAddNew()"></ng-container> -->
-    <!-- <search-result-transclude *ngIf="!searchResult.isAddNew()"></search-result-transclude> -->
+    <ng-container *ngIf="!searchResult.isAddNew()" [ngTemplateOutlet]="content.templateRef" [ngTemplateOutletContext]="{ searchResult: searchResult.item }"></ng-container>
+
   </div>
 </div>

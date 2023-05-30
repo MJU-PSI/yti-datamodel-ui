@@ -36,14 +36,15 @@ import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { ContentExtractor, ContentMatcher, SearchController } from 'app/types/filter';
 
 @Component({
-  selector: 'app-content-filter',
+  selector: 'content-filter',
   template: `
+    <checkbox-group [(ngModel)]="contentExtractors" (ngModelChange)="onContentExtractorsChange()">
       <div class="form-check form-check-inline" *ngFor="let matcher of contentMatchers">
-        <label>
-          <input type="checkbox" [checklist-model]="contentExtractors" [checklist-value]="matcher.extractor" />
-          {{matcher.name | translate}}
-        </label>
+        <checkbox [value]="matcher.extractor">
+        {{matcher.name | translate}}
+        </checkbox>
       </div>
+    </checkbox-group>
   `
 })
 export class ContentFilterComponent<T> implements OnInit {
@@ -55,7 +56,6 @@ export class ContentFilterComponent<T> implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    this.contentExtractors = [];
     this.searchController.search();
   }
 
@@ -63,5 +63,9 @@ export class ContentFilterComponent<T> implements OnInit {
     if (changes.contentExtractors) {
       this.searchController.search();
     }
+  }
+
+  onContentExtractorsChange() {
+    this.searchController.search();
   }
 }

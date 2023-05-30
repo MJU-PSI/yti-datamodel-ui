@@ -51,13 +51,47 @@
 //   }
 // }
 
-import { Component  } from '@angular/core';
-
+import { Component, Input } from '@angular/core';
+import { SearchClassModal } from 'app/components/editor/searchClassModal';
+import { requireDefined } from '@mju-psi/yti-common-ui';
+import { Model } from 'app/entities/model';
+import { ClassListItem } from 'app/entities/class';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'editable-root-class',
-  template: ''
+  templateUrl: './editableRootClass.html'
 })
-export class EditableRootClassComponent  {
+export class EditableRootClassComponent {
 
+  @Input() model: Model;
+  @Input() form: NgForm;
+
+  constructor(private searchClassModal: SearchClassModal) { }
+
+  isEditing(): boolean {
+    return this.form && this.form.form.editing;
+  }
+
+  get href() {
+    return this.model.linkToResource(this.model.rootClass);
+  }
+
+  selectClass(): void {
+    const exclude = (klass: ClassListItem): string | null => {
+      if (requireDefined(klass.definedBy).id !== this.model.id) {
+        return 'Can be selected only from this ' + this.model.normalizedType;
+      } else {
+        return null;
+      }
+    };
+    this.searchClassModal.openWithOnlySelection(this.model, true, exclude)
+      .then((klass: ClassListItem) => this.model.rootClass = klass.id)
+      .catch(() => { });
+
+  }
+
+  removeClass(): void {
+    this.model.rootClass = null;
+  }
 }

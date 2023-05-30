@@ -132,6 +132,7 @@ import { EditReferenceDataModal } from './editReferenceDataModal';
 import { ReferenceData } from 'app/entities/referenceData';
 import { LanguageContext } from 'app/types/language';
 import { NgForm } from '@angular/forms';
+import { modalCancelHandler } from 'app/utils/angular';
 
 interface WithReferenceDatas {
   referenceDatas: ReferenceData[];
@@ -180,7 +181,7 @@ export class ReferenceDatasViewComponent implements OnInit {
       .then(referenceData => {
         this.value.addReferenceData(referenceData);
         this.expanded = true;
-      })
+      }, modalCancelHandler);
   }
 }
 

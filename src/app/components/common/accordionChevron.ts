@@ -20,7 +20,7 @@ import { Component, Input } from '@angular/core';
   selector: 'accordion-chevron',
   template: `
     <ng-content></ng-content>
-    <span [class]="['fas', {'pull-right': !noPull, 'fa-angle-down': isOpen, 'fa-angle-right': !isOpen}]"></span>
+    <span [class]="{'fas': true, 'pull-right': !noPull, 'fa-angle-down': isOpen, 'fa-angle-right': !isOpen}"></span>
   `,
 })
 export class AccordionChevronComponent {

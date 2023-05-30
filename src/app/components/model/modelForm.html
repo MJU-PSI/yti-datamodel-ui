@@ -1,4 +1,4 @@
-<div class="row">
+<!-- <div class="row">
 
   <div class="col-lg-5">
 
@@ -68,4 +68,81 @@
     <links-view value="$ctrl.model" context="$ctrl.model"></links-view>
   </div>
 
-</div>
+</div> -->
+
+
+
+<div class="row">
+  <div class="col-lg-5">
+    <h4>{{ model.normalizedType + ' information' | capitalize | translate }}</h4>
+
+    <editable [title]="model.normalizedType + ' label' | capitalize" [context]="model" [form]="form" autofocus>
+      <input id="modelLabel" class="form-control" type="text" name="label" localizedInput="modelLabel" [context]="model" [(ngModel)]="model.label" #editableInput/>
+    </editable>
+
+    <editable [title]="'Description'" [context]="model" [form]="form">
+      <textarea id="modelComment" class="form-control" name="descriptipn" localizedInput [context]="model" [(ngModel)]="model.comment" #editableInput></textarea>
+    </editable>
+
+    <!-- <editable-multiple-language-select [title]="'Model languages'" id="modelLanguage" [(ngModel)]="model.language" required="true" [form]="form"></editable-multiple-language-select> -->
+
+    <editable-root-class *ngIf="model.isOfType('profile')" [model]="model" [form]="form"></editable-root-class>
+
+    <non-editable [title]="'Prefix'" [value]="model.prefix" [context]="model" [form]="form"></non-editable>
+    <non-editable [title]="'Namespace'" [value]="model.namespace" [context]="model" [clipboard]="model.namespace" [form]="form"></non-editable>
+    <non-editable [title]="'Previous version'" [value]="model.previousModel" [context]="model" [link]="previousModelLink" [form]="form"></non-editable>
+    <editable-state-select *ngIf="!model.unsaved" id="modelState" [state]="model.status" [model]="model"></editable-state-select>
+
+    <div class="row" *ngIf="showChangeResourceStatusesCheckbox()">
+      <div class="col-md-4" style="line-height: 45px; white-space: nowrap">
+        <div class="checkbox">
+          <input id="change_resource_statuses_too_checkbox" type="checkbox" [(ngModel)]="changeResourceStatusesToo">
+          <label style="vertical-align: 5%; padding-left: 5px;" for="change_resource_statuses_too_checkbox" translate>
+            Change resource statuses as well
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <app-use-context-input [(ngModel)]="model.useContext" [editing]="isEditing()" [modelType]="model.normalizedType"></app-use-context-input>
+
+    <h4 translate>Additional information</h4>
+
+    <div class="row">
+      <div class="col-md-6">
+        <non-editable [title]="'Created at'" [value]="model.createdAt" [context]="model" [form]="form"></non-editable>
+      </div>
+      <div class="col-md-6">
+        <non-editable [title]="'Modified at'" [value]="model.modifiedAt" [context]="model" [form]="form"></non-editable>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <editable [title]="'Contact label'" [context]="model" [form]="form">
+          <p translate>Please note that the content of this field is public. Don't use personal contact information!</p>
+          <textarea id="modelContact" class="form-control" localizedInput [context]="model" [(ngModel)]="model.contact" #editableInput></textarea>
+        </editable>
+        </div>
+      </div>
+
+      <!-- TODO ALES - ne dela  -->
+      <usage-panel id="{{id + '_' + model.id.uri}}" [entity]="model"></usage-panel>
+    </div>
+
+    <div class="col-lg-6 offset-lg-1">
+      <classifications-view [value]="model" required="true" [form]="form"></classifications-view>
+      <contributors-view [value]="model" [context]="model" required="true" [form]="form"></contributors-view>
+      <vocabularies-view [value]="model" [context]="model" [form]="form"></vocabularies-view>
+      <reference-datas-view [value]="model" [context]="model" [form]="form"></reference-datas-view>
+      <imported-namespaces-view [value]="model"
+                                [context]="model"
+                                [allowProfiles]="allowProfiles"
+                                [namespacesInUse]="namespacesInUse"
+                                [modelPrefix]="model.prefix"
+                                [modelNamespace]="model.namespace"
+                                [form]="form"></imported-namespaces-view>
+      <links-view [value]="model" [context]="model" [form]="form"></links-view>
+    </div>
+
+  </div>

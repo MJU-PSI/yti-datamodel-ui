@@ -15,6 +15,7 @@ import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from '@angular/router';
+import { IowComponentsCommonModule } from '../common/module';
 
 
 @NgModule({
@@ -24,11 +25,12 @@ import { RouterModule } from '@angular/router';
   ],
   imports: [
     CommonModule,
-    IowServicesModule,
     YtiCommonModule,
     TranslateModule,
     NgbModule,
-    RouterModule
+    RouterModule,
+    IowServicesModule,
+    IowComponentsCommonModule
   ],
   providers: [
     { provide: USER_SERVICE, useClass: UserService }

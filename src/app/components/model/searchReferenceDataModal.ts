@@ -296,6 +296,7 @@ export interface SearchReferenceDataScope {
   templateUrl: './searchReferenceDataModal.html'
 })
 export class SearchReferenceDataModalComponent implements SearchController<ReferenceData> {
+
   public model: WithReferenceDatas|null;
   public context: LanguageContext;
   public exclude: Exclusion<ReferenceData>;
@@ -335,56 +336,31 @@ export class SearchReferenceDataModalComponent implements SearchController<Refer
   ) {
     this.localizer = this.languageService.createLocalizer(this.context);
 
-    // const init = (referenceDatas: ReferenceData[]) => {
-    //   this.referenceDatas = referenceDatas;
-
-    //   this.referenceDataGroups = _
-    //     .chain(this.referenceDatas)
-    //     .map(referenceData => referenceData.groups)
-    //     .flatten<ReferenceDataGroup>()
-    //     .uniqBy(group => group.id.uri)
-    //     .value()
-    //     .sort(comparingLocalizable<ReferenceDataGroup>(this.localizer, group => group.title));
-
-    //   if (this.showGroup && allMatching(this.referenceDataGroups, group => !group.id.equals(this.showGroup!.id))) {
-    //     this.showGroup = null;
-    //   }
-
-    //   this.search();
-    //   this.loadingResults = false;
-    // };
-
     if (this.model != null) {
       this.init(this.model.referenceDatas);
+      this.search();
+      this.loadingResults = false;
     } else {
       const serversPromise = this.referenceDataService.getReferenceDataServers().then(servers => {
         this.referenceDataServers = servers;
         this.loadingResults = false;
       });
-
-      // TODO ALES
-      // this.showServerChanged = () => {
-      //   this.loadingResults = true;
-        // serversPromise
-        //   .then((servers: any) => this.referenceDataService.getReferenceDatasForServers(this.showServer ? [this.showServer] : servers))
-        //   .then(init);
-      // };
     }
 
     this.addFilter(referenceData =>
       !this.showGroup || anyMatching(referenceData.item.groups, group => group.id.equals(this.showGroup!.id))
     );
 
-    this.addFilter(referenceData =>
-      !this.showStatus || referenceData.item.status === this.showStatus
-    );
+    this.addFilter(referenceData => {
+      console.log(this.showStatus)
+      console.log(!this.showStatus || referenceData.item.status === this.showStatus)
+     return !this.showStatus || referenceData.item.status === this.showStatus
 
-    // TODO ALES
-    // this.showGroupChanged = () => this.search();
-    // this.showStatusChanged = () => this.search();
+    }
+    );
   }
 
-  init(referenceDatas: ReferenceData[]) {
+  private init(referenceDatas: ReferenceData[]) {
       this.referenceDatas = referenceDatas;
 
       this.referenceDataGroups = _
@@ -403,13 +379,25 @@ export class SearchReferenceDataModalComponent implements SearchController<Refer
       this.loadingResults = false;
     };
 
-  onShowServerChange() {
+  onShowServerChange(server: Event) {
     this.referenceDataService.getReferenceDataServers().then(servers => {
       this.referenceDataServers = servers;
       this.loadingResults = false;
+      return servers;
     })
-    .then((servers: any) => this.referenceDataService.getReferenceDatasForServers(this.showServer ? [this.showServer] : servers))
+    .then(servers => {
+     return this.referenceDataService.getReferenceDatasForServers(this.showServer ? [this.showServer] : servers)
+    }
+    )
     .then(servers => this.init(servers));
+  }
+
+  onShowStatusChange() {
+    this.search();
+  }
+
+  onShowGroupChange() {
+    this.search();
   }
 
   addFilter(filter: SearchFilter<ReferenceData>) {

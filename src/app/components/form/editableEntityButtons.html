@@ -1,4 +1,4 @@
-<div class="top-actions">
+<!-- <div class="top-actions">
 
   <button type="button"
           ng-attr-id="{{$ctrl.id('cancel')}}"
@@ -35,5 +35,46 @@
   </button>
 
   <ng-transclude></ng-transclude>
+
+</div> -->
+
+
+<div class="top-actions">
+
+  <button type="button"
+          [id]="id('cancel')"
+          class="btn btn-link pull-right cancel"
+          (click)="editableController.cancelEditing()"
+          *ngIf="editableController.isEditing()">
+    <span translate>Cancel</span>
+  </button>
+
+  <button type="button"
+          [id]="id('save')"
+          class="btn btn-action pull-right save"
+          (click)="editableController.saveEdited()"
+          *ngIf="editableController.isEditing()"
+          [disabled]="form.invalid || form.pending">
+    <span translate>Save</span>
+  </button>
+
+  <button type="button"
+          [id]="id('edit')"
+          class="btn btn-action pull-right edit"
+          (click)="editableController.edit()"
+          *ngIf="editableController.canEdit()">
+    <span translate>Edit</span>
+  </button>
+
+  <button type="button"
+          [id]="id('remove')"
+          class="btn btn-link pull-right remove"
+          (click)="editableController.removeEdited()"
+          *ngIf="editableController.canRemove()">
+    <i class="fas fa-trash-alt"></i>
+    <span translate>Remove</span>
+  </button>
+
+  <ng-content></ng-content>
 
 </div>

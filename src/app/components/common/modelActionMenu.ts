@@ -153,7 +153,7 @@ import { USER_SERVICE, UserService } from '../../services/userService';
 import { MassMigrateDatamodelResourceStatusesModalService } from 'app/components/model/mass-migrate-datamodel-resource-statuses-modal.component';
 import { AuthorizationManagerService } from 'app/services/authorizationManagerService';
 import { NewDatamodelVersionModalService } from 'app/components/model/new-datamodel-version-modal.component';
-import { Component, Inject, Input } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'model-action-menu',
@@ -167,9 +167,10 @@ export class ModelActionMenuComponent {
   @Input() hasSubscription: boolean;
   @Input() isMessagingEnabled: boolean;
 
+  @Output() changeHasSubscription = new EventEmitter<boolean>();
+
   uri: string;
   config: Config;
-  changeHasSubscription: (enabled: boolean) => void;
 
   constructor(private confirmationModalService: ConfirmationModalService,
               private messagingService: MessagingService,
@@ -230,10 +231,10 @@ export class ModelActionMenuComponent {
         .then(() => {
           this.messagingService.addSubscription(uri, type).subscribe(success => {
             if (success) {
-              this.changeHasSubscription(true);
+              this.changeHasSubscription.emit(true);
             } else {
-              this.changeHasSubscription(false);
-              // this.errorModal.openSubmitError('Adding subscription failed.');
+              this.changeHasSubscription.emit(false);
+              this.errorModal.openSubmitError('Adding subscription failed.');
             }
           });
         }, ignoreModalClose);
@@ -248,10 +249,10 @@ export class ModelActionMenuComponent {
         .then(() => {
           this.messagingService.deleteSubscription(uri).subscribe(success => {
             if (success) {
-              this.changeHasSubscription(false);
+              this.changeHasSubscription.emit(false);
             } else {
-              this.changeHasSubscription(true);
-              // this.errorModal.openSubmitError('Subscription deletion failed.');
+              this.changeHasSubscription.emit(true);
+              this.errorModal.openSubmitError('Subscription deletion failed.');
             }
           });
         }, ignoreModalClose);

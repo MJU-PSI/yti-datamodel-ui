@@ -5,7 +5,7 @@
 import { CommonModule } from "@angular/common";
 import { TranslateModule, TranslateService } from "@ngx-translate/core";
 import { AddPropertiesFromClassModal, AddPropertiesFromClassModalComponent } from "./add-properties-from-class-modal";
-import { ChoosePredicateTypeModalComponent, ChoosePredicateTypeModalService } from "./choose-predicate-type-modal";
+import { ChoosePredicateTypeModal, ChoosePredicateTypeModalComponent } from "./choose-predicate-type-modal";
 import { FormsModule } from "@angular/forms";
 import { IowComponentsFormModule } from "../form/module";
 import { ClassFormComponent } from "./class-form";
@@ -24,20 +24,21 @@ import { PredicateViewComponent } from "./predicateView";
 import { PropertyPredicateViewComponent } from "./propertyPredicateView";
 import { PropertyViewComponent } from "./propertyView";
 import { SearchClassModal } from "./searchClassModal";
-import { SearchClassTableModal } from "./searchClassTableModal";
+import { SearchClassTableModal, SearchClassTableModalComponent } from "./searchClassTableModal";
 import { SearchClassTableModalContentComponent } from "./searchClassTableModalContent";
-import { SearchConceptModal } from "./searchConceptModal";
-import { SearchPredicateModal } from "./searchPredicateModal";
+import { SearchConceptModal, SearchConceptModalComponent } from "./searchConceptModal";
+import { SearchPredicateController, SearchPredicateModal } from "./searchPredicateModal";
 import { SearchPredicateTableModal } from "./searchPredicateTableModal";
 import { SearchPredicateTableModalContentComponent } from "./searchPredicateTableModalContent";
 import { SelectionViewComponent } from "./selectionView";
-import { ShowPredicateInfoModal } from "./showPredicateInfoModal";
+import { ShowPredicateInfoModal, ShowPredicateInfoModalComponent } from "./showPredicateInfoModal";
 import { ShowClassInfoModal } from "./showClassInfoModal";
 import { SubjectViewComponent } from "./subjectView";
 import { VisualizationViewComponent } from "./visualizationView";
 import { UriSelectComponent } from "./uriSelect";
 import { DefaultClassService } from "app/services/classService";
 import { EditableMultipleComponent } from "./editable-multiple";
+import { IowComponentsFilterModule } from "../filter/module";
 
 
 @NgModule({
@@ -62,7 +63,11 @@ import { EditableMultipleComponent } from "./editable-multiple";
     SelectionViewComponent,
     SubjectViewComponent,
     UriSelectComponent,
-    VisualizationViewComponent
+    VisualizationViewComponent,
+    SearchClassTableModalComponent,
+    ShowPredicateInfoModalComponent,
+    SearchConceptModalComponent,
+    SearchPredicateController
   ],
   imports: [
     FormsModule,
@@ -70,12 +75,13 @@ import { EditableMultipleComponent } from "./editable-multiple";
     TranslateModule,
     IowComponentsFormModule,
     IowComponentsCommonModule,
+    IowComponentsFilterModule,
     NgbModule,
     TranslateModule
   ],
   providers: [
     AddPropertiesFromClassModal,
-    ChoosePredicateTypeModalService,
+    ChoosePredicateTypeModal,
     NgbActiveModal,
     CopyPredicateModalService,
     SearchClassModal,
@@ -85,10 +91,31 @@ import { EditableMultipleComponent } from "./editable-multiple";
     SearchPredicateTableModal,
     ShowClassInfoModal,
     ShowPredicateInfoModal,
-    DefaultClassService
+    DefaultClassService,
   ],
   exports: [
-    EditableMultipleLanguageSelectComponent
+    AddPropertiesFromClassModalComponent,
+    ChoosePredicateTypeModalComponent,
+    ClassFormComponent,
+    CopyPredicateModalComponent,
+    EditableConstraintComponent,
+    EditableMultipleComponent,
+    EditableMultipleDataTypeInputComponent,
+    EditableMultipleLanguageSelectComponent,
+    EditableMultipleUriSelectComponent,
+    EditableRangeSelectComponent,
+    EditableReferenceDataSelectComponent,
+    PredicateFormComponent,
+    PredicateViewComponent,
+    PropertyPredicateViewComponent,
+    PropertyViewComponent,
+    SearchClassTableModalContentComponent,
+    SearchPredicateTableModalContentComponent,
+    SelectionViewComponent,
+    SubjectViewComponent,
+    UriSelectComponent,
+    VisualizationViewComponent,
+    SearchClassTableModalComponent
   ]
 })
 export class IowComponentsEditorModule { }

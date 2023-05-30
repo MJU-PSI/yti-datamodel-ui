@@ -151,16 +151,14 @@
 //   }
 // }
 
-import { Component, Input } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import { LanguageService } from '../../services/languageService';
 import { ColumnDescriptor, TableDescriptor } from '../../components/form/editableTable';
 import { AddEditNamespaceModal } from './addEditNamespaceModal';
 import { SearchNamespaceModal } from './searchNamespaceModal';
 import { combineExclusions } from '../../utils/exclusion';
 import { ImportedNamespace, NamespaceType } from '../../entities/model';
-import { LegacyComponent, modalCancelHandler } from '../../utils/angular';
 import { LanguageContext } from '../../types/language';
-import { EditableForm } from '../../components/form/editableEntityController';
 import { Uri } from '../../entities/uri';
 import { NgForm } from '@angular/forms';
 
@@ -195,7 +193,7 @@ export class ImportedNamespacesViewComponent {
   @Input() form: NgForm;
 
   descriptor: ImportedNamespaceTableDescriptor;
-  expanded = false;
+  expanded: boolean;
 
 
   constructor(
@@ -214,6 +212,21 @@ export class ImportedNamespacesViewComponent {
       this.languageService,
       this.namespacesInUse
     );
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.value && !changes.value.firstChange) {
+      const value = changes.value.currentValue;
+      this.descriptor = new ImportedNamespaceTableDescriptor(
+        this.addEditNamespaceModal,
+        value,
+        () => this.modelPrefix,
+        () => this.modelNamespace,
+        this.context,
+        this.languageService,
+        this.namespacesInUse
+      );
+    }
   }
 
   ngDoCheck() {
@@ -265,7 +278,7 @@ export class ImportedNamespacesViewComponent {
       .then((ns: ImportedNamespace) => {
         this.value.addImportedNamespace(ns);
         this.expanded = true;
-      }, modalCancelHandler);
+      }, (err) => {console.log(err)});
   }
 }
 
@@ -293,8 +306,8 @@ class ImportedNamespaceTableDescriptor extends TableDescriptor<ImportedNamespace
     return this.value && this.value.importedNamespaces;
   }
 
-  orderBy(ns: ImportedNamespace) {
-    return ns.prefix;
+  orderBy(ns: ImportedNamespace, ns1: ImportedNamespace) {
+    return ns.prefix.localeCompare(ns1.prefix);
   }
 
   edit(ns: ImportedNamespace) {

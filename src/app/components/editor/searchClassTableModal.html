@@ -1,4 +1,4 @@
-<form name="form" class="search-class">
+<!-- <form name="form" class="search-class">
 
   <div class="modal-header no-padding-bottom">
     <h4 class="modal-title">
@@ -201,6 +201,232 @@
             class="btn btn-secondary-action"
             ng-click="$ctrl.addNamespaceToModel($ctrl.selectedItem)"
             ng-show="$ctrl.notDefinedByThisModel($ctrl.selectedItem)"
+            translate>
+      Add namespace to model
+    </button>
+
+  </div>
+</form>
+
+
+ -->
+
+
+
+
+
+
+
+
+
+
+
+<form name="form" class="search-class" #form="ngForm">
+  <div class="modal-header no-padding-bottom">
+    <h4 class="modal-title">
+      <span *ngIf="onlySelection" translate>Select class</span>
+      <span *ngIf="!onlySelection" translate>Add class</span>
+    </h4>
+    <model-language-chooser class="pull-right mr-4" [context]="model"></model-language-chooser>
+    <a><i id="close_class_table_modal_button" (click)="close()" class="fas fa-times"></i></a>
+  </div>
+
+  <div class="modal-body" style="min-height: 400px;">
+    <div class="search-table-modal-search-row">
+      <text-filter class="search-row-search-text"
+                   [searchText]="searchText"
+                   [searchController]="this"
+                   [contentExtractors]="contentExtractors"
+                   [placeholder]="'search class'"></text-filter>
+
+      <div class="search-row-selections">
+        <content-filter class="search-row-content-selection"
+                        [searchController]="this"
+                        [contentMatchers]="contentMatchers"
+                        [contentExtractors]="contentExtractors"></content-filter>
+
+        <div class="search-row-target-selection" *ngIf="isModelProfile() && (onlySelection || isModelProfile())">
+          <label translate>Include:</label>
+          <label>
+            <input type="checkbox" [(ngModel)]="showOnlyExternalClasses">
+            {{'External classes' | translate}}
+          </label>
+        </div>
+      </div>
+
+      <excluded-filter [searchController]="this"
+                       [searchText]="searchText"
+                       [exclude]="filterExclude"></excluded-filter>
+    </div>
+
+    <div class="row flex-shrink-0">
+      <div class="col-12 limit-select-widths">
+
+        <!-- <model-filter class="pull-left mr-2 mb-2"
+                      [searchController]="this"
+                      [type]="'class'"
+                      [model]="model"
+                      [defaultShow]="defaultToCurrentModel ? 'definedByThis' : null"
+                      [hideThisModel]="showOnlyExternalClasses"
+                      [modelType]="showModelType"></model-filter> -->
+
+        <select id="class_information_domain_filter_dropdown"
+                class="form-control pull-left mr-2 mb-2"
+                style="width: auto"
+                [disabled]="showOnlyExternalClasses"
+                [(ngModel)]="showInfoDomain">
+          <option value="" translate>All information domains</option>
+          <option *ngFor="let infoDomain of infoDomains" [value]="infoDomain">
+            {{ infoDomain.label | translateValue:model }}
+          </option>
+        </select>
+
+        <select id="class_model_type_filter_dropdown"
+                class="form-control pull-left mr-2 mb-2"
+                style="width: auto"
+                [disabled]="showOnlyExternalClasses"
+                [(ngModel)]="showModelType">
+          <option value="" translate>All types</option>
+          <option *ngFor="let modelType of modelTypes" [value]="modelType">{{ modelType | translate }}</option>
+        </select>
+
+        <select id="class_type_filter_dropdown"
+                class="form-control pull-left mr-2 mb-2"
+                style="width: auto"
+                [disabled]="showOnlyExternalClasses"
+                [(ngModel)]="showClassType">
+          <option value="" translate>All class types</option>
+          <option *ngFor="let classType of classTypes" [value]="classType">{{ classType | translate }}</option>
+        </select>
+        <select id="class_status_filter_dropdown"
+                class="form-control pull-left mb-2"
+                style="width: auto"
+                ng-disabled="$ctrl.showOnlyExternalClasses"
+                ng-model="$ctrl.showStatus"
+                ng-options="(status | translate) for status in $ctrl.statuses">
+          <option value="" translate>All statuses</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="flex-shrink-0" ng-if="$ctrl.isSelectionExternalEntity()">
+
+      <h4 class="mt-4" translate>Create shape from external URI</h4>
+
+      <div class="row">
+        <div class="col-md-4">
+
+          <editable title="External URI" [context]="model" autofocus>
+            <div class="input-group input-group-md">
+              <input id="externalUri" type="text" class="form-control" required uri-input="required-namespace" model="$ctrl.model"
+                     [(ngModel)]="selection && selection.id"/>
+            </div>
+          </editable>
+
+        </div>
+
+        <div class="col-md-4">
+
+          <div ng-if="$ctrl.externalClass === null">
+            <editable data-title="Class label" context="model">
+              <input type="text" class="form-control" stringInput="label" required ng-model="$ctrl.selection.label"/>
+            </editable>
+          </div>
+
+          <div ng-if="$ctrl.externalClass">
+            <non-editable title="Class label" value="externalClass.label" context="$ctrl.model"></non-editable>
+          </div>
+
+        </div>
+      </div>
+
+      <h4 class="mt-4" translate>Search existing class</h4>
+    </div>
+
+    <div class="content-box search-results-table-container">
+      <ajax-loading-indicator *ngIf="loadingResults"></ajax-loading-indicator>
+      <app-search-class-table-modal-content *ngIf="!loadingResults" [sort-by]="sortBy" [model]="model"
+                                            [filter-exclude]="filterExclude"
+                                            [search-text]="searchText" [search-results]="searchResults"
+                                            [selected-item]="selectedItem" [selection]="selection"
+                                            [show-only-external-classes]="showOnlyExternalClasses"
+                                            (item-selected)="selectItem($event)"
+                                            [exclude]="exclude">
+      </app-search-class-table-modal-content>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+
+    <button id="confirm_class_button"
+            type="button"
+            class="btn btn-action confirm"
+            (click)="confirm()"
+            [disabled]="!selection || cannotConfirm || (form.editing && (form.$invalid || form.$pending)) || isExternalClassPending()">
+      <!-- TODO ALES -->
+      <!-- {{textForSelection(selection) | translate}} -->
+    </button>
+
+    <button id="create_class_button"
+            type="button"
+            class="btn btn-secondary-action"
+            (click)="createNewClass()"
+            *ngIf="canAddNew()">
+      + <span translate>New class</span>
+    </button>
+
+    <button id="create_shape_button"
+            type="button"
+            class="btn btn-secondary-action"
+            (click)="createNewShape()"
+            *ngIf="canAddNewShape()"
+            ng-disabled="isSelectionExternalEntity()">
+      + <span translate>Shape from URI</span>
+    </button>
+
+    <div class="pull-right dropup" ngbDropdown>
+      <button id="{{'class_' + selection!.id + '_actions_button'}}" class="btn btn-language dropdown-toggle"
+              [disabled]="!showActions(selection)" ngbDropdownToggle>
+        <span translate>Actions</span>
+      </button>
+      <div ngbDropdownMenu class="dropdown-menu-right" attr.aria-labelledby="{{'class_' + selection.id + '_actions_button'}}"
+           *ngIf="selection">
+        <button id="{{'copy_class_' + selection.id + '_button'}}"
+                class="dropdown-item"
+                (click)="copyClass(selection)"
+                translate>
+          Copy class
+        </button>
+        <button id="{{'create_sub_class_' + selection.id + '_button'}}"
+                class="dropdown-item"
+                (click)="createSubClass(selection)"
+                translate>
+          Create sub class
+        </button>
+        <button id="{{'create_super_class_' + selection.id + '_button'}}"
+                class="dropdown-item"
+                (click)="createSuperClass(selection)"
+                translate>
+          Create super class
+        </button>
+      </div>
+    </div>
+
+    <button id="cancel_class_table_modal_button" type="button" class="btn btn-link cancel" (click)="close()" translate>
+      Cancel</button>
+
+    <div class="alert alert-danger" role="alert" *ngIf="cannotConfirm">
+      <span class="fas fa-exclamation-circle" aria-hidden="true"></span>
+      <span>{{cannotConfirm | translate}}</span>
+    </div>
+
+    <!-- TODO ALES -->
+    <!-- (click)="addNamespaceToModel(selectedItem)" -->
+    <!-- *ngIf="notDefinedByThisModel(selectedItem)" -->
+    <button id="add_namespace_to_model_button"
+            class="btn btn-secondary-action"
+
+
             translate>
       Add namespace to model
     </button>

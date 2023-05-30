@@ -41,6 +41,7 @@
       <input id="add_link_url_input" name="ink_url" class="form-control" type="text" uriInput="free-url" [model]="model"
         autofocus required [(ngModel)]="homepage" #editableInput/>
     </editable>
+
     <editable title="Title" [context]="model" [form]="form">
       <input id="add_link_title_input" name="link_title" class="form-control" type="text" required stringInput="label" [(ngModel)]="title" #editableInput/>
     </editable>

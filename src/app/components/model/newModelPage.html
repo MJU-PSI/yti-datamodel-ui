@@ -117,7 +117,7 @@
             <textarea id="modelComment" class="form-control" autocomplete="off" [(ngModel)]="comment" name="comment" #editableInput></textarea>
           </editable>
 
-          <!-- {{languages | json}}
+          {{languages | json}}
           <editable-multiple-language-select
             title="Model languages"
             id="modelLanguage"
@@ -125,7 +125,7 @@
             [form]="form"
 
             required="true">
-          </editable-multiple-language-select> -->
+          </editable-multiple-language-select>
 
           <editable title="Prefix" [context]="context" [form]="form">
             <input id="modelPrefix" class="form-control" type="text" prefixInput prefixInputAsync

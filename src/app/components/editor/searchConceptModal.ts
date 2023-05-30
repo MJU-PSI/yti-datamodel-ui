@@ -321,12 +321,323 @@
 
 
 
-import { Injectable  } from '@angular/core';
+import { Component, Injectable, ViewChild  } from '@angular/core';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { gettextCatalog as GettextCatalog } from 'angular-gettext';
+import { LanguageService, Localizer } from 'app/services/languageService';
+import { comparingLocalizable } from 'app/utils/comparator';
+import { EditableForm } from 'app/components/form/editableEntityController';
+import { AddNew } from 'app/components/common/searchResults';
+import { anyMatching, limit, Status, allStatuses } from '@mju-psi/yti-common-ui';
+import { lowerCase, upperCaseFirst } from 'change-case';
+import { SearchController, SearchFilter } from 'app/types/filter';
+import { ifChanged } from 'app/utils/angular';
+import { Concept, Vocabulary } from 'app/entities/vocabulary';
+import { Model } from 'app/entities/model';
+import { ClassType, KnownPredicateType } from 'app/types/entity';
+import { DefaultVocabularyService, VocabularyService } from 'app/services/vocabularyService';
+import { filterAndSortSearchResults, defaultLabelComparator } from 'app/components/filter/util';
+import { Uri } from 'app/entities/uri';
+import { NgForm } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
+
+const limitQueryResults = 1000;
+
+export interface NewEntityData {
+  label: string;
+}
+
+export class EntityCreation {
+  constructor(public conceptId: Uri|null, public entity: NewEntityData) {
+  }
+}
+
+class NewConceptData implements NewEntityData {
+  definition: string;
+
+  constructor(public label: string, public vocabulary: Vocabulary) {
+  }
+}
+
+class AddWithoutConceptData implements NewEntityData {
+  constructor(public label: string) {
+  }
+}
+
+function isConcept(obj: Concept|NewConceptData|AddWithoutConceptData|null): obj is Concept {
+  return obj instanceof Concept;
+}
+
+function isNewConceptData(obj: Concept|NewConceptData|AddWithoutConceptData|null): obj is NewConceptData {
+  return obj instanceof NewConceptData;
+}
+
+function isAddWithoutConceptData(obj: Concept|NewConceptData|AddWithoutConceptData|null): obj is AddWithoutConceptData {
+  return obj instanceof AddWithoutConceptData;
+}
+
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class SearchConceptModal  {
+export class SearchConceptModal {
+  constructor(private modalService: NgbModal) {}
 
+  open(
+    vocabularies: Vocabulary[],
+    model: Model,
+    type: ClassType | KnownPredicateType | null,
+    allowSuggestions: boolean,
+    newEntityCreation: boolean,
+    initialSearch: string
+  ): Promise<Concept | EntityCreation> {
+    const modalRef = this.modalService.open(SearchConceptModalComponent, { size: 'lg' });
+
+    modalRef.componentInstance.vocabularies = vocabularies;
+    modalRef.componentInstance.model = model;
+    modalRef.componentInstance.type = type;
+    modalRef.componentInstance.newEntityCreation = newEntityCreation;
+    modalRef.componentInstance.initialSearch = initialSearch;
+    modalRef.componentInstance.allowSuggestions = allowSuggestions;
+
+    return modalRef.result;
+  }
+
+  openSelection(vocabularies: Vocabulary[], model: Model, allowSuggestions: boolean, type?: ClassType|KnownPredicateType): Promise<Concept> {
+    return this.open(vocabularies, model, type || null, allowSuggestions, false, '') as Promise<Concept>;
+  }
+
+  openNewEntityCreation(vocabularies: Vocabulary[], model: Model, type: ClassType|KnownPredicateType, initialSearch: string): Promise<EntityCreation> {
+    return this.open(vocabularies, model, type, true, true, initialSearch) as Promise<EntityCreation>;
+  }
+}
+
+@Component({
+  selector: 'app-search-concept',
+  templateUrl: './searchConceptModal.html',
+})
+export class SearchConceptModalComponent implements SearchController<Concept> {
+
+  queryResults: Concept[];
+  searchResults: (Concept|AddNewConcept)[];
+  selection: Concept|NewConceptData|AddWithoutConceptData|null = null;
+  defineConceptTitle: string;
+  buttonTitle: string;
+  labelTitle: string;
+  selectedVocabulary: Vocabulary;
+  searchText = '';
+  submitError: string|null = null;
+  loadingResults: boolean;
+  selectedItem: Concept|AddNewConcept|AddWithoutConcept;
+  showStatus: Status | null;
+  private localizer: Localizer;
+
+  contentExtractors = [ (concept: Concept) => concept.label ];
+  private searchFilters: SearchFilter<Concept>[] = [];
+
+  @ViewChild(NgForm, {static: true}) form: NgForm;
+
+  public type: ClassType|KnownPredicateType|null;
+  public initialSearch: string;
+  public newEntityCreation: boolean;
+  public vocabularies: Vocabulary[];
+  public model: Model;
+  public  allowSuggestions: boolean;
+
+  editInProgress = () => this.form.form.editing && this.form.dirty;
+
+  constructor(private languageService: LanguageService,
+              private vocabularyService: DefaultVocabularyService,
+              private translateService: TranslateService,
+              private activeModal: NgbActiveModal) {
+
+    this.localizer = languageService.createLocalizer(this.model);
+    this.defineConceptTitle = this.type ? `Define concept for the ${this.newEntityCreation ? 'new ' : ''}${this.type}` : 'Search concept';
+    this.buttonTitle = (this.newEntityCreation ? 'Create new ' + this.type : 'Use');
+    this.labelTitle = this.type ? `${upperCaseFirst(this.type)} label` : '';
+    this.searchText = this.initialSearch;
+    this.vocabularies = this.vocabularies.slice();
+    this.vocabularies.sort(this.vocabularyComparator);
+    this.loadingResults = false;
+
+    this.addFilter(vocabulary =>
+      !this.showStatus || vocabulary.item.status === this.showStatus
+    );
+
+    // $scope.$watch(() => this.searchText, () => this.query(this.searchText).then(() => this.search()));
+    // $scope.$watch(() => this.selectedVocabulary, ifChanged(() => this.query(this.searchText).then(() => this.search())));
+    // $scope.$watch(() => this.localizer.language, ifChanged(() => this.query(this.searchText).then(() => this.search())));
+    // $scope.$watch(() => this.showStatus, ifChanged<Status|null>(() => this.search()));
+  }
+
+  addFilter(filter: SearchFilter<Concept>) {
+    this.searchFilters.push(filter);
+  }
+
+  get items() {
+    return this.queryResults;
+  }
+
+  get vocabularyComparator() {
+    return comparingLocalizable<Vocabulary>(this.localizer, vocabulary => vocabulary.title);
+  }
+
+  get statuses() {
+    return allStatuses;
+  }
+
+  isSelectionConcept() {
+    return isConcept(this.selection);
+  }
+
+  isSelectionNewConceptData() {
+    return isNewConceptData(this.selection);
+  }
+
+  isSelectionAddWithoutConceptData() {
+    return isAddWithoutConceptData(this.selection);
+  }
+
+  query(searchText: string): Promise<any> {
+    this.loadingResults = true;
+
+    if (searchText) {
+      return this.vocabularyService.searchConcepts(searchText, this.selectedVocabulary ? this.selectedVocabulary : undefined)
+        .then((results: Concept[]) => {
+
+          const resultsWithReferencedVocabularies =
+            results.filter(concept =>
+              anyMatching(this.vocabularies, v => v.id.equals(concept.vocabulary.id)));
+
+          this.queryResults = limit(resultsWithReferencedVocabularies, limitQueryResults);
+          this.loadingResults = false;
+        });
+    } else {
+      this.loadingResults = false;
+      return Promise.resolve(this.queryResults = []);
+    }
+  }
+
+  search() {
+    if (this.queryResults) {
+
+      const suggestText = `${this.translateService.instant('suggest')} '${this.searchText}'`;
+      const toVocabularyText = `${this.translateService.instant('to vocabulary')}`;
+      const addNewText = suggestText + ' ' + toVocabularyText;
+      const addWithoutConcept = this.translateService.instant('Create new ' + this.type + ' without referencing concept');
+
+      this.searchResults = [
+        new AddNewConcept(addNewText,  () => this.canAddNew()),
+        new AddWithoutConcept(addWithoutConcept,  () => this.newEntityCreation),
+        ...filterAndSortSearchResults<Concept>(this.queryResults, this.searchText, this.contentExtractors, this.searchFilters, defaultLabelComparator(this.localizer))
+      ];
+    } else {
+      this.searchResults = [];
+    }
+  }
+
+  selectItem(item: Concept|AddNewConcept|AddWithoutConcept) {
+
+    this.selectedItem = item;
+    this.submitError = null;
+    this.form.form.editing = false;
+    this.form.form.markAsPristine();
+
+    if (item instanceof AddNewConcept) {
+      this.form.form.editing = true;
+      this.selection = new NewConceptData(lowerCase(this.searchText, this.localizer.language), this.resolveInitialVocabulary());
+    } else if (item instanceof AddWithoutConcept) {
+      this.selection = new AddWithoutConceptData(this.searchText);
+    } else {
+      this.selection = null;
+      this.vocabularyService.getConcept(item.id).then(concept => this.selection = concept);
+    }
+  }
+
+  loadingSelection(item: Concept|AddNew) {
+    if (item instanceof AddNew || item !== this.selectedItem) {
+      return false;
+    } else {
+      if (!this.selection) {
+        return true;
+      } else {
+        const searchResult = <Concept> item;
+        const selection = this.selection;
+        return isConcept(selection) && !searchResult.id.equals(selection.id);
+      }
+    }
+  }
+
+  resolveInitialVocabulary() {
+    return this.vocabularies[0];
+  }
+
+  canAddNew() {
+    return this.allowSuggestions && !!this.searchText && this.vocabularies.length > 0;
+  }
+
+  confirm() {
+    this.activeModal.close(this.resolveResult());
+  }
+
+  close() {
+    this.activeModal.dismiss('cancel');
+  }
+
+  private resolveResult(): Promise<Concept|EntityCreation> {
+
+    const selection = this.selection;
+    const language = this.languageService.getModelLanguage(this.model);
+
+    if (isNewConceptData(selection)) {
+
+      const conceptSuggestionId =
+        this.vocabularyService.createConceptSuggestion(
+          selection.vocabulary,
+          selection.label,
+          selection.definition,
+          language,
+          this.model
+        );
+
+      if (this.newEntityCreation) {
+        return conceptSuggestionId
+          .then(csId => new EntityCreation(csId, { label: selection.label }));
+      } else {
+        return conceptSuggestionId
+          .then(csId => this.vocabularyService.getConcept(csId));
+      }
+    } else if (isAddWithoutConceptData(selection)) {
+
+      if (!this.newEntityCreation) {
+        throw new Error('Must be new entity creation');
+      }
+
+      return Promise.resolve(new EntityCreation(null, { label: selection.label }))
+
+    } else if (isConcept(selection)) {
+      if (this.newEntityCreation) {
+        return Promise.resolve(new EntityCreation(selection.id, { label: selection.label[language] }));
+      } else {
+        return Promise.resolve(selection);
+      }
+    } else {
+      throw new Error('Unsupported selection ' + selection);
+    }
+  }
+}
+
+class AddNewConcept extends AddNew {
+  constructor(public label: string,
+              public show: () => boolean) {
+    super(label, show);
+  }
+}
+
+class AddWithoutConcept extends AddNew {
+  constructor(public label: string,
+              public show: () => boolean) {
+    super(label, show);
+  }
 }

@@ -51,11 +51,12 @@
 // }
 
 
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { UsageService } from 'app/services/usageService';
 import { EditableEntity } from 'app/types/entity';
 import { LanguageContext } from 'app/types/language';
 import { Usage } from 'app/entities/usage';
+import { AccordionComponent } from './accordion';
 
 @Component({
   selector: 'usage-panel',
@@ -67,9 +68,12 @@ export class UsagePanelComponent implements OnInit, OnChanges {
   @Input() entity: EditableEntity;
   @Input() context: LanguageContext;
 
+  @ViewChild(AccordionComponent, {static: true}) private accordion: AccordionComponent;
+
   usage: Usage | null = null;
   open = false;
   loading = false;
+  identifier = 'default';
 
   constructor(private usageService: UsageService) {}
 
@@ -82,6 +86,11 @@ export class UsagePanelComponent implements OnInit, OnChanges {
         (changes.context && !changes.context.firstChange)) {
       this.updateUsage();
     }
+  }
+
+  ngDoCheck(){
+    // this.open = this.accordion.isOpen(this.identifier)
+    // this.updateUsage();
   }
 
   hasReferrers() {

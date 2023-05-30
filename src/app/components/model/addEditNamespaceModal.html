@@ -1,4 +1,4 @@
-<form name="form" class="add-edit-namespace" implicit-edit-mode>
+<!-- <form name="form" class="add-edit-namespace" implicit-edit-mode>
 
   <div class="modal-header">
     <h4 class="modal-title">
@@ -51,6 +51,72 @@
     <button id="{{$ctrl.confirmButtonID}}" class="btn btn-action confirm" type="button" ng-click="$ctrl.create()" ng-disabled="!form.$valid">{{$ctrl.confirmLabel | translate}}</button>
     <button id="add_edit_namespace_cancel_button" class="btn btn-link cancel" type="button" ng-click="$ctrl.cancel()" translate>Cancel</button>
     <error-panel error="$ctrl.submitError"></error-panel>
+  </div>
+
+</form> -->
+
+<form name="form" class="add-edit-namespace" #form="ngForm">
+
+  <div class="modal-header">
+    <h4 class="modal-title">
+      <a><i (click)="cancel()" class="fas fa-times"></i></a>
+      {{ titleLabel | translate }}
+    </h4>
+  </div>
+
+  <div class="modal-body">
+
+    <editable title="Namespace label" [disable]="!labelModifiable()" [context]="context" [form]="form">
+      <div class="input-group input-group-md">
+        <input id="label" type="text" name="label" class="form-control" autofocus required stringInput="modelLabel"  [(ngModel)]="label" #editableInput />
+      </div>
+    </editable>
+
+    <!-- TODO ALES - ali rabim model ?? -->
+    <!-- [model]="model" -->
+    <editable title="Namespace" [disable]="!namespaceModifiable()" [context]="context" [form]="form">
+      <div class="input-group input-group-md">
+        <input id="namespace"
+               type="text"
+               name="namespace"
+               class="form-control"
+               required
+               namespaceInput
+               [activeNamespace]="namespaceToEdit"
+               [allowTechnical]="!edit"
+               [usedNamespaces]="usedNamespaces"
+
+               [(ngModel)]="namespace"
+               (ngModelChange)="onNamespaceChange()"
+               #editableInput />
+      </div>
+    </editable>
+
+    <!-- [model]="model" -->
+    <editable title="Prefix" [disable]="!prefixModifiable()" [context]="context" [form]="form">
+      <div class="input-group input-group-md">
+        <input id="prefix"
+               type="text"
+               name="prefix"
+               class="form-control"
+               required
+               prefixInput
+               [reservedPrefixes]="reservedPrefixes"
+               [activeNamespace]="namespaceToEdit"
+               [allowTechnical]="!edit"
+
+               [(ngModel)]="prefix"
+               (ngModelChange)="onPrefixChange()"
+               #editableInput/>
+      </div>
+    </editable>
+
+  </div>
+
+  <div class="modal-footer">
+    <button id="{{ confirmButtonID }}" class="btn btn-action confirm" type="button" (click)="create()" [disabled]="!form.valid">{{ confirmLabel | translate }}</button>
+    <button id="add_edit_namespace_cancel_button" class="btn btn-link cancel" type="button" (click)="cancel()" translate>Cancel</button>
+    <error-panel [error]="submitError"></error-panel>
   </div>
 
 </form>

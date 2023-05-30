@@ -272,7 +272,13 @@ export class DefaultModelService {
 
   getModelByPrefix(prefix: string): Promise<Model> {
     return this.http.get<GraphData>(apiEndpointWithName('model'), { params: { prefix } })
-      .toPromise().then(response => this.deserializeModelByPrefix(response, prefix));
+      .toPromise()
+      .then(response => {
+        return this.deserializeModelByPrefix(response, prefix)
+      }).catch(error => {
+        console.log(error);
+        return Promise.reject(error);
+      });
   }
 
   createModel(model: Model): Promise<any> {

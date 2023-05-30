@@ -160,7 +160,7 @@
 //   }
 // }
 
-import { Directive, ElementRef, HostListener, Input, NgZone } from '@angular/core';
+import { Directive, ElementRef, HostListener, Input, NgZone, Renderer2 } from '@angular/core';
 import { InteractiveHelpService } from 'app/help/services/interactiveHelpService';
 
 @Directive({
@@ -168,7 +168,7 @@ import { InteractiveHelpService } from 'app/help/services/interactiveHelpService
 })
 export class FloatDirective {
 
-  @Input('float') float: string;
+  @Input() float: string;
   @Input() snap: string;
   @Input() always: string;
   @Input() width: string;
@@ -185,7 +185,8 @@ export class FloatDirective {
   timeoutId: any = null;
 
   constructor(private el: ElementRef,
-              private interactiveHelpService: InteractiveHelpService,
+              private renderer: Renderer2
+              // private interactiveHelpService: InteractiveHelpService,
              ) {}
 
   ngAfterViewInit() {
@@ -193,10 +194,12 @@ export class FloatDirective {
     const placeholderClass = this.float;
     this.elementStaticPosition = this.el.nativeElement.getBoundingClientRect();
 
-    this.placeholder = document.createElement('div');
-    this.placeholder.classList.add(placeholderClass);
-    this.placeholder.style.display = 'none';
-    this.el.nativeElement.parentNode.insertBefore(this.placeholder, this.el.nativeElement);
+    this.placeholder = this.renderer.createElement('div');
+    if (placeholderClass.trim() !== '') {
+      this.renderer.addClass(this.placeholder, placeholderClass);
+    }
+    this.renderer.setStyle(this.placeholder, 'display', 'none');
+    this.renderer.insertBefore(this.el.nativeElement.parentNode, this.placeholder, this.el.nativeElement);
   }
 
   @HostListener('window:scroll')
@@ -250,7 +253,8 @@ export class FloatDirective {
   }
 
   shouldSnap() {
-    return this.interactiveHelpService.isClosed() && this.snap === 'true';
+    // return this.interactiveHelpService.isClosed() && this.snap === 'true';
+    return true;
   }
 
   isInitialized() {
@@ -259,20 +263,18 @@ export class FloatDirective {
 
   setFloating() {
     this.floating = true;
-    const width = this.width || this.el.nativeElement.outerWidth() + 'px';
+    const width = (this.width || this.el.nativeElement.clientWidth) + 'px';
 
-    this.placeholder.style.width = width + 'px';
+    this.placeholder.style.width = width;
     this.placeholder.style.height = this.el.nativeElement.offsetHeight + 'px';
 
-    this.el.nativeElement.css({
-      top: 0,
-      width: width
-    });
+    this.renderer.setStyle(this.el.nativeElement, 'top', '0');
+    this.renderer.setStyle(this.el.nativeElement, 'width', width);
 
-    this.el.nativeElement.addClass('floating');
+    this.renderer.addClass(this.el.nativeElement, 'floating');
 
     if (this.always) {
-      this.el.nativeElement.addClass('always');
+      this.renderer.addClass(this.el.nativeElement, 'always');
     }
 
     if (this.enabled) {
@@ -282,13 +284,13 @@ export class FloatDirective {
 
   setStatic() {
     this.floating = false;
-    this.el.nativeElement.css('top', '');
-    this.el.nativeElement.css('width', this.width || '');
+    this.renderer.setStyle(this.el.nativeElement, 'top', '');
+    this.renderer.setStyle(this.el.nativeElement, 'width', this.width || '');
 
-    this.el.nativeElement.removeClass('floating');
+    this.renderer.addClass(this.el.nativeElement, 'floating');
 
     if (this.always) {
-      this.el.nativeElement.removeClass('always');
+      this.renderer.addClass(this.el.nativeElement, 'always');
     }
 
     this.placeholder.style.display = 'none';

@@ -19,9 +19,9 @@
 </accordion>
  -->
 
-<accordion [openId]="open">
-  <accordion-group [id]="id + '_usage'" identifier="'default'">
-    <div accordion-heading>
+<accordion [openId]="open" #accordion>
+  <accordion-group [id]="id + '_usage'" [identifier]="identifier" [accordion]="accordion">
+    <div accordionHeading>
       <h5>
         <a href>
           <accordion-chevron [isOpen]="open"></accordion-chevron>
@@ -29,8 +29,8 @@
         </a>
       </h5>
     </div>
-    <div accordion-body>
-      <ajax-loading-indicator *ngIf="loading"></ajax-loading-indicator>
+    <div accordionBody>
+      <app-ajax-loading-indicator *ngIf="loading"></app-ajax-loading-indicator>
       <div *ngIf="!loading">
         <usage *ngIf="hasReferrers()" [usage]="usage" [showLinks]="true" [context]="context"></usage>
         <p *ngIf="!loading || !hasReferrers()" translate>No referrers</p>

@@ -43,23 +43,23 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { SearchController, TextAnalysis } from 'app/types/filter';
 import { isDefined } from '@mju-psi/yti-common-ui';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'text-filter',
   template: `
     <div class="input-group input-group-lg input-group-search">
       <input
-        autofocus
         type="text"
         class="form-control"
         placeholder="{{ placeholder | translate }}"
         autocomplete="off"
         id="text_filter_search_input"
         [(ngModel)]="searchText"
-        [ngModelOptions]="{ updateOn: 'default blur', debounce: { 'default': 500, 'blur': 0 } }"
         (ngModelChange)="onSearchTextChange()"
-        ignore-dirty
         [keyControl]="searchController.searchResults"
+        ignoreDirty
       />
     </div>
   `
@@ -70,14 +70,20 @@ export class TextFilterComponent<T> implements OnInit {
   @Input() searchText: string;
   @Input() contentExtractors: string;
 
+  modelChanged = new Subject<string>();
+
   constructor() {}
 
   ngOnInit() {
     this.searchController.addFilter((item: TextAnalysis<T>) => !this.searchText || isDefined(item.matchScore) || item.score < 2);
+
+    this.modelChanged.pipe(debounceTime(500)).subscribe(() => {
+      this.searchController.search();
+    })
   }
 
-  onSearchTextChange() {
-    this.searchController.search();
+  onSearchTextChange() {;
+    this.modelChanged.next();
   }
 
 }
