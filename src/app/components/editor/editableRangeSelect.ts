@@ -57,13 +57,56 @@
 // }
 
 
-import { Component, Input, OnInit } from '@angular/core';
-
+import { Component, ContentChild, ElementRef, Input, OnInit, Optional, Renderer2 } from '@angular/core';
+import { NgForm, NgModel } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
+import { INgModelController } from 'angular';
+import { EditableForm } from 'app/components/form/editableEntityController';
+import { DataType, dataTypes } from 'app/entities/dataTypes';
 
 @Component({
   selector: 'editable-range-select',
-  template: ''
-})
-export class EditableRangeSelectComponent  {
+  template: `
+    <div class="editable-wrap form-group">
+      <editable-label [title]="'Range'" [inputId]="id" [required]="true"></editable-label>
 
+      <div *ngIf="isEditing()">
+        <localized-select [id]="id" [values]="ranges" [(value)]="range" [displayNameFormatter]="displayNameFormatter"></localized-select>
+      </div>
+
+      <div *ngIf="!isEditing()" class="content">
+        <span>{{ displayName }}</span>
+      </div>
+
+      <error-messages [ngModelController]="inputNgModelCtrl"></error-messages>
+    </div>
+  `
+})
+export class EditableRangeSelectComponent implements OnInit {
+  @Input() range: DataType;
+  @Input() id: string;
+  @Input() form: NgForm;
+
+  ranges: DataType[] = dataTypes;
+  @ContentChild(NgModel) inputNgModelCtrl!: NgModel;
+
+  displayNameFormatter = (value: string, translateService: TranslateService) =>
+    value ? `${translateService.instant(value)} (${value})` : '';
+
+  constructor(
+    private translateService: TranslateService,
+    private elementRef: ElementRef,
+    private renderer: Renderer2
+  ) {}
+
+  ngOnInit() {
+  }
+
+  isEditing() {
+    return this.form && this.form.form.editing;
+  }
+
+  get displayName() {
+    return this.range ? this.displayNameFormatter(this.range, this.translateService) : '';
+  }
 }

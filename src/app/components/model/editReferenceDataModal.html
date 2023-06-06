@@ -1,4 +1,4 @@
-<form name="editCodeSchemeForm" implicit-edit-mode>
+<!-- <form name="editCodeSchemeForm">
 
   <div class="modal-header">
     <h4 class="modal-title">
@@ -30,6 +30,43 @@
   <div class="modal-footer">
     <button class="btn btn-action" type="button" ng-click="$ctrl.create()" ng-disabled="!editCodeSchemeForm.$valid" translate>Edit</button>
     <button class="btn btn-link" type="button" ng-click="$ctrl.cancel()" translate>Cancel</button>
+  </div>
+
+</form> -->
+
+
+<form name="editCodeSchemeForm"  [implicitEditMode]="form" #form="ngForm">
+
+  <div class="modal-header">
+    <h4 class="modal-title">
+      <a><i (click)="cancel()" class="fas fa-times"></i></a>
+      <span translate>Edit reference data</span>
+    </h4>
+  </div>
+
+  <div class="modal-body">
+    <editable title="Reference data URI" [context]="context" autofocus [form]="form">
+      <div class="input-group input-group-md">
+        <input id="uri" type="text" class="form-control" required uriInput="free-url" [(ngModel)]="id" #editableInput/>
+      </div>
+    </editable>
+
+    <editable title="Reference data label" [context]="context" [form]="form">
+      <div class="input-group input-group-md">
+        <input id="label" type="text" class="form-control" required stringInput="label" [(ngModel)]="title" #editableInput/>
+      </div>
+    </editable>
+
+    <editable title="Description" [context]="context" [form]="form">
+      <div class="input-group input-group-md">
+        <textarea id="description" class="form-control" required stringInput [(ngModel)]="description" #editableInput></textarea>
+      </div>
+    </editable>
+  </div>
+
+  <div class="modal-footer">
+    <button class="btn btn-action" type="button" (click)="create()" [disabled]="!form.valid" translate>Edit</button>
+    <button class="btn btn-link" type="button" (click)="cancel()" translate>Cancel</button>
   </div>
 
 </form>

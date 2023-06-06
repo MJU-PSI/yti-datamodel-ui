@@ -61,6 +61,7 @@
 //   };
 // };
 
+// TODO ALES
 import { Directive } from '@angular/core';
 
 @Directive({

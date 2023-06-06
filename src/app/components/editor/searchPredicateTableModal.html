@@ -169,76 +169,84 @@
     <div class="search-table-modal-search-row">
 
       <text-filter class="search-row-search-text"
-                   [search-text]="searchText"
-                   [search-controller]="this"
-                   [content-extractors]="contentExtractors"
+                   [(searchText)]="searchText"
+                   [searchController]="this"
+                   [contentExtractors]="contentExtractors"
                    [placeholder]="'search ' + type"></text-filter>
 
       <div class="search-row-selections">
         <content-filter class="search-row-content-selection"
-                        [search-controller]="this"
-                        [content-matchers]="contentMatchers"
-                        [content-extractors]="contentExtractors"></content-filter>
+                        [searchController]="this"
+                        [contentMatchers]="contentMatchers"
+                        [contentExtractors]="contentExtractors"></content-filter>
       </div>
 
-      <excluded-filter [search-controller]="this"
-                       [search-text]="searchText"
+      <excluded-filter [searchController]="this"
+                       [searchText]="searchText"
                        [exclude]="filterExclude"></excluded-filter>
     </div>
 
     <div class="row flex-shrink-0">
       <div class="col-12 limit-select-widths">
+
         <model-filter class="pull-left mr-2 mb-2"
-                      [search-controller]="this"
+                      [searchController]="this"
                       type="predicate"
                       [model]="model"
-                      [model-type]="showModelType"></model-filter>
+                      [modelType]="showModelType"></model-filter>
 
         <type-filter class="pull-left mr-2 mb-2"
-                     [search-controller]="this"
+                     [searchController]="this"
                      *ngIf="typeSelectable"
                      label="Predicate type"
-                     [default-type]="type"></type-filter>
+                     [defaultType]="type"></type-filter>
 
         <select id="predicate_information_domain_filter_dropdown"
+                name="predicate_information_domain"
                 class="form-control pull-left mr-2 mb-2"
                 style="width: auto"
-                [(ngModel)]="showInfoDomain">
-          <option [ngValue]="undefined" translate>All information domains</option>
-          <option *ngFor="let infoDomain of infoDomains" [ngValue]="infoDomain.label | translateValue: model">
+                [(ngModel)]="showInfoDomain"
+                (ngModelChange)="onShowInfoDomainChange()">
+          <option [ngValue]="null" translate>All information domains</option>
+          <option *ngFor="let infoDomain of infoDomains" [ngValue]="infoDomain.label">
             {{ infoDomain.label | translateValue: model }}
           </option>
         </select>
 
         <select id="predicate_model_type_filter_dropdown"
+                name="predicate_model_type"
                 class="form-control pull-left mr-2 mb-2"
                 style="width: auto"
-                [(ngModel)]="showModelType">
-          <option [ngValue]="undefined" translate>All types</option>
-          <option *ngFor="let modelType of modelTypes" [ngValue]="modelType | translate">
+                [(ngModel)]="showModelType"
+                (ngModelChange)="onShowModelTypeChange()">
+          <option [ngValue]="null" translate>All types</option>
+          <option *ngFor="let modelType of modelTypes" [ngValue]="modelType">
             {{ modelType | translate }}
           </option>
         </select>
 
         <select id="predicate_status_filter_dropdown"
+                name="predicate_status"
                 class="form-control pull-left mb-2"
                 style="width: auto"
-                [(ngModel)]="showStatus">
-          <option [ngValue]="undefined" translate>All statuses</option>
-          <option *ngFor="let status of statuses" [ngValue]="status | translate">
+                [(ngModel)]="showStatus"
+                (ngModelChange)="onShowStatusChange()">
+          <option [ngValue]="null" translate>All statuses</option>
+          <option *ngFor="let status of statuses" [ngValue]="status">
             {{ status | translate }}
           </option>
         </select>
       </div>
     </div>
 
+    {{loadingResults}}
     <div class="content-box search-results-table-container">
-      <ajax-loading-indicator *ngIf="loadingResults"></ajax-loading-indicator>
-      <app-search-predicate-table-modal-content *ngIf="!loadingResults" [sort-by]="sortBy" [model]="model"
-                                                [filter-exclude]="filterExclude"
-                                                [search-text]="searchText" [search-results]="
-                                                [selected-item]="selectedItem" [selection]="selection"
-                                                (item-selected)="selectItem($event)"
+      <app-ajax-loading-indicator *ngIf="loadingResults"></app-ajax-loading-indicator>
+      <app-search-predicate-table-modal-content *ngIf="!loadingResults" [sortBy]="sortBy" [model]="model"
+                                                [filterExclude]="filterExclude"
+                                                [searchText]="searchText" [searchResults]="searchResults"
+                                                [selectedItem]="selectedItem" [selection]="selection"
+                                                (itemSelected)="selectItem($event)"
                                                 [exclude]="exclude"
                                                 [type]="type">
       </app-search-predicate-table-modal-content>
@@ -264,25 +272,25 @@
     </button>
 
     <div class="pull-right dropup" ngbDropdown>
-      <button id="{{ 'predicate_' + selection.id + '_actions_button' }}"
+      <button id="{{ 'predicate_' + (selection && selection.id) + '_actions_button' }}"
               class="btn btn-language dropdown-toggle"
               [disabled]="!isSelectionPredicate()"
               ngbDropdownToggle>
         <span translate>Actions</span>
       </button>
 
-      <div ngbDropdownMenu class="dropdown-menu-right" [attr.aria-labelledby]="'predicate_' + selection.id + '_actions_button'">
-        <button id="{{ 'copy_predicate_' + selection.id + '_button' }}"
+      <div ngbDropdownMenu class="dropdown-menu-right" [attr.aria-labelledby]="'predicate_' + (selection && selection.id) + '_actions_button'">
+        <button id="{{ 'copy_predicate_' + (selection && selection.id) + '_button' }}"
                 class="dropdown-item"
                 (click)="copyPredicate(selection)">
           {{ 'Copy ' + type | translate }}
         </button>
-        <button id="{{ 'create_sub_predicate_' + selection.id + '_button' }}"
+        <button id="{{ 'create_sub_predicate_' + (selection && selection.id) + '_button' }}"
                 class="dropdown-item"
                 (click)="createSubPredicate(selection)">
           {{ 'Create sub ' + type | translate }}
         </button>
-        <button id="{{ 'create_super_predicate_' + selection.id + '_button' }}"
+        <button id="{{ 'create_super_predicate_' + (selection && selection.id) + '_button' }}"
                 class="dropdown-item"
                 (click)="createSuperPredicate(selection)">
           {{ 'Create super ' + type | translate }}
@@ -293,7 +301,7 @@
     <button type="button" class="btn btn-link cancel" (click)="close()" translate>Cancel</button>
 
     <div class="alert alert-danger" role="alert" *ngIf="cannotConfirm">
-      <span class="fas fa-exclamation-circle" aria-hidden="true"></span>
+      <span class="fas fa-exclamation-circle" attr.aria-hidden="true"></span>
       <span>{{ cannotConfirm | translate }}</span>
     </div>
 

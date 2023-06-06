@@ -19,13 +19,19 @@
 //   maximized: boolean;
 // }
 
-import { Component  } from '@angular/core';
-
+import { Component, Input } from '@angular/core';
+import { Class } from 'app/entities/class';
+import { Predicate } from 'app/entities/predicate';
+import { Model } from 'app/entities/model';
+import { ModelPageActions } from '../model/modelPage';
 
 @Component({
   selector: 'visualization-view',
-  template: ''
+  templateUrl: './visualizationView.html',
 })
-export class VisualizationViewComponent  {
-
+export class VisualizationViewComponent {
+  @Input() selection: Class | Predicate;
+  @Input() model: Model;
+  @Input() modelPageActions: ModelPageActions;
+  @Input() maximized: boolean;
 }

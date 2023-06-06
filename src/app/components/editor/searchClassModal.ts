@@ -248,7 +248,7 @@
 import { Component, Injectable, ViewChild } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SearchConceptModal, EntityCreation } from './searchConceptModal';
-import { ClassService } from 'app/services/classService';
+import { ClassService, DefaultClassService } from 'app/services/classService';
 import { LanguageService, Localizer } from 'app/services/languageService';
 import { AddNew } from 'app/components/common/searchResults';
 import { gettextCatalog as GettextCatalog } from 'angular-gettext';
@@ -358,7 +358,7 @@ class SearchClassController implements SearchController<ClassListItem> {
 
   searchFilters: SearchFilter<ClassListItem>[] = [];
 
-  constructor(private classService: ClassService,
+  constructor(private classService: DefaultClassService,
               languageService: LanguageService,
               private searchConceptModal: SearchConceptModal,
               private translateService: TranslateService,

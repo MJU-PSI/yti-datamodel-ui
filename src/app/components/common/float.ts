@@ -160,74 +160,111 @@
 //   }
 // }
 
-import { Directive, ElementRef, HostListener, Input, NgZone, Renderer2 } from '@angular/core';
-import { InteractiveHelpService } from 'app/help/services/interactiveHelpService';
+import { Directive, ElementRef, OnDestroy, AfterViewInit, NgZone, Input } from '@angular/core';
+import { requireDefined } from '@mju-psi/yti-common-ui';
 
-@Directive({
-  selector: '[float]',
-})
-export class FloatDirective {
+interface Location {
+  left: number;
+  top: number;
+}
 
-  @Input() float: string;
-  @Input() snap: string;
-  @Input() always: string;
-  @Input() width: string;
+@Directive({ selector: '[appFloat]' })
+export class FloatDirective implements AfterViewInit, OnDestroy {
 
+  @Input() setWidth = true;
+
+  element: HTMLElement;
   placeholder: HTMLElement;
 
-  elementStaticPosition: {
-    left: number;
-    top: number;
-  };
-
   floating = false;
-  enabled = true;
-  timeoutId: any = null;
+  elementStaticLocation: Location;
 
-  constructor(private el: ElementRef,
-              private renderer: Renderer2
-              // private interactiveHelpService: InteractiveHelpService,
-             ) {}
+  constructor(element: ElementRef, private zone: NgZone) {
+    this.element = element.nativeElement as HTMLElement;
+  }
 
   ngAfterViewInit() {
 
-    const placeholderClass = this.float;
-    this.elementStaticPosition = this.el.nativeElement.getBoundingClientRect();
+    this.zone.runOutsideAngular(() => {
+      window.addEventListener('scroll', this.onWindowScroll);
+    });
 
-    this.placeholder = this.renderer.createElement('div');
-    if (placeholderClass.trim() !== '') {
-      this.renderer.addClass(this.placeholder, placeholderClass);
-    }
-    this.renderer.setStyle(this.placeholder, 'display', 'none');
-    this.renderer.insertBefore(this.el.nativeElement.parentNode, this.placeholder, this.el.nativeElement);
+    this.elementStaticLocation = this.calculateElementLocation();
+
+    const placeholder = document.createElement('div');
+    placeholder.hidden = true;
+
+    requireDefined(this.element.parentElement).insertBefore(placeholder, this.element);
+
+    this.placeholder = placeholder;
   }
 
-  @HostListener('window:scroll')
-  onWindowScroll() {
-    const snap = (destination: number ) => {
-      const diff = destination - window.pageYOffset;
-      if (Math.abs(diff) < 3) {
-        scrollTo(window.pageXOffset, destination + 1);
-      } else if (diff < 80 && diff > 0) {
-        scrollTo(window.pageXOffset, window.pageYOffset + ((destination - window.pageYOffset) / 2));
-        setTimeout(snap, 20, destination);
-      }
-    };
+  ngOnDestroy() {
+    window.removeEventListener('scroll', this.onWindowScroll);
+    requireDefined(this.placeholder.parentElement).removeChild(this.placeholder);
+  }
 
-    if (this.shouldSnap()) {
-      if (this.timeoutId) {
-        clearTimeout(this.timeoutId);
-      }
+  calculateElementLocation(): Location {
+    const rect = this.element.getBoundingClientRect();
 
-      this.timeoutId = setTimeout(snap, 200, this.elementStaticPosition.top);
+    return {
+      left: rect.left + window.pageXOffset,
+      top: rect.top + window.pageYOffset
+    }
+  }
+
+  isFloatingPosition() {
+    return window.pageYOffset > this.elementStaticLocation.top;
+  }
+
+  isStaticPosition() {
+    return window.pageYOffset <= this.elementStaticLocation.top;
+  }
+
+  isInitialized() {
+    return this.elementStaticLocation.top > 0;
+  }
+
+  setFloating() {
+    this.floating = true;
+
+    const rect = this.element.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+
+    this.placeholder.style.width = width + 'px';
+    this.placeholder.style.height = height + 'px';
+
+    this.element.style.top = '0';
+
+    if (this.setWidth) {
+      this.element.style.width = width + 'px';
     }
 
-    if (!this.floating) {
-      const offset = this.el.nativeElement.getBoundingClientRect();
+    this.element.classList.add('floating');
+  }
 
-      if (offset.top > 0) {
+  setStatic() {
+    this.floating = false;
+    this.element.style.top = '';
+
+    if (this.setWidth) {
+      this.element.style.width = '';
+    }
+
+    this.element.classList.remove('floating');
+    this.placeholder.hidden = true;
+  }
+
+  onWindowScroll = () => {
+
+    if (!this.floating) {
+
+      const location = this.calculateElementLocation();
+
+      if (location.top > 0) {
         // re-refresh has to be done since location can change due to accordion etc
-        this.elementStaticPosition = offset;
+        this.elementStaticLocation = location;
       }
     }
 
@@ -237,62 +274,10 @@ export class FloatDirective {
           this.setStatic();
         }
       } else {
-        if (this.enabled && this.isFloatingPosition()) {
+        if (this.isFloatingPosition()) {
           this.setFloating();
         }
       }
     }
-  }
-
-  isFloatingPosition() {
-    return window.pageYOffset >= this.elementStaticPosition.top;
-  }
-
-  isStaticPosition() {
-    return window.pageYOffset < this.elementStaticPosition.top;
-  }
-
-  shouldSnap() {
-    // return this.interactiveHelpService.isClosed() && this.snap === 'true';
-    return true;
-  }
-
-  isInitialized() {
-    return this.elementStaticPosition.top > 0;
-  }
-
-  setFloating() {
-    this.floating = true;
-    const width = (this.width || this.el.nativeElement.clientWidth) + 'px';
-
-    this.placeholder.style.width = width;
-    this.placeholder.style.height = this.el.nativeElement.offsetHeight + 'px';
-
-    this.renderer.setStyle(this.el.nativeElement, 'top', '0');
-    this.renderer.setStyle(this.el.nativeElement, 'width', width);
-
-    this.renderer.addClass(this.el.nativeElement, 'floating');
-
-    if (this.always) {
-      this.renderer.addClass(this.el.nativeElement, 'always');
-    }
-
-    if (this.enabled) {
-      this.placeholder.style.display = 'block';
-    }
-  }
-
-  setStatic() {
-    this.floating = false;
-    this.renderer.setStyle(this.el.nativeElement, 'top', '');
-    this.renderer.setStyle(this.el.nativeElement, 'width', this.width || '');
-
-    this.renderer.addClass(this.el.nativeElement, 'floating');
-
-    if (this.always) {
-      this.renderer.addClass(this.el.nativeElement, 'always');
-    }
-
-    this.placeholder.style.display = 'none';
   }
 }

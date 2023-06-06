@@ -1,4 +1,4 @@
-<h4>
+<!-- <h4>
   <span translate>Concept information</span>
 </h4>
 
@@ -22,5 +22,32 @@
     <non-editable-vocabulary vocabulary="$ctrl.concept.vocabulary"></non-editable-vocabulary>
 
     <non-editable data-title="Concept modified at" value="$ctrl.concept.modifiedAt" context="$ctrl.context"></non-editable>
+  </div>
+</div> -->
+
+<h4>
+  <span translate>Concept information</span>
+</h4>
+
+<div class="row">
+  <div class="col-md-12">
+    <editable title="Concept label" [context]="model" [form]="form">
+      <div class="input-group input-group-md">
+        <input id="conceptLabel" type="text" class="form-control" localizedInput="label" [context]="model" [(ngModel)]="concept.label" #editableInput/>
+      </div>
+    </editable>
+
+    <editable title="Definition" [context]="model" [form]="form">
+      <div class="input-group input-group-md">
+        <textarea id="conceptComment" class="form-control" localized-input="required" [context]="model" [(ngModel)]="concept.definition" #editableInput></textarea>
+      </div>
+    </editable>
+
+    <non-editable title="Concept id" value="concept.id" [context]="context" link="concept.href"></non-editable>
+    <non-editable title="Concept status" value="concept.status" value-as-localization-key="true" [context]="context"></non-editable>
+
+    <non-editable-vocabulary vocabulary="concept.vocabulary"></non-editable-vocabulary>
+
+    <non-editable title="Concept modified at" value="concept.modifiedAt" [context]="context"></non-editable>
   </div>
 </div>

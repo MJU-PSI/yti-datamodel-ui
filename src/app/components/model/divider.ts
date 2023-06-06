@@ -79,13 +79,63 @@
 //   }
 // }
 
-import { Component  } from '@angular/core';
 
+import { Component, HostListener } from '@angular/core';
+import { SessionService } from 'app/services/sessionService';
+
+const leftWidth = 400;
+const minSelectionWidth = 300;
+const minVisualizationWidth = 361;
+const minMaxIconWidth = 52;
 
 @Component({
   selector: 'divider',
-  template: ''
+  template: `<div class="divider" id="divider_div" (mousedown)="moveDivider($event)"></div>`,
 })
-export class DividerComponent  {
+export class DividerComponent {
 
+  constructor(private sessionService: SessionService) {
+    this.setConstrainedSelectionWidth(this.sessionService.selectionWidth);
+  }
+
+  get selectionWidth() {
+    return this.sessionService.selectionWidth;
+  }
+
+  set selectionWidth(value: number) {
+    this.sessionService.selectionWidth = value;
+  }
+
+  @HostListener('window:resize')
+  onResize() {
+    this.setConstrainedSelectionWidth(this.selectionWidth);
+  }
+
+  setConstrainedSelectionWidth(selectionWidth: number) {
+    const maxSelectionWidth = DividerComponent.maxWidth - minVisualizationWidth;
+    this.selectionWidth = Math.max(minSelectionWidth, Math.min(maxSelectionWidth, selectionWidth));
+  }
+
+  static get maxWidth() {
+    return document.body.clientWidth - leftWidth - minMaxIconWidth;
+  }
+
+  moveDivider(mouseDown: MouseEvent) {
+
+    mouseDown.preventDefault();
+
+    const offset = mouseDown.clientX - this.selectionWidth;
+
+    const onMouseMove = (event: MouseEvent) => {
+      this.setConstrainedSelectionWidth(event.clientX - offset)
+    };
+
+    const onMouseUp = () => {
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('mouseup', onMouseUp);
+    };
+
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('mouseup', onMouseUp);
+  }
 }

@@ -1,4 +1,4 @@
-<div class="row">
+<!-- <div class="row">
   <div class="col-md-12">
     <h4 class="pull-left">{{$ctrl.predicate.normalizedType + ' information' | capitalize | translate}}</h4>
 
@@ -82,6 +82,97 @@
   <div class="row">
     <div class="col-md-12">
       <usage-panel id="{{$ctrl.id + '_' + $ctrl.predicate.id.uri}}" entity="$ctrl.predicate" context="$ctrl.model"></usage-panel>
+    </div>
+  </div>
+
+</div> -->
+
+
+<div class="row">
+  <div class="col-md-12">
+    <h4 class="pull-left">{{predicate.normalizedType + ' information' | capitalize | translate}}</h4>
+
+    <button *ngIf="isEditing() && !predicate.unsaved"
+            id="predicate_change_type"
+            type="button"
+            class="btn btn-link pull-right"
+            style="margin-left: 5px"
+            [disabled]="!predicate.inUnstableState"
+            (click)="changeType()">
+      {{'Convert to ' + changedType | translate}}
+    </button>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <editable title="{{predicate.normalizedType + ' label' | capitalize}}" [context]="model" [autofocus]="shouldAutofocus" [form]="form">
+      <input id="predicateName" class="form-control" type="text" localizedInput="label" [context]="model" [(ngModel)]="predicate.label" #editableInput/>
+    </editable>
+  </div>
+  <div class="col-md-6">
+    <editable title="Description" [context]="model" [form]="form">
+      <textarea id="predicateComment" class="form-control" localizedInput [context]="model" [(ngModel)]="predicate.comment" #editableInput></textarea>
+    </editable>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <editable title="{{predicate.normalizedType + ' id' | capitalize}}" (link)="linkToIdProperty()" [context]="model" [clipboard]="predicate.id.uri" [form]="form">
+      <input id="predicateId" class="form-control" type="text" required idInput="predicate" [old]="oldPredicate" [(ngModel)]="predicate.id" [disabled]="!predicate.inUnstableState" #editableInput/>
+    </editable>
+
+    <editable title="{{'Super' + predicate.normalizedType}}" (link)="linkToSuperproperty()" [context]="model" [form]="form">
+      <uri-select id="superPredicate" [type]="predicate.normalizedType" [uri]="predicate.subPropertyOf" [model]="model" #editableInput></uri-select>
+    </editable>
+
+    <defined-by [entity]="predicate" [model]="model"></defined-by>
+  </div>
+
+  <div class="col-md-6">
+
+    <editable-state-select *ngIf="!predicate.unsaved" id="predicateState" [state]="predicate.status" [model]="model" [form]="form"></editable-state-select>
+    <editable-range-select *ngIf="predicate.isAttribute()" id="predicateRange" [range]="predicate.dataType" [form]="form"></editable-range-select>
+
+    <editable *ngIf="predicate.isAssociation()" title="Value class" name="Value class" (link)="linkToValueClass()" [context]="model" [form]="form">
+      <uri-select id="predicateValueClass" type="class" [uri]="predicate.valueClass" [model]="model" [defaultToCurrentModel]="true" #editableInput></uri-select>
+    </editable>
+
+    <!-- TODO ALES -->
+    <!-- <editable-multiple-uri-select id="equivalentProperty" [type]="predicate.normalizedType" [(ngModel)]="predicate.equivalentProperties" [model]="model" title="{{'Equivalent ' + predicate.normalizedType}}" [requiredByInUse]="true" [form]="form"></editable-multiple-uri-select> -->
+  </div>
+</div>
+
+
+<subject-view id="{{id + '_subject'}}" [entity]="predicate" [model]="model" [form]="form"></subject-view>
+
+<hr />
+
+<div *ngIf="!predicate.unsaved">
+
+  <h4 translate>Additional information</h4>
+
+  <div class="row">
+    <div class="col-md-6">
+      <non-editable title="Created at" [value]="predicate.createdAt" [context]="model"></non-editable>
+    </div>
+    <div class="col-md-6">
+      <non-editable title="Modified at" [value]="predicate.modifiedAt" [context]="model"></non-editable>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <editable title="Editorial note" [context]="model" [form]="form">
+        <textarea id="predicateEditorialNote" class="form-control" localizedInput="free" [context]="model" [(ngModel)]="predicate.editorialNote" #editableInput></textarea>
+      </editable>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <usage-panel id="{{id + '_' + predicate.id.uri}}" [entity]="predicate" [context]="model"></usage-panel>
     </div>
   </div>
 

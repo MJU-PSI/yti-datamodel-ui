@@ -20,13 +20,21 @@
 //   }
 // }
 
-import { Component  } from '@angular/core';
 
+import { Component, Input } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'selection-view',
-  template: ''
+  templateUrl: './selectionView.html'
 })
-export class SelectionViewComponent  {
+export class SelectionViewComponent {
+  @Input() editableController: any;
+  @Input() model: any;
+  @Input() idPrefix: string | undefined;
+  @Input() form: NgForm;
 
+  id(section: string): string | undefined {
+    return this.idPrefix ? this.idPrefix + section : undefined;
+  }
 }

@@ -21,25 +21,25 @@ import { TranslateService } from '@ngx-translate/core';
           <thead>
           <tr>
             <th class="name-col">
-              <!-- <sort-by-column-header [headerText]="'Name'"
+              <sort-by-column-header [headerText]="'Name'"
                                      [columnName]="'name'"
                                      [model]="model"
                                      [sortBy]="sortBy"
-                                     [filterExclude]="filterExclude"></sort-by-column-header> -->
+                                     [filterExclude]="filterExclude"></sort-by-column-header>
             </th>
             <th class="model-col">
-              <!-- <sort-by-column-header [headerText]="'Model'"
+              <sort-by-column-header [headerText]="'Model'"
                                      [columnName]="'model'"
                                      [model]="model"
                                      [sortBy]="sortBy"
-                                     [filterExclude]="filterExclude"></sort-by-column-header> -->
+                                     [filterExclude]="filterExclude"></sort-by-column-header>
             </th>
             <th class="description-col">
-              <!-- <sort-by-column-header [headerText]="'Description'"
+              <sort-by-column-header [headerText]="'Description'"
                                      [columnName]="'description'"
                                      [model]="model"
                                      [sortBy]="sortBy"
-                                     [filterExclude]="filterExclude"></sort-by-column-header> -->
+                                     [filterExclude]="filterExclude"></sort-by-column-header>
             </th>
             <!-- Showing of super class is not implemented yet. -->
             <!-- <th style="width: 20%" translate>Super class</th> -->
@@ -56,7 +56,7 @@ import { TranslateService } from '@ngx-translate/core';
         </table>
         <div class="header-table-padding"></div>
       </div>
-      <!-- <virtual-scroller #scroll class="scroller-component" [items]="searchResults" [enableUnequalChildrenSizes]="true"
+      <virtual-scroller #scroll class="scroller-component" [items]="searchResults" [enableUnequalChildrenSizes]="true"
                         (vsEnd)="scrollEnd($event)">
         <table class="table table-sm content-table">
           <tbody #container>
@@ -98,12 +98,12 @@ import { TranslateService } from '@ngx-translate/core';
             <td class="description-col">
               <highlight [text]="searchResult.comment" [context]="model" [search]="searchText"></highlight>
             </td>
-            <! -- Showing of super class is not implemented yet. -->
+            <!-- Showing of super class is not implemented yet. -->
             <!--
             <td>
               {{$ctrl.model.linkToResource(searchResult.superClassOf)}}
             </td>
-            -- >
+            -->
             <td *ngIf="!showOnlyExternalClasses" class="modified-at-col">
               {{showItemValue(searchResult.modifiedAt)}}
             </td>
@@ -119,7 +119,7 @@ import { TranslateService } from '@ngx-translate/core';
           </tr>
           </tbody>
         </table>
-      </virtual-scroller> -->
+      </virtual-scroller>
     </div>
   `
 })

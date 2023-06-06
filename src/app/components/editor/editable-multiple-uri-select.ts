@@ -122,39 +122,40 @@
 import { Component, Inject, Input, OnInit } from '@angular/core';
 import { IPromise } from 'angular';
 import { SearchPredicateModal } from './searchPredicateModal';
-import { SearchClassModal } from './searchClassModal';
+import { SearchClassModal, defaultTextForSelection } from './searchClassModal';
 import { Uri } from 'app/entities/uri';
 import { EditableForm } from 'app/components/form/editableEntityController';
 import { collectProperties } from '@mju-psi/yti-common-ui';
 import { createExistsExclusion } from 'app/utils/exclusion';
 import { DataSource } from 'app/components/form/dataSource';
-import { ClassService } from 'app/services/classService';
-import { PredicateService } from 'app/services/predicateService';
+import { ClassService, DefaultClassService } from 'app/services/classService';
+import { DefaultPredicateService, PredicateService } from 'app/services/predicateService';
 import { ClassListItem } from 'app/entities/class';
 import { PredicateListItem } from 'app/entities/predicate';
 import { ClassType, KnownPredicateType } from 'app/types/entity';
 import { Model } from 'app/entities/model';
 import { modalCancelHandler } from 'app/utils/angular';
+import { NgForm } from '@angular/forms';
 
 type DataType = ClassListItem|PredicateListItem;
 
 @Component({
   selector: 'editable-multiple-uri-select',
   template: `
-    <!-- <editable-multiple id="{{id + '_editable_multiple'}}" data-title="{{title}}" [(ngModel)]="ngModel" [link]="link" [input]="input">
-      <input-container>
+    <editable-multiple id="{{id + '_editable_multiple'}}" [title]="title" [(ngModel)]="ngModel" [link]="link" [input]="input" [form]="form">
+      <!-- <input-container> -->
         <autocomplete [datasource]="datasource" [valueExtractor]="valueExtractor" [excludeProvider]="createExclusion">
           <input id="{{id + '_input'}}"
                  type="text"
-                 restrict-duplicates="{{ngModel}}"
-                 uri-input
-                 ignore-form
+                 restrictDuplicates="{{ngModel}}"
+                 uriInput
+                 ignoreForm
                  [(ngModel)]="input"
                  [model]="model" />
         </autocomplete>
-      </input-container>
+      <!-- </input-container> -->
 
-      <button-container>
+      <div buttonContainer>
         <button id="{{id + '_choose_' + type + '_multiple_uri_select_button'}}"
                 *ngIf="isEditing()"
                 type="button"
@@ -163,8 +164,8 @@ type DataType = ClassListItem|PredicateListItem;
                 (click)="selectUri()">
           {{('Choose ' + type) | translate}}
         </button>
-      </button-container>
-    </editable-multiple> -->
+      </div>
+    </editable-multiple>
   `
 })
 export class EditableMultipleUriSelectComponent implements OnInit {
@@ -177,6 +178,7 @@ export class EditableMultipleUriSelectComponent implements OnInit {
   @Input() title: string;
   @Input() customDataSource: DataSource<DataType>;
   @Input() requiredByInUse: boolean;
+  @Input() form: NgForm;
 
   addUri: (uri: Uri) => void;
   datasource: DataSource<DataType>;
@@ -185,12 +187,10 @@ export class EditableMultipleUriSelectComponent implements OnInit {
   link = (uri: Uri) => this.model.linkToResource(uri);
   createExclusion = () => createExistsExclusion(collectProperties(this.ngModel, uri => uri.uri));
 
-  form: EditableForm;
-
   constructor(private searchPredicateModal: SearchPredicateModal,
               private searchClassModal: SearchClassModal,
-              @Inject('classService') private classService: ClassService,
-              @Inject('PredicateService') private predicateService: PredicateService) {}
+              private classService: DefaultClassService,
+              private predicateService: DefaultPredicateService) {}
 
   ngOnInit() {
     const modelProvider = () => this.model;
@@ -203,28 +203,28 @@ export class EditableMultipleUriSelectComponent implements OnInit {
   }
 
   isEditing() {
-    return this.form && this.form.editing;
+    return this.form && this.form.form.editing;
   }
 
   selectUri() {
     let promise: Promise<DataType>;
     if (!this.customDataSource) {
       if (this.type === 'class' || this.type === 'shape') {
-        // promise = this.searchClassModal.openWithOnlySelection(this.model, false, this.createExclusion(), defaultTextForSelection, this.requiredByInUse);
+        promise = this.searchClassModal.openWithOnlySelection(this.model, false, this.createExclusion(), defaultTextForSelection, this.requiredByInUse);
       } else {
-        // promise = this.searchPredicateModal.openWithOnlySelection(this.model, this.type, this.createExclusion(), this.requiredByInUse);
+        promise = this.searchPredicateModal.openWithOnlySelection(this.model, this.type, this.createExclusion(), this.requiredByInUse);
       }
     } else {
       if (this.type === 'class' || this.type === 'shape') {
         console.error('Custom data source for class selection dialog not yet supported');
         return;
       }
-      // promise = this.searchPredicateModal.openWithCustomDataSource(this.model, this.type, this.customDataSource as DataSource<PredicateListItem>, this.createExclusion());
+      promise = this.searchPredicateModal.openWithCustomDataSource(this.model, this.type, this.customDataSource as DataSource<PredicateListItem>, this.createExclusion());
     }
 
-    // promise.then(result => {
-    //   this.ngModel.push(result.id);
-    // }).catch(modalCancelHandler);
+    promise.then(result => {
+      this.ngModel.push(result.id);
+    }).catch(modalCancelHandler);
   }
 
 }

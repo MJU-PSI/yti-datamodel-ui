@@ -51,11 +51,11 @@
         </div>
       </div>
 
-      <ng-content select="[slot=input]"></ng-content>
+      <ng-content select="[inputContainer]"></ng-content>
     </div>
 
-    <!-- <error-messages [ngModelController]="ngModelControllers"></error-messages> -->
+    <error-messages [ngModelController]="ngModelControllers"></error-messages>
 
-    <ng-content select="[slot=button]"></ng-content>
+    <ng-content select="[buttonContainer]"></ng-content>
   </div>
 </div>

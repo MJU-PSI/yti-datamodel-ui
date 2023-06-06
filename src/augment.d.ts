@@ -9,13 +9,13 @@ declare global {
 
 declare global {
 
-  interface Window {
-    jQuery: JQueryStatic;
-    encodeURIComponent: any;
-    requestAnimFrame(callback: FrameRequestCallback): number;
-    webkitRequestAnimationFrame(callback: FrameRequestCallback): number;
-    mozRequestAnimationFrame(callback: FrameRequestCallback): number;
-  }
+  // interface Window {
+  //   jQuery: JQueryStatic;
+  //   encodeURIComponent: any;
+  //   requestAnimFrame(callback: FrameRequestCallback): number;
+  //   webkitRequestAnimationFrame(callback: FrameRequestCallback): number;
+  //   mozRequestAnimationFrame(callback: FrameRequestCallback): number;
+  // }
 
   interface Error {
     stack?: string;

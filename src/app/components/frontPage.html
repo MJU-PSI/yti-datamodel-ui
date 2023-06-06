@@ -270,8 +270,7 @@
 
               <app-status class="status" [status]="model.status"></app-status>
 
-              <a [attr.id]="model.prefix + '_filtered_model_link'" class="name" href="#"
-                 (click)="selectModel(model)">{{model.label | translateValue}}</a>
+              <a class="name" [routerLink]="['/model', model.prefix]" [innerHTML]="model.label | translateValue:true"></a>
 
               <div class="meta-information-row">
                 <ul class="organizations dot-separated-list">

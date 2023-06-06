@@ -20,13 +20,25 @@
 // export class NonEditableVocabularyComponent {
 // }
 
-import { Component  } from '@angular/core';
+import { Component, Input  } from '@angular/core';
+import { Model } from 'app/entities/model';
 
 
 @Component({
   selector: 'non-editable-vocabulary',
-  template: ''
+  template: `
+      <div class="editable-wrap form-group">
+        <editable-label title="Vocabulary"></editable-label>
+        <span *ngIf="!link">{{vocabulary.title | translateValue: context}}</span>
+        <a *ngIf="link" [attr.href]="link">
+          {{vocabulary.title | translateValue: context}}
+          <i *ngIf="link" class="fas fa-external-link-alt x-small-item"></i>
+        </a>
+      </div>
+    `
 })
 export class NonEditableVocabularyComponent  {
-
+    @Input() vocabulary: any;
+    @Input() context: Model;
+    @Input() link: string;
 }

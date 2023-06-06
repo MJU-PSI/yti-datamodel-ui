@@ -146,7 +146,7 @@
     <div class="row mb-2">
       <div class="col-12">
         <text-filter class="pull-left"
-          [searchText]="searchText"
+          [(searchText)]="searchText"
           [searchController]="this"
           [contentExtractors]="contentExtractors"
           [placeholder]="'search reference data'"></text-filter>
@@ -224,25 +224,25 @@
 
       <div class="col-6 search-selection">
         <div *ngIf="!isSelectionFormData() && selection">
-          <reference-data-view data-title="Reference data information" [context]="model" [reference-data]="selection" [show-codes]="true"></reference-data-view>
+          <reference-data-view title="Reference data information" [context]="model" [referenceData]="selection" [showCodes]="true"></reference-data-view>
         </div>
 
         <div *ngIf="isSelectionFormData()">
-          <editable data-title="Reference data URI" [context]="model" autofocus>
+          <editable title="Reference data URI" [context]="model" autofocus>
             <div class="input-group input-group-md">
-              <input id="uri" type="text" class="form-control" required uri-input="free-url" [model]="model" [(ngModel)]="selection.uri" />
+              <input id="uri" type="text" class="form-control" required uriInput="free-url" [model]="model" [(ngModel)]="selection.uri" />
             </div>
           </editable>
 
-          <editable data-title="Reference data label" [context]="model">
+          <editable title="Reference data label" [context]="model">
             <div class="input-group input-group-md">
-              <input id="label" type="text" class="form-control" required string-input="label" [model]="model" [(ngModel)]="selection.label" />
+              <input id="label" type="text" class="form-control" required stringInput="label" [model]="model" [(ngModel)]="selection.label" />
             </div>
           </editable>
 
-          <editable data-title="Description" [context]="model">
+          <editable title="Description" [context]="model">
             <div class="input-group input-group-md">
-              <textarea id="description" class="form-control" required string-input [model]="model" [(ngModel)]="selection.description"></textarea>
+              <textarea id="description" class="form-control" required stringInput [model]="model" [(ngModel)]="selection.description"></textarea>
             </div>
           </editable>
         </div>
@@ -260,7 +260,7 @@
       <button type="button" class="btn btn-link cancel" (click)="close()" translate>Cancel</button>
 
       <div class="alert alert-danger" role="alert" *ngIf="cannotConfirm">
-        <span class="fas fa-exclamation-circle" aria-hidden="true"></span>
+        <span class="fas fa-exclamation-circle" [attr.aria-hidden]="true"></span>
         <span>{{cannotConfirm | translate}}</span>
       </div>
     </div>

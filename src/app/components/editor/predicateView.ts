@@ -114,13 +114,108 @@
 // }
 
 
-import { Component  } from '@angular/core';
-
+import { Component, Input, OnInit } from '@angular/core';
+import { DefaultPredicateService } from 'app/services/predicateService';
+import { EditableEntityController, Rights } from 'app/components/form/editableEntityController';
+import { DeleteConfirmationModal } from 'app/components/common/delete-confirmation-modal';
+import { ErrorModal } from 'app/components/form/errorModal';
+import { Association, Attribute } from 'app/entities/predicate';
+import { Model } from 'app/entities/model';
+import { LanguageContext } from 'app/types/language';
+import { EditorContainer, ModelControllerService } from 'app/components/model/modelControllerService';
+import { AuthorizationManagerService } from 'app/services/authorizationManagerService';
+import { UserService, changeToRestrictedStatus } from '@mju-psi/yti-common-ui';
+import { DatamodelConfirmationModalService } from 'app/services/confirmation-modal.service';
 
 @Component({
   selector: 'predicate-view',
-  template: ''
+  templateUrl: './predicateView.html'
 })
-export class PredicateViewComponent  {
+export class PredicateViewComponent extends EditableEntityController<Association | Attribute> implements OnInit {
 
+  @Input() id: string;
+  @Input() predicate: Association | Attribute;
+  @Input() model: Model;
+  @Input() modelController: ModelControllerService;
+  @Input() parent: EditorContainer;
+  @Input() width: number;
+
+  constructor(
+    private datamodelConfirmationModalService: DatamodelConfirmationModalService,
+    deleteConfirmationModal: DeleteConfirmationModal,
+    errorModal: ErrorModal,
+    private predicateService: DefaultPredicateService,
+    userService: UserService,
+    private authorizationManagerService: AuthorizationManagerService
+  ) {
+    super(deleteConfirmationModal, errorModal, userService);
+  }
+
+  ngOnInit() {
+    this.parent.registerView(this);
+  }
+
+  ngOnDestroy() {
+    this.parent.deregisterView(this);
+  }
+
+  create(entity: Association | Attribute): Promise<any> {
+    return this.predicateService.createPredicate(entity).then(() => this.modelController.selectionEdited(null, entity));
+  }
+
+  update(entity: Association | Attribute, oldEntity: Association | Attribute): Promise<any> {
+    return this.predicateService.updatePredicate(entity, oldEntity.id, this.model).then(() => this.modelController.selectionEdited(oldEntity, entity));
+  }
+
+  remove(entity: Association | Attribute): Promise<any> {
+    return this.predicateService.deletePredicate(entity.id, this.model).then(() => this.modelController.selectionDeleted(entity));
+  }
+
+  rights(): Rights {
+    return {
+      edit: () => this.authorizationManagerService.canEditPredicate(this.model, this.predicate),
+      remove: () => this.authorizationManagerService.canRemovePredicate(this.model, this.predicate)
+    };
+  }
+
+  getEditable(): Association | Attribute {
+    return this.predicate;
+  }
+
+  setEditable(editable: Association | Attribute) {
+    this.predicate = editable;
+  }
+
+  isReference(): boolean {
+    return this.predicate.definedBy.id.notEquals(this.model.id);
+  }
+
+  getRemoveText(): string {
+    const text = super.getRemoveText();
+    return !this.isReference() ? text : text + ' from this ' + this.model.normalizedType;
+  }
+
+  openDeleteConfirmationModal(): Promise<any> {
+    const onlyDefinedInModel = this.isReference() ? this.model : null;
+    return this.deleteConfirmationModal.open(this.getEditable(), this.getContext(), onlyDefinedInModel);
+  }
+
+  getContext(): LanguageContext {
+    return this.model;
+  }
+
+  confirmChangeToRestrictedStatus(entity: Association | Attribute, oldEntity: Association | Attribute): boolean {
+    return entity.status && oldEntity.status ? changeToRestrictedStatus(oldEntity.status, entity.status) : false;
+  }
+
+  confirmChangeToRestrictedStatusDialog(entity: Association | Attribute, oldEntity: Association | Attribute): Promise<any> | null {
+    return entity.status && oldEntity.status
+      ? changeToRestrictedStatus(oldEntity.status, entity.status) ? Promise.resolve(this.datamodelConfirmationModalService.openChangeToRestrictedStatus()) : null
+      : null;
+  }
+
+  confirmDialog(entity: Association | Attribute, oldEntity: Association | Attribute): Promise<any> | null {
+    // NOTE: This is not implemented or needed yet in PropertyView.
+    return null;
+  }
 }

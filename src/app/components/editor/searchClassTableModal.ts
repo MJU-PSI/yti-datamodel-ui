@@ -409,11 +409,12 @@ import { ClassificationService } from '../../services/classificationService';
 import { DefaultModelService } from '../../services/modelService';
 import { comparingLocalizable } from '../../utils/comparator';
 import { Language } from '../../types/language';
-import { DefinedByType, SortBy, ClassType } from '../../types/entity';
+import { DefinedByType, SortBy, ClassType, SortByTableColumn } from '../../types/entity';
 import { infoDomainMatches } from '../../utils/entity';
 import { ShowClassInfoModal } from './showClassInfoModal';
 import { SearchClassType } from '../../types/component';
 import { NgForm } from '@angular/forms';
+import { Uri } from 'app/entities/uri';
 
 export const noClassExclude = (_item: AbstractClass) => null;
 export const defaultTextForSelection = (_klass: Class) => 'Use class';
@@ -482,6 +483,7 @@ export class SearchClassTableModal {
   templateUrl: './searchClassTableModal.html',
 })
 export class SearchClassTableModalComponent implements SearchController<ClassListItem> {
+
   searchResults: ClassListItem[] = [];
   selection: Class | ExternalEntity | null;
   searchText = '';
@@ -510,6 +512,10 @@ export class SearchClassTableModalComponent implements SearchController<ClassLis
   private internalClasses: ClassListItem[] = [];
   private externalClasses: ClassListItem[] = [];
   private localizer: Localizer;
+  private selectionIdBefore: Uri;
+  private modelLanguageBefore: Language;
+  private sortByNameBefore: SortByTableColumn;
+  private sortByDescOrderBefore: boolean;
 
   public model: Model;
   public exclude: Exclusion<AbstractClass>;
@@ -530,6 +536,13 @@ export class SearchClassTableModalComponent implements SearchController<ClassLis
     private searchConceptModal: SearchConceptModal,
     private showClassInfoModal: ShowClassInfoModal
   ) {
+    this.showInfoDomain = null;
+    this.showModelType = null;
+    this.showClassType = null;
+    this.showStatus = null;
+  }
+
+  ngOnInit() {
     this.localizer = this.languageService.createLocalizer(this.model);
     this.loadingClasses = true;
     this.loadingExternalClasses = true;
@@ -544,17 +557,13 @@ export class SearchClassTableModalComponent implements SearchController<ClassLis
       descOrder: false
     };
 
-    const sortInfoDomains = () => {
-      this.infoDomains.sort(comparingLocalizable<Classification>(this.localizer, infoDomain => infoDomain.label));
-    };
-
-    classificationService.getClassifications().then(infoDomains => {
-      modelService.getModels().then(models => {
+    this.classificationService.getClassifications().then(infoDomains => {
+      this.modelService.getModels().then(models => {
         const modelCount = (infoDomain: Classification) =>
           models.filter(mod => infoDomainMatches(infoDomain, mod)).length;
 
         this.infoDomains = infoDomains.filter(infoDomain => modelCount(infoDomain) > 0);
-        sortInfoDomains();
+        this.sortInfoDomains();
       });
     });
 
@@ -570,18 +579,11 @@ export class SearchClassTableModalComponent implements SearchController<ClassLis
       this.loadingExternalClasses = false;
     };
 
-    classService.getAllClasses(this.model).then(results);
+    this.classService.getAllClasses(this.model).then(results);
 
     if (this.model.isOfType('profile')) {
-      classService.getExternalClassesForModel(this.model).then(externalResults);
+      this.classService.getExternalClassesForModel(this.model).then(externalResults);
     }
-
-    // $scope.$watch(() => this.selection && this.selection.id, selectionId => {
-    //   if (selectionId && this.selection instanceof ExternalEntity) {
-    //     this.externalClass = undefined;
-    //     classService.getExternalClass(selectionId, model).then(klass => this.externalClass = klass);
-    //   }
-    // });
 
     this.addFilter(classListItem =>
       !this.showStatus || classListItem.item.status === this.showStatus
@@ -598,28 +600,66 @@ export class SearchClassTableModalComponent implements SearchController<ClassLis
     this.addFilter(classListItem =>
       !this.showModelType || classListItem.item.definedBy.normalizedType === this.showModelType
     );
-
-    // $scope.$watch(() => this.showStatus, ifChanged<Status | null>(() => this.search()));
-    // $scope.$watch(() => this.showClassType, ifChanged<ClassType | null>(() => this.search()));
-    // $scope.$watch(() => this.showModelType, ifChanged<DefinedByType | null>(() => this.search()));
-    // $scope.$watch(() => this.showInfoDomain, ifChanged<Classification | null>(() => this.search()));
-    // $scope.$watch(() => this.sortBy.name, ifChanged<string>(() => this.search()));
-    // $scope.$watch(() => this.sortBy.descOrder, ifChanged<Boolean>(() => this.search()));
-    // $scope.$watch(() => languageService.getModelLanguage(model), ifChanged<Language>(() => {
-    //   sortInfoDomains();
-    //   this.search();
-    // }));
-    // $scope.$watch(() => this.showOnlyExternalClasses, ifChanged<Boolean>(() => {
-    //   if (this.showOnlyExternalClasses) {
-    //     this.showInfoDomain = null;
-    //     this.showClassType = null;
-    //     this.showModelType = null;
-    //     this.showStatus = null;
-    //   }
-
-    //   this.search();
-    // }));
   }
+
+  ngDoCheck() {
+    if(this.selection && this.selection.id !== this.selectionIdBefore){
+      if (this.selection.id && this.selection instanceof ExternalEntity) {
+        this.selectionIdBefore = this.selection.id;
+        this.externalClass = undefined;
+        this.classService.getExternalClass(this.selection.id, this.model).then(klass => this.externalClass = klass);
+      }
+    };
+
+    if(this.languageService.getModelLanguage(this.model) !== this.modelLanguageBefore) {
+      this.modelLanguageBefore = this.languageService.getModelLanguage(this.model);
+      if(this.infoDomains) {
+        this.sortInfoDomains();
+      }
+      this.search();
+    }
+
+    if(this.sortBy.name !== this.sortByNameBefore) {
+      this.sortByNameBefore = this.sortBy.name;
+      this.search();
+    }
+
+    if(this.sortBy.descOrder !== this.sortByDescOrderBefore) {
+      this.sortByDescOrderBefore = this.sortBy.descOrder;
+      this.search();
+    }
+  }
+
+  onShowClassTypeChange() {
+    this.search();
+  }
+
+  onShowModelTypeChange() {
+    this.search();
+  }
+
+  onShowInfoDomainChange() {
+    this.search();
+  }
+
+  onShowStatusChange() {
+    this.search();
+  }
+
+  onShowOnlyExternalClassesChange(value: boolean) {
+    if (value) {
+      this.showInfoDomain = null;
+      this.showClassType = null;
+      this.showModelType = null;
+      this.showStatus = null;
+    }
+
+    this.search();
+  }
+
+  sortInfoDomains() {
+    this.infoDomains.sort(comparingLocalizable<Classification>(this.localizer, infoDomain => infoDomain.label));
+  };
 
   get loadingResults(): boolean {
     if (this.showOnlyExternalClasses) {

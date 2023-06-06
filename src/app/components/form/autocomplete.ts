@@ -231,7 +231,7 @@ import { InputWithPopupController } from './inputPopup';
 })
 export class AutocompleteComponent<T> implements InputWithPopupController<T> {
 
-  @Input() dataSource: DataSource<T>;
+  @Input() datasource: DataSource<T>;
   @Input() matcher: (search: string, item: T) => boolean;
   @Input() formatter: (item: T) => string;
   @Input() valueExtractor: (item: T) => any;
@@ -359,7 +359,7 @@ export class AutocompleteComponent<T> implements InputWithPopupController<T> {
 
   autocomplete(search: string) {
     this.pendingShow = true;
-    Promise.resolve(this.dataSource(search)).then((data: T[]) => {
+    Promise.resolve(this.datasource(search)).then((data: T[]) => {
       if (this.pendingShow) {
         this.pendingShow = false;
 

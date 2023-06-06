@@ -51,7 +51,7 @@ import { NgForm } from '@angular/forms';
       <editable-multiple [id]="id" [title]="title" [values]="languages" [required]="required" [input]="input" [form]="form">
         <!-- <input-container> -->
           <ng-container slot="input">
-            <autocomplete [dataSource]="dataSource">
+            <autocomplete [datasource]="dataSource">
               <input [id]="id"
                     type="text"
                     languageInput

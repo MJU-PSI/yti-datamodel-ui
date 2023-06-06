@@ -68,8 +68,6 @@ export class UsagePanelComponent implements OnInit, OnChanges {
   @Input() entity: EditableEntity;
   @Input() context: LanguageContext;
 
-  @ViewChild(AccordionComponent, {static: true}) private accordion: AccordionComponent;
-
   usage: Usage | null = null;
   open = false;
   loading = false;
@@ -88,18 +86,13 @@ export class UsagePanelComponent implements OnInit, OnChanges {
     }
   }
 
-  ngDoCheck(){
-    // this.open = this.accordion.isOpen(this.identifier)
-    // this.updateUsage();
-  }
-
   hasReferrers() {
     return this.usage && this.usage.referrers.length > 0;
   }
 
   private updateUsage() {
     if (this.open) {
-      if (!this.usage || this.usage.id.uri !== this.entity.id.uri) {
+      if (!this.usage || this.usage.id.notEquals(this.entity.id)) {
         this.loading = true;
         this.usageService.getUsage(this.entity).then((usage) => {
           this.usage = usage;

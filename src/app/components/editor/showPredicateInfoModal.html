@@ -10,13 +10,13 @@
 </form> -->
 
 
-<form name="form">
+<form name="form" #form="ngForm">
   <div class="modal-header">
     <h4 class="modal-title">
       <a><i id="close_predicate_info_modal_button" (click)="close()" class="fas fa-times"></i></a>
     </h4>
   </div>
   <div class="modal-body full-height">
-    <predicate-form id="predicate_info_form" [predicate]="selection" [oldPredicate]="selection" [model]="model"></predicate-form>
+    <predicate-form id="predicate_info_form" [predicate]="selection" [oldPredicate]="selection" [model]="model" [form]="form"></predicate-form>
   </div>
 </form>

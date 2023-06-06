@@ -50,13 +50,13 @@
   </accordion-group>
 </accordion> -->
 
-<accordion [openId]="open">
-  <accordion-group [id]="id + '_constraint'" [identifier]="'default'">
+<accordion [openId]="'editable_constraint'" #accordion>
+  <accordion-group [id]="id + '_constraint'" [identifier]="'default'" [accordion]="accordion" #accordionGroup>
 
     <div accordion-heading>
       <h5>
         <a href>
-          <accordion-chevron [isOpen]="isOpen()"></accordion-chevron>
+          <accordion-chevron [isOpen]="accordionGroup.isOpen()"></accordion-chevron>
           {{'Logical constraints' | translate}}
         </a>
       </h5>
@@ -64,13 +64,13 @@
 
     <div accordion-body>
 
-      <editable data-title="Description" [context]="model">
+      <editable title="Description" [context]="model">
         <textarea id="constraintComment" class="form-control" localized-input context="model" [(ngModel)]="constraint.comment"></textarea>
       </editable>
 
       <div class="editable-wrap form-group">
 
-        <editable-label data-title="'Constraint classes'"></editable-label>
+        <editable-label [title="Constraint classes"></editable-label>
 
         <ng-container *ngIf="!isEditing()" >
           <span *ngFor="let item of constraint.items">
@@ -88,9 +88,9 @@
               <option *ngFor="let type of types" [ngValue]="type">{{ type | capitalize }}</option>
             </select>
           </div>
-          <div class="form-control with-button multi-input" drag-sortable="constraint.items">
+          <div class="form-control with-button multi-input" dragSortable="constraint.items">
             <div *ngFor="let item of constraint.items" class="added-item">
-              <div class="box draggable" drag-sortable-item>
+              <div class="box draggable" dragSortableItem>
                 {{item | translateLabel: model}}
                 <div class="delete-item badge" (click)="removeItem(item)">&times;</div>
               </div>

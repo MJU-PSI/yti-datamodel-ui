@@ -11,7 +11,7 @@ import { IowComponentsFormModule } from "../form/module";
 import { ClassFormComponent } from "./class-form";
 import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgModule } from "@angular/core";
-import { CopyPredicateModalComponent, CopyPredicateModalService } from "./copy-predicate-modal";
+import { CopyPredicateModal, CopyPredicateModalComponent } from "./copy-predicate-modal";
 import { IowComponentsCommonModule } from "../common/module";
 import { EditableConstraintComponent } from "./editable-constraint";
 import { EditableMultipleDataTypeInputComponent } from "./editable-multiple-data-type-input";
@@ -28,17 +28,22 @@ import { SearchClassTableModal, SearchClassTableModalComponent } from "./searchC
 import { SearchClassTableModalContentComponent } from "./searchClassTableModalContent";
 import { SearchConceptModal, SearchConceptModalComponent } from "./searchConceptModal";
 import { SearchPredicateController, SearchPredicateModal } from "./searchPredicateModal";
-import { SearchPredicateTableModal } from "./searchPredicateTableModal";
+import { SearchPredicateTableModal, SearchPredicateTableComponent } from "./searchPredicateTableModal";
 import { SearchPredicateTableModalContentComponent } from "./searchPredicateTableModalContent";
 import { SelectionViewComponent } from "./selectionView";
 import { ShowPredicateInfoModal, ShowPredicateInfoModalComponent } from "./showPredicateInfoModal";
-import { ShowClassInfoModal } from "./showClassInfoModal";
+import { ShowClassInfoModal, ShowClassInfoModalComponent } from "./showClassInfoModal";
 import { SubjectViewComponent } from "./subjectView";
 import { VisualizationViewComponent } from "./visualizationView";
 import { UriSelectComponent } from "./uriSelect";
 import { DefaultClassService } from "app/services/classService";
 import { EditableMultipleComponent } from "./editable-multiple";
 import { IowComponentsFilterModule } from "../filter/module";
+import { IowComponentsVisualizationFormModule } from "../visualization/module";
+import { ClassViewComponent } from "./class-view";
+import { YtiCommonModule } from "@mju-psi/yti-common-ui";
+import { DefinedByComponent } from "./defined-by";
+import { VirtualScrollerModule } from "ngx-virtual-scroller";
 
 
 @NgModule({
@@ -67,7 +72,11 @@ import { IowComponentsFilterModule } from "../filter/module";
     SearchClassTableModalComponent,
     ShowPredicateInfoModalComponent,
     SearchConceptModalComponent,
-    SearchPredicateController
+    SearchPredicateController,
+    ClassViewComponent,
+    DefinedByComponent,
+    SearchPredicateTableComponent,
+    ShowClassInfoModalComponent
   ],
   imports: [
     FormsModule,
@@ -76,14 +85,17 @@ import { IowComponentsFilterModule } from "../filter/module";
     IowComponentsFormModule,
     IowComponentsCommonModule,
     IowComponentsFilterModule,
+    IowComponentsVisualizationFormModule,
     NgbModule,
-    TranslateModule
+    TranslateModule,
+    YtiCommonModule,
+    VirtualScrollerModule
   ],
   providers: [
     AddPropertiesFromClassModal,
     ChoosePredicateTypeModal,
     NgbActiveModal,
-    CopyPredicateModalService,
+    CopyPredicateModal,
     SearchClassModal,
     SearchClassTableModal,
     SearchConceptModal,
@@ -91,7 +103,7 @@ import { IowComponentsFilterModule } from "../filter/module";
     SearchPredicateTableModal,
     ShowClassInfoModal,
     ShowPredicateInfoModal,
-    DefaultClassService,
+    DefaultClassService
   ],
   exports: [
     AddPropertiesFromClassModalComponent,
@@ -115,7 +127,10 @@ import { IowComponentsFilterModule } from "../filter/module";
     SubjectViewComponent,
     UriSelectComponent,
     VisualizationViewComponent,
-    SearchClassTableModalComponent
+    SearchClassTableModalComponent,
+    ClassViewComponent,
+    DefinedByComponent,
+    SearchPredicateTableComponent
   ]
 })
 export class IowComponentsEditorModule { }

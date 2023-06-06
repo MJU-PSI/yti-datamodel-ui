@@ -49,8 +49,8 @@ export class PaperHolder implements Cleanable {
         throw new Error();
       }
 
-      const cleanable = registerHandlers(newPaper, this.listener, this.$window, this.zone);
-      this.cache.set(model.id.uri, { element: newElement, paper: newPaper, clean: () => cleanable.clean() });
+      // const cleanable = registerHandlers(newPaper, this.listener, this.$window, this.zone);
+      // this.cache.set(model.id.uri, { element: newElement, paper: newPaper, clean: () => cleanable.clean() });
       return newPaper;
     }
   }

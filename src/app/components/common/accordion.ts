@@ -107,13 +107,11 @@
 
 import {
   Component,
-  ContentChild,
   ContentChildren,
   Directive,
   Input,
   QueryList,
   TemplateRef,
-  ViewChild,
   ViewContainerRef,
 } from '@angular/core';
 
@@ -132,10 +130,13 @@ export class AccordionTranscludeDirective {
   @Input() accordionTransclude: 'heading' | 'body';
 
   public templateRef: TemplateRef<any>;
+
   constructor(
     templateRef: TemplateRef<any>,
     private viewContainerRef: ViewContainerRef
-  ) {}
+  ) {
+    this.templateRef = templateRef;
+  }
 
   ngAfterViewInit() {
     const slotName =
@@ -172,27 +173,29 @@ export class AccordionComponent {
 @Component({
   selector: 'accordion-group',
   template: `
-      <div class="card" [class.show]="isOpen()">
-        <div [id]="id + '_accordion_button'" class="card-header" (click)="toggleVisibility()">
-          <ng-content select="[accordionHeading]"></ng-content>
-        </div>
+    <div class="card" [class.show]="isOpen()">
+      <div [id]="id + '_accordion_button'" class="card-header" (click)="toggleVisibility()">
+        <ng-content select="[accordionHeading]"></ng-content>
+      </div>
+      <!-- <div [ngbCollapse]="isOpen()" *ngIf="isAnimate()">
         <div [class]="{ 'card-body': true, 'show': isOpen() }" *ngIf="isAnimate()">
           <ng-content select="[accordionBody]"></ng-content>
         </div>
-        <div class="collapse" *ngIf="!isAnimate() && isOpen()">
-          <div class="card-body">
-            <ng-content select="[accordionBody]"></ng-content>
-          </div>
+      </div> -->
+      <div class="collapse" [class.show]="isOpen()" *ngIf="!isAnimate()">
+        <div class="card-body">
+          <ng-content select="[accordionBody]"></ng-content>
         </div>
       </div>
+    </div>
   `,
 })
 export class AccordionGroupComponent {
   @Input() id: string;
   @Input() identifier: any;
-  @Input() accordion: AccordionComponent
+  @Input() accordion: AccordionComponent;
 
-  @ContentChildren(AccordionTranscludeDirective)
+  @ContentChildren(AccordionTranscludeDirective, { descendants: true })
   transcludeContents: QueryList<AccordionTranscludeDirective>;
 
   getTranscludeContent(name: string): TemplateRef<any> | null {
@@ -216,5 +219,3 @@ export class AccordionGroupComponent {
       : true;
   }
 }
-
-

@@ -1,4 +1,4 @@
-<h4 ng-if="$ctrl.title">{{$ctrl.title | translate}}</h4>
+<!-- <h4 ng-if="$ctrl.title">{{$ctrl.title | translate}}</h4>
 
 <non-editable data-title="Reference data URI" value="$ctrl.referenceData.id" context="$ctrl.context"></non-editable>
 <non-editable data-title="Reference data name" value="$ctrl.referenceData.title" context="$ctrl.context"></non-editable>
@@ -36,6 +36,48 @@
     id="force_update_codes"
     ng-disabled="!$ctrl.codes"
     ng-click="$ctrl.update()" translate>
+      Update codes
+  </button>
+</div> -->
+
+<h4 *ngIf="title">{{title | translate}}</h4>
+
+<non-editable title="Reference data URI" [value]="referenceData.id" [context]="context"></non-editable>
+<non-editable title="Reference data name" [value]="referenceData.title" [context]="context"></non-editable>
+<non-editable title="Reference data status" [value]="referenceData.status" [valueAsLocalizationKey]="true" [context]="context"></non-editable>
+<non-editable title="Description" [value]="referenceData.description" [context]="context"></non-editable>
+<non-editable title="Creator" [value]="referenceData.creator" [context]="context"></non-editable>
+
+<br />
+
+<a *ngIf="!showCodes || referenceData.isExternal()" (click)="browse()" translate>Browse reference data codes</a>
+
+<div *ngIf="showCodes && !referenceData.isExternal()">
+
+  <app-ajax-loading-indicator *ngIf="!codes" class="inline"></app-ajax-loading-indicator>
+
+  <table *ngIf="codes" class="table table-hover">
+    <thead>
+    <tr>
+      <th translate>Identifier</th>
+      <th translate>Title</th>
+      <th translate>Status</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let code of codes | orderBy: 'identifier'">
+      <td>{{code.identifier}}</td>
+      <td>{{code.title | translateValue: context}}</td>
+      <td>{{code.status | translate}}</td>
+    </tr>
+    </tbody>
+  </table>
+  <br/>
+  <button *ngIf="isLoggedIn"
+    class="btn btn-secondary-action"
+    id="force_update_codes"
+    [disabled]="!codes"
+    (click)="update()" translate>
       Update codes
   </button>
 </div>

@@ -239,6 +239,7 @@ export class ExportComponent {
           filename: formatFileName(this.entity, option.extension),
           href,
           hrefRaw: href + '&raw=true',
+          onClick: () => {}
         };
       });
 

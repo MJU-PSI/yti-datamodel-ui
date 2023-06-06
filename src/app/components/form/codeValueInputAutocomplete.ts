@@ -34,13 +34,43 @@
 //   valueExtractor = (codeValue: ReferenceDataCode) => codeValue.identifier;
 // }
 
-import { Component  } from '@angular/core';
+
+import { Component, Input, OnInit } from '@angular/core';
+import { ReferenceDataService } from 'app/services/referenceDataService';
+import { LanguageService, Localizer } from 'app/services/languageService';
+import { ReferenceData, ReferenceDataCode } from 'app/entities/referenceData';
+import { LanguageContext } from 'app/types/language';
 
 
 @Component({
   selector: 'code-value-input-autocomplete',
-  template: ''
+  template: `
+    <!-- TODO ALES - od kje to pride -->
+    <!-- [matcher]="matcher" -->
+    <autocomplete [datasource]="datasource"  [valueExtractor]="valueExtractor" [formatter]="formatter">
+      <ng-container></ng-container>
+    </autocomplete>
+  `,
 })
-export class CodeValueInputAutocompleteComponent  {
+export class CodeValueInputAutocompleteComponent implements OnInit {
+  @Input() referenceData: ReferenceData[];
+  @Input() context: LanguageContext;
 
+  localizer: Localizer;
+
+  constructor(
+    private referenceDataService: ReferenceDataService,
+    private languageService: LanguageService
+  ) {}
+
+  ngOnInit() {
+    this.localizer = this.languageService.createLocalizer(this.context);
+  }
+
+  datasource = () => this.referenceDataService.getReferenceDataCodes(this.referenceData);
+
+  formatter = (codeValue: ReferenceDataCode) =>
+    `${this.localizer.translate(codeValue.title)} (${codeValue.identifier})`;
+
+  valueExtractor = (codeValue: ReferenceDataCode) => codeValue.identifier;
 }

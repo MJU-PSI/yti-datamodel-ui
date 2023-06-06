@@ -16,7 +16,7 @@ import {
 } from '@mju-psi/yti-common-ui';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { ModelService } from 'app/services/modelService';
+import { DefaultModelService, ModelService } from 'app/services/modelService';
 import { DatamodelConfirmationModalService } from 'app/services/confirmation-modal.service';
 
 @Component({
@@ -33,7 +33,6 @@ export class MassMigrateDatamodelResourceStatusesModalComponent implements OnIni
   loadingResourcesTotal = false;
   uploading = false;
   model: Model;
-  private modelService: ModelService;
 
   fromStatuses = ['INCOMPLETE', 'DRAFT', 'VALID', 'SUPERSEDED', 'RETIRED', 'INVALID'] as Status[];
   toStatuses = ['INCOMPLETE', 'DRAFT', 'VALID', 'SUPERSEDED', 'RETIRED', 'INVALID'] as Status[];
@@ -46,8 +45,7 @@ export class MassMigrateDatamodelResourceStatusesModalComponent implements OnIni
               private alertModalService: AlertModalService,
               private errorModalService: ErrorModalService,
               private confirmationModal: DatamodelConfirmationModalService,
-              @Inject('modelService') modelService: ModelService) {
-    this.modelService = modelService;
+              private modelService: DefaultModelService) {
   }
 
   ngOnInit() {

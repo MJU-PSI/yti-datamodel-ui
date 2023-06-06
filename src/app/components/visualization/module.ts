@@ -9,6 +9,9 @@ import { ClassVisualizationComponent } from "./classVisualization";
 import { VisualizationContextMenuComponent } from "./contextMenu";
 import { VisualizationPopoverComponent } from "./popover";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+import { TranslateModule } from "@ngx-translate/core";
+import { CommonModule } from "@angular/common";
+import { YtiCommonModule } from "@mju-psi/yti-common-ui";
 
 @NgModule({
   declarations: [
@@ -17,12 +20,18 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
     VisualizationPopoverComponent
   ],
   imports: [
+    CommonModule,
     IowServicesModule,
-    NgbModule
+    TranslateModule,
+    NgbModule,
+    YtiCommonModule
   ],
   providers: [
   ],
   exports: [
+    ClassVisualizationComponent,
+    VisualizationContextMenuComponent,
+    VisualizationPopoverComponent
   ]
 })
 export class IowComponentsVisualizationFormModule { }

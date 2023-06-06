@@ -24,6 +24,13 @@ export enum NameType {
 
 export class SessionService {
 
+  constructor() {
+    if (!this.selectionWidth) {
+      this.selectionWidth = 550;
+    }
+  }
+
+
   private get<T>(key: string): T {
     const value = window.sessionStorage.getItem(key);
     return isDefined(value) ? JSON.parse(value) : null;

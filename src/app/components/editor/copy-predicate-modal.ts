@@ -85,15 +85,16 @@ import { Model } from 'app/entities/model';
 import { PredicateService } from 'app/services/predicateService';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Form, NgForm } from '@angular/forms';
+import { Uri } from 'app/entities/uri';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CopyPredicateModalService {
+export class CopyPredicateModal {
 
   constructor(private modalService: NgbModal) {}
 
-  open(predicate: Predicate, type: 'attribute' | 'association', model: Model): Promise<Predicate> {
+  open(predicate: Predicate | Uri, type: 'attribute' | 'association', model: Model): Promise<Predicate> {
     const modalRef: NgbModalRef = this.modalService.open(CopyPredicateModalComponent, { size: 'md' });
     modalRef.componentInstance.predicate = predicate;
     modalRef.componentInstance.type = type;

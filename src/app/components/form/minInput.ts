@@ -27,11 +27,40 @@
 //   };
 // };
 
-import { Directive } from '@angular/core';
+import { Directive, Input } from '@angular/core';
+import { NgModel, NG_VALIDATORS, Validator, AbstractControl } from '@angular/forms';
+import { isDefined } from '@mju-psi/yti-common-ui';
 
 @Directive({
-  selector: 'min-input,[min-input]',
+  selector: '[minInput]',
+  providers: [
+    {
+      provide: NG_VALIDATORS,
+      useExisting: MinInputDirective,
+      multi: true
+    }
+  ]
 })
-export class MinInputDirective {
+export class MinInputDirective implements Validator {
+  @Input() max: number;
 
+  validate(control: AbstractControl): { [key: string]: any } | null {
+    const value = control.value as number;
+
+    if (!isDefined(value) || value >= 0) {
+      // Value is not negative
+      control.setErrors(null);
+    } else {
+      control.setErrors({ negative: true });
+    }
+
+    if (!isDefined(value) || !isDefined(this.max) || value <= this.max) {
+      // Value is less than or equal to the maximum
+      control.setErrors(null);
+    } else {
+      control.setErrors({ greaterThanMax: true });
+    }
+
+    return null;
+  }
 }

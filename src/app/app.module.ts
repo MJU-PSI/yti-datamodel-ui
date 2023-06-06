@@ -222,6 +222,7 @@ export function localizerFactory(languageService: LanguageService): AngularLocal
     { provide: LOCALIZER, useFactory: localizerFactory, deps: [LanguageService] },
     { provide: LocationStrategy, useClass: PathLocationStrategy },
     { provide: ORGANIZATION_SERVICE, useClass: DefaultOrganizationService },
+    { provide: Window, useValue: window },
     // languageServiceProvider,
     // scopeProvider,
     // routeServiceProvider,

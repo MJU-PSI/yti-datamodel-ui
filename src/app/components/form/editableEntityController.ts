@@ -211,7 +211,6 @@ export abstract class EditableEntityController<T extends EditableEntity> impleme
         this.cancelEditing();
       }
     });
-
   }
 
   ngDoCheck() {

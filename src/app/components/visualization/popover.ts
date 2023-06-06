@@ -85,7 +85,14 @@
 // }
 
 import { Component  } from '@angular/core';
+import { Localizable } from '@mju-psi/yti-common-ui';
+import { Coordinate } from 'app/types/visualization';
 
+export interface VisualizationPopoverDetails {
+  coordinate: Coordinate;
+  heading: Localizable;
+  comment: Localizable;
+}
 
 @Component({
   selector: 'visualization-popover',

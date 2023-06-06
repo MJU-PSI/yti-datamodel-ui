@@ -234,7 +234,7 @@
   <div class="modal-body" style="min-height: 400px;">
     <div class="search-table-modal-search-row">
       <text-filter class="search-row-search-text"
-                   [searchText]="searchText"
+                   [(searchText)]="searchText"
                    [searchController]="this"
                    [contentExtractors]="contentExtractors"
                    [placeholder]="'search class'"></text-filter>
@@ -248,7 +248,7 @@
         <div class="search-row-target-selection" *ngIf="isModelProfile() && (onlySelection || isModelProfile())">
           <label translate>Include:</label>
           <label>
-            <input type="checkbox" [(ngModel)]="showOnlyExternalClasses">
+            <input type="checkbox" name="showOnlyExternalClasses" [(ngModel)]="showOnlyExternalClasses" (ngModelChange)="onShowOnlyExternalClassesChange($event)">
             {{'External classes' | translate}}
           </label>
         </div>
@@ -262,64 +262,74 @@
     <div class="row flex-shrink-0">
       <div class="col-12 limit-select-widths">
 
-        <!-- <model-filter class="pull-left mr-2 mb-2"
+        <model-filter class="pull-left mr-2 mb-2"
                       [searchController]="this"
                       [type]="'class'"
                       [model]="model"
                       [defaultShow]="defaultToCurrentModel ? 'definedByThis' : null"
                       [hideThisModel]="showOnlyExternalClasses"
-                      [modelType]="showModelType"></model-filter> -->
+                      [modelType]="showModelType"></model-filter>
 
         <select id="class_information_domain_filter_dropdown"
+                name="class_information_domain"
                 class="form-control pull-left mr-2 mb-2"
                 style="width: auto"
                 [disabled]="showOnlyExternalClasses"
-                [(ngModel)]="showInfoDomain">
-          <option value="" translate>All information domains</option>
-          <option *ngFor="let infoDomain of infoDomains" [value]="infoDomain">
+                [(ngModel)]="showInfoDomain"
+                (ngModelChange)="onShowInfoDomainChange()">
+          <option [ngValue]="null" translate>All information domains</option>
+          <option *ngFor="let infoDomain of infoDomains" [ngValue]="infoDomain">
             {{ infoDomain.label | translateValue:model }}
           </option>
         </select>
 
         <select id="class_model_type_filter_dropdown"
+                name="class_model_type"
                 class="form-control pull-left mr-2 mb-2"
                 style="width: auto"
                 [disabled]="showOnlyExternalClasses"
-                [(ngModel)]="showModelType">
-          <option value="" translate>All types</option>
+                [(ngModel)]="showModelType"
+                (ngModelChange)="onShowModelTypeChange()">
+          <option [ngValue]="null" translate>All types</option>
           <option *ngFor="let modelType of modelTypes" [value]="modelType">{{ modelType | translate }}</option>
         </select>
 
         <select id="class_type_filter_dropdown"
+                name="class_type"
                 class="form-control pull-left mr-2 mb-2"
                 style="width: auto"
                 [disabled]="showOnlyExternalClasses"
-                [(ngModel)]="showClassType">
-          <option value="" translate>All class types</option>
+                [(ngModel)]="showClassType"
+                (ngModelChange)="onShowClassTypeChange()">
+          <option [ngValue]="null" translate>All class types</option>
           <option *ngFor="let classType of classTypes" [value]="classType">{{ classType | translate }}</option>
         </select>
+
         <select id="class_status_filter_dropdown"
+                name="class_status"
                 class="form-control pull-left mb-2"
                 style="width: auto"
-                ng-disabled="$ctrl.showOnlyExternalClasses"
-                ng-model="$ctrl.showStatus"
+                [disabled]="showOnlyExternalClasses"
+                [(ngModel)]="showStatus"
+                (ngModelChange)="onShowStatusChange()"
                 ng-options="(status | translate) for status in $ctrl.statuses">
-          <option value="" translate>All statuses</option>
+          <option [ngValue]="null" translate>All statuses</option>
+          <option *ngFor="let status of statuses" [value]="status">{{ status | translate }}</option>
         </select>
       </div>
     </div>
 
-    <div class="flex-shrink-0" ng-if="$ctrl.isSelectionExternalEntity()">
+    <div class="flex-shrink-0" *ngIf="isSelectionExternalEntity()">
 
       <h4 class="mt-4" translate>Create shape from external URI</h4>
 
       <div class="row">
         <div class="col-md-4">
 
-          <editable title="External URI" [context]="model" autofocus>
+          <editable title="External URI" [context]="model" autofocus [form]="form">
             <div class="input-group input-group-md">
-              <input id="externalUri" type="text" class="form-control" required uri-input="required-namespace" model="$ctrl.model"
-                     [(ngModel)]="selection && selection.id"/>
+              <input id="externalUri" name="externalUri" type="text" class="form-control" required uriInput="required-namespace" [model]="model"
+                     [(ngModel)]="selection.id" #editableInput/>
             </div>
           </editable>
 
@@ -327,14 +337,14 @@
 
         <div class="col-md-4">
 
-          <div ng-if="$ctrl.externalClass === null">
-            <editable data-title="Class label" context="model">
-              <input type="text" class="form-control" stringInput="label" required ng-model="$ctrl.selection.label"/>
+          <div *ngIf="externalClass === null">
+            <editable title="Class label" [context]="model" [form]="form">
+              <input type="text" name="class-label" class="form-control" stringInput="label" required [(ngModel)]="selection.label" #editableInput/>
             </editable>
           </div>
 
-          <div ng-if="$ctrl.externalClass">
-            <non-editable title="Class label" value="externalClass.label" context="$ctrl.model"></non-editable>
+          <div *ngIf="externalClass">
+            <non-editable title="Class label" [value]="externalClass.label" [context]="model" [form]="form"></non-editable>
           </div>
 
         </div>
@@ -344,13 +354,13 @@
     </div>
 
     <div class="content-box search-results-table-container">
-      <ajax-loading-indicator *ngIf="loadingResults"></ajax-loading-indicator>
-      <app-search-class-table-modal-content *ngIf="!loadingResults" [sort-by]="sortBy" [model]="model"
-                                            [filter-exclude]="filterExclude"
-                                            [search-text]="searchText" [search-results]="searchResults"
-                                            [selected-item]="selectedItem" [selection]="selection"
-                                            [show-only-external-classes]="showOnlyExternalClasses"
-                                            (item-selected)="selectItem($event)"
+      <app-ajax-loading-indicator *ngIf="loadingResults"></app-ajax-loading-indicator>
+      <app-search-class-table-modal-content *ngIf="!loadingResults" [sortBy]="sortBy" [model]="model"
+                                            [filterExclude]="filterExclude"
+                                            [searchText]="searchText" [searchResults]="searchResults"
+                                            [selectedItem]="selectedItem" [selection]="selection"
+                                            [showOnlyExternalClasses]="showOnlyExternalClasses"
+                                            (itemSelected)="selectItem($event)"
                                             [exclude]="exclude">
       </app-search-class-table-modal-content>
     </div>
@@ -363,8 +373,7 @@
             class="btn btn-action confirm"
             (click)="confirm()"
             [disabled]="!selection || cannotConfirm || (form.editing && (form.$invalid || form.$pending)) || isExternalClassPending()">
-      <!-- TODO ALES -->
-      <!-- {{textForSelection(selection) | translate}} -->
+      {{textForSelection(selection) | translate}}
     </button>
 
     <button id="create_class_button"
@@ -380,30 +389,30 @@
             class="btn btn-secondary-action"
             (click)="createNewShape()"
             *ngIf="canAddNewShape()"
-            ng-disabled="isSelectionExternalEntity()">
+            [disabled]="isSelectionExternalEntity()">
       + <span translate>Shape from URI</span>
     </button>
 
     <div class="pull-right dropup" ngbDropdown>
-      <button id="{{'class_' + selection!.id + '_actions_button'}}" class="btn btn-language dropdown-toggle"
+      <button id="{{'class_' + (selection && selection.id) + '_actions_button'}}" class="btn btn-language dropdown-toggle"
               [disabled]="!showActions(selection)" ngbDropdownToggle>
         <span translate>Actions</span>
       </button>
-      <div ngbDropdownMenu class="dropdown-menu-right" attr.aria-labelledby="{{'class_' + selection.id + '_actions_button'}}"
+      <div ngbDropdownMenu class="dropdown-menu-right" attr.aria-labelledby="{{'class_' + (selection && selection.id) + '_actions_button'}}"
            *ngIf="selection">
-        <button id="{{'copy_class_' + selection.id + '_button'}}"
+        <button id="{{'copy_class_' + (selection && selection.id) + '_button'}}"
                 class="dropdown-item"
                 (click)="copyClass(selection)"
                 translate>
           Copy class
         </button>
-        <button id="{{'create_sub_class_' + selection.id + '_button'}}"
+        <button id="{{'create_sub_class_' + (selection && selection.id) + '_button'}}"
                 class="dropdown-item"
                 (click)="createSubClass(selection)"
                 translate>
           Create sub class
         </button>
-        <button id="{{'create_super_class_' + selection.id + '_button'}}"
+        <button id="{{'create_super_class_' + (selection && selection.id) + '_button'}}"
                 class="dropdown-item"
                 (click)="createSuperClass(selection)"
                 translate>
@@ -416,17 +425,15 @@
       Cancel</button>
 
     <div class="alert alert-danger" role="alert" *ngIf="cannotConfirm">
-      <span class="fas fa-exclamation-circle" aria-hidden="true"></span>
+      <span class="fas fa-exclamation-circle" attr.aria-hidden="true"></span>
       <span>{{cannotConfirm | translate}}</span>
     </div>
 
-    <!-- TODO ALES -->
-    <!-- (click)="addNamespaceToModel(selectedItem)" -->
-    <!-- *ngIf="notDefinedByThisModel(selectedItem)" -->
+
     <button id="add_namespace_to_model_button"
             class="btn btn-secondary-action"
-
-
+            (click)="addNamespaceToModel(selectedItem)"
+            *ngIf="notDefinedByThisModel(selectedItem)"
             translate>
       Add namespace to model
     </button>

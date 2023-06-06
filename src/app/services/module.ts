@@ -4,7 +4,7 @@
 
 
 import { NgModule } from '@angular/core';
-import { ClassService, DefaultClassService } from './classService';
+import { DefaultClassService } from './classService';
 import { VocabularyService, DefaultVocabularyService } from './vocabularyService';
 import { LanguageService } from './languageService';
 import { LocationService } from './locationService';

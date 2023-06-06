@@ -33,13 +33,33 @@
 //   }
 // }
 
-import { Component  } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
   selector: 'localized-select',
-  template: ''
+  template: `
+  <!-- TODO ALES -->
+  iow-select todo
+    <!-- <iow-select [id]="id" [idPrefix]="id" required [(ngModel)]="value" [options]="values">
+      <span>{{ getName(value) }}</span>
+    </iow-select> -->
+  `
 })
-export class LocalizedSelectComponent  {
+export class LocalizedSelectComponent {
+  @Input() value: string;
+  @Input() values: string[];
+  @Input() id: string;
+  @Input() displayNameFormatter: (value: string, translateService: TranslateService) => string;
 
+  constructor(private translateService: TranslateService) {}
+
+  getName(value: string) {
+    if (this.displayNameFormatter) {
+      return this.displayNameFormatter(value, this.translateService);
+    } else {
+      return this.translateService.instant(value);
+    }
+  }
 }

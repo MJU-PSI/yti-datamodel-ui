@@ -18,21 +18,22 @@
   </fieldset>
 </form> -->
 
-<form name="form" class="editable-form">
+<form name="form" class="editable-form" #form="ngForm">
   <fieldset [disabled]="persisting">
     <div *ngIf="class && model">
-      <selection-view idPrefix="'class_'" [model]="model" [editableController]="this">
-        <selection-buttons>
-          <export *ngIf="!isEditing()" idPrefix="'class'" [entity]="class" [context]="model"></export>
-          <history buttonId="'class_edit_buttons_history'" [model]="model" [resource]="class"
-                   *ngIf="!isEditing()"></history>
+      <selection-view [idPrefix]="'class_'" [model]="model" [editableController]="this" [form]="form">
+        <div selectionButtons>
+          <export *ngIf="!isEditing()" [idPrefix]="'class'" [entity]="class" [context]="model"></export>
+          <!-- TODO ALES - moduli se zaciklajo -->
+          <!-- <history buttonId="'class_edit_buttons_history'" [model]="model" [resource]="class"
+                   *ngIf="!isEditing()"></history> -->
           <app-status [status]="class.status"></app-status>
-        </selection-buttons>
+        </div>
 
         content
-        <selection-content>
-          <class-form [id]="id" [class]="editableInEdit" [oldClass]="class" [model]="model" [openPropertyId]="openPropertyId"></class-form>
-        </selection-content>
+        <div selectionContent>
+          <class-form [id]="id" [class]="editableInEdit" [oldClass]="class" [model]="model" [openPropertyId]="openPropertyId" [form]="form" [classView]="this"></class-form>
+        </div>
       </selection-view>
     </div>
   </fieldset>

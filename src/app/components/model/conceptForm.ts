@@ -17,7 +17,11 @@
 //   localizer: Localizer;
 // }
 
-import { Component  } from '@angular/core';
+import { Component, Input  } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { Model } from 'app/entities/model';
+import { Concept } from 'app/entities/vocabulary';
+import { Localizer } from 'app/services/languageService';
 
 
 @Component({
@@ -25,5 +29,9 @@ import { Component  } from '@angular/core';
   template: ''
 })
 export class ConceptFormComponent  {
+  @Input() concept: Concept;
+  @Input() model: Model;
+  @Input() form: NgForm;
+  localizer: Localizer;
 
 }

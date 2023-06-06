@@ -2,7 +2,7 @@ import { Component, Inject, Injectable } from '@angular/core';
 import { ModalService, AlertModalService, ErrorModalService } from '@mju-psi/yti-common-ui';
 import { Model } from 'app/entities/model';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ModelService } from 'app/services/modelService';
+import { DefaultModelService, ModelService } from 'app/services/modelService';
 import { TranslateService } from '@ngx-translate/core';
 // import { IInjectorService } from '@angular/upgrade/src/common/src/angular1';
 import IInjectorService = angular.auto.IInjectorService;
@@ -12,28 +12,18 @@ export const rootScopeFactory = (i: IInjectorService) => i.get('$rootScope');
 
 @Component({
   selector: 'app-new-datamodel-version-modal.component',
-  templateUrl: './new-datamodel-version-modal.component.html',
-  providers: [
-    {
-      provide: '$scope',
-      useFactory: rootScopeFactory,
-      deps: ['$injector']
-    }
-  ]
+  templateUrl: './new-datamodel-version-modal.component.html'
 })
 export class NewDatamodelVersionModalComponent {
 
   model: Model;
   uploading = false;
 
-  private modelService: ModelService;
-
   constructor(private modal: NgbActiveModal,
               private alertModalService: AlertModalService,
               private errorModalService: ErrorModalService,
               private translateService: TranslateService,
-              @Inject('modelService') modelService: ModelService) {
-    this.modelService = modelService;
+              private modelService: DefaultModelService) {
   }
 
   get loading(): boolean {

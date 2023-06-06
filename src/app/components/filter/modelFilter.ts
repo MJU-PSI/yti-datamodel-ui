@@ -146,23 +146,22 @@ interface ModelOption {
 }
 
 @Component({
-  selector: 'app-model-filter',
+  selector: 'model-filter',
   template: `
     <select id="model"
             class="form-control"
             style="width: auto"
             [(ngModel)]="showModel">
-      <!-- // TODO ALES - PREVERI -->
-      <option value="" translate>All models</option>
+      <option [ngValue]="null || undefined" translate>All models</option>
       <ng-container *ngFor="let model of modelOptions">
         <ng-container *ngIf="isImportedNamespacesOption(model)">
-          <option value="{{ model }}">{{ 'Imported namespaces' | translate }}</option>
+          <option [ngValue]="model">{{ 'Imported namespaces' | translate }}</option>
         </ng-container>
         <ng-container *ngIf="isDefinedByThisOption(model)">
-          <option value="{{ model }}">{{ 'Defined by this model' | translate }}</option>
+          <option [ngValue]="model">{{ 'Defined by this model' | translate }}</option>
         </ng-container>
         <ng-container *ngIf="!isImportedNamespacesOption(model) && !isDefinedByThisOption(model)">
-          <option value="{{ model }}">{{ model | translateLabel: model }}</option>
+          <option [ngValue]="model">{{ model | translateLabel: model }}</option>
         </ng-container>
       </ng-container>
 

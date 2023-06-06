@@ -1,4 +1,4 @@
-import { firstMatching, identity, keepMatching, Localizable, requireDefined, Status, availableLanguages, defaultLanguage } from '@mju-psi/yti-common-ui';
+import { firstMatching, identity, keepMatching, Localizable, requireDefined, Status, availableLanguages, defaultLanguage, Language } from '@mju-psi/yti-common-ui';
 import { Class, Property } from 'app/entities/class';
 import { Classification } from 'app/entities/classification';
 import { DataType } from 'app/entities/dataTypes';
@@ -11,7 +11,7 @@ import { EntityCreatorService, OrganizationDetails, technicalNamespaces, Vocabul
 import { InteractiveHelpOrganizationService } from 'app/help/services/helpOrganizationService';
 import { InteractiveHelpVocabularyService } from 'app/help/services/helpVocabularyService';
 import { ConstraintType, KnownModelType, KnownPredicateType } from 'app/types/entity';
-import { ClassService } from './classService';
+import { ClassService, DefaultClassService } from './classService';
 import { ModelService } from './modelService';
 import { PredicateService } from './predicateService';
 import { ResetService } from './resetService';
@@ -154,7 +154,7 @@ export class EntityLoaderService {
   constructor(
     private modelService: ModelService,
     private predicateService: PredicateService,
-    private classService: ClassService,
+    private classService: DefaultClassService,
     private vocabularyService: VocabularyService,
     private helpVocabularyService: InteractiveHelpVocabularyService|null,
     private helpOrganizationService: InteractiveHelpOrganizationService|null,
@@ -585,7 +585,7 @@ export class EntityLoader {
   constructor(
     private modelService: ModelService,
     private predicateService: PredicateService,
-    private classService: ClassService,
+    private classService: DefaultClassService,
     private vocabularyService: VocabularyService,
     private helpVocabularyService: InteractiveHelpVocabularyService | null,
     private helpOrganizationService: InteractiveHelpOrganizationService | null,
@@ -687,8 +687,7 @@ export class EntityLoader {
   }
 
   createConceptSuggestion(details: ConceptSuggestionDetails, modelPromise: Promise<Model>): Promise<Uri> {
-    const result = modelPromise.then((model: Model) =>
-      this.vocabularyService.createConceptSuggestion(model.vocabularies[0], details.label, details.comment, defaultLanguage, model));
+    const result = modelPromise.then((model: Model) => this.vocabularyService.createConceptSuggestion(model.vocabularies[0], details.label, details.comment, defaultLanguage, model));
 
     return this.addAction(result, details);
   }

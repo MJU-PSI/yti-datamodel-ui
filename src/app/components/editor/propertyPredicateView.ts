@@ -135,13 +135,145 @@
 // }
 
 
-import { Component  } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
+import { Uri } from '../../entities/uri';
+import { DefaultPredicateService } from '../../services/predicateService';
+import { SearchPredicateModal } from './searchPredicateModal';
+import { createDefinedByExclusion } from '../../utils/exclusion';
+import { ClassFormComponent } from './class-form';
+import { anyMatching, requireDefined } from '@mju-psi/yti-common-ui';
+import { CopyPredicateModal } from './copy-predicate-modal';
+import { Property } from '../../entities/class';
+import { Model } from '../../entities/model';
+import { Association, Attribute, Predicate } from '../../entities/predicate';
+
 
 
 @Component({
   selector: 'property-predicate-view',
-  template: ''
+  templateUrl: './propertyPredicateView.html'
 })
-export class PropertyPredicateViewComponent  {
+export class PropertyPredicateViewComponent implements OnInit {
 
+  loading: boolean;
+  @Input() property: Property;
+  @Input() model: Model;
+  @Input() classForm: ClassFormComponent;
+
+  predicate: Predicate|null;
+  changeActions: { name: string, apply: () => void }[] = [];
+
+  constructor(
+    private predicateService: DefaultPredicateService,
+    private searchPredicateModal: SearchPredicateModal,
+    private copyPredicateModal: CopyPredicateModal
+  ) {}
+
+  ngOnInit() {
+
+    const setResult = (p: Predicate|null) => {
+      this.predicate = p;
+      this.updateChangeActions().then(() => this.loading = false);
+    };
+
+    this.propertyChangedHandler();
+  }
+
+  ngOnChanges(changes: SimpleChanges){
+    if(changes.property) {
+      this.propertyChangedHandler();
+    }
+  }
+
+  private propertyChangedHandler() {
+    const predicate = this.property && this.property.predicate;
+
+    this.loading = true;
+
+    if (predicate instanceof Association || predicate instanceof Attribute) {
+      this.setPredicateResult(predicate);
+    } else if (predicate instanceof Uri) {
+      if (this.model.isNamespaceKnownToBeNotModel(predicate.namespace)) {
+        this.predicateService.getExternalPredicate(predicate, this.model).then(this.setPredicateResult.bind(this), (_err: any) => this.setPredicateResult(null));
+      } else {
+        this.predicateService.getPredicate(predicate).then(this.setPredicateResult.bind(this), (_err: any) => this.setPredicateResult(null));
+      }
+    } else {
+      throw new Error('Unsupported predicate: ' + predicate);
+    }
+  }
+
+  isEditing(): boolean {
+    return this.classForm && this.classForm.isEditing();
+  }
+
+  private setPredicateResult(predicate: Predicate|null) {
+    this.predicate = predicate;
+    this.updateChangeActions().then(() => this.loading = false);
+  }
+
+  private updateChangeActions(): Promise<void> {
+    const predicate = this.predicate;
+    const predicateId = this.property.predicateId;
+
+    this.changeActions = [{name: 'Change reusable predicate', apply: () => this.changeReusablePredicate()}];
+
+    const assignAction = () => {
+      return {
+        name: `Assign reusable predicate to ${this.model.normalizedType}`,
+        apply: () => this.assignReusablePredicateToModel()
+      };
+    };
+
+    const copyAction = (type: 'attribute'|'association') => {
+      return {
+        name: `Copy reusable ${type} to ${this.model.normalizedType}`,
+        apply: () => this.copyReusablePredicateToModel(predicate || predicateId, type)
+      };
+    };
+
+    return this.predicateService.getPredicatesAssignedToModel(this.model).then(predicates => {
+
+      const isAssignedToModel = anyMatching(predicates, assignedPredicate => assignedPredicate.id.equals(predicateId));
+
+      if (!isAssignedToModel) {
+        if (predicate && (this.model.isOfType('profile') || predicate.definedBy.isOfType('library')) && this.model.isNamespaceKnownToBeModel(predicate.id.namespace)) {
+          this.changeActions.push(assignAction());
+        }
+
+        if (predicate && (predicate.isAssociation() || predicate.isAttribute())) {
+          this.changeActions.push(copyAction(predicate.normalizedType as 'attribute' | 'association'));
+        } else {
+          this.changeActions.push(copyAction('attribute'));
+          this.changeActions.push(copyAction('association'));
+        }
+      }
+    });
+  }
+
+  linkToId() {
+    return this.predicate && this.model.linkToResource(this.predicate.id);
+  }
+
+  changeReusablePredicate() {
+
+    if (this.property.normalizedPredicateType === 'property') {
+      throw new Error('Property must be of known type');
+    }
+
+    this.searchPredicateModal.openWithOnlySelection(this.model, requireDefined(this.property.normalizedPredicateType), createDefinedByExclusion(this.model)).then(predicate => {
+      this.property.predicate = predicate.id; // Could be full predicate instead of id but this is consistent with api data
+    });
+  }
+
+  assignReusablePredicateToModel() {
+    this.predicateService.assignPredicateToModel(this.property.predicateId, this.model)
+      .then(() => this.updateChangeActions());
+  }
+
+  copyReusablePredicateToModel(predicateToBeCopied: Predicate|Uri, type: 'attribute'|'association') {
+    this.copyPredicateModal.open(predicateToBeCopied, type, this.model)
+      .then(copied => this.predicateService.createPredicate(copied).then(() => copied))
+      .then(predicate => this.property.predicate = predicate.id);
+  }
 }

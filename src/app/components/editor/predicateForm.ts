@@ -105,10 +105,9 @@ export class PredicateFormComponent {
   @Input() predicate: Attribute | Association;
   @Input() oldPredicate: Attribute | Association;
   @Input() model: Model;
+  @Input() form: NgForm;
 
   predicateView: PredicateViewComponent;
-
-  @ViewChild(NgForm) private form: NgForm;
 
   constructor(
     private predicateService: DefaultPredicateService,

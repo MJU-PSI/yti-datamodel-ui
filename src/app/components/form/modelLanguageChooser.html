@@ -17,7 +17,7 @@
   <button class="btn btn-language" id="data_language_dropdown_button" ngbDropdownToggle>
     {{ localizeLanguageName(language) }}
   </button>
-  <div ngbDropdownMenu aria-labelledby="data_language_dropdown_button" class="dropdown-menu-right">
+  <div ngbDropdownMenu [attr.aria-labelledby]="'data_language_dropdown_button'" class="dropdown-menu-right">
     <button *ngFor="let option of context.language"
             [class.active]="option === language"
             class="dropdown-item"

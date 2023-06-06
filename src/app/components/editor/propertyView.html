@@ -1,4 +1,4 @@
-<div ng-if="$ctrl.isOpen()">
+<!-- <div ng-if="$ctrl.isOpen()">
   <div class="row">
     <div class="col-md-12">
         <app-status class="mb-2" [status]="$ctrl.property.status"></app-status>
@@ -217,4 +217,227 @@
     </accordion-group>
   </accordion>
 
-</div>
+</div> -->
+
+<!-- <div *ngIf="isOpen()"> -->
+  <div class="row">
+    <div class="col-md-12">
+        <app-status class="mb-2" [status]="property.status"></app-status>
+
+        <button *ngIf="isEditing()"
+                type="button"
+                class="btn btn-link pull-right remove"
+                [disabled]="!property.inUnstableState"
+                (click)="removeProperty(property)">
+          <i class="fas fa-trash-alt"></i>
+          <span>{{'Delete ' + property.normalizedPredicateType | translate}}</span>
+        </button>
+    </div>
+  </div>
+
+  <h4>{{propertyInformationLabel | translate}}</h4>
+
+  <div class="row">
+
+    <div class="col-md-6">
+      <editable title="Class {{property.normalizedPredicateType}} label" [context]="model">
+        <input id="{{property.internalId + 'label'}}" class="form-control" type="text" restrictDuplicates="otherAttributeLabels" localizedInput="label" [context]="model" [(ngModel)]="property.label" #editableInput/>
+      </editable>
+
+      <!-- <editable-range-select *ngIf="property.isAttribute()"
+                             id="predicateRange"
+                             [range]="property.dataType">
+      </editable-range-select> -->
+
+      <editable *ngIf="property.isAssociation()" title="Value class" (link)="linkToValueClass()" [context]="model">
+          <uri-select id="{{property.internalId + '_valueClass'}}"
+                      type="class" [uri]="property.valueClass"
+                      [mandatory]="!property.inUnstableState"
+                      [excludeId]="valueClassExclude"
+                      [model]="model"
+                      [defaultToCurrentModel]="true" #editableInput>
+          </uri-select>
+        </editable>
+
+      <editable title="Unique label" [context]="model" *ngIf="property.dataType === 'rdf:langString'">
+        <input id="{{property.internalId + 'permanentIdentifier'}}" type="checkbox" [(ngModel)]="property.uniqueLang" #editableInput/>
+      </editable>
+
+      <editable-multiple-language-select *ngIf="model.isOfType('profile') && property.dataType === 'rdf:langString'"
+                                         title="Allowed languages"
+                                         id="dataTypeAllowedLanguage"
+                                         [(ngModel)]="property.languageIn"
+                                         required="false">
+      </editable-multiple-language-select>
+      <!-- <editable-reference-data-select [model]="model" [referenceData]="property.referenceData"></editable-reference-data-select> -->
+    </div>
+
+    <div class="col-md-6">
+      <editable title="Description" [context]="model">
+        <textarea id="{{property.internalId + 'comment'}}" class="form-control" localizedInput [context]="model" [(ngModel)]="property.comment" #editableInput></textarea>
+      </editable>
+      <editable-state-select id="propertyState" [state]="property.status" [model]="model"></editable-state-select>
+    </div>
+  </div>
+
+  <h4 translate *ngIf="isEditing() || property.hasOptionalMetadata()">Optional metadata</h4>
+
+  <div class="row">
+    <div class="col-md-6">
+
+      <editable title="Class {{property.normalizedPredicateType}} id" [context]="model">
+        <input id="{{property.internalId + 'id'}}" class="form-control" type="text" restrictDuplicates="otherPropertyIdentifiers" stringInput="identifier" [(ngModel)]="property.externalId" #editableInput>
+      </editable>
+
+      <!-- <editable-multiple-data-type-input id="{{property.internalId + '_example_attribute'}}"
+                                         title="Example"
+                                         [context]="model"
+                                         [referenceData]="property.referenceData"
+                                         [inputType]="property.inputType"
+                                         [(ngModel)]="property.example">
+      </editable-multiple-data-type-input>
+
+      <editable-multiple-data-type-input title="Allowed values"
+                                         id="{{property.internalId + '_allowedValues'}}"
+                                         [inputType]="property.inputType"
+                                         [(ngModel)]="property.in"
+                                         [referenceData]="property.referenceData"
+                                         [context]="model"></editable-multiple-data-type-input> -->
+
+      <div class="range-input">
+        <editable title="Min length" [context]="model">
+          <input id="{{property.internalId + 'minLength'}}" minInput [max]="property.maxLength" class="form-control" type="number" [(ngModel)]="property.minLength" #editableInput/>
+        </editable>
+
+        <editable title="Max length" [context]="model">
+          <input id="{{property.internalId + 'maxLength'}}" maxInput [min]="property.minLength" class="form-control" type="number" [(ngModel)]="property.maxLength" #editableInput/>
+        </editable>
+      </div>
+
+      <editable-multiple-uri-select *ngIf="property.isAssociation()" id="classIn" type="class" [(ngModel)]="property.classIn" [model]="model" title="{{'Class type'}}"></editable-multiple-uri-select>
+    </div>
+
+    <div class="col-md-6">
+
+      <editable *ngIf="property.isAttribute()" title="Pattern" [context]="model">
+        <input id="{{property.internalId + 'pattern'}}" class="form-control" type="text" [(ngModel)]="property.pattern" #editableInput/>
+      </editable>
+
+      <autocomplete *ngIf="property.isAssociation()" [datasource]="stemDatasource">
+        <editable title="URI stem" [context]="model">
+          <input id="{{property.internalId + 'stem'}}" uriInput="stem" [model]="model" class="form-control" type="text" [(ngModel)]="property.stem" #editableInput/>
+        </editable>
+      </autocomplete>
+
+      <!-- <editable title="Default value" [context]="model">
+        <code-value-input-autocomplete reference-data="property.referenceData" [context]="model">
+          <input id="{{property.internalId + 'default value'}}" class="form-control" type="text" datatype-input="property.inputType" reference-data="property.referenceData" [(ngModel)]="property.defaultValue" #editableInput/>
+        </code-value-input-autocomplete>
+      </editable> -->
+
+      <!-- <editable title="Fixed value" [context]="model">
+        <code-value-input-autocomplete reference-data="property.referenceData" [context]="model">
+          <input id="{{property.internalId + 'hasValue'}}" class="form-control" type="text" datatype-input="property.inputType" reference-data="property.referenceData" [(ngModel)]="property.hasValue" #editableInput/>
+        </code-value-input-autocomplete>
+      </editable> -->
+
+      <div class="range-input">
+        <editable title="Min count" [context]="model">
+          <input id="{{property.internalId + 'minCount'}}" placeholder="0" minInput [max]="property.maxCount" class="form-control" type="number" [(ngModel)]="property.minCount" #editableInput/>
+        </editable>
+
+        <editable title="Max count" [context]="model">
+          <input id="{{property.internalId + 'maxCount'}}" placeholder="*" maxInput [min]="property.minCount" class="form-control" type="number" [(ngModel)]="property.maxCount" #editableInput/>
+        </editable>
+      </div>
+    </div>
+  </div>
+
+  <h4 translate ng-show="isEditing() || property.hasTechnicalMetadata()">Technical metadata</h4>
+
+  <div class="row">
+      <div class="col-md-6">
+          <editable title="Resource identifier" [context]="model" *ngIf="property.isAttribute()">
+            <!-- TODO ALES -->
+            <!-- [restrictduplicates]="otherPropertyResourceIdentifiers" -->
+              <input id="{{property.internalId + 'resourceIdentifier'}}" type="checkbox" [(ngModel)]="property.resourceIdentifier"  #editableInput/>
+          </editable>
+          <editable title="XML Wrapper" [context]="model" *ngIf="property.isAssociation()">
+              <input id="{{property.internalId + 'xmlWrapper'}}" type="checkbox" [(ngModel)]="property.xmlWrapper" #editableInput/>
+          </editable>
+          <editable title="XML Attribute" [context]="model" *ngIf="property.isAttribute()">
+              <input id="{{property.internalId + 'xmlAttribute'}}" type="checkbox" [(ngModel)]="property.xmlAttribute" #editableInput/>
+          </editable>
+      </div>
+    <div class="col-md-6">
+        <editable title="Read-only" [context]="model" *ngIf="property.isAttribute()">
+            <input id="{{property.internalId + 'readOnlyValue'}}" type="checkbox" [(ngModel)]="property.readOnlyValue" #editableInput/>
+          </editable>
+        <editable title="Deactivated" [context]="model">
+          <input id="{{property.internalId + 'deactivated'}}" type="checkbox" [(ngModel)]="property.deactivated" #editableInput/>
+        </editable>
+       </div>
+  </div>
+
+  <div *ngIf="(isEditing() && propertyPairCapable) || property.hasPropertyPairs()">
+    <h4 translate>Property pairs</h4>
+    <div class="row">
+      <div class="col-md-6">
+        <editable-multiple-uri-select id="equals" type="{{property.normalizedPredicateType}}"
+                                      [customDataSource]="comparablePropertiesDataSource" [(ngModel)]="property.equals"
+                                      [model]="model" title="Equals"></editable-multiple-uri-select>
+      </div>
+      <div class="col-md-6">
+        <editable-multiple-uri-select id="disjoint" type="{{property.normalizedPredicateType}}"
+                                      [customDataSource]="comparablePropertiesDataSource" [(ngModel)]="property.disjoint"
+                                      [model]="model" title="Disjoint"></editable-multiple-uri-select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <editable-multiple-uri-select id="lessThan" type="{{property.normalizedPredicateType}}"
+                                      [customDataSource]="comparablePropertiesDataSource" [(ngModel)]="property.lessThan"
+                                      [model]="model" title="Less than"></editable-multiple-uri-select>
+      </div>
+      <div class="col-md-6">
+        <editable-multiple-uri-select id="lessThanOrEquals" type="{{property.normalizedPredicateType}}"
+                                      [customDataSource]="comparablePropertiesDataSource" [(ngModel)]="property.lessThanOrEquals"
+                                      [model]="model" title="Less than or equals"></editable-multiple-uri-select>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="showAdditionalInformation || isEditing()">
+    <h4 translate>Additional information</h4>
+
+    <div class="row">
+      <div class="col-md-12">
+        <editable title="Editorial note" [context]="model">
+          <textarea id="propertyEditorialNote" class="form-control" localized-input="free" [context]="model" [(ngModel)]="property.editorialNote" #editableInput></textarea>
+        </editable>
+      </div>
+    </div>
+  </div>
+
+  <h4 translate>Reusable predicate</h4>
+
+  <accordion openId="predicateOpen" class="reusable-predicate" #accordion>
+    <accordion-group id="{{id + '_' + predicateNameCompact + '_reusable'}}" identifier="'default'" [accordion]="accordion" #accordionGroup>
+
+      <div accordionHeading>
+        <h5>
+          <a href>
+            <accordion-chevron [isOpen]="accordionGroup.isOpen()"></accordion-chevron>
+            <span>{{predicateName}}</span>
+          </a>
+        </h5>
+      </div>
+
+      <div accordionBody>
+        <property-predicate-view id="'property_predicate'" *ngIf="accordionGroup.isOpen()" [property]="property" [model]="model"></property-predicate-view>
+      </div>
+
+    </accordion-group>
+  </accordion>
+
+<!-- </div> -->

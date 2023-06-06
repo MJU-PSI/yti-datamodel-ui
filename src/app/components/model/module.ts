@@ -11,11 +11,11 @@ import { AddEditNamespaceModal, AddEditNamespaceModalComponent } from "./addEdit
 import { ClassificationsViewComponent } from "./classificationsView";
 import { ContributorsViewComponent } from "./contributorsView";
 import { DividerComponent } from "./divider";
-import { EditReferenceDataModal } from "./editReferenceDataModal";
+import { EditReferenceDataModal, EditReferenceDataModalComponent } from "./editReferenceDataModal";
 import { ConceptFormComponent } from "./conceptForm";
 import { ImportedNamespacesViewComponent } from "./importedNamespacesView";
 import { LinksViewComponent } from "./linksView";
-import { MassMigrateDatamodelResourceStatusesModalComponent } from "./mass-migrate-datamodel-resource-statuses-modal.component";
+import { MassMigrateDatamodelResourceStatusesModalComponent, MassMigrateDatamodelResourceStatusesModalService } from "./mass-migrate-datamodel-resource-statuses-modal.component";
 import { ModelFormComponent } from "./modelForm";
 import { ModelMainComponent } from "./modelMain";
 import { ModelPageComponent } from "./modelPage";
@@ -31,7 +31,7 @@ import { SearchOrganizationModal, SearchOrganizationModalComponent } from "./sea
 import { SearchReferenceDataModal, SearchReferenceDataModalComponent } from "./searchReferenceDataModal";
 import { SearchVocabularyController, SearchVocabularyModal } from "./searchVocabularyModal";
 import { TechnicalNamespacesComponent } from "./technicalNamespaces";
-import { ViewReferenceDataModal } from "./viewReferenceDataModal";
+import { ViewReferenceDataComponent, ViewReferenceDataModal } from "./viewReferenceDataModal";
 import { VocabulariesViewComponent } from "./vocabulariesView";
 import { DefaultModelService } from "app/services/modelService";
 import { CommonModule } from "@angular/common";
@@ -49,6 +49,7 @@ import { ModelViewComponent } from "./modelView";
 import { EditableRootClassComponent } from "./editableRootClass";
 import { HistoryModal, HistoryModalContentComponent } from "./historyModal";
 import { HistoryComponent } from "./history";
+import { RouterModule } from "@angular/router";
 
 @NgModule({
   declarations: [
@@ -81,7 +82,9 @@ import { HistoryComponent } from "./history";
     ModelViewComponent,
     EditableRootClassComponent,
     HistoryComponent,
-    HistoryModalContentComponent
+    HistoryModalContentComponent,
+    EditReferenceDataModalComponent,
+    ViewReferenceDataComponent
   ],
   imports: [
     CommonModule,
@@ -93,7 +96,8 @@ import { HistoryComponent } from "./history";
     IowComponentsFormModule,
     IowComponentsCommonModule,
     IowComponentsFilterModule,
-    LMarkdownEditorModule
+    LMarkdownEditorModule,
+    RouterModule
   ],
   providers: [
     AddEditLinkModal,
@@ -108,7 +112,8 @@ import { HistoryComponent } from "./history";
     SubRoutingHackService,
     ViewReferenceDataModal,
     DefaultModelService,
-    HistoryModal
+    HistoryModal,
+    MassMigrateDatamodelResourceStatusesModalService
   ],
   exports: [
     ClassificationsViewComponent,
@@ -131,7 +136,8 @@ import { HistoryComponent } from "./history";
     VocabulariesViewComponent,
     ModelDocumentationComponent,
     ModelViewComponent,
-    EditableRootClassComponent
+    EditableRootClassComponent,
+    HistoryComponent
   ]
 })
 export class IowComponentsModelModule { }

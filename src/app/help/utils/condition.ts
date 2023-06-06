@@ -1,3 +1,5 @@
+// TODO ALES
+
 import { getModelControllerFromInput } from './angular';
 
 export function validInput(element: () => JQuery): () => boolean {

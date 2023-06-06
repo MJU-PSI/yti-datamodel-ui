@@ -61,13 +61,64 @@
 //   }
 // }
 
-import { Component  } from '@angular/core';
-
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { ReferenceDataService } from 'app/services/referenceDataService';
+import { ViewReferenceDataModal } from './viewReferenceDataModal';
+import { ReferenceData, ReferenceDataCode } from 'app/entities/referenceData';
+import { LanguageContext } from 'app/types/language';
+import { UserService } from '@mju-psi/yti-common-ui';
 
 @Component({
   selector: 'reference-data-view',
-  template: ''
+  templateUrl: './referenceDataView.html'
 })
-export class ReferenceDataViewComponent  {
+export class ReferenceDataViewComponent implements OnInit {
+  @Input() referenceData: ReferenceData;
+  @Input() context: LanguageContext;
+  @Input() title: string;
+  @Input() showCodes: boolean;
 
+  codes: ReferenceDataCode[] | null;
+  isLoggedIn: boolean;
+
+  constructor(
+    private referenceDataService: ReferenceDataService,
+    private viewReferenceDataModal: ViewReferenceDataModal,
+    private userService: UserService
+  ) {
+    this.isLoggedIn = this.userService.isLoggedIn();
+  }
+
+  ngOnInit() { }
+
+  ngOnChanges(changes: SimpleChanges){
+    if(changes.referenceData.currentValue) {
+      const referenceData = changes.referenceData.currentValue;
+      if (!referenceData.isExternal()) {
+        this.referenceDataService
+          .getReferenceDataCodes(referenceData)
+          .then(values => (this.codes = values));
+      } else {
+        this.codes = [];
+      }
+    }
+
+  }
+
+  update() {
+    if (this.referenceData && !this.referenceData.isExternal()) {
+      this.codes = null;
+      this.referenceDataService
+        .getReferenceDataCodes(this.referenceData, true)
+        .then(values => (this.codes = values));
+    }
+  }
+
+  browse() {
+    if (this.referenceData.isExternal()) {
+      window.open(this.referenceData.id.uri, '_blank');
+    } else {
+      this.viewReferenceDataModal.open(this.referenceData, this.context);
+    }
+  }
 }

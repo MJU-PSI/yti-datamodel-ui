@@ -165,7 +165,7 @@ export class InteractiveHelpBackdropComponent {
   constructor(@Inject(DOCUMENT) private document: Document) {
   }
 
-  $onInit() {
+  ngOnInit() {
     this.helpController.registerBackdrop(this);
   }
 

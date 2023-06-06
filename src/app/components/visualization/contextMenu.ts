@@ -95,8 +95,16 @@
 //   }
 // }
 
-import { Component  } from '@angular/core';
+// TODO ALES
 
+import { Component  } from '@angular/core';
+import { VisualizationClass } from 'app/entities/visualization';
+import { Coordinate } from 'app/types/visualization';
+
+export interface ContextMenuTarget {
+  coordinate: Coordinate;
+  target: VisualizationClass;
+}
 
 @Component({
   selector: 'visualization-context-menu',

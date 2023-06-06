@@ -44,11 +44,55 @@
 //   };
 // };
 
-import { Directive } from '@angular/core';
+import { Directive, ElementRef, Input } from '@angular/core';
+import { NG_VALIDATORS, Validator, AbstractControl } from '@angular/forms';
+import { Uri } from 'app/entities/uri';
+import { contains, containsAny, flatten, referenceEquality } from '@mju-psi/yti-common-ui';
 
 @Directive({
-  selector: 'restrict-duplicates,[restrict-duplicates]',
+  selector: '[restrictDuplicates]',
+  providers: [
+    {
+      provide: NG_VALIDATORS,
+      useExisting: RestrictDuplicatesDirective,
+      multi: true
+    }
+  ]
 })
-export class RestrictDuplicatesDirective {
+export class RestrictDuplicatesDirective implements Validator {
+  @Input('restrictDuplicates') restrictDuplicates: any[] | Function;
 
+  constructor(private elementRef: ElementRef) {}
+
+  validate(control: AbstractControl): { [key: string]: any } | null {
+    const value = control.value;
+
+    if (!value) {
+      return null;
+    }
+
+    if (typeof this.restrictDuplicates === 'function') {
+      return this.restrictDuplicates(value) ? null : { duplicate: true };
+    } else {
+      const valuesToCheckAgainst: any[] = this.restrictDuplicates;
+
+      if (!valuesToCheckAgainst) {
+        return null;
+      }
+
+      const elementAttributes = this.elementRef.nativeElement.attributes;
+      const isLocalizedInput = elementAttributes.hasOwnProperty('localizedInput');
+
+      if (isLocalizedInput) {
+        const inputLocalizations = Object.values(value);
+        const valuesToCheckAgainstLocalizations = flatten(valuesToCheckAgainst.map(v => Object.values(v)));
+        return containsAny(valuesToCheckAgainstLocalizations, inputLocalizations)
+          ? { duplicate: true }
+          : null;
+      } else {
+        const equals = value instanceof Uri ? (lhs: Uri, rhs: Uri) => lhs.equals(rhs) : referenceEquality;
+        return contains(valuesToCheckAgainst, value, equals) ? { duplicate: true } : null;
+      }
+    }
+  }
 }

@@ -61,13 +61,64 @@
 //   }
 // }
 
-import { Component  } from '@angular/core';
-
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { IScope } from 'angular';
+import { ColumnDescriptor, TableDescriptor } from 'app/components/form/editableTable';
+import { Model, Namespace, NamespaceType } from 'app/entities/model';
 
 @Component({
-  selector: 'technical-namespaces',
-  template: ''
+  selector: 'app-technical-namespaces',
+  template: `
+    <h4 translate>Technical namespaces</h4>
+    <editable-table id="'technicalNamespaces'" [descriptor]="descriptor" [expanded]="expanded"></editable-table>
+  `
 })
-export class TechnicalNamespacesComponent  {
+export class TechnicalNamespacesComponent implements OnInit {
+  @Input() model: Model;
+  descriptor: TechnicalNamespaceTableDescriptor;
+  expanded = false;
 
+  constructor() {}
+
+  ngOnInit() {
+    this.descriptor = new TechnicalNamespaceTableDescriptor(this.model);
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.model && !changes.model.firstChange) {
+      this.descriptor = new TechnicalNamespaceTableDescriptor(changes.model.currentValue);
+    }
+  }
+}
+
+class TechnicalNamespaceTableDescriptor extends TableDescriptor<Namespace> {
+  namespaces: Namespace[];
+
+  constructor(model: Model) {
+    super();
+    this.namespaces = model.getNamespaces().filter((ns: Namespace) => ns.namespaceType === NamespaceType.IMPLICIT_TECHNICAL);
+  }
+
+  columnDescriptors(): ColumnDescriptor<Namespace>[] {
+    return [
+      { headerName: 'Prefix', nameExtractor: (ns: Namespace) => ns.prefix, cssClass: 'prefix' },
+      { headerName: 'Namespace', nameExtractor: (ns: Namespace) => ns.url }
+    ];
+  }
+
+  values(): Namespace[] {
+    return this.namespaces;
+  }
+
+  orderBy(ns: Namespace) {
+    return ns.prefix;
+  }
+
+  canEdit(_ns: Namespace): boolean {
+    return false;
+  }
+
+  canRemove(_ns: Namespace): boolean {
+    return false;
+  }
 }

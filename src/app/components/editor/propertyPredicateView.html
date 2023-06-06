@@ -1,4 +1,4 @@
-<ajax-loading-indicator ng-if="$ctrl.loading"></ajax-loading-indicator>
+<!-- <ajax-loading-indicator ng-if="$ctrl.loading"></ajax-loading-indicator>
 
 <div ng-if="$ctrl.predicate && !$ctrl.loading">
 
@@ -38,6 +38,51 @@
                        options="$ctrl.changeActions"
                        class="pull-right"
                        disabled="!$ctrl.property.inUnstableState">
+    <span translate>Change reusable predicate</span>
+  </button-with-options>
+</div> -->
+
+
+<app-ajax-loading-indicator *ngIf="loading"></app-ajax-loading-indicator>
+
+<div *ngIf="predicate && !loading">
+
+  <div class="row">
+    <div class="col-md-12 mb-2">
+      <h4 class="pull-left" translate>Reusable predicate information</h4>
+      <button-with-options *ngIf="isEditing()"
+                           id="{{id + '_options_button_change_reusable_predicate'}}"
+                           [options]="changeActions"
+                           class="pull-right"
+                           [disabled]="!property.inUnstableState">
+        <span translate>Change reusable predicate</span>
+      </button-with-options>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <non-editable title="{{predicate.normalizedType + ' label' | capitalize}}" [value]="predicate.label" [context]="model"></non-editable>
+      <non-editable title="{{predicate.normalizedType + ' id' | capitalize}}" [value]="predicate.id" link="linkToId()" [context]="model" [clipboard]="predicate.id.uri"></non-editable>
+      <non-editable title="Range" [value]="predicate.range" [context]="model"></non-editable>
+    </div>
+    <div class="col-md-6">
+      <non-editable title="Description" [value]="predicate.comment" [context]="model"></non-editable>
+      <defined-by [entity]="predicate" [model]="model"></defined-by>
+      <non-editable title="Predicate type" [value]="predicate.normalizedType" [valueAsLocalizationKey]="true" [context]="model"></non-editable>
+    </div>
+  </div>
+
+  <subject-view id="{{id + '_subject'}}" [entity]="predicate" [model]="model" [changeConceptDisabled]='true'></subject-view>
+
+</div>
+
+<div *ngIf="predicate === null && !loading">
+  <span class="pull-left" translate>Predicate information not found</span>
+  <button-with-options id="{{id + '_options_button_change_reusable_predicate_not_found'}}"
+                       [options]="changeActions"
+                       class="pull-right"
+                       [disabled]="!property.inUnstableState">
     <span translate>Change reusable predicate</span>
   </button-with-options>
 </div>

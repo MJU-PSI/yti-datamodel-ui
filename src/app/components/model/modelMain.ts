@@ -18,8 +18,11 @@ import { MessagingService } from '../../services/messaging-service';
 import { UserService } from '@mju-psi/yti-common-ui';
 import { Url } from '../../entities/uri';
 import { ConfigService } from 'app/services/configService';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { ModelViewComponent } from './modelView';
+import { ModelDocumentationComponent } from '../model-documentation/model-documentation.component';
+import { ModelPageComponent } from './modelPage';
 
 @Component({
   selector: 'app-model-main',
@@ -27,8 +30,10 @@ import { Location } from '@angular/common';
   templateUrl: './modelMain.html',
 })
 export class ModelMainComponent implements OnDestroy, OnInit, EditorContainer, EditingGuard, HelpProvider {
-  @ViewChild('nav') nav: NgbNav;
-
+  @ViewChild('nav') tabs: NgbNav;
+  @ViewChild('modelPageComponent') modelPageComponent: ModelPageComponent;
+  @ViewChild('modelViewComponent') modelViewComponent: ModelViewComponent;
+  @ViewChild('modelDocumentationComponent') modelDocumentationComponent: ModelDocumentationComponent;
   model?: Model;
   loadingModelPrefix?: string;
   currentModelAndSelection = new BehaviorSubject<ModelAndSelection>(new ModelAndSelection());
@@ -54,103 +59,29 @@ export class ModelMainComponent implements OnDestroy, OnInit, EditorContainer, E
     private messagingService: MessagingService,
     private userService: UserService,
     private route: ActivatedRoute,
+    private router: Router,
     private location: Location) {
+
     this.editorContainer = this;
+    this.subscriptions.push(this.router.events.subscribe(event => {
+      if (this.tabs && this.tabs.activeId !== 'dataTab' && event instanceof NavigationEnd) {
+        // NOTE: Currently all routes lead to dataTab
+        this.tabs.select('dataTab');
+      }
+    }));
+
   }
 
   ngOnInit(): void {
     // this.helpService.registerProvider(this);
     this.subRoutingService.setGuard(this);
-    this.subRoutingService.initSubRoutingHack();
+    this.subRoutingService.initSubRoutingHack(this.route, this.router);
 
     this.isLoggedIn = this.userService.isLoggedIn();
 
     this.subscriptions.push(this.languageService.language$.subscribe(uiLanguage => {
       this.setHelps();
     }));
-
-    this.route.params.subscribe(params => {
-      console.log(params);
-
-      this.modelService.getModelByPrefix(params.prefix).then(model => {
-        this.loadingModelPrefix = params.prefix;
-        // TODO: Is this "clear while waiting" a good thing to do? Would it be better to hold onto the old one until loading succeeds?
-        this.model = undefined;
-        if (this.currentModelAndSelection.getValue().model) {
-          this.currentModelAndSelection.next(new ModelAndSelection());
-        }
-        if (this.loadingModelPrefix === model.prefix) {
-          this.loadingModelPrefix = undefined;
-          this.model = model;
-          this.getConfigAndSubscription();
-          const newestSelection = new RouteData(params);
-          if (newestSelection.modelPrefix === model.prefix) {
-            const oldModelAndSelection = this.currentModelAndSelection.getValue();
-            const newModelAndSelection = ModelAndSelection.fromModelAndRoute(model, newestSelection);
-            if (!oldModelAndSelection.equals(newModelAndSelection)) {
-              this.currentModelAndSelection.next(newModelAndSelection);
-
-            }
-          } else {
-            // Really weird, on the brink of "cannot happen", as this.loadingModelPrefix should match selection subject quite closely.
-            console.error('Model "' + model.prefix + '" was loaded according to the plan, but selection does not match: "' + newestSelection.modelPrefix + '"');
-          }
-        } else {
-        }
-      });
-    });
-
-
-    // this.subscriptions.push(this.subRoutingService.currentSelection.subscribe(selection => {
-    //   if (selection.modelPrefix) {
-    //     if (this.model && this.model.prefix === selection.modelPrefix) {
-    //       this.loadingModelPrefix = undefined;
-    //       const oldModelAndSelection = this.currentModelAndSelection.getValue();
-    //       const newModelAndSelection = ModelAndSelection.fromModelAndRoute(this.model, selection);
-    //       if (!oldModelAndSelection.equals(newModelAndSelection)) {
-    //         this.currentModelAndSelection.next(newModelAndSelection);
-    //       }
-    //     } else {
-    //       this.loadingModelPrefix = selection.modelPrefix;
-    //       // TODO: Is this "clear while waiting" a good thing to do? Would it be better to hold onto the old one until loading succeeds?
-    //       this.model = undefined;
-    //       if (this.currentModelAndSelection.getValue().model) {
-    //         this.currentModelAndSelection.next(new ModelAndSelection());
-    //       }
-    //       this.modelService.getModelByPrefix(selection.modelPrefix).then(model => {
-    //         if (this.loadingModelPrefix === model.prefix) {
-    //           this.loadingModelPrefix = undefined;
-    //           this.model = model;
-    //           this.getConfigAndSubscription();
-    //           const newestSelection = this.subRoutingService.currentSelection.getValue();
-    //           if (newestSelection.modelPrefix === model.prefix) {
-    //             const oldModelAndSelection = this.currentModelAndSelection.getValue();
-    //             const newModelAndSelection = ModelAndSelection.fromModelAndRoute(model, newestSelection);
-    //             if (!oldModelAndSelection.equals(newModelAndSelection)) {
-    //               this.currentModelAndSelection.next(newModelAndSelection);
-    //               this.setHelps();
-    //             }
-    //           } else {
-    //             // Really weird, on the brink of "cannot happen", as this.loadingModelPrefix should match selection subject quite closely.
-    //             console.error('Model "' + model.prefix + '" was loaded according to the plan, but selection does not match: "' + newestSelection.modelPrefix + '"');
-    //           }
-    //         } else {
-    //           // Ignore the result, the selection was changed again before earlier one was fetched.
-    //         }
-    //       }).catch(reason => {
-    //         console.error('Model loading failed: ' + reason);
-    //         this.notificationModal.openModelNotFound();
-    //       });
-    //     }
-    //   } else {
-    //     this.loadingModelPrefix = undefined;
-    //     this.model = undefined;
-    //     if (this.currentModelAndSelection.getValue().model) {
-    //       this.currentModelAndSelection.next(new ModelAndSelection());
-    //     }
-    //   }
-    // }));
-
 
     this.subRoutingService.currentSelection.subscribe(selection => {
         if (selection.modelPrefix) {
@@ -215,7 +146,7 @@ export class ModelMainComponent implements OnDestroy, OnInit, EditorContainer, E
       event.preventDefault();
       this.confirmationModal.openEditInProgress().then(() => {
         editing.forEach(view => view.cancelEditing());
-        this.nav.select(event.nextId);
+        this.tabs.select(event.nextId);
       }, modalCancelHandler);
     }
   }

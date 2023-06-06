@@ -95,9 +95,10 @@ export class EditReferenceDataModal {
 })
 export class EditReferenceDataModalComponent {
 
-  lang: Language;
-  context: LanguageContext;
-  referenceDataToEdit: ReferenceData;
+  public lang: Language;
+  public context: LanguageContext;
+  public referenceDataToEdit: ReferenceData;
+
   id: Uri;
   title: string;
   description: string;

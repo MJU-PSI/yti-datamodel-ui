@@ -153,7 +153,7 @@
 // }
 
 
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { EditableEntityController, Rights } from 'app/components/form/editableEntityController';
 import { DefaultClassService } from 'app/services/classService';
 import { SearchPredicateModal } from './searchPredicateModal';
@@ -167,6 +167,7 @@ import { AuthorizationManagerService } from 'app/services/authorizationManagerSe
 import { changeToRestrictedStatus, UserService } from '@mju-psi/yti-common-ui';
 import { DatamodelConfirmationModalService } from 'app/services/confirmation-modal.service';
 import { modalCancelHandler } from 'app/utils/angular';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'class-view',
@@ -180,6 +181,7 @@ export class ClassViewComponent extends EditableEntityController<Class> implemen
   @Input() modelController!: ModelControllerService;
   @Input() parent!: EditorContainer;
   @Input() openPropertyId!: string;
+
 
   constructor(
     private searchPredicateModal: SearchPredicateModal,

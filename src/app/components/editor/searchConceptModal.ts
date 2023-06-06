@@ -328,7 +328,7 @@ import { LanguageService, Localizer } from 'app/services/languageService';
 import { comparingLocalizable } from 'app/utils/comparator';
 import { EditableForm } from 'app/components/form/editableEntityController';
 import { AddNew } from 'app/components/common/searchResults';
-import { anyMatching, limit, Status, allStatuses } from '@mju-psi/yti-common-ui';
+import { anyMatching, limit, Status, allStatuses, Language } from '@mju-psi/yti-common-ui';
 import { lowerCase, upperCaseFirst } from 'change-case';
 import { SearchController, SearchFilter } from 'app/types/filter';
 import { ifChanged } from 'app/utils/angular';
@@ -431,10 +431,11 @@ export class SearchConceptModalComponent implements SearchController<Concept> {
   loadingResults: boolean;
   selectedItem: Concept|AddNewConcept|AddWithoutConcept;
   showStatus: Status | null;
-  private localizer: Localizer;
+  localizer: Localizer;
+  localizerLanguageBefore: Language;
 
   contentExtractors = [ (concept: Concept) => concept.label ];
-  private searchFilters: SearchFilter<Concept>[] = [];
+  searchFilters: SearchFilter<Concept>[] = [];
 
   @ViewChild(NgForm, {static: true}) form: NgForm;
 
@@ -452,7 +453,10 @@ export class SearchConceptModalComponent implements SearchController<Concept> {
               private translateService: TranslateService,
               private activeModal: NgbActiveModal) {
 
-    this.localizer = languageService.createLocalizer(this.model);
+  }
+
+  ngOnInit() {
+    this.localizer = this.languageService.createLocalizer(this.model);
     this.defineConceptTitle = this.type ? `Define concept for the ${this.newEntityCreation ? 'new ' : ''}${this.type}` : 'Search concept';
     this.buttonTitle = (this.newEntityCreation ? 'Create new ' + this.type : 'Use');
     this.labelTitle = this.type ? `${upperCaseFirst(this.type)} label` : '';
@@ -465,10 +469,26 @@ export class SearchConceptModalComponent implements SearchController<Concept> {
       !this.showStatus || vocabulary.item.status === this.showStatus
     );
 
-    // $scope.$watch(() => this.searchText, () => this.query(this.searchText).then(() => this.search()));
-    // $scope.$watch(() => this.selectedVocabulary, ifChanged(() => this.query(this.searchText).then(() => this.search())));
-    // $scope.$watch(() => this.localizer.language, ifChanged(() => this.query(this.searchText).then(() => this.search())));
-    // $scope.$watch(() => this.showStatus, ifChanged<Status|null>(() => this.search()));
+    this.query(this.searchText).then(() => this.search());
+  }
+
+  ngDoCheck() {
+    if( this.localizer && this.localizer.language !== this.localizerLanguageBefore ) {
+      this.localizerLanguageBefore = this.localizer.language;
+      this.query(this.searchText).then(() => this.search());
+    }
+  }
+
+  onSearchTextChange() {
+    this.query(this.searchText).then(() => this.search());
+  }
+
+  onSelectedVocabularyChange() {
+    this.query(this.searchText).then(() => this.search());
+  }
+
+  onShowStatusChange() {
+    this.query(this.searchText).then(() => this.search());
   }
 
   addFilter(filter: SearchFilter<Concept>) {

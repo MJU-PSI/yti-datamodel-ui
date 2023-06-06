@@ -172,6 +172,7 @@ import { comparingLocalizable } from 'app/utils/comparator';
 import { Class, ClassListItem, Property } from 'app/entities/class';
 import { Model } from 'app/entities/model';
 import { modalCancelHandler } from 'app/utils/angular';
+import { NgForm } from '@angular/forms';
 
 
 @Component({
@@ -185,6 +186,8 @@ export class ClassFormComponent implements OnInit {
   @Input() oldClass: Class;
   @Input() model: Model;
   @Input() openPropertyId: string;
+  @Input() form: NgForm;
+  @Input() classView: ClassViewComponent;
 
   properties: Property[];
   shouldAutofocus: boolean;
@@ -194,8 +197,7 @@ export class ClassFormComponent implements OnInit {
   onPropertyReorder = (property: Property, index: number) => property.index = index;
   superClassExclude = (klass: ClassListItem) => klass.isOfType('shape') ? 'Super cannot be shape' : null;
 
-  classView: ClassViewComponent;
-  form: EditableForm;
+
 
   constructor(
               private classService: DefaultClassService,
@@ -228,10 +230,12 @@ export class ClassFormComponent implements OnInit {
         apply: () => this.copyPropertiesFromClass()
       }
     ];
+
+    setProperties();
   }
 
   isEditing() {
-    return this.form && this.form.editing;
+    return this.form && this.form.form.editing;
   }
 
   get shouldAutoFocus() {
@@ -247,11 +251,11 @@ export class ClassFormComponent implements OnInit {
   }
 
   addProperty() {
-    // this.searchPredicateModal.openAddProperty(this.model, this.class)
-    //   .then(property => {
-    //     this.class.addProperty(property);
-    //     this.openPropertyId = property.internalId.uuid;
-    //   }, modalCancelHandler);
+    this.searchPredicateModal.openAddProperty(this.model, this.class)
+      .then(property => {
+        this.class.addProperty(property);
+        this.openPropertyId = property.internalId.uuid;
+      }, modalCancelHandler);
   }
 
   copyPropertiesFromClass(): void {

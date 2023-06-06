@@ -156,7 +156,7 @@
 
 
 
-
+// TODO ALES
 
 import { Component  } from '@angular/core';
 import { Directive } from '@angular/core';

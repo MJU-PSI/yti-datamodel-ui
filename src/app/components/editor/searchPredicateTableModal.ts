@@ -336,9 +336,9 @@
 
 
 import { Component, Injectable, ViewChild  } from '@angular/core';
-import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal, NgbModalOptions, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { gettextCatalog as GettextCatalog } from 'angular-gettext';
-import { PredicateService, RelatedPredicate } from '../../services/predicateService';
+import { DefaultPredicateService, PredicateService, RelatedPredicate } from '../../services/predicateService';
 import { SearchConceptModal, EntityCreation } from './searchConceptModal';
 import { LanguageService, Localizer } from '../../services/languageService';
 import { EditableForm } from '../../components/form/editableEntityController';
@@ -348,17 +348,18 @@ import { Exclusion, combineExclusions, createExistsExclusion, createDefinedByExc
 import { SearchFilter, SearchController } from '../../types/filter';
 import { PredicateListItem, AbstractPredicate, Predicate } from '../../entities/predicate';
 import { Model } from '../../entities/model';
-import { KnownPredicateType, DefinedByType, SortBy } from '../../types/entity';
+import { KnownPredicateType, DefinedByType, SortBy, SortByTableColumn } from '../../types/entity';
 import { filterAndSortSearchResults, defaultLabelComparator } from '../../components/filter/util';
 import { Value, DisplayItemFactory } from '../form/displayItemFactory';
 import { ifChanged, modalCancelHandler } from '../../utils/angular';
 import { Classification } from '../../entities/classification';
 import { comparingLocalizable } from '../../utils/comparator';
 import { ClassificationService } from '../../services/classificationService';
-import { ModelService } from '../../services/modelService';
+import { DefaultModelService, ModelService } from '../../services/modelService';
 import { Language } from '../../types/language';
 import { ShowPredicateInfoModal } from './showPredicateInfoModal';
 import { NgForm } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 
 export const noPredicateExclude = (_item: PredicateListItem) => null;
 
@@ -374,7 +375,14 @@ export class SearchPredicateTableModal {
     filterExclude: Exclusion<AbstractPredicate>,
     predicatesAssignedToModel: Set<string>
   ): Promise<EntityCreation | Predicate> {
-    const modalRef: NgbModalRef = this.modalService.open(SearchPredicateTableController, { size: 'xl' })
+    const modalOptions: NgbModalOptions = {
+      size: 'xl',
+      windowClass: 'modal-full-height',
+      backdrop: 'static',
+      keyboard: false
+    };
+
+    const modalRef: NgbModalRef = this.modalService.open(SearchPredicateTableComponent, modalOptions)
 
     modalRef.componentInstance.model = model;
     modalRef.componentInstance.type = type;
@@ -400,7 +408,13 @@ export class SearchPredicateTableModal {
   selector: 'app-search-predicate-table',
   templateUrl: './searchPredicateTableModal.html',
 })
-class SearchPredicateTableController implements SearchController<PredicateListItem> {
+export class SearchPredicateTableComponent implements SearchController<PredicateListItem> {
+  public model: Model;
+  public type: KnownPredicateType | null;
+  public exclude: Exclusion<PredicateListItem>;
+  public filterExclude: Exclusion<PredicateListItem>;
+  public predicatesAssignedToModel: Set<string>;
+
   private predicates: PredicateListItem[] = [];
 
   searchResults: (PredicateListItem)[] = [];
@@ -419,6 +433,11 @@ class SearchPredicateTableController implements SearchController<PredicateListIt
   sortBy: SortBy<PredicateListItem>;
 
   private localizer: Localizer;
+  private modelLanguageBefore: Language;
+  private sortByNameBefore: SortByTableColumn;
+  private sortByDescOrderBefore: boolean;
+
+  @ViewChild(NgForm, {static: true}) private form: NgForm;
 
   contentMatchers = [
     { name: 'Label', extractor: (predicate: PredicateListItem) => predicate.label },
@@ -430,26 +449,24 @@ class SearchPredicateTableController implements SearchController<PredicateListIt
 
   private searchFilters: SearchFilter<PredicateListItem>[] = [];
 
-  @ViewChild(NgForm, {static: true}) private form: NgForm;
-
-  constructor(public model: Model,
-              public type: KnownPredicateType | null,
-              public exclude: Exclusion<PredicateListItem>,
-              public filterExclude: Exclusion<PredicateListItem>,
-              public predicatesAssignedToModel: Set<string>,
-              private predicateService: PredicateService,
-              languageService: LanguageService,
+  constructor( private predicateService: DefaultPredicateService,
+              private languageService: LanguageService,
               private searchConceptModal: SearchConceptModal,
-              private gettextCatalog: GettextCatalog,
+              private translateService: TranslateService,
               private displayItemFactory: DisplayItemFactory,
-              classificationService: ClassificationService,
+              private classificationService: ClassificationService,
               protected showPredicateInfoModal: ShowPredicateInfoModal,
-              private modelService: ModelService,
+              private modelService: DefaultModelService,
               private activeModal: NgbActiveModal) {
 
-    this.localizer = languageService.createLocalizer(model);
+    this.showInfoDomain = null;
+    this.showStatus = null;
+  }
+
+  ngOnInit() {
+    this.localizer = this.languageService.createLocalizer(this.model);
     this.loadingResults = true;
-    this.typeSelectable = !type;
+    this.typeSelectable = !this.type;
 
     this.modelTypes = ['library', 'profile'];
     this.showModelType = 'library';
@@ -460,19 +477,15 @@ class SearchPredicateTableController implements SearchController<PredicateListIt
       descOrder: false
     };
 
-    const sortInfoDomains = () => {
-      this.infoDomains.sort(comparingLocalizable<Classification>(this.localizer, infoDomain => infoDomain.label));
-    }
+    this.classificationService.getClassifications().then(infoDomains => {
 
-    classificationService.getClassifications().then(infoDomains => {
-
-      modelService.getModels().then(models => {
+      this.modelService.getModels().then(models => {
 
         const modelCount = (infoDomain: Classification) =>
           models.filter(mod => infoDomainMatches(infoDomain, mod)).length;
 
         this.infoDomains = infoDomains.filter(infoDomain => modelCount(infoDomain) > 0);
-        sortInfoDomains();
+        this.sortInfoDomains();
       });
     });
 
@@ -482,7 +495,7 @@ class SearchPredicateTableController implements SearchController<PredicateListIt
       this.loadingResults = false;
     };
 
-    predicateService.getAllPredicates(model).then(appendResults);
+    this.predicateService.getAllPredicates(this.model).then(appendResults);
 
     this.addFilter(predicateListItem =>
       !this.showInfoDomain || contains(predicateListItem.item.definedBy.classifications.map(classification => classification.identifier), this.showInfoDomain.identifier)
@@ -496,16 +509,42 @@ class SearchPredicateTableController implements SearchController<PredicateListIt
       !this.showModelType || predicateListItem.item.definedBy.normalizedType === this.showModelType
     );
 
-    // $scope.$watch(() => this.showInfoDomain, ifChanged<Classification|null>(() => this.search()));
-    // $scope.$watch(() => this.showModelType, ifChanged<DefinedByType|null>(() => this.search()));
-    // $scope.$watch(() => this.showStatus, ifChanged<Status|null>(() => this.search()));
-    // $scope.$watch(() => this.sortBy.name, ifChanged<string>(() => this.search()));
-    // $scope.$watch(() => this.sortBy.descOrder, ifChanged<Boolean>(() => this.search()));
-    // $scope.$watch(() => languageService.getModelLanguage(model), ifChanged<Language>(() => {
-    //   sortInfoDomains();
-    //   this.search();
-    // }));
+  }
 
+  ngDoCheck() {
+    if(this.languageService.getModelLanguage(this.model) !== this.modelLanguageBefore) {
+      this.modelLanguageBefore = this.languageService.getModelLanguage(this.model);
+      if(this.infoDomains) {
+        this.sortInfoDomains();
+      }
+      this.search();
+    }
+
+    if(this.sortBy.name !== this.sortByNameBefore) {
+      this.sortByNameBefore = this.sortBy.name;
+      this.search();
+    }
+
+    if(this.sortBy.descOrder !== this.sortByDescOrderBefore) {
+      this.sortByDescOrderBefore = this.sortBy.descOrder;
+      this.search();
+    }
+  }
+
+  onShowModelTypeChange() {
+    this.search();
+  }
+
+  onShowInfoDomainChange() {
+    this.search();
+  }
+
+  onShowStatusChange() {
+    this.search();
+  }
+
+  sortInfoDomains() {
+    this.infoDomains.sort(comparingLocalizable<Classification>(this.localizer, infoDomain => infoDomain.label));
   }
 
   addFilter(filter: SearchFilter<PredicateListItem>) {
@@ -639,7 +678,7 @@ class SearchPredicateTableController implements SearchController<PredicateListIt
     const disabledReason = this.exclude(item);
 
     if (!!disabledReason) {
-      return this.gettextCatalog.getString(disabledReason);
+      return this.translateService.instant(disabledReason);
     } else {
       return null;
     }

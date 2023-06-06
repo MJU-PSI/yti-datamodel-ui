@@ -1,4 +1,4 @@
-<form name="form" class="editable-form">
+<!-- <form name="form" class="editable-form">
   <fieldset ng-disabled="$ctrl.persisting">
     <div ng-if="$ctrl.predicate && $ctrl.model">
       <selection-view id-prefix="'predicate_'" model="$ctrl.model" editable-controller="$ctrl">
@@ -12,6 +12,26 @@
         <selection-content>
           <predicate-form id="{{$ctrl.id}}" predicate="$ctrl.editableInEdit" old-predicate="$ctrl.predicate" model="$ctrl.model"></predicate-form>
         </selection-content>
+      </selection-view>
+    </div>
+  </fieldset>
+</form> -->
+
+<form name="form" class="editable-form" #form="ngForm">
+  <fieldset [disabled]="persisting">
+    <div *ngIf="predicate && model">
+      <selection-view [idPrefix]="'predicate_'" [model]="model" [editableController]="this" [form]="form">
+        <div selectionButtons>
+          <export *ngIf="!isEditing()"  [idPrefix]="'predicate'" [entity]="predicate" [context]="model"></export>
+          <!-- TODO ALES -->
+          <!-- <history button-id="'predicate_edit_buttons_history'" [model]="model" [resource]="predicate"
+                   *ngIf="!isEditing()"></history> -->
+          <app-status [status]="predicate.status"></app-status>
+        </div>
+
+        <div selectionContent>
+          <predicate-form [id]="id" [predicate]="editableInEdit" [oldPredicate]="predicate" [model]="model" [form]="form"></predicate-form>
+        </div>
       </selection-view>
     </div>
   </fieldset>

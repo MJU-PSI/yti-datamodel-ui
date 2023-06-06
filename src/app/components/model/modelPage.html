@@ -89,9 +89,7 @@
 
  <div class="row">
   <div class="col-12">
-    <div class="panel-left">
-      <!-- TODO ALES - float direktiva se ne dela -->
-      <!-- float always="true" -->
+    <div class="panel-left" appFloat>
       <div class="selection-box" >
         <ul ngbNav #nav="ngbNav" class="nav-tabs nav-fill">
           <li *ngFor="let tab of tabs" class="nav-item" [ngbNavItem]="tab.type + '_tab_heading_link'" [id]="tab.type + '_tab_heading_link'">
@@ -117,7 +115,7 @@
                     <ul [ngClass]="{'has-button': canEdit()}">
                       <li *ngFor="let item of tab.items(); let i = index" [id]="item.id.uri + '_tabset_link'"
                         [ngClass]="{'selection': isSelected(item)}" (click)="selectResource(item)">
-                        {{ item.label }} <ajax-loading-indicator-small *ngIf="isLoading(item)"></ajax-loading-indicator-small>
+                        {{ item.label }} <app-ajax-loading-indicator-small *ngIf="isLoading(item)"></app-ajax-loading-indicator-small>
                       </li>
                     </ul>
                   </div>
@@ -131,27 +129,28 @@
     </div>
 
     <div class="panel-right">
-      <div class="selection-container" [ngStyle]="{ 'width': selectionWidth }">
 
-        {{resource | json}}
-        <class-view id="class" *ngIf="resource?.isClass()" [parent]="parent" [dataClass]="resource"
+      <div class="selection-container" [style.width]="selectionWidth">
+        propertyId - {{propertyId}}
+        <class-view id="class" *ngIf="resource?.isClass()" [parent]="parent" [class]="resource"
           [openPropertyId]="propertyId" [model]="model" [modelController]="modelController">
         </class-view>
 
-        <!-- <predicate-view id="predicate" *ngIf="resource?.isPredicate()" [parent]="parent" [predicate]="resource"
-          [model]="model" [model-controller]="modelController">
-        </predicate-view> -->
+        <predicate-view id="predicate" *ngIf="resource?.isPredicate()" [parent]="parent" [predicate]="resource"
+          [model]="model" [modelController]="modelController">
+        </predicate-view>
       </div>
 
-      <div class="visualization-container" [ngStyle]="{ 'width': visualizationWidth }">
-        <div float width="auto">
+      <div class="visualization-container" [style.width]="visualizationWidth">
 
-          <divider *ngIf="resource" [selection-width]="selectionWidth"></divider>
+        <div appFloat [setWidth]="false">
 
-          <!-- <visualization-view *ngIf="model" [ngClass]="{ 'without-divider': !resource, 'maximized': visualizationMaximized }"
-            [selection]="resource" [model]="model" [model-page-actions]="modelPageActions"
+          <divider *ngIf="resource"></divider>
+
+          <visualization-view *ngIf="model" [ngClass]="{ 'without-divider': !resource, 'maximized': visualizationMaximized }"
+            [selection]="resource" [model]="model" [modelPageActions]="this"
             [maximized]="visualizationMaximized">
-          </visualization-view> -->
+          </visualization-view>
         </div>
       </div>
 

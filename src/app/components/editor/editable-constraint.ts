@@ -73,6 +73,7 @@ import { ConstraintType } from 'app/types/entity';
 import { isExternalLink } from 'app/components/form/href';
 import { EditableForm } from '../form/editableEntityController';
 import { modalCancelHandler } from 'app/utils/angular';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'editable-constraint',
@@ -84,18 +85,15 @@ export class EditableConstraintComponent {
   @Input() constraint: Constraint;
   @Input() model: Model;
   @Input() class: Class;
+  @Input() form: NgForm;
 
   types: ConstraintType[] = ['or', 'and', 'not'];
-
-  form: EditableForm;
-  // TODO ALES - PREVERI open variablo, ker prej je ni bilo
-  open: any;
 
   constructor(private searchClassModal: SearchClassModal) {
   }
 
   isEditing() {
-    return this.form && this.form.editing;
+    return this.form && this.form.form.editing;
   }
 
   linkItem(item: ConstraintListItem) {
@@ -110,7 +108,7 @@ export class EditableConstraintComponent {
       createSelfExclusion(this.class)
     );
 
-    // this.searchClassModal.openWithOnlySelection(this.model, true, exclude).then(klass => this.constraint.addItem(klass), modalCancelHandler);
+    this.searchClassModal.openWithOnlySelection(this.model, true, exclude).then(klass => this.constraint.addItem(klass), modalCancelHandler);
   }
 
   removeItem(item: ConstraintListItem) {
@@ -119,11 +117,6 @@ export class EditableConstraintComponent {
 
   isExternalLink(link: string): boolean {
     return isExternalLink(link);
-  }
-
-// TODO ALES - PREVERI isOpen metodo, ker prej je ni bilo
-  isOpen(): any {
-    throw new Error('Method not implemented.');
   }
 }
 

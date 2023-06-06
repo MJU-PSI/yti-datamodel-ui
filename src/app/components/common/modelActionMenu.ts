@@ -142,14 +142,12 @@
 
 
 import { LanguageContext } from 'app/types/language';
-import { LegacyComponent } from 'app/utils/angular';
 import { Model } from '../../entities/model';
 import { MessagingService } from '../../services/messaging-service';
-import { ConfirmationModalService, ignoreModalClose } from '@mju-psi/yti-common-ui';
+import { ConfirmationModalService, UserService, ignoreModalClose } from '@mju-psi/yti-common-ui';
 import { ErrorModal } from '../form/errorModal';
 import { Config } from '../../entities/config';
 import { Url } from '../../entities/uri';
-import { USER_SERVICE, UserService } from '../../services/userService';
 import { MassMigrateDatamodelResourceStatusesModalService } from 'app/components/model/mass-migrate-datamodel-resource-statuses-modal.component';
 import { AuthorizationManagerService } from 'app/services/authorizationManagerService';
 import { NewDatamodelVersionModalService } from 'app/components/model/new-datamodel-version-modal.component';
@@ -175,13 +173,13 @@ export class ModelActionMenuComponent {
   constructor(private confirmationModalService: ConfirmationModalService,
               private messagingService: MessagingService,
               private errorModal: ErrorModal,
-              @Inject(USER_SERVICE) private userService: UserService,
+              private userService: UserService,
               private authorizationManagerService: AuthorizationManagerService,
               private massMigrateDatamodelResourceStatusesModalService: MassMigrateDatamodelResourceStatusesModalService,
               private newDatamodelVersionModalService: NewDatamodelVersionModalService) {
   }
 
-  $onInit() {
+  ngOnInit() {
 
     this.uri = this.entity.namespace.toString();
   }

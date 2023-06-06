@@ -40,11 +40,12 @@
 //   }
 // }
 
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, forwardRef } from '@angular/core';
 import { SearchController, TextAnalysis } from 'app/types/filter';
 import { isDefined } from '@mju-psi/yti-common-ui';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'text-filter',
@@ -57,18 +58,27 @@ import { debounceTime } from 'rxjs/operators';
         autocomplete="off"
         id="text_filter_search_input"
         [(ngModel)]="searchText"
-        (ngModelChange)="onSearchTextChange()"
+        (ngModelChange)="onSearchTextChange($event)"
         [keyControl]="searchController.searchResults"
         ignoreDirty
       />
     </div>
-  `
+  `,
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => TextFilterComponent),
+      multi: true
+    }
+  ]
 })
 export class TextFilterComponent<T> implements OnInit {
   @Input() placeholder: string;
   @Input() searchController: SearchController<T>;
   @Input() searchText: string;
   @Input() contentExtractors: string;
+
+  @Output() searchTextChange: EventEmitter<string> = new EventEmitter<string>();
 
   modelChanged = new Subject<string>();
 
@@ -82,8 +92,9 @@ export class TextFilterComponent<T> implements OnInit {
     })
   }
 
-  onSearchTextChange() {;
-    this.modelChanged.next();
+  onSearchTextChange(value: string) {;
+    this.modelChanged.next(value);
+    this.searchTextChange.emit(value);
   }
 
 }

@@ -475,7 +475,7 @@ export class DefaultClassService implements ClassService {
     this.modelClassesCache.delete(modelId);
   }
 
-  newClass(model: Model, classLabel: string, conceptID: Uri|null, lang: Language): Promise<Class> {
+  newClass(model: Model, classLabel: string, conceptID: Uri|null, lang: Language | string): Promise<Class> {
     const params: any = {
       modelID: model.id.uri,
       classLabel: upperCaseFirst(classLabel),
@@ -489,7 +489,7 @@ export class DefaultClassService implements ClassService {
     return this.http.get<GraphData>(apiEndpointWithName('classCreator'), {params})
       .toPromise()
       .then(expandContextWithKnownModels(model))
-      .then((response: any) => this.deserializeClass(response.data, false))
+      .then((response: any) => this.deserializeClass(response, false))
       .then((klass: Class) => {
         klass.definedBy = model.asDefinedBy();
         klass.unsaved = true;
@@ -508,7 +508,7 @@ export class DefaultClassService implements ClassService {
     return this.http.get<GraphData>(apiEndpointWithName('relatedClassCreator'), {params})
       .toPromise()
       .then(expandContextWithKnownModels(model))
-      .then((response: any) => this.deserializeClass(response.data, false))
+      .then((response: any) => this.deserializeClass(response, false))
       .then((klass: Class) => {
         klass.definedBy = model.asDefinedBy();
         klass.unsaved = true;
@@ -517,7 +517,7 @@ export class DefaultClassService implements ClassService {
       });
   }
 
-  newShape(classOrExternal: Class | ExternalEntity, profile: Model, external: boolean, lang: Language): Promise<Class> {
+  newShape(classOrExternal: Class | ExternalEntity, profile: Model, external: boolean, lang: Language | string): Promise<Class> {
 
     const id = requireDefined(classOrExternal.id);
     const classPromise = (classOrExternal instanceof ExternalEntity) ? this.getExternalClass(id, profile) : Promise.resolve(classOrExternal as Class);

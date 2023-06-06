@@ -158,14 +158,14 @@
 
 <div class="row basic-info">
   <div class="col-md-6">
-    <editable data-title="{{class.normalizedType + ' label' | capitalize}}" context="model" autofocus="shouldAutofocus">
-      <input id="classLabel" class="form-control" type="text" localized-input="label" context="model" [(ngModel)]="class.label"/>
+    <editable title="{{class.normalizedType + ' label' | capitalize}}" [context]="model" autofocus="shouldAutofocus" [form]="form">
+      <input id="classLabel" class="form-control" type="text" localizedInput="label" [context]="model" [(ngModel)]="class.label" #editableInput/>
     </editable>
   </div>
 
   <div class="col-md-6">
-    <editable [attr.data-title]="'Description'" [context]="model">
-      <textarea id="classComment" class="form-control" localized-input context="model" [(ngModel)]="class.comment"></textarea>
+    <editable [title]="'Description'" [context]="model" [form]="form">
+      <textarea id="classComment" class="form-control" localizedInput [context]="model" [(ngModel)]="class.comment" #editableInput></textarea>
     </editable>
   </div>
 </div>
@@ -173,39 +173,39 @@
 <div class="row">
   <div class="col-md-6">
 
-    <editable [attr.data-title]="class.normalizedType + ' id' | capitalize" link="linkToIdClass()" context="model" clipboard="class.id.uri">
-      <input id="classId" class="form-control" type="text" required id-input="class" old="oldClass" [(ngModel)]="class.id" [disabled]="!class.inUnstableState" />
+    <editable [title]="class.normalizedType + ' id' | capitalize" (link)="linkToIdClass()" [context]="model" [clipboard]="class.id.uri" [form]="form">
+      <input id="classId" class="form-control" type="text" required id-input="class" old="oldClass" [(ngModel)]="class.id" [disabled]="!class.inUnstableState" #editableInput/>
     </editable>
 
-    <editable *ngIf="class.isOfType('class')" data-title="Superclass" link="linkToSuperclass()" context="model">
-      <uri-select id="superClass" type="class" uri="class.subClassOf" model="model" exclude-item="superClassExclude" (after-selected)="addPropertiesFromClassId(id, 'super class')"></uri-select>
+    <editable *ngIf="class.isOfType('class')" title="Superclass" (link)="linkToSuperclass()" [context]="model" [form]="form">
+      <uri-select id="superClass" type="class" [uri]="class.subClassOf" [model]="model" [excludeItem]="superClassExclude" (afterSelected)="addPropertiesFromClassId(id, 'super class')" #editableInput></uri-select>
     </editable>
 
-    <editable *ngIf="class.isOfType('shape')" data-title="Specialized from class" link="linkToScopeclass()" context="model">
-      <uri-select id="scopeClass" type="class" uri="class.scopeClass" model="model" mandatory="true" (after-selected)="addPropertiesFromClassId(id, 'scope class')"></uri-select>
+    <editable *ngIf="class.isOfType('shape')" title="Specialized from class" link="linkToScopeclass()" [context]="model" [form]="form">
+      <uri-select id="scopeClass" type="class" [uri]="class.scopeClass" [model]="model" [mandatory]="true" (afterSelected)="addPropertiesFromClassId(id, 'scope class')" #editableInput></uri-select>
     </editable>
 
-    <editable [attr.data-title]="'Localname'" [context]="model">
-      <input id="localName" class="form-control" type="text" string-input="identifier" [ngModel]="class.localName" (ngModelChange)="class.localName = $event" />
+    <editable title="Localname" [context]="model" [form]="form">
+      <input id="localName" class="form-control" type="text" stringInput="identifier" [ngModel]="class.localName" (ngModelChange)="class.localName = $event" #editableInput/>
     </editable>
 
-    <editable [attr.data-title]="'API path'" [context]="model">
-      <input id="absolutePath" class="form-control" type="text" [(ngModel)]="class.absolutePath" />
+    <editable title="API path" [context]="model" [form]="form">
+      <input id="absolutePath" class="form-control" type="text" [(ngModel)]="class.absolutePath" #editableInput/>
     </editable>
 
-    <editable [attr.data-title]="'Deactivated'" [context]="model">
-        <input id="deactivated" type="checkbox" [(ngModel)]="class.deactivated"/>
+    <editable title="Deactivated" [context]="model" [form]="form">
+        <input id="deactivated" type="checkbox" [(ngModel)]="class.deactivated" #editableInput/>
     </editable>
 
   </div>
   <div class="col-md-6">
-    <editable-state-select *ngIf="!class.unsaved" id="classState" [state]="class.status" [model]="model"></editable-state-select>
-    <!-- <defined-by entity="class" [model]="model"></defined-by> -->
-    <editable-multiple-uri-select id="equivalentClass" type="class" [(ngModel)]="class.equivalentClasses" [model]="model" data-title="{{'Equivalent class'}}" required-by-in-use="true"></editable-multiple-uri-select>
+    <editable-state-select *ngIf="!class.unsaved" id="classState" [state]="class.status" [model]="model" [form]="form"></editable-state-select>
+    <defined-by [entity]="class" [model]="model"></defined-by>
+    <!-- <editable-multiple-uri-select id="equivalentClass" type="class" [(ngModel)]="class.equivalentClasses" [model]="model" title="{{'Equivalent class'}}" [requiredByInUse]="true" [form]="form"></editable-multiple-uri-select> -->
   </div>
 </div>
 
-<!-- <subject-view id="{{id + '_subject'}}" entity="class" [model]="model"></subject-view> -->
+<subject-view id="{{id + '_subject'}}" [entity]="class" [model]="model" [form]="form"></subject-view>
 
 <hr />
 
@@ -213,13 +213,13 @@
   <div class="col-md-12">
     <div class="clearfix">
       <h4 class="pull-left mb-0 mr-2">{{ class.normalizedType + ' properties' | capitalize | translate }}</h4>
-      <a *ngIf="!isEditing()"
-         class="btn btn-secondary-action btn-sm"
-         [ngClass]="{ active: sortAlphabetically }"
-         uib-btn-checkbox
-         [(ngModel)]="sortAlphabetically">
+      <a *ngIf="!isEditing()" class="btn btn-secondary-action btn-sm"
+        [class.active]="sortAlphabetically"
+        ngbButtonLabel>
+        <input type="checkbox" [(ngModel)]="sortAlphabetically" style="display: none;">
         <i class="fas fa-sort-alpha-down"></i>
       </a>
+
       <button-with-options id="{{ id + '_options_button_add_property' }}"
                            *ngIf="isEditing()"
                            class="add-property"
@@ -230,34 +230,42 @@
 
     <accordion class="properties" *ngIf="class.properties.length > 0"
                [openId]="openPropertyId"
-               [dragSortable]="properties"
+               [appDragSortable]="properties"
                [dragDisabled]="!isEditing()"
-               (onReorder)="onPropertyReorder">
+               (onReorder)="onPropertyReorder()"
+               #accordion>
        <accordion-group id="{{ id + '_property_' + formLabelNameToIdName(property.label) }}"
-                        *ngFor="let property of properties; trackBy: property.internalId"
-                        [identifier]="property.internalId.uuid">
-        <accordion-heading>
+                        *ngFor="let property of properties;"
+                        [identifier]="property.internalId.uuid"
+                        [accordion]="accordion"
+                        [appDragSortableItem]="property"
+                        #accordionGroup>
+
+        <div accordionHeading>
           <div id="{{ property.internalId + 'header' }}" [attr.data-property-id]="property.internalId"
                class="{{ 'property_no_' + property.index + '_header' }}" dragSortableItem>
             <h5>
-              <a [ngClass]="{ collapsed: !isOpen() }" href>
+              <a [ngClass]="{ collapsed: false }" href>
                 <span class="accordion-icon" [ngClass]="property.glyphIconClass"></span>
                 <span>{{ property | translateLabel: model }}</span>
-                <accordion-chevron [isOpen]="isOpen()"></accordion-chevron>
+                <accordion-chevron [isOpen]="accordionGroup.isOpen()"></accordion-chevron>
                 <div class="property-ordering" *ngIf="isEditing()">
                   <span class="fas fa-bars"></span>
                 </div>
               </a>
             </h5>
           </div>
-        </accordion-heading>
+        </div>
 
-        <accordion-body>
-          <property-view id="{{ id + '_property_' + formLabelNameToIdName(property.label) }}"
+
+        <div accordionBody>
+          <property-view id="{{id + '_property_' + formLabelNameToIdName(property.label)}}"
                           [property]="property"
-                          [dataClass]="class"
-                          [model]="model"></property-view>
-        </accordion-body>
+                          [class]="class"
+                          [model]="model"
+                          [classForm]="this"></property-view>
+
+        </div>
       </accordion-group>
     </accordion>
 
@@ -268,28 +276,27 @@
 <hr />
 
 <div class="range-input">
-  <editable [attr.data-title]="'Min properties'" [context]="model">
-    <input id="minProperties" placeholder="0" min-input [max]="class.maxProperties" class="form-control" type="number" [(ngModel)]="class.minProperties" />
+  <editable [title]="'Min properties'" [context]="model" [form]="form">
+    <input id="minProperties" placeholder="0" minInput [max]="class.maxProperties" class="form-control" type="number" [(ngModel)]="class.minProperties" #editableInput/>
   </editable>
-<editable [attr.data-title]="'Max properties'" [context]="model">
-<!-- <input id="maxProperties" placeholder="*" [max-input] [min]="class.minProperties" class="form-control" type="number" [(ngModel)]="class.maxProperties" /> -->
-</editable>
-
+  <editable [title]="'Max properties'" [context]="model" [form]="form">
+    <input id="maxProperties" placeholder="*" maxInput [min]="class.minProperties" class="form-control" type="number" [(ngModel)]="class.maxProperties" #editableInput/>
+  </editable>
 </div>
 <div *ngIf="!class.unsaved">
   <h4 translate>Additional information</h4>
   <div class="row">
     <div class="col-md-6">
-      <non-editable data-title="Created at" [value]="class.createdAt" [context]="model"></non-editable>
+      <non-editable title="Created at" [value]="class.createdAt" [context]="model"></non-editable>
     </div>
     <div class="col-md-6">
-      <non-editable data-title="Modified at" [value]="class.modifiedAt" [context]="model"></non-editable>
+      <non-editable title="Modified at" [value]="class.modifiedAt" [context]="model"></non-editable>
     </div>
   </div>
   <div class="row">
     <div class="col-md-12">
-      <editable data-title="Editorial note" [context]="model">
-        <textarea id="classEditorialNote" class="form-control" localized-input="free" [context]="model" [(ngModel)]="class.editorialNote"></textarea>
+      <editable title="Editorial note" [context]="model" [form]="form">
+        <textarea id="classEditorialNote" class="form-control" localizedInput="free" [context]="model" [(ngModel)]="class.editorialNote" #editableInput></textarea>
       </editable>
     </div>
   </div>

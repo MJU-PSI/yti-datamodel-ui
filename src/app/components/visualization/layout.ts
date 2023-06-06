@@ -4,11 +4,31 @@ import { layout as colaLayout } from './colaLayout';
 import * as joint from 'jointjs';
 import { ModelPositions } from 'app/entities/visualization';
 
-export function layoutGraph($q: IQService, graph: joint.dia.Graph, directed: boolean, onlyNodeIds: Uri[]): IPromise<any> {
+// export function layoutGraph($q: IQService, graph: joint.dia.Graph, directed: boolean, onlyNodeIds: Uri[]): IPromise<any> {
+//   if (directed && onlyNodeIds.length === 0) {
+//     // TODO directed doesn't support incremental layout
+
+//     return $q.when(
+//       joint.layout.DirectedGraph.layout(graph, {
+//         nodeSep: 100,
+//         edgeSep: 150,
+//         rankSep: 500,
+//         rankDir: 'LR'
+//       })
+//     );
+//   } else {
+//     return $q((resolve: IQResolveReject<any>, reject: IQResolveReject<any>) => {
+//       colaLayout(graph, onlyNodeIds.map(id => id.uri))
+//         .then(() => resolve(), err => reject(err));
+//     });
+//   }
+// }
+
+export function layoutGraph(graph: joint.dia.Graph, directed: boolean, onlyNodeIds: Uri[]): Promise<any> {
   if (directed && onlyNodeIds.length === 0) {
     // TODO directed doesn't support incremental layout
 
-    return $q.when(
+    return Promise.resolve(
       joint.layout.DirectedGraph.layout(graph, {
         nodeSep: 100,
         edgeSep: 150,
@@ -17,7 +37,7 @@ export function layoutGraph($q: IQService, graph: joint.dia.Graph, directed: boo
       })
     );
   } else {
-    return $q((resolve: IQResolveReject<any>, reject: IQResolveReject<any>) => {
+    return new Promise<void>((resolve, reject) => {
       colaLayout(graph, onlyNodeIds.map(id => id.uri))
         .then(() => resolve(), err => reject(err));
     });

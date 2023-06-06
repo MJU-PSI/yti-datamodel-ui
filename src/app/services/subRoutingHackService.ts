@@ -29,10 +29,11 @@ export class SubRoutingHackService implements OnDestroy {
 
   private destroy$ = new Subject();
 
+  private route: ActivatedRoute;
+  private router: Router;
+
   constructor(
-    private route: ActivatedRoute,
-    private location: Location,
-    private router: Router
+    private location: Location
     ) {
   }
 
@@ -41,7 +42,9 @@ export class SubRoutingHackService implements OnDestroy {
     this.ajsSubscriptions.forEach(s => s());
   }
 
-  initSubRoutingHack() {
+  initSubRoutingHack(route: ActivatedRoute, router: Router): void {
+    this.route = route;
+    this.router = router;
     // The logic is mostly transferred from old AngularJS bloat modelPage.ts. The main idea is to emulate sub routing by hacking,
     // to keep the data model level stuff from re-initializing when lower level selections change.
 
@@ -51,42 +54,8 @@ export class SubRoutingHackService implements OnDestroy {
     const initialRouteData = new RouteData(this.currentRouteParams);
     this.currentSelection.next(initialRouteData);
 
-    // this.ajsSubscriptions.push(this.ajsRootScope.$on('$locationChangeSuccess', () => {
-    //   if (this.location.path().startsWith('/model')) {
-    //     this.currentRouteParams = this.route.snapshot.params;
-    //     const newRoute = new RouteData(this.currentRouteParams);
-
-    //     // FIXME: hack to prevent reload on params update
-    //     // https://github.com/angular/angular.js/issues/1699#issuecomment-45048054
-    //     // TODO: consider migration to angular-ui-router if it fixes the problem elegantly (https://ui-router.github.io/ng1/)
-    //     // this.route.url = this.initialRoute;
-
-    //     const oldRoute = this.currentSelection.getValue();
-    //     const modelDiffers = oldRoute.modelPrefix !== newRoute.modelPrefix;
-    //     const resourceDiffers = oldRoute.resourceCurie !== newRoute.resourceCurie;
-    //     const propertyDiffers = oldRoute.propertyId !== newRoute.propertyId;
-
-    //     if (modelDiffers || resourceDiffers || propertyDiffers) {
-    //       this.currentSelection.next(newRoute);
-    //     }
-    //   } else {
-    //     if (this.currentSelection.getValue().modelPrefix) {
-    //       this.currentSelection.next(new RouteData({ prefix: '' }));
-    //     }
-    //   }
-    // }));
-
-    // this.ajsSubscriptions.push(this.ajsRootScope.$on('$locationChangeStart', (event, next, current) => {
-    //   // NOTE: isDifferentUrl utility ignores propertyId (quite classView specific functionality)
-    //   if (isDifferentUrl(current, next)) {
-    //     if (this.editingGuard) {
-    //       // this.editingGuard.attemptRouteChange(() => event.preventDefault(), () => this.location.go(nextUrl(this.location, next)));
-    //     }
-    //   }
-    // }));
-
     this.router.events
-      // .pipe(filter(event => event instanceof NavigationStart || event instanceof NavigationEnd ))
+      .pipe(filter(event => event instanceof NavigationStart || event instanceof NavigationEnd ))
       .subscribe(event => {
         if (event instanceof NavigationStart) {
           // Navigation started
@@ -147,6 +116,7 @@ export class SubRoutingHackService implements OnDestroy {
       newParams.property !== this.currentRouteParams.property) {
 
       // this.routeService.updateParams(newParams);
+      this.router.navigate(['/model', newParams.prefix, newParams.resource]);
     }
   }
 

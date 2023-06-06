@@ -468,7 +468,7 @@ export class SearchPredicateController implements SearchController<PredicateList
     }
   }
 
-  ngOnCheck(){
+  ngDoCheck(){
     // $scope.$watch(() => this.selection && this.selection.id, selectionId => {
     //   if (selectionId && this.selection instanceof ExternalEntity) {
     //     this.externalPredicate = undefined;

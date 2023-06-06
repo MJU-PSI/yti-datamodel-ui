@@ -19,12 +19,12 @@
 </accordion>
  -->
 
-<accordion [openId]="open" #accordion>
-  <accordion-group [id]="id + '_usage'" [identifier]="identifier" [accordion]="accordion">
+<accordion openId="panel_usage" #accordion>
+  <accordion-group [id]="id + '_usage'" [identifier]="identifier" [accordion]="accordion" #accordionGroup>
     <div accordionHeading>
       <h5>
         <a href>
-          <accordion-chevron [isOpen]="open"></accordion-chevron>
+          <accordion-chevron [isOpen]="accordionGroup.isOpen()"></accordion-chevron>
           <span translate>Usage</span>
         </a>
       </h5>

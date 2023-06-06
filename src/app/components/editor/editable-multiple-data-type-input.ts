@@ -47,18 +47,19 @@ import { LanguageContext } from 'app/types/language';
 @Component({
   selector: 'editable-multiple-data-type-input',
   template: `
-      <editable-multiple id="{{id}}" data-title="{{title}}" [(ngModel)]="ngModel" [input]="input">
-        <input-container>
+      <editable-multiple [id]="id" [title]="title" [(ngModel)]="ngModel" [input]="input">
+        <!-- <input-container> -->
           <code-value-input-autocomplete [referenceData]="referenceData" [context]="context">
-            <input id="{{id}}"
+            <!-- TODO ALES -->
+            <!-- [restrictDuplicates]="ngModel"
+            [datatypeInput]="inputType"
+            [referenceData]="referenceData" -->
+            <input [id]="id"
                    type="text"
-                   restrictDuplicates="ngModel"
-                   datatypeInput="inputType"
-                   ignore-form
-                   referenceData="referenceData"
+                   ignoreForm
                    [(ngModel)]="input" />
           </code-value-input-autocomplete>
-        </input-container>
+        <!-- </input-container> -->
       </editable-multiple>
   `
 })

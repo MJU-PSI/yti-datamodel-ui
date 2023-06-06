@@ -745,7 +745,7 @@ import {
   Exclusion
 } from '../../utils/exclusion';
 import { collectIds, glyphIconClassForType } from '../../utils/entity';
-import { areEqual, Optional, removeMatching } from '@mju-psi/yti-common-ui';
+import { areEqual, Language, Optional, removeMatching } from '@mju-psi/yti-common-ui';
 import { AbstractPredicate, Predicate, PredicateListItem } from '../../entities/predicate';
 import { AbstractClass, Class, ClassListItem, Property } from '../../entities/class';
 import { Model } from '../../entities/model';
@@ -755,6 +755,10 @@ import { EditorContainer, ModelControllerService } from './modelControllerServic
 import { AuthorizationManagerService } from '../../services/authorizationManagerService';
 import { SearchPredicateTableModal, noPredicateExclude } from '../editor/searchPredicateTableModal';
 import { ModelAndSelection } from '../../services/subRoutingHackService';
+import { convertCompilerOptionsFromJson } from 'typescript';
+import { ClassViewComponent } from '../editor/class-view';
+import { SessionService } from 'app/services/sessionService';
+import { DomSanitizer } from '@angular/platform-browser';
 
 export interface ModelPageActions extends ChangeNotifier<Class | Predicate> {
   selectResource(item: WithIdAndType): void;
@@ -853,10 +857,12 @@ export class ModelPageComponent implements OnInit, OnDestroy, ModelPageActions, 
   @Output() updateNamespaces = new EventEmitter<Set<string>>();
   @Input() parent: EditorContainer;
   subscriptions: Subscription[] = [];
+  private childComponent?: any;
 
   model: Model;
   resource?: Class | Predicate;
   propertyId?: string;
+  propertyIdBefore?: string;
 
   loadingResource?: WithIdAndType;
   loadingResourcePromise?: Promise<Class | Predicate>;
@@ -866,7 +872,6 @@ export class ModelPageComponent implements OnInit, OnDestroy, ModelPageActions, 
   associations: SelectableItem[] = [];
   attributes: SelectableItem[] = [];
   namespacesInUse: Set<string> = new Set<string>();
-  selectionWidth: number;
   visualizationMaximized = false;
 
   activeTab = 0;
@@ -875,6 +880,8 @@ export class ModelPageComponent implements OnInit, OnDestroy, ModelPageActions, 
     new Tab('attribute', () => this.attributes, this),
     new Tab('association', () => this.associations, this)
   ];
+
+  languageBefore: Language;
 
   constructor(
     private locationService: LocationService,
@@ -889,14 +896,36 @@ export class ModelPageComponent implements OnInit, OnDestroy, ModelPageActions, 
     private notificationModal: NotificationModal,
     private addPropertiesFromClassModal: AddPropertiesFromClassModal,
     public languageService: LanguageService,
-    private authorizationManagerService: AuthorizationManagerService) {
+    private authorizationManagerService: AuthorizationManagerService,
+    private sessionService: SessionService,
+    private domSanitizer: DomSanitizer) {
+  }
 
+  ngDoCheck() {
+
+    if(this.model && this.languageBefore !== this.languageService.getModelLanguage(this.model)) {
+      this.languageBefore = this.languageService.getModelLanguage(this.model);
+      this.sortAll();
+    }
     // $scope.$watch(() => this.model && this.languageService.getModelLanguage(this.model), () => {
     //   if (this.model) {
     //     this.sortAll();
     //   }
     // });
 
+    if(this.propertyId !== this.propertyIdBefore) {
+      if (this.resource && this.resource.id) {
+        const current = this.currentSelection.getValue();
+        let curieMatches = false;
+        try {
+          curieMatches = this.resource.id.curie === current.resourceCurie;
+        } catch (error) { }
+
+        if (curieMatches && this.propertyIdBefore === current.propertyId && this.propertyIdBefore !== this.propertyId) {
+          this.makeSelection.emit({ resourceCurie: current.resourceCurie, propertyId: this.propertyId });
+        }
+      }
+    }
     // $scope.$watch(() => this.propertyId, (newId: string, oldId: string) => {
     //   // Cope with situation where there is an entity under creation, but the currentSelection still has old values.
     //   if (this.resource && this.resource.id) {
@@ -937,8 +966,14 @@ export class ModelPageComponent implements OnInit, OnDestroy, ModelPageActions, 
     // });
   }
 
+  get selectionWidth() {
+    return this.sessionService.selectionWidth + 'px';
+  }
+
   get visualizationWidth() {
-    return this.resource ? `calc(100% - ${this.selectionWidth}px)` : '100%';
+    return this.domSanitizer.bypassSecurityTrustStyle(
+      this.resource ? `calc(100% - ${this.sessionService.selectionWidth}px)` : '100%'
+    );
   }
 
   get selectableItemComparator() {
@@ -1433,4 +1468,12 @@ export class ModelPageComponent implements OnInit, OnDestroy, ModelPageActions, 
       return this.languageService.createLocalizer(this.model);
     }
 
+    onOutletActivate($event: any) {
+      console.log($event);
+      if ($event instanceof ClassViewComponent) {
+        this.childComponent = $event;
+      } else {
+        this.childComponent = undefined;
+      }
+    }
 }

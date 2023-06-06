@@ -23,7 +23,7 @@
 import { Directive } from '@angular/core';
 
 @Directive({
-  selector: 'href,[href]',
+  selector: '[href]',
 })
 export class HrefDirective {
 

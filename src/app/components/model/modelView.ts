@@ -183,8 +183,6 @@ export class ModelViewComponent extends EditableEntityController<Model> implemen
   @Input() id: string;
   @Input() model: Model;
   @Input() parent: EditorContainer;
-  // @Input() deleted: (model: Model) => void;
-  // @Input() updated: (model: Model) => void;
   @Output() deleted = new EventEmitter<Model>();
   @Output() updated = new EventEmitter<Model>();
   @Input() namespacesInUse: Set<string>;

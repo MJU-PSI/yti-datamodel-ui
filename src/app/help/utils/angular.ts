@@ -1,3 +1,5 @@
+// TODO ALES
+
 import { INgModelController } from 'angular';
 
 export function getModalController<T>(controllerName = '$ctrl') {

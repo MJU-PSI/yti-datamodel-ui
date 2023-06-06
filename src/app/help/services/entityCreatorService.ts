@@ -497,7 +497,6 @@ import { Language } from 'app/types/language';
 import { Concept, Vocabulary } from 'app/entities/vocabulary';
 import * as moment from 'moment';
 import { Association, Attribute, Predicate } from 'app/entities/predicate';
-import { IPromise, IQService } from 'angular';
 import { Class, Property } from 'app/entities/class';
 import { Organization } from 'app/entities/organization';
 import { Classification } from 'app/entities/classification';

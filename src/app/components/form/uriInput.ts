@@ -230,10 +230,6 @@ export class UriInputDirective implements ControlValueAccessor, OnInit, OnChange
   }
 
   ngOnInit() {
-    if (!this.uriInput) {
-      throw new Error('uriInput attribute is required.');
-    }
-
     const placeholder = placeholderText(this.uriInput, this.translateService);
     this.renderer.setAttribute(this.elementRef.nativeElement, 'placeholder', placeholder);
 

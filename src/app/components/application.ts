@@ -121,7 +121,7 @@ export class ApplicationComponent implements OnInit, OnDestroy {
   }
 
   navigateToInformation() {
-    this.location.go('/information');
+    this.router.navigate(['/information']);
   }
 
   openCloseModal(next: string): Promise<void> {

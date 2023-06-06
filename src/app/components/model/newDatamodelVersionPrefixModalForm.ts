@@ -65,13 +65,68 @@
 //   }
 // }
 
-import { Component  } from '@angular/core';
-
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { EditableForm } from 'app/components/form/editableEntityController';
+import { Model } from 'app/entities/model';
 
 @Component({
   selector: 'new-datamodel-version-prefix-modal-form',
-  template: ''
+  template: `
+    <div class="modal-header">
+      <h4 class="modal-title strong">
+        <a><i id="close_modal_link" class="fa fa-times" (click)="close.emit()"></i></a>
+        <span translate>Create new version of datamodel</span>
+      </h4>
+    </div>
+    <div class="modal-body">
+      <form #form="ngForm" name="form" class="editable-form" implicitEditMode="form">
+          <p translate>Define prefix for the new version. Note that prefix is used to define the new namespace.</p>
+          <editable [title]="'Prefix'" [context]="model.context" [form]="form">
+            <input id="new_datamodel_version_prefix_input" class="form-control" type="text" prefixInput
+                    [reservedPrefixesGetter]="importedPrefixes"
+                    [isModelPrefix]="true"
+                    [(ngModel)]="prefix"
+                    autocomplete="off"
+                    required
+                    #editableInput/>
+          </editable>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <div>
+        <button id="save_new_datamodel_version_button"
+                [disabled]="!canSave()"
+                type="button"
+                class="btn btn-action"
+                (click)="saveNewVersion.emit(prefix)"
+                translate>Save</button>
+        <button id="cancel_new_datamodel_version_button" type="button" class="btn btn-link" (click)="close.emit()" translate>Cancel</button>
+      </div>
+    </div>
+  `
 })
-export class NewDatamodelVersionPrefixModalFormComponent  {
+export class NewDatamodelVersionPrefixModalFormComponent {
 
+  @Input() model: Model;
+  prefix: string;
+
+  @Output() saveNewVersion = new EventEmitter<string>();
+  @Output() close = new EventEmitter();
+
+  importedPrefixes: () => string[];
+  form: NgForm;
+
+  constructor() {
+    this.importedPrefixes = () => {
+      if (this.model.importedNamespaces) {
+        return this.model.importedNamespaces.map(ns => ns.prefix);
+      }
+      return [];
+    }
+  }
+
+  canSave() {
+    return this.form.valid;
+  }
 }

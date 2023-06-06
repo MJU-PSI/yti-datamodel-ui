@@ -1,4 +1,4 @@
-
+<!--
 <div class="row" ng-if="$ctrl.showChangeSubject()">
   <div class="col-12 ">
     <div class="pull-right">
@@ -53,6 +53,68 @@
 
           <div class="col-md-3">
             <non-editable data-title="Concept modified at" value="$ctrl.entity.subject.modifiedAt" context="$ctrl.model"></non-editable>
+          </div>
+        </div>
+    </div>
+
+  </div>
+</div> -->
+
+
+<div class="row" *ngIf="showChangeSubject()">
+  <div class="col-12">
+    <div class="pull-right">
+      <button [id]="id + '_change_concept_button'"
+              type="button"
+              class="btn btn-link pr-0"
+              [disabled]="!entity.inUnstableState"
+              (click)="changeSubject()">
+        <span translate>Select concept</span>
+      </button>
+      <span class="fas fa-info-circle info" [ngbTooltip]="'INFO_TEXT_SUBJECT_VIEW_SELECT_CONCEPT' | translate"></span>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+
+    <div *ngIf="!entity.subject" class="concept-box">
+      <h5 translate>No concept defined</h5>
+    </div>
+
+    <div *ngIf="entity.subject" class="concept-box">
+
+        <h5>
+          <i class="fas fa-lightbulb"></i>
+          <span>
+            <a [href]="conceptLink">
+              {{ entity.subject | translateLabel: model }}
+              <i class="fas fa-external-link-alt x-small-item"></i>
+            </a>
+          </span>
+        </h5>
+
+        <div class="row">
+          <div class="col-md-12">
+              <non-editable [dataTitle]="'Concept definition'" [value]="entity.subject.definition"
+                            [context]="model"></non-editable>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <non-editable-vocabulary [vocabulary]="entity.subject.vocabulary"
+                                     [context]="model"
+                                     [link]="vocabularyLink"></non-editable-vocabulary>
+          </div>
+          <div class="col-md-3">
+            <non-editable [dataTitle]="'Concept status'" [value]="entity.subject.status" [valueAsLocalizationKey]="true"
+                          [context]="model"></non-editable>
+          </div>
+
+          <div class="col-md-3">
+            <non-editable [dataTitle]="'Concept modified at'" [value]="entity.subject.modifiedAt" [context]="model"></non-editable>
           </div>
         </div>
     </div>

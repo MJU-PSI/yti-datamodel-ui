@@ -8,26 +8,26 @@ import { ApplicationComponent } from './components/application';
 import { UserDetailsComponent } from './components/userdetails/user-details.component';
 import { FrontPageComponent } from './components/frontPage';
 import { NewModelPageComponent } from './components/model/newModelPage';
+import { InformationAboutServicePageComponent } from './components/information/information-about-service-page.component';
+import { ModelViewComponent } from './components/model/modelView';
+import { ClassViewComponent } from './components/editor/class-view';
 
 const routes: Routes = [
+
+  { path: '', component: FrontPageComponent, pathMatch: 'full' },
+  { path: 'newModel', component: NewModelPageComponent },
   // {
-  //   path: '',
-  //   pathMatch: 'full',
-  //   component: ModelMainComponent
+  //   path: 'model/:prefix', component: ModelMainComponent, children: [
+  //     // { path: '', component: NoSelectionComponent, canDeactivate: [ConfirmCancelEditGuard]  },
+  //     { path: ':resource', component: ClassViewComponent },
+  //   ]
   // },
-  {
-    path: '',
-    pathMatch: 'full',
-    component: FrontPageComponent
-  },
-  // {
-  //   path: 'information',
-  //   // component: InformationAboutServicePageComponent
-  // },
-  {
-    path: 'user',
-    component: UserDetailsComponent
-  },
+
+  { path: 'user', component: UserDetailsComponent },
+  { path: 'information', component: InformationAboutServicePageComponent},
+
+  {path: 'model/:prefix', component: ModelMainComponent},
+  {path: 'model/:prefix/:resource', component: ModelMainComponent},
   // {
   //   path: 'group/:id',
   //   // component: GroupPageComponent,
@@ -35,18 +35,11 @@ const routes: Routes = [
   //     groupId: GroupIdResolver
   //   }
   // },
-  {
-    path: 'newModel',
-    component: NewModelPageComponent
-  },
+
   // {
   //   path: 'ns/:prefix',
   //   // component: RedirectResolver
   // },
-  {
-    path: 'model/:prefix',
-    component: ModelMainComponent
-  }
 ];
 
 @NgModule({

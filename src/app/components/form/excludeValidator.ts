@@ -27,11 +27,34 @@
 //   };
 // };
 
-import { Directive } from '@angular/core';
+// TODO ALES - nimam pojma če je to pravilno
+import { Directive, Input } from '@angular/core';
+import { NG_ASYNC_VALIDATORS, AsyncValidator, AbstractControl } from '@angular/forms';
+import { Observable, of } from 'rxjs';
+import { Uri } from 'app/entities/uri';
+
+interface ExcludeValidatorProvider {
+  (): (id: Uri) => Promise<string>;
+}
 
 @Directive({
-  selector: 'exclude-validator,[exclude-validator]',
+  selector: '[excludeValidator]',
+  providers: [
+    {
+      provide: NG_ASYNC_VALIDATORS,
+      useExisting: ExcludeValidatorDirective,
+      multi: true
+    }
+  ]
 })
-export class ExcludeValidatorDirective {
+export class ExcludeValidatorDirective implements AsyncValidator {
+  @Input('excludeValidator') excludeValidator: ExcludeValidatorProvider;
 
+  validate(control: AbstractControl): Observable<{ [key: string]: any } | null> {
+    if (this.excludeValidator) {
+      const exclude = this.excludeValidator();
+      return of(exclude(control.value).then(excludeReason => excludeReason ? Promise.reject() : true));
+    }
+    return of(null);
+  }
 }

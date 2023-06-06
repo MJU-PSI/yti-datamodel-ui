@@ -10,11 +10,20 @@
 //   }
 // };
 
-import { Directive } from '@angular/core';
+import { Directive, Input, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 @Directive({
-  selector: 'impicit-edit-model,[impicit-edit-model]',
+  selector: '[implicitEditMode]'
 })
-export class ImplicitEditModeDirective {
+export class ImplicitEditModeDirective implements OnInit {
+  @Input('implicitEditMode') form: NgForm;
 
+  ngOnInit() {
+    if (this.form) {
+      this.form.control.markAsDirty();
+      this.form.control.markAllAsTouched();
+      this.form.control.updateValueAndValidity();
+    }
+  }
 }
