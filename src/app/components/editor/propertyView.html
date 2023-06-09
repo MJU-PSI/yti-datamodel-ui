@@ -244,10 +244,10 @@
         <input id="{{property.internalId + 'label'}}" class="form-control" type="text" restrictDuplicates="otherAttributeLabels" localizedInput="label" [context]="model" [(ngModel)]="property.label" #editableInput/>
       </editable>
 
-      <!-- <editable-range-select *ngIf="property.isAttribute()"
+      <editable-range-select *ngIf="property.isAttribute()"
                              id="predicateRange"
                              [range]="property.dataType">
-      </editable-range-select> -->
+      </editable-range-select>
 
       <editable *ngIf="property.isAssociation()" title="Value class" (link)="linkToValueClass()" [context]="model">
           <uri-select id="{{property.internalId + '_valueClass'}}"
@@ -269,7 +269,8 @@
                                          [(ngModel)]="property.languageIn"
                                          required="false">
       </editable-multiple-language-select>
-      <!-- <editable-reference-data-select [model]="model" [referenceData]="property.referenceData"></editable-reference-data-select> -->
+      <editable-reference-data-select [model]="model"
+        [referenceData]="property.referenceData"></editable-reference-data-select>
     </div>
 
     <div class="col-md-6">

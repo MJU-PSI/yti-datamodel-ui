@@ -1055,3 +1055,22 @@ body.visualization-maximized {
 .x-small-item {
   font-size: x-small;
 }
+
+i.fas + span {
+  margin-left: 5px;
+}
+
+
+[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate) {
+  display:none !important;
+}
+ng\:form 
+{
+  display:block;
+}
+.ng-animate-shim {
+  visibility:hidden;
+}
+.ng-anchor {
+  position:absolute;
+}

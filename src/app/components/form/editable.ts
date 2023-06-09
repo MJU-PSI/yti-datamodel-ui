@@ -146,6 +146,7 @@ export class EditableComponent implements OnInit {
   @Input() autofocus: string;
 
   item: DisplayItem;
+  itemDisplayValueBefore: string;
 
   @Input() form: NgForm;
 
@@ -180,8 +181,9 @@ export class EditableComponent implements OnInit {
     });
   }
 
-  ngOnChanges(changes: any) {
-    if(changes.item || changes.form) {
+  ngDoCheck() {
+    if(this.item && this.item.displayValue !== this.itemDisplayValueBefore) {
+      this.itemDisplayValueBefore = this.item.displayValue;
       const show = this.item && this.item.displayValue || this.isEditing();
 
       if (show) {

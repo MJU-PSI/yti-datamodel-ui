@@ -171,11 +171,6 @@ export class PropertyPredicateViewComponent implements OnInit {
 
   ngOnInit() {
 
-    const setResult = (p: Predicate|null) => {
-      this.predicate = p;
-      this.updateChangeActions().then(() => this.loading = false);
-    };
-
     this.propertyChangedHandler();
   }
 

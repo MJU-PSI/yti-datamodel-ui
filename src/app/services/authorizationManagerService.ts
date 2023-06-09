@@ -191,7 +191,7 @@ export class AuthorizationManagerService {
 }
 
 function isReference(model: Model, resource: WithDefinedBy): boolean {
-  return resource.definedBy.id !== model.id;
+  return resource.definedBy.id.notEquals(model.id);
 }
 
 function isRemovableStatus(status: Status|null): boolean {
