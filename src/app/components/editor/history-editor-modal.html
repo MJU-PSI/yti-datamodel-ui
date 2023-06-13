@@ -90,9 +90,9 @@
   <div style="float: left; width: calc(100% - 300px); height: calc(100% - 40px); padding-left: 20px;">
     <form class="editable-form">
       <div *ngIf="selection" style="height: 100%; overflow-x: hidden">
-        <model-form id="'model_history'" *ngIf="selection.isOfType('model')" [model]="selection"></model-form>
-        <!-- <class-form id="class_history" *ngIf="selection.isClass()" [class]="selection" [oldClass]="selection" [model]="model" [openPropertyId]="openPropertyId"></class-form> -->
-        <!-- <predicate-form id="predicate_history" *ngIf="selection.isPredicate()" [predicate]="selection" [oldPredicate]="selection" [model]="model"></predicate-form> -->
+        <model-form id="model_history" *ngIf="selection.isOfType('model')"  [model]="selection"></model-form>
+        <class-form id="class_history" *ngIf="!selection.isOfType('model') && selection?.isClass()" [class]="selection" [oldClass]="selection" [model]="model" [openPropertyId]="openPropertyId"></class-form>
+        <predicate-form id="predicate_history" *ngIf="!selection.isOfType('model') && selection?.isPredicate()" [predicate]="selection" [oldPredicate]="selection" [model]="model"></predicate-form>
       </div>
     </form>
   </div>

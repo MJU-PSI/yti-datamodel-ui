@@ -43,7 +43,6 @@ import { CommonModule } from "@angular/common";
 import { LanguageInputComponent } from "./language-input.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { UseContextInputComponent } from "./use-context-input.component";
-import { IowComponentsModelModule } from "../model/module";
 import { UseContextDropdownComponent } from "./use-context-dropdown.component";
 import { IowComponentsCommonModule } from "../common/module";
 import { ModelLanguageChooserComponent } from "./modelLanguageChooser";

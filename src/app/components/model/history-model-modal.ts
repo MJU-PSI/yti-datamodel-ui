@@ -106,13 +106,13 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 @Injectable({
   providedIn: 'root'
 })
-export class HistoryModal {
+export class HistoryModelModal {
 
   constructor(private modalService: NgbModal) {}
 
   open(model: Model, resource: Class | Predicate | Model): Promise<boolean> {
-    const modalRef = this.modalService.open(HistoryModalContentComponent, { size: resource instanceof Model ? 'lg' : 'md', backdrop: 'static', keyboard: false });
-    const instance = modalRef.componentInstance as HistoryModalContentComponent;
+    const modalRef = this.modalService.open(HistoryModelModalContentComponent, { size: resource instanceof Model ? 'lg' : 'md', backdrop: 'static', keyboard: false });
+    const instance = modalRef.componentInstance as HistoryModelModalContentComponent;
     instance.model = model;
     instance.resource = resource;
 
@@ -121,10 +121,10 @@ export class HistoryModal {
 }
 
 @Component({
-  selector: 'app-history-modal-content',
-  templateUrl: './historyModal.html'
+  selector: 'app-history-model-modal-content',
+  templateUrl: './history-model-modal.html'
 })
-export class HistoryModalContentComponent {
+export class HistoryModelModalContentComponent {
 
   versions: Entity[];
   selectedItem: Entity;

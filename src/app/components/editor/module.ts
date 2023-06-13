@@ -44,6 +44,8 @@ import { ClassViewComponent } from "./class-view";
 import { YtiCommonModule } from "@mju-psi/yti-common-ui";
 import { DefinedByComponent } from "./defined-by";
 import { VirtualScrollerModule } from "ngx-virtual-scroller";
+import { HistoryEditorModal, HistoryEditorModalContentComponent } from "./history-editor-modal";
+import { HistoryEditorComponent } from "./history-editor";
 
 
 @NgModule({
@@ -76,7 +78,9 @@ import { VirtualScrollerModule } from "ngx-virtual-scroller";
     ClassViewComponent,
     DefinedByComponent,
     SearchPredicateTableComponent,
-    ShowClassInfoModalComponent
+    ShowClassInfoModalComponent,
+    HistoryEditorComponent,
+    HistoryEditorModalContentComponent
   ],
   imports: [
     FormsModule,
@@ -89,7 +93,7 @@ import { VirtualScrollerModule } from "ngx-virtual-scroller";
     NgbModule,
     TranslateModule,
     YtiCommonModule,
-    VirtualScrollerModule
+    VirtualScrollerModule,
   ],
   providers: [
     AddPropertiesFromClassModal,
@@ -103,7 +107,8 @@ import { VirtualScrollerModule } from "ngx-virtual-scroller";
     SearchPredicateTableModal,
     ShowClassInfoModal,
     ShowPredicateInfoModal,
-    DefaultClassService
+    DefaultClassService,
+    HistoryEditorModal
   ],
   exports: [
     AddPropertiesFromClassModalComponent,

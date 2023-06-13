@@ -24,9 +24,8 @@
       <selection-view [idPrefix]="'class_'" [model]="model" [editableController]="this" [form]="form">
         <div selectionButtons>
           <export *ngIf="!isEditing()" [idPrefix]="'class'" [entity]="class" [context]="model"></export>
-          <!-- TODO ALES - moduli se zaciklajo -->
-          <!-- <history buttonId="'class_edit_buttons_history'" [model]="model" [resource]="class"
-                   *ngIf="!isEditing()"></history> -->
+          <history-editor buttonId="'class_edit_buttons_history'" [model]="model" [resource]="class"
+                   *ngIf="!isEditing()"></history-editor>
           <app-status [status]="class.status"></app-status>
         </div>
 

@@ -23,9 +23,8 @@
       <selection-view [idPrefix]="'predicate_'" [model]="model" [editableController]="this" [form]="form">
         <div selectionButtons>
           <export *ngIf="!isEditing()"  [idPrefix]="'predicate'" [entity]="predicate" [context]="model"></export>
-          <!-- TODO ALES -->
-          <!-- <history button-id="'predicate_edit_buttons_history'" [model]="model" [resource]="predicate"
-                   *ngIf="!isEditing()"></history> -->
+          <history-editor button-id="'predicate_edit_buttons_history'" [model]="model" [resource]="predicate"
+                   *ngIf="!isEditing()"></history-editor>
           <app-status [status]="predicate.status"></app-status>
         </div>
 

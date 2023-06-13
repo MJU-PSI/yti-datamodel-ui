@@ -20,8 +20,8 @@
       <div class="main-editable-content">
         <editable-entity-buttons [context]="model" [editableController]="this" [idPrefix]="'model_edit_buttons_'" [form]="form">
           <app-status [status]="model.status"></app-status>
-          <history [buttonId]="'model_edit_buttons_history'" [model]="model" [resource]="model"
-                   *ngIf="!isEditing()"></history>
+          <history-model [buttonId]="'model_edit_buttons_history'" [model]="model" [resource]="model"
+                   *ngIf="!isEditing()"></history-model>
         </editable-entity-buttons>
 
         <model-form [id]="id" [model]="editableInEdit" [namespacesInUse]="namespacesInUse"

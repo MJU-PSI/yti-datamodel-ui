@@ -35,23 +35,23 @@ import { Component, Input } from '@angular/core';
 import { Model } from 'app/entities/model';
 import { Class } from 'app/entities/class';
 import { Predicate } from 'app/entities/predicate';
-import { HistoryModal } from './historyModal';
+import { HistoryEditorModal } from './history-editor-modal';
 
 @Component({
-  selector: 'history',
+  selector: 'history-editor',
   template: `
       <button type="button" class="btn btn-secondary-action pull-right" (click)="openHistory()" [attr.id]="buttonId">
         <span translate>Show history</span>
       </button>
   `
 })
-export class HistoryComponent {
+export class HistoryEditorComponent {
 
   @Input() model: Model;
   @Input() resource: Class | Predicate | Model;
   @Input() buttonId?: string;
 
-  constructor(private historyModal: HistoryModal) {}
+  constructor(private historyModal: HistoryEditorModal) {}
 
   openHistory() {
     this.historyModal.open(this.model, this.resource);

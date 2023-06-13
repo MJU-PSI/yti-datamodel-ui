@@ -47,10 +47,11 @@ import { ModelDocumentationComponent } from "../model-documentation/model-docume
 import { LMarkdownEditorModule } from "ngx-markdown-editor";
 import { ModelViewComponent } from "./modelView";
 import { EditableRootClassComponent } from "./editableRootClass";
-import { HistoryModal, HistoryModalContentComponent } from "./historyModal";
-import { HistoryComponent } from "./history";
 import { RouterModule } from "@angular/router";
 import { IowComponentsVisualizationFormModule } from "../visualization/module";
+import { IowComponentsModule } from "../module";
+import { HistoryModelModal, HistoryModelModalContentComponent } from "./history-model-modal";
+import { HistoryModelComponent } from "./history-model";
 
 @NgModule({
   declarations: [
@@ -82,10 +83,10 @@ import { IowComponentsVisualizationFormModule } from "../visualization/module";
     ModelDocumentationComponent,
     ModelViewComponent,
     EditableRootClassComponent,
-    HistoryComponent,
-    HistoryModalContentComponent,
     EditReferenceDataModalComponent,
-    ViewReferenceDataComponent
+    ViewReferenceDataComponent,
+    HistoryModelComponent,
+    HistoryModelModalContentComponent
   ],
   imports: [
     CommonModule,
@@ -114,8 +115,8 @@ import { IowComponentsVisualizationFormModule } from "../visualization/module";
     SubRoutingHackService,
     ViewReferenceDataModal,
     DefaultModelService,
-    HistoryModal,
-    MassMigrateDatamodelResourceStatusesModalService
+    MassMigrateDatamodelResourceStatusesModalService,
+    HistoryModelModal
   ],
   exports: [
     ClassificationsViewComponent,
@@ -138,8 +139,7 @@ import { IowComponentsVisualizationFormModule } from "../visualization/module";
     VocabulariesViewComponent,
     ModelDocumentationComponent,
     ModelViewComponent,
-    EditableRootClassComponent,
-    HistoryComponent
+    EditableRootClassComponent
   ]
 })
 export class IowComponentsModelModule { }
