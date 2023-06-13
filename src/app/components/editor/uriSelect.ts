@@ -123,12 +123,10 @@
 
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
 import { Uri } from 'app/entities/uri';
 import { DataSource } from 'app/components/form/dataSource';
-import { ClassService, DefaultClassService } from 'app/services/classService';
-import { DefaultPredicateService, PredicateService } from 'app/services/predicateService';
+import { DefaultClassService } from 'app/services/classService';
+import { DefaultPredicateService } from 'app/services/predicateService';
 import { idExclusion, itemExclusion } from 'app/utils/exclusion';
 import { ClassListItem } from 'app/entities/class';
 import { PredicateListItem } from 'app/entities/predicate';

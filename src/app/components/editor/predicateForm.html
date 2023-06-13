@@ -123,7 +123,7 @@
       <input id="predicateId" class="form-control" type="text" required idInput="predicate" [old]="oldPredicate" [(ngModel)]="predicate.id" [disabled]="!predicate.inUnstableState" #editableInput/>
     </editable>
 
-    <editable title="{{'Super' + predicate.normalizedType}}" (link)="linkToSuperproperty()" [context]="model" [form]="form">
+    <editable title="{{'Super' + predicate.normalizedType}}" (link)="linkToSuperProperty()" [context]="model" [form]="form">
       <uri-select id="superPredicate" [type]="predicate.normalizedType" [uri]="predicate.subPropertyOf" [model]="model" #editableInput></uri-select>
     </editable>
 

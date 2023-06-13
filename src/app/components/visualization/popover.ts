@@ -84,9 +84,11 @@
 //   }
 // }
 
-import { Component  } from '@angular/core';
-import { Localizable } from '@mju-psi/yti-common-ui';
+import { Component, Input, OnChanges, SimpleChanges, ViewChild, ElementRef, OnInit, HostBinding } from '@angular/core';
+import { hasLocalization } from 'app/utils/language';
 import { Coordinate } from 'app/types/visualization';
+import { Localizable } from '@mju-psi/yti-common-ui';
+import { LanguageContext } from 'app/types/language';
 
 export interface VisualizationPopoverDetails {
   coordinate: Coordinate;
@@ -96,8 +98,72 @@ export interface VisualizationPopoverDetails {
 
 @Component({
   selector: 'visualization-popover',
-  template: ''
+  template: `
+    <div class="popover fade show bs-popover-left" [ngStyle]="style" #popover>
+      <div class="arrow" [ngStyle]="{ top: arrowTopOffset }"></div>
+      <div class="popover-header">
+        <h4 class="mb-0">{{ details?.heading | translateValue: context }}</h4>
+      </div>
+      <div class="popover-body">
+        {{ details?.comment | translateValue: context }}
+      </div>
+    </div>
+  `
 })
-export class VisualizationPopoverComponent  {
+export class VisualizationPopoverComponent implements OnInit, OnChanges {
+  @Input() details: VisualizationPopoverDetails;
+  @Input() context: LanguageContext;
 
+  @HostBinding('class.popover')
+  @HostBinding('class.fade')
+  @HostBinding('class.show')
+  popoverClass = true;
+
+  style: any = {};
+  @ViewChild('popover', { static: true }) popoverElement: ElementRef;
+
+  ngOnInit() {
+    this.updateStyle();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.details) {
+      this.updateStyle();
+    }
+  }
+
+  private updateStyle() {
+    this.style = { top: '-10000px', left: '-10000px' };
+
+    if (this.details && hasLocalization(this.details.comment)) {
+      this.style.comment = this.details.comment;
+
+      setTimeout(() => {
+        const dimensions = this.getDimensions();
+        const offset = this.visualizationOffset();
+        this.style.top = (this.details.coordinate.y - offset.y - (dimensions.height / 2)) + 'px';
+        this.style.left = (this.details.coordinate.x - offset.x - dimensions.width - 15) + 'px';
+      });
+    }
+  }
+
+  private getDimensions() {
+    const popoverElement = this.popoverElement.nativeElement;
+    return {
+      width: popoverElement.offsetWidth,
+      height: popoverElement.offsetHeight
+    };
+  }
+
+  private visualizationOffset() {
+    const classVisualizationElement = this.popoverElement.nativeElement.closest('class-visualization');
+    return {
+      x: classVisualizationElement.offsetLeft,
+      y: classVisualizationElement.offsetTop
+    };
+  }
+
+  get arrowTopOffset() {
+    return this.getDimensions().height / 2 + 'px';
+  }
 }

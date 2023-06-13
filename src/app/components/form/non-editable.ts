@@ -100,7 +100,6 @@ export class NonEditableComponent implements OnInit {
 
   ngOnInit() {
 
-    // TODO ALES - PREVERI
     const clickHandler = this.onClick ? new Function('$event', this.onClick) : undefined;
     const onClick = this.onClick ? (value: Value) => clickHandler && clickHandler({value}) : undefined;
 

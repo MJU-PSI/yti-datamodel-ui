@@ -78,7 +78,6 @@ export class EditableLabelComponent implements OnInit {
   @Input() inputId: string;
   @Input() required: boolean;
 
-  // form: EditableForm;
   infoText: string;
 
   constructor(private languageService: LanguageService, private translateService: TranslateService,

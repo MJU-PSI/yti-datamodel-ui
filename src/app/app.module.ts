@@ -184,7 +184,7 @@ export function localizerFactory(languageService: LanguageService): AngularLocal
     IowComponentsModule,
     IowComponentsModelModule,
     IowComponentsFormModule,
-    IowComponentsCommonModule
+    IowComponentsCommonModule,
     // IowComponentsModelModule,
     // IowComponentsFormModule,
     // IowComponentsNavigation,

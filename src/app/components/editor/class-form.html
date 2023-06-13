@@ -158,7 +158,7 @@
 
 <div class="row basic-info">
   <div class="col-md-6">
-    <editable title="{{class.normalizedType + ' label' | capitalize}}" [context]="model" autofocus="shouldAutofocus" [form]="form">
+    <editable title="{{class.normalizedType + ' label' | capitalize}}" [context]="model" [autofocus]="shouldAutoFocus" [form]="form">
       <input id="classLabel" class="form-control" type="text" localizedInput="label" [context]="model" [(ngModel)]="class.label" #editableInput/>
     </editable>
   </div>
@@ -173,8 +173,8 @@
 <div class="row">
   <div class="col-md-6">
 
-    <editable [title]="class.normalizedType + ' id' | capitalize" (link)="linkToIdClass()" [context]="model" [clipboard]="class.id.uri" [form]="form">
-      <input id="classId" class="form-control" type="text" required id-input="class" old="oldClass" [(ngModel)]="class.id" [disabled]="!class.inUnstableState" #editableInput/>
+    <editable title="{{class.normalizedType + ' id' | capitalize}}" (link)="linkToIdClass()" [context]="model" [clipboard]="class.id.uri" [form]="form">
+      <input id="classId" class="form-control" type="text" required idInput="class" [old]="oldClass" [(ngModel)]="class.id" [disabled]="!class.inUnstableState" #editableInput/>
     </editable>
 
     <editable *ngIf="class.isOfType('class')" title="Superclass" (link)="linkToSuperclass()" [context]="model" [form]="form">
@@ -199,9 +199,9 @@
 
   </div>
   <div class="col-md-6">
-    <editable-state-select *ngIf="!class.unsaved" id="classState" [state]="class.status" [model]="model" [form]="form"></editable-state-select>
+    <!-- <editable-state-select *ngIf="!class.unsaved" id="classState" [state]="class.status" [model]="model" [form]="form"></editable-state-select> -->
     <defined-by [entity]="class" [model]="model"></defined-by>
-    <!-- <editable-multiple-uri-select id="equivalentClass" type="class" [(ngModel)]="class.equivalentClasses" [model]="model" title="{{'Equivalent class'}}" [requiredByInUse]="true" [form]="form"></editable-multiple-uri-select> -->
+     <!-- <editable-multiple-uri-select id="equivalentClass" type="class" [(ngModel)]="class.equivalentClasses" [model]="model" title="{{'Equivalent class'}}" [requiredByInUse]="true" [form]="form"></editable-multiple-uri-select> -->
   </div>
 </div>
 
@@ -259,11 +259,11 @@
 
 
         <div accordionBody>
-          <property-view id="{{id + '_property_' + formLabelNameToIdName(property.label)}}"
+          <!-- <property-view id="{{id + '_property_' + formLabelNameToIdName(property.label)}}"
                           [property]="property"
                           [class]="class"
                           [model]="model"
-                          [classForm]="this"></property-view>
+                          [classForm]="this"></property-view> -->
 
         </div>
       </accordion-group>

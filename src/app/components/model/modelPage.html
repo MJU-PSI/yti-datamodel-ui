@@ -131,7 +131,6 @@
     <div class="panel-right">
 
       <div class="selection-container" [style.width]="selectionWidth">
-        propertyId - {{propertyId}}
         <class-view id="class" *ngIf="resource?.isClass()" [parent]="parent" [class]="resource"
           [openPropertyId]="propertyId" [model]="model" [modelController]="modelController">
         </class-view>
@@ -147,9 +146,8 @@
 
           <divider *ngIf="resource"></divider>
 
-          <visualization-view *ngIf="model" [ngClass]="{ 'without-divider': !resource, 'maximized': visualizationMaximized }"
-            [selection]="resource" [model]="model" [modelPageActions]="this"
-            [maximized]="visualizationMaximized">
+          <visualization-view *ngIf="model" [ngClass]="{ 'without-divider': !resource }"
+            [selection]="resource" [model]="model" [modelPageActions]="this">
           </visualization-view>
         </div>
       </div>

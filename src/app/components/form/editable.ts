@@ -119,10 +119,9 @@
 //   }
 // }
 
-import { Component, ContentChild, ElementRef, Inject, Injector, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { NgForm, NgModel } from '@angular/forms';
+import { Component, ContentChild, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
+import { NgForm, NgModel, ValidationErrors } from '@angular/forms';
 import { DisplayItem, DisplayItemFactory, Value } from './displayItemFactory';
-import { EditableForm } from './editableEntityController';
 import { LanguageContext } from 'app/types/language';
 import { isExternalLink } from 'app/components/form/href';
 
@@ -143,34 +142,26 @@ export class EditableComponent implements OnInit {
   @Input() context: LanguageContext;
   @Input() onClick: string;
   @Input() clipboard: string;
-  @Input() autofocus: string;
+  @Input() autofocus: boolean;
+  @Input() form: NgForm;
 
   item: DisplayItem;
   itemDisplayValueBefore: string;
+  isEditingBefore: boolean | undefined | null = null;
 
-  @Input() form: NgForm;
-
-  // input: ElementRef;
-  // inputNgModelCtrl: NgModel;
-
-  @ContentChild(NgModel) inputNgModelCtrl!: NgModel;
-  // @ViewChild('editableInput', {static: false}) input: ElementRef;
-  @ContentChild('editableInput', { read: ElementRef }) input!: ElementRef<HTMLInputElement>;
+  @ContentChild(NgModel, {static: true}) inputNgModelCtrl!: NgModel;
+  @ContentChild('editableInput', { read: ElementRef, static: true }) input!: ElementRef<HTMLInputElement>;
 
   constructor(private elementRef: ElementRef,
               private renderer: Renderer2,
-              private displayItemFactory: DisplayItemFactory,
-              private injector: Injector,
+              private displayItemFactory: DisplayItemFactory
               ) {
   }
 
-  // TODO ALES - PREVERI CELOTNO KOMPONENTO
   ngOnInit() {
 
-    // we need to know if handler was set or not so parse ourselves instead of using scope '&'
-    // const clickHandler = this.injector.get(this.onClick);
-    // const onClick = this.onClick ? (value: Value) => clickHandler(this.context, { value }) : undefined;
-    const onClick = undefined;
+    const clickHandler = this.onClick ? new Function('$event', this.onClick) : undefined;
+    const onClick = this.onClick ? (value: Value) => clickHandler && clickHandler({value}) : undefined;
 
     this.item = this.displayItemFactory.create({
       context: () => this.context,
@@ -182,16 +173,23 @@ export class EditableComponent implements OnInit {
   }
 
   ngDoCheck() {
-    if(this.item && this.item.displayValue !== this.itemDisplayValueBefore) {
-      this.itemDisplayValueBefore = this.item.displayValue;
-      const show = this.item && this.item.displayValue || this.isEditing();
+    if(this.value && this.isEditing() !== this.isEditingBefore) {
+      this.isEditingBefore = this.isEditing();
 
-      if (show) {
-        this.renderer.removeClass(this.elementRef.nativeElement, NG_HIDE_CLASS);
-        this.renderer.removeStyle(this.elementRef.nativeElement, NG_HIDE_IN_PROGRESS_CLASS);
-      } else {
-        this.renderer.addClass(this.elementRef.nativeElement, NG_HIDE_CLASS);
-        this.renderer.setStyle(this.elementRef.nativeElement, NG_HIDE_IN_PROGRESS_CLASS, 'display: none;');
+      if(this.autofocus && this.isEditing()) {
+        this.input?.nativeElement.focus();
+      }
+
+      if(this.item) {
+        const show = this.item && this.item.displayValue || this.isEditing();
+
+        if (show) {
+          this.renderer.removeClass(this.elementRef.nativeElement, NG_HIDE_CLASS);
+          this.renderer.removeStyle(this.elementRef.nativeElement, NG_HIDE_IN_PROGRESS_CLASS);
+        } else {
+          this.renderer.addClass(this.elementRef.nativeElement, NG_HIDE_CLASS);
+          this.renderer.setStyle(this.elementRef.nativeElement, NG_HIDE_IN_PROGRESS_CLASS, 'display: none;');
+        }
       }
     }
   }
@@ -203,15 +201,15 @@ export class EditableComponent implements OnInit {
     const errorMessageElement = this.elementRef.nativeElement.querySelector('error-messages');
     inputElement && inputElement.parentNode && inputElement.parentNode.insertBefore(errorMessageElement, inputElement.nextSibling);
 
-    // this.isEditing() && this.autofocus && this.input && this.input.nativeElement.focus();
-
     // TODO: prevent hidden and non-editable fields participating validation with some more obvious mechanism
     this.inputNgModelCtrl && this.inputNgModelCtrl.statusChanges && this.inputNgModelCtrl.statusChanges.subscribe((status) => {
       if (!this.isEditing()) {
         const errors = this.inputNgModelCtrl.errors;
         if (errors) {
           Object.keys(errors).forEach(key => {
-            this.inputNgModelCtrl.control?.setErrors({ [key]: null });
+            if(errors[key] !== null) {
+              this.inputNgModelCtrl.control?.setErrors({ [key]: null });
+            }
           });
         }
       }
@@ -227,7 +225,23 @@ export class EditableComponent implements OnInit {
   }
 
   get required() {
-    return !this.disable && this.input && (this.input.nativeElement.required || (this.inputNgModelCtrl && this.inputNgModelCtrl?.validator && 'requiredLocalized' in this.inputNgModelCtrl?.validator!));
+    let hasRequiredLocalizedValidator;
+    if (this.inputNgModelCtrl && this.inputNgModelCtrl.control && this.inputNgModelCtrl.control.validator) {
+      const validators = this.inputNgModelCtrl.control.validator(this.inputNgModelCtrl.control!);
+      hasRequiredLocalizedValidator = this.hasValidator(validators, 'requiredLocalized');
+    }
+    return !this.disable && this.input && (this.input.nativeElement.getAttribute('required') || hasRequiredLocalizedValidator);
+  }
+
+  private hasValidator(validator: ValidationErrors | null, validatorName: string): boolean {
+    if (!validator) {
+      return false;
+    }
+
+    if(validator[validatorName] !== undefined){
+      return true;
+    };
+    return false;
   }
 
   isEditing() {

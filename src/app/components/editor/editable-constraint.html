@@ -64,13 +64,13 @@
 
     <div accordion-body>
 
-      <editable title="Description" [context]="model">
-        <textarea id="constraintComment" class="form-control" localized-input context="model" [(ngModel)]="constraint.comment"></textarea>
+      <editable title="Description" [context]="model" [form]="form">
+        <textarea id="constraintComment" class="form-control" localized-input context="model" [(ngModel)]="constraint.comment" #editableInput></textarea>
       </editable>
 
       <div class="editable-wrap form-group">
 
-        <editable-label [title="Constraint classes"></editable-label>
+        <editable-label title="Constraint classes"></editable-label>
 
         <ng-container *ngIf="!isEditing()" >
           <span *ngFor="let item of constraint.items">

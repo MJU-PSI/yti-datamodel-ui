@@ -872,7 +872,6 @@ export class ModelPageComponent implements OnInit, OnDestroy, ModelPageActions, 
   associations: SelectableItem[] = [];
   attributes: SelectableItem[] = [];
   namespacesInUse: Set<string> = new Set<string>();
-  visualizationMaximized = false;
 
   activeTab = 0;
   tabs: Tab[] = [
@@ -951,17 +950,6 @@ export class ModelPageComponent implements OnInit, OnDestroy, ModelPageActions, 
     // $scope.$watch(() => this.selectionWidth, () => {
     //   for (const changeListener of this.changeListeners) {
     //     changeListener.onResize();
-    //   }
-    // });
-
-    // $scope.$watch(() => this.visualizationMaximized, maximized => {
-
-    //   const body = jQuery('body');
-
-    //   if (maximized) {
-    //     body.addClass('visualization-maximized');
-    //   } else {
-    //     body.removeClass('visualization-maximized');
     //   }
     // });
   }

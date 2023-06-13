@@ -8,7 +8,9 @@ import { Configuration } from './app/configuration.interface';
 
 import './app/extensions/form.extensions';
 
-// require('imports-loader?define=>false!jquery-mousewheel/jquery.mousewheel')(jQuery);
+require('imports-loader?define=>false!jquery-mousewheel/jquery.mousewheel')(jQuery);
+
+import './init.ts'
 
 // export const done = platformBrowserDynamic().bootstrapModule(AppModule);
 
@@ -19,6 +21,7 @@ declare let __config: Configuration;
 if (__config.production) {
   enableProdMode();
 }
+
 
 const COMMON_UI_CONFIG: YtiCommonUiConfig = {
   keycloakUrl: __config.keycloakUrl,

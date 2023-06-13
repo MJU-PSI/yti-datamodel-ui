@@ -82,126 +82,139 @@
 //   };
 // };
 
-import { Directive, ElementRef, Input } from '@angular/core';
-import { NgModel } from '@angular/forms';
-import { LanguageService } from 'app/services/languageService';
-import { isValidLabelLength, isValidModelLabelLength, isValidString } from './validators';
-import { allLocalizations, hasLocalization } from 'app/utils/language';
-import { LanguageContext } from 'app/types/language';
+
+import { Directive, Input, ElementRef, HostListener, Self } from '@angular/core';
+import { AbstractControl, ControlValueAccessor, NgControl, ValidatorFn } from '@angular/forms';
 import { Localizable } from '@mju-psi/yti-common-ui';
+import { LanguageService } from 'app/services/languageService';
+import { LanguageContext } from 'app/types/language';
+import { isValidLabelLength, isValidModelLabelLength } from './validators';
+import { hasLocalization } from 'app/utils/language';
+
+export function requiredLocalized(): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+    const value = control.value;
+    if (!hasLocalization(value)) {
+      return { requiredLocalized: true };
+    }
+    return { requiredLocalized: false };
+  };
+}
+
+export function length(isValidLength: (value: string) => boolean): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+    const values = control.value;
+    if (values === null || typeof values !== 'object') {
+      return null;
+    }
+
+    for (const value of Object.values(control.value)) {
+      if (!isValidLength(value as string)) {
+        return { length: true };
+      }
+    }
+    return null;
+  };
+}
 
 @Directive({
   selector: '[localizedInput]',
-  providers: [LanguageService],
+  providers: []
 })
-export class LocalizedInputDirective {
+export class LocalizedInputDirective implements ControlValueAccessor {
+  @Input('localizedInput') localizedInput: string;
   @Input() context: LanguageContext;
+
+  private validators: ValidatorFn[] = [];
   private localized: Localizable;
-  element: any;
 
-  constructor(private languageService: LanguageService,
-              private elementRef: ElementRef,
-              private ngModel: NgModel) {
+  private onChange: (value: any) => void;
+  private onTouched: () => void;
 
-    this.element = this.elementRef.nativeElement;
-  }
-
-
-
-  private setPlaceholder(): void {
-    this.element.setAttribute(
-      'placeholder',
-      this.languageService.translate(this.localized, this.context)
-    );
-  }
-
-  private removePlaceholder(): void {
-    this.element.removeAttribute('placeholder');
-  }
-
-  private setElementValue(val: string): void {
-    this.element.value = val;
-  }
-
-  private updateElementValue(): void {
-    const lang = this.languageService.getModelLanguage(this.context);
-    const val = this.localized[lang];
-    if (!val) {
-      this.setPlaceholder();
+  constructor(
+    private elementRef: ElementRef,
+    private languageService: LanguageService,
+    @Self() private controlDirective: NgControl) {
+      controlDirective.valueAccessor = this;
     }
-    this.setElementValue(val);
-  }
 
-  private updateLocalizedModel(viewValue: string): void {
-    const lang = this.languageService.getModelLanguage(this.context);
-    this.localized = Object.assign(this.localized, { [lang]: viewValue });
-    if (viewValue) {
-      this.removePlaceholder();
-    } else {
-      this.setPlaceholder();
-    }
-  }
+  ngOnInit(): void {
 
-  private formatModelValue(modelValue: Localizable): string {
-    this.localized = modelValue || {};
-    const lang = this.languageService.getModelLanguage(this.context);
-    const val = this.localized[lang];
-    if (!val) {
-      this.setPlaceholder();
-    }
-    return val;
-  }
+    this.languageService.modelLanguageChange$.subscribe(() => {
+      const lang = this.languageService.getModelLanguage(this.context);
+      const languageValue = this.localized ? this.localized[lang] : '';
 
-  private validateString(modelValue: Localizable): boolean {
-    return allLocalizations(isValidString, modelValue);
-  }
+      if(languageValue === undefined) {
+        this.setPlaceholder();
+        this.elementRef.nativeElement.value = null;
+      } else {
+        this.removePlaceholder();
+        this.elementRef.nativeElement.value = languageValue;
+      }
+    })
 
-  private validateRequiredLocalized(modelValue: Localizable): boolean {
-    return hasLocalization(modelValue);
-  }
+    // TODO ALES - preveri naslednje
+//       if (attributes.localizedInput !== 'free') {
+//         ngModel.$validators['string'] = modelValue => allLocalizations(isValidString, modelValue);
+//       }
 
-  private validateLabelLength(modelValue: Localizable): boolean {
-    return allLocalizations(isValidLabelLength, modelValue);
-  }
-
-  private validateModelLabelLength(modelValue: Localizable): boolean {
-    return allLocalizations(isValidModelLabelLength, modelValue);
-  }
-
-  private setValidators(attributes: string): void {
-    switch (attributes) {
+    switch (this.localizedInput) {
       case 'required':
-        this.ngModel.control.setValidators(this.validateRequiredLocalized.bind(this));
+        this.validators.push(requiredLocalized());
         break;
       case 'label':
-        this.ngModel.control.setValidators([
-          this.validateRequiredLocalized.bind(this),
-          this.validateLabelLength.bind(this),
-        ]);
+        this.validators.push(requiredLocalized(), length(isValidLabelLength));
         break;
       case 'modelLabel':
-        this.ngModel.control.setValidators([
-          this.validateRequiredLocalized.bind(this),
-          this.validateModelLabelLength.bind(this),
-        ]);
+        this.validators.push(requiredLocalized(), length(isValidModelLabelLength));
         break;
       default:
-        this.ngModel.control.setValidators(this.validateString.bind(this));
+        // Handle other cases if needed
         break;
     }
+
+    this.controlDirective.control?.setValidators(this.validators);
+    this.controlDirective.control?.updateValueAndValidity();
   }
 
-  // private initialize(): void {
-  //   this.ngModel.valueChanges.subscribe((viewValue) => {
-  //     this.updateLocalizedModel(viewValue);
-  //   });
+  writeValue(value: any): void {
+    this.localized = value;
 
-  //   this.ngModel.formatter = (modelValue: Localizable): string => {
-  //     return this.formatModelValue(modelValue);
-  //   };
+    const lang = this.languageService.getModelLanguage(this.context);
+    const languageValue = this.localized ? this.localized[lang] : '';
 
-  //   this.updateElementValue();
-  //   this.setValidators(attributes.localizedInput);
+    if(languageValue === undefined) {
+      this.setPlaceholder();
+      this.elementRef.nativeElement.value = null;
+    } else {
+      this.removePlaceholder();
+      this.elementRef.nativeElement.value = languageValue;
+    }
 
-  // }
+  }
+
+  registerOnChange(fn: (value: any) => void): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
+  }
+
+  @HostListener('input', ['$event.target.value'])
+  onInputChange(value: any): void {
+    if(this.localized) {
+      const lang = this.languageService.getModelLanguage(this.context);
+      this.localized[lang] = value;
+    }
+    this.onChange(this.localized);
+  }
+
+  setPlaceholder() {
+    this.elementRef.nativeElement.setAttribute("placeholder", this.languageService.translate(this.localized, this.context));
+  }
+
+  removePlaceholder() {
+    this.elementRef.nativeElement.setAttribute("placeholder", null);
+  }
 }

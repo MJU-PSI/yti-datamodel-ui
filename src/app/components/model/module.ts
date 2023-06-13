@@ -50,6 +50,7 @@ import { EditableRootClassComponent } from "./editableRootClass";
 import { HistoryModal, HistoryModalContentComponent } from "./historyModal";
 import { HistoryComponent } from "./history";
 import { RouterModule } from "@angular/router";
+import { IowComponentsVisualizationFormModule } from "../visualization/module";
 
 @NgModule({
   declarations: [
@@ -96,6 +97,7 @@ import { RouterModule } from "@angular/router";
     IowComponentsFormModule,
     IowComponentsCommonModule,
     IowComponentsFilterModule,
+    IowComponentsVisualizationFormModule,
     LMarkdownEditorModule,
     RouterModule
   ],

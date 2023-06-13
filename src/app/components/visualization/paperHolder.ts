@@ -1,7 +1,6 @@
-import { NgZone } from '@angular/core';
+import { ElementRef, NgZone, Renderer2 } from '@angular/core';
 import * as Iterable from '@mju-psi/yti-common-ui';
 import { Optional } from '@mju-psi/yti-common-ui';
-import { IWindowService } from 'angular';
 import { Model } from 'app/entities/model';
 import { ClassInteractionListener, Coordinate } from 'app/types/visualization';
 import * as joint from 'jointjs';
@@ -10,7 +9,7 @@ import { IowClassElement, ShadowClass } from './diagram';
 import { moveOrigin, scale } from './paperUtil';
 
 interface Cached {
-  element: JQuery;
+  element: HTMLDivElement;
   paper: joint.dia.Paper;
   clean: () => void;
 }
@@ -23,10 +22,11 @@ export class PaperHolder implements Cleanable {
 
   private cache = new Map<string, Cached>();
 
-  constructor(private element: JQuery,
+  constructor(private element: ElementRef,
               private listener: ClassInteractionListener,
-              private $window: IWindowService,
-              private zone: NgZone) {
+              private window: Window,
+              private zone: NgZone,
+              private renderer: Renderer2) {
   }
 
   getPaper(model: Model): joint.dia.Paper {
@@ -36,8 +36,9 @@ export class PaperHolder implements Cleanable {
     if (cached) {
       return cached.paper;
     } else {
-      const newElement = jQuery(document.createElement('div'));
-      this.element.append(newElement);
+      const newElement = this.renderer.createElement('div');
+      newElement.style.height = 'inherit';
+      this.renderer.appendChild(this.element.nativeElement, newElement);
 
       let newPaper: joint.dia.Paper | null = null;
 
@@ -49,8 +50,8 @@ export class PaperHolder implements Cleanable {
         throw new Error();
       }
 
-      // const cleanable = registerHandlers(newPaper, this.listener, this.$window, this.zone);
-      // this.cache.set(model.id.uri, { element: newElement, paper: newPaper, clean: () => cleanable.clean() });
+      const cleanable = registerHandlers(newPaper, this.listener, this.window, this.zone);
+      this.cache.set(model.id.uri, { element: newElement, paper: newPaper, clean: () => cleanable.clean() });
       return newPaper;
     }
   }
@@ -58,9 +59,9 @@ export class PaperHolder implements Cleanable {
   setVisible(model: Model) {
     Iterable.forEach(this.cache.entries(), ([modelId, value]) => {
       if (model.id.uri === modelId) {
-        value.element.show();
+        value.element.hidden = false;
       } else {
-        value.element.hide();
+        value.element.hidden = true;
       }
     });
   }
@@ -72,11 +73,11 @@ export class PaperHolder implements Cleanable {
   }
 }
 
-function createPaper(element: JQuery, graph: joint.dia.Graph): joint.dia.Paper {
+function createPaper(element: HTMLDivElement, graph: joint.dia.Graph): joint.dia.Paper {
   return new joint.dia.Paper({
     el: element,
-    width: element.width() || 100,
-    height: element.height() || 100,
+    width: element.offsetWidth || 100,
+    height: element.offsetHeight || 100,
     model: graph,
     linkPinning: false,
     snapLinks: false,
@@ -84,7 +85,7 @@ function createPaper(element: JQuery, graph: joint.dia.Graph): joint.dia.Paper {
   });
 }
 
-function registerHandlers(paper: joint.dia.Paper, listener: ClassInteractionListener, $window: IWindowService, zone: NgZone): Cleanable {
+function registerHandlers(paper: joint.dia.Paper, listener: ClassInteractionListener, window: Window, zone: NgZone): Cleanable {
 
   const paperElement = paper.$el;
   let movingElementOrVertex = false;
@@ -124,26 +125,50 @@ function registerHandlers(paper: joint.dia.Paper, listener: ClassInteractionList
     }
   };
 
-  const hoverHandler = (cellView: joint.dia.CellView, event: MouseEvent) => {
-    if (!drag && !movingElementOrVertex && event.target instanceof SVGElement) {
+  // const hoverHandler = (cellView: joint.dia.CellView, event: MouseEvent) => {
+  //   if (!drag && !movingElementOrVertex && event.target instanceof SVGElement) {
 
-      const targetElement = jQuery(event.target);
-      const targetParentElement = targetElement.parent();
+  //     const targetElement = jQuery(event.target);
+  //     const targetParentElement = targetElement.parent();
+
+  //     const x = event.pageX;
+  //     const y = event.pageY;
+
+  //     if (targetElement.prop('tagName') === 'tspan') {
+  //       if (cellView.model instanceof IowClassElement && targetElement.attr('id').startsWith('urn:uuid')) {
+  //         listener.onPropertyHover(cellView.model.id, targetElement.attr('id'), { x, y });
+  //       } else if (cellView.model instanceof joint.dia.Link && targetParentElement.attr('id').startsWith('urn:uuid')) {
+  //         listener.onPropertyHover(cellView.model.get('source').id, targetParentElement.attr('id'), { x, y });
+  //       } else if (cellView.model instanceof IowClassElement && targetParentElement.hasClass('uml-class-name-text')) {
+  //         listener.onClassHover(cellView.model.id, { x, y });
+  //       }
+  //     }
+  //   }
+  // };
+
+  const hoverHandler = (cellView: any, event: MouseEvent) =>{
+    const { target } = event;
+    const drag = false; // Replace with your actual drag condition
+    const movingElementOrVertex = false; // Replace with your actual moving element/vertex condition
+
+    if (!drag && !movingElementOrVertex && target instanceof SVGElement) {
+      const targetElement = target as unknown as HTMLElement;
+      const targetParentElement = targetElement.parentElement;
 
       const x = event.pageX;
       const y = event.pageY;
 
-      if (targetElement.prop('tagName') === 'tspan') {
-        if (cellView.model instanceof IowClassElement && targetElement.attr('id').startsWith('urn:uuid')) {
-          listener.onPropertyHover(cellView.model.id, targetElement.attr('id'), { x, y });
-        } else if (cellView.model instanceof joint.dia.Link && targetParentElement.attr('id').startsWith('urn:uuid')) {
-          listener.onPropertyHover(cellView.model.get('source').id, targetParentElement.attr('id'), { x, y });
-        } else if (cellView.model instanceof IowClassElement && targetParentElement.hasClass('uml-class-name-text')) {
+      if (targetElement.tagName === 'tspan') {
+        if (cellView.model instanceof IowClassElement && targetElement.getAttribute('id')?.startsWith('urn:uuid')) {
+          listener.onPropertyHover(cellView.model.id, targetElement.getAttribute('id')!, { x, y });
+        } else if (cellView.model instanceof joint.dia.Link && targetParentElement?.getAttribute('id')! ?.startsWith('urn:uuid')) {
+          listener.onPropertyHover(cellView.model.get('source').id, targetParentElement?.getAttribute('id')! , { x, y });
+        } else if (cellView.model instanceof IowClassElement && targetParentElement?.classList.contains('uml-class-name-text')) {
           listener.onClassHover(cellView.model.id, { x, y });
         }
       }
     }
-  };
+  }
 
   const hoverExitHandler = () => listener.onHoverExit();
 
@@ -174,8 +199,8 @@ function registerHandlers(paper: joint.dia.Paper, listener: ClassInteractionList
 
   zone.runOutsideAngular(() => {
     paper.on('blank:pointerdown', startDragHandler);
-    $window.addEventListener('mouseup', stopDragHandler);
-    $window.addEventListener('mousemove', dragMoveHandler);
+    window.addEventListener('mouseup', stopDragHandler);
+    window.addEventListener('mousemove', dragMoveHandler);
     jQuery(paperElement).mousewheel(mouseWheelHandler);
     paper.on('cell:pointerdown', startCellMoveHandler);
     paper.on('cell:pointerclick', classClickHandler);
@@ -190,8 +215,8 @@ function registerHandlers(paper: joint.dia.Paper, listener: ClassInteractionList
   return {
     clean() {
       paper.remove();
-      $window.removeEventListener('mouseup', stopDragHandler);
-      $window.removeEventListener('mousemove', dragMoveHandler);
+      window.removeEventListener('mouseup', stopDragHandler);
+      window.removeEventListener('mousemove', dragMoveHandler);
     }
   };
 }

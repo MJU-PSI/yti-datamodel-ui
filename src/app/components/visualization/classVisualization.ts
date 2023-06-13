@@ -1026,9 +1026,9 @@
 //   onClick: () => void;
 // }
 
-import { Component, ElementRef, Inject, Input, SimpleChanges, ViewChild  } from '@angular/core';
+import { Component, ElementRef, HostBinding, Input, Renderer2, SimpleChanges, ViewChild  } from '@angular/core';
 import { NgZone } from '@angular/core';
-import { arraysAreEqual, firstMatching, mapOptional, normalizeAsArray, Optional, requireDefined, UserService } from '@mju-psi/yti-common-ui';
+import { arraysAreEqual, firstMatching, Language, mapOptional, normalizeAsArray, Optional, requireDefined, UserService } from '@mju-psi/yti-common-ui';
 import { ConfirmationModal } from 'app/components/common/confirmationModal';
 import { ModelPageActions } from 'app/components/model/modelPage';
 import { Class, Property } from 'app/entities/class';
@@ -1054,12 +1054,11 @@ import { centerToPosition, coordinatesAreEqual, copyVertices } from 'app/utils/e
 import * as joint from 'jointjs';
 import * as moment from 'moment';
 import { ContextMenuTarget } from './contextMenu';
-import { createAssociationLink, createClassElement, ShadowClass } from './diagram';
+import { createAssociationLink, createClassElement, LinkWithoutUnusedMarkup, ShadowClass } from './diagram';
 import { adjustElementLinks, calculateLabelPosition, layoutGraph, VertexAction } from './layout';
 import { PaperHolder } from './paperHolder';
 import { centerToElement, focusElement, moveOrigin, scale, scaleToFit } from './paperUtil';
 import { VisualizationPopoverDetails } from './popover';
-import { NewModelPageComponent } from '../model/newModelPage';
 
 @Component({
   selector: 'class-visualization',
@@ -1136,7 +1135,7 @@ import { NewModelPageComponent } from '../model/newModelPage';
        <button id="save_positions_button"
                class="btn btn-secondary-action btn-sm"
                *ngIf="canSave()"
-               [disabled]="modelPositions.isPristine()"
+               [disabled]="modelPositions?.isPristine()"
                (click)="savePositions()">
         <i class="fas fa-save"></i>
        </button>
@@ -1149,7 +1148,7 @@ import { NewModelPageComponent } from '../model/newModelPage';
         <i class="fas fa-sync-alt"></i>
        </button>
 
-       <div ngbDropdown [open]="exportOpen" *ngIf="downloads" class="d-inline-block">
+       <div ngbDropdown [(open)]="exportOpen" *ngIf="downloads" class="d-inline-block">
          <button id="download_dropdown" class="btn btn-secondary-action btn-sm dropdown-toggle" ngbDropdownToggle>
            <i class="fas fa-download"></i>
          </button>
@@ -1167,14 +1166,14 @@ import { NewModelPageComponent } from '../model/newModelPage';
        </div>
      </div>
 
-     <canvas style="display:none; background-color: white" #visualizationView></canvas>
+     <canvas style="display: none; background-color: white"></canvas>
 
-     <!-- <visualization-popover [details]="popoverDetails" [context]="model"></visualization-popover>
+     <visualization-popover [details]="popoverDetails" [context]="model"></visualization-popover>
 
      <visualization-context-menu *ngIf="contextMenuTarget"
                                  [target]="contextMenuTarget"
                                  [model]="model"
-                                 [modelPageActions]="modelPageActions"></visualization-context-menu> -->
+                                 [modelPageActions]="modelPageActions"></visualization-context-menu>
 
      <app-ajax-loading-indicator *ngIf="loading"></app-ajax-loading-indicator>
   `
@@ -1185,8 +1184,6 @@ export class ClassVisualizationComponent implements ChangeListener<Class | Predi
   @Input() selection: Class | Predicate;
   @Input() model: Model;
   @Input() modelPageActions: ModelPageActions;
-  @Input() maximized: boolean;
-
 
   loading: boolean;
 
@@ -1205,6 +1202,7 @@ export class ClassVisualizationComponent implements ChangeListener<Class | Predi
   persistentPositions: ModelPositions;
 
   refreshDimensions: () => void;
+  setClickType: (event: MouseEvent) => 'left' | 'right';
 
   popoverDetails: VisualizationPopoverDetails | null;
 
@@ -1220,10 +1218,10 @@ export class ClassVisualizationComponent implements ChangeListener<Class | Predi
 
   selectionFocusBefore: FocusLevel;
   exportOpenBefore: boolean;
+  localizerLanguageBefore: Language;
 
-
-
-  @ViewChild('visualizationView', {static: true}) visualizationViewElement!: ElementRef;
+  classCellArray: ShadowClass[];
+  associationCellArray: LinkWithoutUnusedMarkup[];
 
   constructor(private ngZone: NgZone,
               private visualizationService: DefaultVisualizationService,
@@ -1234,7 +1232,28 @@ export class ClassVisualizationComponent implements ChangeListener<Class | Predi
               private confirmationModal: ConfirmationModal,
               private authorizationManagerService: AuthorizationManagerService,
               private elementRef: ElementRef,
+              private renderer: Renderer2,
               private window: Window) {
+  }
+
+  _maximized = false;
+
+  @HostBinding('class.maximized')
+  get maximized() {
+    return this._maximized;
+  }
+
+  set maximized(maximized: boolean) {
+    this._maximized = maximized;
+
+    if (maximized) {
+      this.renderer.addClass(document.body, 'visualization-maximized');
+      this.renderer.addClass(this.elementRef.nativeElement.parentElement, 'maximized');
+    } else {
+      this.renderer.removeClass(document.body, 'visualization-maximized');
+      this.renderer.removeClass(this.elementRef.nativeElement.parentElement, 'maximized');
+    }
+    this.refreshDimensions()
   }
 
   get selectionFocus() {
@@ -1288,13 +1307,15 @@ export class ClassVisualizationComponent implements ChangeListener<Class | Predi
 
   ngOnInit() {
 
-    this.paperHolder = new PaperHolder(this.elementRef.nativeElement, this, window, this.ngZone);
+    this.paperHolder = new PaperHolder(this.elementRef, this, window, this.ngZone, this.renderer);
     this.svg = () => this.elementRef.nativeElement.querySelector('svg');
     this.canvas = this.elementRef.nativeElement.querySelector('canvas');
 
+    const visualizationViewElement = this.elementRef.nativeElement.closest('visualization-view');
+
     const currentDimensions = () => ({
-      width: this.visualizationViewElement.nativeElement.offsetWidth,
-      height: this.visualizationViewElement.nativeElement.offsetHeight
+      width: visualizationViewElement.clientWidth,
+      height: visualizationViewElement.clientHeight
     });
 
     const refreshDimensionsWaitingToStabilize = (initial: Dimensions) => {
@@ -1333,18 +1354,16 @@ export class ClassVisualizationComponent implements ChangeListener<Class | Predi
     this.refreshDimensions = () => window.setTimeout(refreshDimensions);
 
     this.ngZone.runOutsideAngular(() => {
-      window.addEventListener('resize', refreshDimensions);
-      this.visualizationViewElement.nativeElement.addEventListener('mousedown', setClickType);
+      window.addEventListener('resize', this.refreshDimensions);
+      window.addEventListener('mousedown', setClickType);
     });
 
     this.modelPageActions.addListener(this);
     this.refresh();
 
-
-
-    if (Modernizr.bloburls) {
-      this.downloads = []; // set as empty array which indicates that exports are supported
-    }
+    this.downloads = [];
+    this.classCellArray = [];
+    this.associationCellArray = [];
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -1375,11 +1394,16 @@ export class ClassVisualizationComponent implements ChangeListener<Class | Predi
         this.generateExports().then(downloads => this.downloads = downloads);
       }
     }
+
+    if(this.localizer.language !== this.localizerLanguageBefore) {
+      this.localizerLanguageBefore = this.localizer.language;
+      this.updateModel();
+    }
   }
 
   ngOnDestroy() {
-    // window.removeEventListener('resize', refreshDimensions);
-    // this.visualizationViewElement.nativeElement.removeEventListener('mousedown', this.setClickType);
+    window.removeEventListener('resize', this.refreshDimensions);
+    window.removeEventListener('mousedown', this.setClickType);
     this.revokePreviousDownloads();
     this.paperHolder.clean();
   }
@@ -1387,9 +1411,6 @@ export class ClassVisualizationComponent implements ChangeListener<Class | Predi
 
   revokePreviousDownloads() {
     for (const download of this.downloads) {
-      // this.$window.URL.revokeObjectURL(download.href);
-      // TODO ALES - preveri kaj je bolj prav
-      // this.window.open(download.href);
       URL.revokeObjectURL(download.href);
     }
   }
@@ -1407,14 +1428,15 @@ export class ClassVisualizationComponent implements ChangeListener<Class | Predi
       return {
         name: extension.toUpperCase(),
         filename: filenameForExtension(extension),
-        // href: this.window.URL.createObjectURL(blob),
         href: URL.createObjectURL(blob),
         onClick: () => {
-          // if (window.navigator.msSaveOrOpenBlob) {
-          //   window.navigator.msSaveOrOpenBlob(blob, filenameForExtension(extension));
-          // }
-          if (navigator.msSaveOrOpenBlob) {
-            navigator.msSaveOrOpenBlob(blob, filenameForExtension(extension));
+          if (window.navigator.msSaveOrOpenBlob) {
+            window.navigator.msSaveOrOpenBlob(blob, filenameForExtension(extension));
+          } else {
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = filenameForExtension(extension);
+            link.click();
           }
         }
       };
@@ -1485,6 +1507,7 @@ export class ClassVisualizationComponent implements ChangeListener<Class | Predi
 
   canSave() {
     // return this.interactiveHelpService.isClosed() && this.authorizationManagerService.canSaveVisualization(this.model);
+    return this.authorizationManagerService.canSaveVisualization(this.model);
   }
 
   savePositions() {
@@ -1646,7 +1669,7 @@ export class ClassVisualizationComponent implements ChangeListener<Class | Predi
 
   onResize() {
 
-    this.refreshDimensions();
+    // this.refreshDimensions();
 
     if (this.visible) {
       this.executeQueue();
@@ -1682,6 +1705,16 @@ export class ClassVisualizationComponent implements ChangeListener<Class | Predi
 
   toggleShowName() {
     this.showName = (this.showName + 1) % 3;
+    this.updateModel()
+  }
+
+  updateModel() {
+    for(let classCell of this.classCellArray){
+      this.queueWhenNotVisible(classCell.updateModel);
+    }
+    for(let associationCell of this.associationCellArray){
+      this.queueWhenNotVisible(associationCell.updateModel);
+    }
   }
 
   zoomIn() {
@@ -2025,9 +2058,7 @@ export class ClassVisualizationComponent implements ChangeListener<Class | Predi
     classCell.on('change:position', onDiagramPositionChange);
     classPosition.changeListeners.push(onPersistentPositionChange);
 
-    // TODO ALES
-    // this.$scope.$watch(() => this.localizer.language, ifChanged(() => this.queueWhenNotVisible(classCell.updateModel)));
-    // this.$scope.$watch(() => this.showName, ifChanged(() => this.queueWhenNotVisible(classCell.updateModel)));
+    this.classCellArray.push(classCell);
 
     return classCell;
   }
@@ -2061,9 +2092,7 @@ export class ClassVisualizationComponent implements ChangeListener<Class | Predi
     associationCell.on('change:vertices', onDiagramVerticesChange);
     position.changeListeners.push(onPersistentVerticesChange);
 
-    // TODO ALES
-    // this.$scope.$watch(() => this.localizer.language, ifChanged(() => this.queueWhenNotVisible(associationCell.updateModel)));
-    // this.$scope.$watch(() => this.showName, ifChanged(() => this.queueWhenNotVisible(associationCell.updateModel)));
+    this.associationCellArray.push(associationCell);
 
     return associationCell;
   }
