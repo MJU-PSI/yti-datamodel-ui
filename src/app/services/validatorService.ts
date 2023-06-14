@@ -60,7 +60,7 @@ export class DefaultValidatorService implements ValidatorService {
     return this.http
       .get(apiEndpointWithName('freePrefix'), { params: { prefix } })
       .toPromise()
-      .then((result: any) => (result ? true : Promise.reject('exists')))
+      .then((result: boolean) => (result))
       .catch(() => true);
   }
 
@@ -68,7 +68,7 @@ export class DefaultValidatorService implements ValidatorService {
     return this.http
       .get(apiEndpointWithName('freeID'), { params: { id: id.uri } })
       .toPromise()
-      .then((result: any) => (result ? true : Promise.reject('exists')))
+      .then((result: boolean) => ( result ))
       .catch(() => true);
   }
 }

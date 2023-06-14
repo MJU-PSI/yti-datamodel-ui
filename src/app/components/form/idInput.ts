@@ -96,68 +96,122 @@
 
 // TODO ALES - preveri spodnjo komponento
 
-import { Attribute, Directive, Input } from '@angular/core';
-import { NG_VALIDATORS, AsyncValidator, Validator, AbstractControl, ValidationErrors } from '@angular/forms';
-import { ValidatorService } from 'app/services/validatorService';
+import { Directive, ElementRef, HostListener, Input, Self } from '@angular/core';
+import { AbstractControl, ValidationErrors, ControlValueAccessor, NgControl, ValidatorFn, AsyncValidatorFn } from '@angular/forms';
 import { isValidClassIdentifier, isValidIdentifier, isValidLabelLength, isValidPredicateIdentifier } from './validators';
 import { Uri } from 'app/entities/uri';
-import { Class } from 'app/entities/class';
-import { Association, Predicate } from 'app/entities/predicate';
-import { extendNgModelOptions } from 'app/utils/angular';
 import { DefaultValidatorService } from 'app/services/validatorService';
+import { Observable } from 'rxjs';
 
-
-@Directive({
-  selector: '[idInput]',
-  providers: [
-    {
-      provide: NG_VALIDATORS,
-      useExisting: IdInputDirective,
-      multi: true
-    }
-  ]
-})
-export class IdInputDirective implements Validator {
-  @Input('idInput') idInput: string;
-  @Input() old: any;//Attribute|Association;
-
-  constructor(private validatorService: DefaultValidatorService) {}
-
-  validate(control: AbstractControl): { [key: string]: any } | null {
+export function validateIdInput(idInput: string): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: any } | null => {
     const value: Uri = control.value;
     if (value) {
       try {
         const name = value.name;
-        if (this.idInput === 'class') {
-          return isValidClassIdentifier(name, this.idInput) ? null : { id: false };
-        } else if (this.idInput === 'predicate') {
-          return isValidPredicateIdentifier(name, this.idInput) ? null : { id: false };
+        if (idInput === 'class') {
+          return isValidClassIdentifier(name, idInput) ? null : { id: false };
+        } else if (idInput === 'predicate') {
+          return isValidPredicateIdentifier(name, idInput) ? null : { id: false };
         } else {
-          return isValidIdentifier(name, this.idInput) ? null : { id: false };
+          return isValidIdentifier(name, idInput) ? null : { id: false };
         }
       } catch (e) {
         // probably value.name getter failed
       }
     }
     return { id: false };
-  }
+  };
+}
 
-  async validateAsync(control: AbstractControl): Promise<{ [key: string]: any } | null> {
-    const value: Uri = control.value;
-    if (this.old.unsaved || this.old.id.notEquals(value)) {
-      try {
-        if (this.idInput === 'class') {
-          await this.validatorService.classDoesNotExist(value);
-        } else if (this.idInput === 'predicate') {
-          await this.validatorService.predicateDoesNotExist(value);
-        } else {
-          throw new Error('Unknown type: ' + this.idInput);
-        }
-      } catch (e) {
-        return { existingId: false };
+export function length(isValidLength: (value: string) => boolean): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+    const values = control.value;
+    if (values === null || typeof values !== 'object') {
+      return null;
+    }
+
+    for (const value of Object.values(control.value)) {
+      if (!isValidLength(value as string)) {
+        return { length: true };
       }
     }
     return null;
+  };
+}
+
+export function validateExistingId(old: any, idInput: string, validatorService: DefaultValidatorService): AsyncValidatorFn {
+  return async (control: AbstractControl): Promise<Promise<ValidationErrors | null> | Observable<ValidationErrors | null>> => {
+    const value: Uri = control.value;
+    if (old.unsaved || old.id.notEquals(value)) {
+      let notExist = false;
+      if (idInput === 'class') {
+        notExist = await validatorService.classDoesNotExist(value);
+      } else if (idInput === 'predicate') {
+        notExist = await validatorService.predicateDoesNotExist(value);
+      } else {
+        throw new Error('Unknown type: ' + idInput);
+      }
+      return { existingId: !notExist };
+    }
+    return null;
+  }
+}
+
+@Directive({
+  selector: '[idInput]',
+  providers: []
+})
+export class IdInputDirective implements ControlValueAccessor {
+  @Input('idInput') idInput: string;
+  @Input() old: any;//Class|Predicate;
+
+  private validators: ValidatorFn[] = [];
+  private previous: Uri|null = null;
+
+  private onChange: (value: any) => void;
+  private onTouched: () => void;
+
+  constructor(
+    private elementRef: ElementRef,
+    private validatorService: DefaultValidatorService,
+    @Self() private controlDirective: NgControl) {
+    controlDirective.valueAccessor = this;
+  }
+
+  ngOnInit(): void {
+    this.validators.push(validateIdInput(this.idInput), length(isValidLabelLength));
+
+    this.controlDirective.control?.setValidators(this.validators);
+    this.controlDirective.control?.updateValueAndValidity();
+    this.controlDirective.control?.setAsyncValidators(validateExistingId(this.old, this.idInput, this.validatorService));
+    this.controlDirective.control?.updateValueAndValidity();
+  }
+
+  writeValue(value: any): void {
+    this.previous = value;
+    if (value) {
+      this.elementRef.nativeElement.value = value.name;
+    } else {
+      this.elementRef.nativeElement.value = null;
+    }
+
+  }
+
+  registerOnChange(fn: (value: any) => void): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
+  }
+
+  @HostListener('input', ['$event.target.value'])
+  onInputChange(value: any): void {
+    if (this.previous && value) {
+      this.previous = this.previous.withName(value);
+    }
+    this.onChange(this.previous);
   }
 }
 
