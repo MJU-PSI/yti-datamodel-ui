@@ -91,7 +91,7 @@
     <non-editable [title]="'Prefix'" [value]="model.prefix" [context]="model" [form]="form"></non-editable>
     <non-editable [title]="'Namespace'" [value]="model.namespace" [context]="model" [clipboard]="model.namespace" [form]="form"></non-editable>
     <non-editable [title]="'Previous version'" [value]="model.previousModel" [context]="model" [link]="previousModelLink" [form]="form"></non-editable>
-    <editable-state-select *ngIf="!model.unsaved" id="modelState" [state]="model.status" [model]="model"></editable-state-select>
+    <editable-state-select *ngIf="!model.unsaved" id="modelState" [(state)]="model.status" [model]="model"></editable-state-select>
 
     <div class="row" *ngIf="showChangeResourceStatusesCheckbox()">
       <div class="col-md-4" style="line-height: 45px; white-space: nowrap">

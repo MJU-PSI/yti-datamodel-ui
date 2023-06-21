@@ -220,37 +220,82 @@
 //   };
 // };
 
-// TODO ALES
 
-import { Component  } from '@angular/core';
-import { Directive } from '@angular/core';
+import { Component, Input, forwardRef } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Placement as NgbPlacement } from '@ng-bootstrap/ng-bootstrap';
+import { TranslateService } from '@ngx-translate/core';
+
+type Placement = NgbPlacement;
 
 @Component({
   selector: 'iow-select',
-  template: ''
+  providers: [{
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: forwardRef(() => IowSelectComponent),
+    multi: true
+  }],
+  template: `
+    <div ngbDropdown  [placement]="placement">
+      <button [id]="id + '_item_select'" class="btn btn-dropdown" ngbDropdownToggle>
+        <span>{{translateOption(selection)}}</span>
+      </button>
+
+      <div ngbDropdownMenu>
+        <button *ngFor="let option of options"
+                [id]="option + '_' + id"
+                (click)="select(option)"
+                class="dropdown-item"
+                [class.active]="isSelected(option)">
+          {{translateOption(option)}}
+        </button>
+      </div>
+    </div>
+  `,
 })
-export class IowSelectComponent  {
+export class IowSelectComponent<T> implements ControlValueAccessor {
+  @Input() ngModel: T;
+  @Input() options: T[];
+  @Input() id: string;
+  @Input() placement: Placement = 'bottom-left';
+  @Input() displayNameFormatter: (value: string, translateService: TranslateService) => string;
 
-}
+  selection: T;
 
+  private propagateChange: (fn: any) => void = () => {};
+  private propagateTouched: (fn: any) => void = () => {};
 
-@Directive({
-  selector: 'iow-select-input,[iow-select-input]',
-})
-export class IowSelectInputDirective {
+  constructor(private translateService: TranslateService) {}
 
-}
+  isSelected(option: T) {
+    return this.selection === option;
+  }
 
-@Directive({
-  selector: 'iow-select-selection-transclude,[iow-select-selection-transclude]',
-})
-export class IowSelectSelectionTranscludeDirective {
+  select(option: T) {
+    this.selection = option;
+    this.propagateChange(option);
+  }
 
-}
+  writeValue(obj: any): void {
+    this.selection = obj;
+  }
 
-@Directive({
-  selector: 'iow-select-selectable-item-transclude,[iow-select-selectable-item-transclude]',
-})
-export class IowSelectSelectableItemTranscludeDirective {
+  registerOnChange(fn: any): void {
+    this.propagateChange = fn;
+  }
 
+  registerOnTouched(fn: any): void {
+    this.propagateTouched = fn;
+  }
+
+  translateOption(value: string) {
+    if(!value) {
+      return;
+    }
+    if (this.displayNameFormatter) {
+      return this.displayNameFormatter(value, this.translateService);
+    } else {
+      return this.translateService.instant(value);
+    }
+  }
 }

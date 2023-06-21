@@ -152,7 +152,7 @@
 
 
 
-<form name="form" class="search-predicate">
+<form name="form" class="search-predicate" #form="ngForm">
 
   <div class="modal-header  no-padding-bottom">
     <h4 class="modal-title">
@@ -282,17 +282,17 @@
       <div ngbDropdownMenu class="dropdown-menu-right" [attr.aria-labelledby]="'predicate_' + (selection && selection.id) + '_actions_button'">
         <button id="{{ 'copy_predicate_' + (selection && selection.id) + '_button' }}"
                 class="dropdown-item"
-                (click)="copyPredicate(selection)">
+                (click)="copyPredicate(selection!)">
           {{ 'Copy ' + type | translate }}
         </button>
         <button id="{{ 'create_sub_predicate_' + (selection && selection.id) + '_button' }}"
                 class="dropdown-item"
-                (click)="createSubPredicate(selection)">
+                (click)="createSubPredicate(selection!)">
           {{ 'Create sub ' + type | translate }}
         </button>
         <button id="{{ 'create_super_predicate_' + (selection && selection.id) + '_button' }}"
                 class="dropdown-item"
-                (click)="createSuperPredicate(selection)">
+                (click)="createSuperPredicate(selection!)">
           {{ 'Create super ' + type | translate }}
         </button>
       </div>
@@ -308,7 +308,7 @@
     <button id="add_namespace_to_model_button"
             class="btn btn-secondary-action"
             (click)="addNamespaceToModel(selectedItem)"
-            *ngIf="notDefinedByThisModel(selectedItem)"
+            *ngIf="notDefinedByThisModel(selectedItem!)"
             translate>
       Add namespace to model
     </button>

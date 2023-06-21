@@ -57,11 +57,9 @@
 // }
 
 
-import { Component, ContentChild, ElementRef, Input, OnInit, Optional, Renderer2 } from '@angular/core';
+import { Component, ContentChild, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NgForm, NgModel } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { INgModelController } from 'angular';
-import { EditableForm } from 'app/components/form/editableEntityController';
 import { DataType, dataTypes } from 'app/entities/dataTypes';
 
 @Component({
@@ -69,9 +67,8 @@ import { DataType, dataTypes } from 'app/entities/dataTypes';
   template: `
     <div class="editable-wrap form-group">
       <editable-label [title]="'Range'" [inputId]="id" [required]="true"></editable-label>
-
       <div *ngIf="isEditing()">
-        <localized-select [id]="id" [values]="ranges" [(value)]="range" [displayNameFormatter]="displayNameFormatter"></localized-select>
+        <localized-select [id]="id" [values]="ranges" [(value)]="range" (valueChange)="onValueChange($event)"  [displayNameFormatter]="displayNameFormatter"></localized-select>
       </div>
 
       <div *ngIf="!isEditing()" class="content">
@@ -86,6 +83,7 @@ export class EditableRangeSelectComponent implements OnInit {
   @Input() range: DataType;
   @Input() id: string;
   @Input() form: NgForm;
+  @Output() rangeChange: EventEmitter<DataType> = new EventEmitter<DataType>();
 
   ranges: DataType[] = dataTypes;
   @ContentChild(NgModel) inputNgModelCtrl!: NgModel;
@@ -94,9 +92,7 @@ export class EditableRangeSelectComponent implements OnInit {
     value ? `${translateService.instant(value)} (${value})` : '';
 
   constructor(
-    private translateService: TranslateService,
-    private elementRef: ElementRef,
-    private renderer: Renderer2
+    private translateService: TranslateService
   ) {}
 
   ngOnInit() {
@@ -108,5 +104,9 @@ export class EditableRangeSelectComponent implements OnInit {
 
   get displayName() {
     return this.range ? this.displayNameFormatter(this.range, this.translateService) : '';
+  }
+
+  onValueChange(event: DataType) {
+    this.rangeChange.emit(event);
   }
 }

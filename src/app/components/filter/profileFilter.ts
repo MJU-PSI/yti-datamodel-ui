@@ -44,7 +44,7 @@ import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
-selector: 'app-profile-filter',
+selector: 'profile-filter',
 template: `
   <div class="form-check form-check-inline" *ngIf="!onlySelection">
     <label>

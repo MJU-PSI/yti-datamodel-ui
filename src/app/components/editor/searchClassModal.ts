@@ -322,7 +322,7 @@ export class SearchClassModal {
   selector: 'search-class',
   templateUrl: './searchClassModal.html'
 })
-class SearchClassController implements SearchController<ClassListItem> {
+export class SearchClassController implements SearchController<ClassListItem> {
 
   public model: Model;
   public exclude: Exclusion<AbstractClass>;
@@ -359,12 +359,13 @@ class SearchClassController implements SearchController<ClassListItem> {
   searchFilters: SearchFilter<ClassListItem>[] = [];
 
   constructor(private classService: DefaultClassService,
-              languageService: LanguageService,
+              private languageService: LanguageService,
               private searchConceptModal: SearchConceptModal,
               private translateService: TranslateService,
-              private activeModal: NgbActiveModal) {
+              private activeModal: NgbActiveModal) {}
 
-    this.localizer = languageService.createLocalizer(this.model);
+  ngOnInit(){
+    this.localizer = this.languageService.createLocalizer(this.model);
     this.loadingResults = true;
 
     const appendResults = (classes: ClassListItem[]) => {
@@ -374,21 +375,14 @@ class SearchClassController implements SearchController<ClassListItem> {
     };
 
     if (this.requiredByInUse) {
-      classService.getRequiredByClasses(this.model).then(appendResults);
+      this.classService.getRequiredByClasses(this.model).then(appendResults);
     } else {
-      classService.getAllClasses(this.model).then(appendResults);
+      this.classService.getAllClasses(this.model).then(appendResults);
     }
 
     if (this.model.isOfType('profile')) {
-      classService.getExternalClassesForModel(this.model).then(appendResults);
+      this.classService.getExternalClassesForModel(this.model).then(appendResults);
     }
-
-    // $scope.$watch(() => this.selection && this.selection.id, selectionId => {
-    //   if (selectionId && this.selection instanceof ExternalEntity) {
-    //     this.externalClass = undefined;
-    //     classService.getExternalClass(selectionId, this.model).then(klass => this.externalClass = klass);
-    //   }
-    // });
   }
 
   get items() {

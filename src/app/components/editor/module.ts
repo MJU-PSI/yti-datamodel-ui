@@ -23,7 +23,7 @@ import { PredicateFormComponent } from "./predicateForm";
 import { PredicateViewComponent } from "./predicateView";
 import { PropertyPredicateViewComponent } from "./propertyPredicateView";
 import { PropertyViewComponent } from "./propertyView";
-import { SearchClassModal } from "./searchClassModal";
+import { SearchClassController, SearchClassModal } from "./searchClassModal";
 import { SearchClassTableModal, SearchClassTableModalComponent } from "./searchClassTableModal";
 import { SearchClassTableModalContentComponent } from "./searchClassTableModalContent";
 import { SearchConceptModal, SearchConceptModalComponent } from "./searchConceptModal";
@@ -65,6 +65,7 @@ import { HistoryEditorComponent } from "./history-editor";
     PredicateViewComponent,
     PropertyPredicateViewComponent,
     PropertyViewComponent,
+    SearchClassController,
     SearchClassTableModalContentComponent,
     SearchPredicateTableModalContentComponent,
     SelectionViewComponent,

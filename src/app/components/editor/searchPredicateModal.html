@@ -213,20 +213,22 @@
 
             <search-results *ngIf="!loadingResults" [items]="searchResults" [selected]="selectedItem" [exclude]="exclude" (onSelect)="selectItem(item)" [editInProgress]="editInProgress">
 
-              <span class="title">
-                <i [ngClass]="searchResult.glyphIconClass"></i>
-                <ajax-loading-indicator-small *ngIf="loadingSelection(searchResult)"></ajax-loading-indicator-small>
-                <highlight [text]="searchResult.label" [context]="model" [search]="searchText"></highlight>
-              </span>
+              <ng-template searchResultContent let-searchResult="searchResult">
+                <span class="title">
+                  <i [ngClass]="searchResult.glyphIconClass"></i>
+                  <ajax-loading-indicator-small *ngIf="loadingSelection(searchResult)"></ajax-loading-indicator-small>
+                  <highlight [text]="searchResult.label" [context]="model" [search]="searchText"></highlight>
+                </span>
 
-              <span class="body">
-                <highlight [text]="searchResult.comment" [context]="model" [search]="searchText"></highlight>
-              </span>
+                <span class="body">
+                  <highlight [text]="searchResult.comment" [context]="model" [search]="searchText"></highlight>
+                </span>
 
-              <div class="origin">
-                <span class="pull-left">{{searchResult.definedBy | translateLabel: model}}</span>
-                <span class="pull-right" [innerHTML]="searchResult.id.compact | highlight: searchText"></span>
-              </div>
+                <div class="origin">
+                  <span class="pull-left">{{searchResult.definedBy | translateLabel: model}}</span>
+                  <span class="pull-right" [innerHTML]="searchResult.id.compact | highlight: searchText"></span>
+                </div>
+              </ng-template>
 
             </search-results>
           </div>

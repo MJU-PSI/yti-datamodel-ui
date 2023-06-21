@@ -27,7 +27,7 @@ import { IgnoreDirtyDirective } from "./ignoreDirty";
 import { IgnoreFormDirective } from "./ignoreForm";
 import { ImplicitEditModeDirective } from "./implicitEditMode";
 import { InputPopupComponent, InputPopupItemTranscludeDirective, InputPopupSelectItemDirective } from "./inputPopup";
-import { IowSelectComponent, IowSelectInputDirective, IowSelectSelectableItemTranscludeDirective, IowSelectSelectionTranscludeDirective } from "./iowSelect";
+import { IowSelectComponent } from "./iowSelect";
 import { LanguageInputDirective } from "./languageInput";
 import { LocalizedSelectComponent } from "./localizedSelect";
 import { MaxInputDirective } from "./maxInput";
@@ -75,9 +75,6 @@ import { EditableStateSelectComponent } from "./editableStateSelect";
     InputPopupSelectItemDirective,
     InputPopupItemTranscludeDirective,
     IowSelectComponent,
-    IowSelectInputDirective,
-    IowSelectSelectionTranscludeDirective,
-    IowSelectSelectableItemTranscludeDirective,
     LanguageInputDirective,
     LocalizedSelectComponent,
     MaxInputDirective,
@@ -137,9 +134,6 @@ import { EditableStateSelectComponent } from "./editableStateSelect";
     InputPopupSelectItemDirective,
     InputPopupItemTranscludeDirective,
     IowSelectComponent,
-    IowSelectInputDirective,
-    IowSelectSelectionTranscludeDirective,
-    IowSelectSelectableItemTranscludeDirective,
     LanguageInputDirective,
     LocalizedSelectComponent,
     MaxInputDirective,

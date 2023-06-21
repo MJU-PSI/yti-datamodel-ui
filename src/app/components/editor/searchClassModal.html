@@ -179,22 +179,24 @@
 
             <app-ajax-loading-indicator *ngIf="loadingResults"></app-ajax-loading-indicator>
 
-            <search-results *ngIf="!loadingResults" [items]="searchResults" [selected]="selectedItem" [exclude]="exclude" (onSelect)="selectItem(item)">
+            <search-results *ngIf="!loadingResults" [items]="searchResults" [selected]="selectedItem" [exclude]="exclude" (onSelect)="selectItem($event)">
 
-              <span class="title">
-                <i [ngClass]="searchResult.glyphIconClass"></i>
-                <app-ajax-loading-indicator-small *ngIf="loadingSelection(searchResult)"></app-ajax-loading-indicator-small>
-                <highlight [text]="searchResult.label" [context]="model" [search]="searchText"></highlight>
-              </span>
+              <ng-template searchResultContent let-searchResult="searchResult">
+                <span class="title">
+                  <i [ngClass]="searchResult.glyphIconClass"></i>
+                  <app-ajax-loading-indicator-small *ngIf="loadingSelection(searchResult)"></app-ajax-loading-indicator-small>
+                  <highlight [text]="searchResult.label" [context]="model" [search]="searchText"></highlight>
+                </span>
 
-              <span class="body">
-                <highlight [text]="searchResult.comment" [context]="model" [search]="searchText"></highlight>
-              </span>
+                <span class="body">
+                  <highlight [text]="searchResult.comment" [context]="model" [search]="searchText"></highlight>
+                </span>
 
-              <span class="origin">
-                <span class="pull-left">{{searchResult.definedBy | translateLabel: model}}</span>
-                <span class="pull-right" [innerHtml]="searchResult.id.compact | highlight: searchText"></span>
-              </span>
+                <span class="origin">
+                  <span class="pull-left">{{searchResult.definedBy | translateLabel: model}}</span>
+                  <span class="pull-right" [innerHtml]="searchResult.id.compact | highlight: searchText"></span>
+                </span>
+              </ng-template>
 
             </search-results>
           </div>

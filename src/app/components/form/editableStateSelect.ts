@@ -48,7 +48,7 @@
 // }
 
 
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Model } from 'app/entities/model';
 import { AuthorizationManagerService } from 'app/services/authorizationManagerService';
 import { Status } from '@mju-psi/yti-common-ui';
@@ -59,8 +59,7 @@ import { NgForm } from '@angular/forms';
   template: `
     <div class="form-group">
       <label translate >Status</label>
-      <iow-select *ngIf="isEditing()" [id]="id" [idPrefix]="id" [options]="getStates()" [(ngModel)]="state">
-       <span>{{ state | translate }}</span >
+      <iow-select *ngIf="isEditing()" [id]="id" [(ngModel)]="state" [options]="getStates()" (ngModelChange)="onModelChange($event)">
       </iow-select>
       <p *ngIf="!isEditing()" class="form-control-static">{{ state | translate }}</p >
     </div>`
@@ -70,6 +69,7 @@ export class EditableStateSelectComponent {
   @Input() state: Status;
   @Input() id: string;
   @Input() form: NgForm;
+  @Output() stateChange: EventEmitter<Status> = new EventEmitter<Status>();
 
   constructor(private authorizationManagerService: AuthorizationManagerService) { }
 
@@ -79,5 +79,9 @@ export class EditableStateSelectComponent {
 
   getStates() {
     return this.authorizationManagerService.getAllowedStatuses(this.state);
+  }
+
+  onModelChange(event: Status) {
+    this.stateChange.emit(event);
   }
 }

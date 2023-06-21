@@ -132,8 +132,8 @@
 
   <div class="col-md-6">
 
-    <editable-state-select *ngIf="!predicate.unsaved" id="predicateState" [state]="predicate.status" [model]="model" [form]="form"></editable-state-select>
-    <editable-range-select *ngIf="predicate.isAttribute()" id="predicateRange" [range]="predicate.dataType" [form]="form"></editable-range-select>
+    <editable-state-select *ngIf="!predicate.unsaved" id="predicateState" [(state)]="predicate.status" [model]="model" [form]="form"></editable-state-select>
+    <editable-range-select *ngIf="predicate.isAttribute()" id="predicateRange" [(range)]="predicate.dataType" [form]="form"></editable-range-select>
 
     <editable *ngIf="predicate.isAssociation()" title="Value class" name="Value class" (link)="linkToValueClass()" [context]="model" [form]="form">
       <uri-select id="predicateValueClass" type="class" [uri]="predicate.valueClass" [model]="model" [defaultToCurrentModel]="true" #editableInput></uri-select>

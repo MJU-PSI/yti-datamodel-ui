@@ -33,33 +33,27 @@
 //   }
 // }
 
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
   selector: 'localized-select',
   template: `
-  <!-- TODO ALES -->
-  iow-select todo
-    <!-- <iow-select [id]="id" [idPrefix]="id" required [(ngModel)]="value" [options]="values">
-      <span>{{ getName(value) }}</span>
-    </iow-select> -->
+    <iow-select [id]="id" required [(ngModel)]="value" [options]="values" (ngModelChange)="onModelChange($event)"  [displayNameFormatter]="displayNameFormatter">
+    </iow-select>
   `
 })
-export class LocalizedSelectComponent {
+export class LocalizedSelectComponent{
   @Input() value: string;
   @Input() values: string[];
   @Input() id: string;
   @Input() displayNameFormatter: (value: string, translateService: TranslateService) => string;
+  @Output() valueChange: EventEmitter<string> = new EventEmitter<string>();
 
-  constructor(private translateService: TranslateService) {}
+  constructor() {}
 
-  getName(value: string) {
-    if (this.displayNameFormatter) {
-      return this.displayNameFormatter(value, this.translateService);
-    } else {
-      return this.translateService.instant(value);
-    }
+  onModelChange(event: string) {
+    this.valueChange.emit(event);
   }
 }

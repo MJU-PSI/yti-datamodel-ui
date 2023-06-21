@@ -178,11 +178,11 @@
     </editable>
 
     <editable *ngIf="class.isOfType('class')" title="Superclass" (link)="linkToSuperclass()" [context]="model" [form]="form">
-      <uri-select id="superClass" type="class" [uri]="class.subClassOf" [model]="model" [excludeItem]="superClassExclude" (afterSelected)="addPropertiesFromClassId(id, 'super class')" #editableInput></uri-select>
+      <uri-select id="superClass" type="class" [uri]="class.subClassOf" [model]="model" [excludeItem]="superClassExclude" (afterSelected)="addPropertiesFromClassId($event, 'super class')" [form]="form" #editableInput></uri-select>
     </editable>
 
-    <editable *ngIf="class.isOfType('shape')" title="Specialized from class" link="linkToScopeclass()" [context]="model" [form]="form">
-      <uri-select id="scopeClass" type="class" [uri]="class.scopeClass" [model]="model" [mandatory]="true" (afterSelected)="addPropertiesFromClassId(id, 'scope class')" #editableInput></uri-select>
+    <editable *ngIf="class.isOfType('shape')" title="Specialized from class" (link)="linkToScopeclass()" [context]="model" [form]="form">
+      <uri-select id="scopeClass" type="class" [uri]="class.scopeClass" [model]="model" [mandatory]="true" (afterSelected)="addPropertiesFromClassId($event, 'scope class')" #editableInput></uri-select>
     </editable>
 
     <editable title="Localname" [context]="model" [form]="form">
@@ -199,9 +199,9 @@
 
   </div>
   <div class="col-md-6">
-    <!-- <editable-state-select *ngIf="!class.unsaved" id="classState" [state]="class.status" [model]="model" [form]="form"></editable-state-select> -->
+    <editable-state-select *ngIf="!class.unsaved" id="classState" [(state)]="class.status" [model]="model" [form]="form"></editable-state-select>
     <defined-by [entity]="class" [model]="model"></defined-by>
-     <!-- <editable-multiple-uri-select id="equivalentClass" type="class" [(ngModel)]="class.equivalentClasses" [model]="model" title="{{'Equivalent class'}}" [requiredByInUse]="true" [form]="form"></editable-multiple-uri-select> -->
+    <!-- <editable-multiple-uri-select id="equivalentClass" type="class" [(ngModel)]="class.equivalentClasses" [model]="model" title="{{'Equivalent class'}}" [requiredByInUse]="true" [form]="form"></editable-multiple-uri-select> -->
   </div>
 </div>
 
@@ -303,7 +303,7 @@
   <div class="row">
     <div class="col-md-12">
       <div *ngIf="model.isOfType('profile') && (class.constraint.isVisible() || isEditing())">
-        <editable-constraint id="'{{id + '_' + class.id.uri}}'" [constraint]="class.constraint" [model]="model" [class]="class"></editable-constraint>
+        <editable-constraint id="'{{id + '_' + class.id.uri}}'" [constraint]="class.constraint" [model]="model" [class]="class" [form]="form"></editable-constraint>
       </div>
       <usage-panel id="'{{id + '_' + class.id.uri}}'" [entity]="class" [context]="model"></usage-panel>
     </div>

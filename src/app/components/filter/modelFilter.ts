@@ -152,7 +152,7 @@ interface ModelOption {
             class="form-control"
             style="width: auto"
             [(ngModel)]="showModel">
-      <option [ngValue]="null || undefined" translate>All models</option>
+      <option [ngValue]="null" translate>All models</option>
       <ng-container *ngFor="let model of modelOptions">
         <ng-container *ngIf="isImportedNamespacesOption(model)">
           <option [ngValue]="model">{{ 'Imported namespaces' | translate }}</option>
