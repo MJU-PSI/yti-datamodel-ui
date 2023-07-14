@@ -256,6 +256,7 @@ import { LanguageContext } from 'app/types/language';
 import { Model } from 'app/entities/model';
 import { TranslateService } from '@ngx-translate/core';
 import { NgForm } from '@angular/forms';
+import { EditableService } from 'app/services/editable.service';
 
 interface WithReferenceDatas {
   referenceDatas: ReferenceData[];
@@ -332,7 +333,8 @@ export class SearchReferenceDataModalComponent implements SearchController<Refer
     private modal: NgbActiveModal,
     private languageService: LanguageService,
     private referenceDataService: ReferenceDataService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private editableService: EditableService
   ) {
     this.localizer = this.languageService.createLocalizer(this.context);
 
@@ -429,11 +431,11 @@ export class SearchReferenceDataModalComponent implements SearchController<Refer
   selectItem(item: ReferenceData|AddNewReferenceData) {
     this.selectedItem = item;
     this.submitError = null;
-    this.form.form.editing= false;
+    // this.form.form.editing= false;
     this.form.form.markAsPristine();
 
     if (item instanceof AddNewReferenceData) {
-      this.form.form.editing= true;
+      this.editableService.edit();
       this.selection = new AddNewReferenceDataFormData();
 
     } else if (item instanceof ReferenceData) {

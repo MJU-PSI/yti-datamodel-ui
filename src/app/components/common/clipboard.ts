@@ -52,10 +52,10 @@
 // }
 
 
-import { Component, Inject, InjectionToken, Input, ViewChild } from '@angular/core';
+import { Component, InjectionToken, Input } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { EditableForm } from '../form/editableEntityController';
-import { NgForm } from '@angular/forms';
+import { EditableService } from 'app/services/editable.service';
 
 const clipboardImage = '../../../assets/clippy.svg';
 
@@ -65,32 +65,37 @@ export const EDITABLE_FORM_TOKEN = new InjectionToken<EditableForm>('editable fo
 @Component({
   selector: 'clipboard',
   template: `
-    <img [src]="clipboardImage" class="svg-icon"
+    <!-- <img [src]="clipboardImage" class="svg-icon" -->
+    <button
     *ngIf="text && !isEditing()"
     [attr.aria-label]="copyInfo"
     [ngbTooltip]="copyInfo"
-
+    [cdkCopyToClipboard]="copyInfo"
     (cdkCopyToClipboardSuccess)="onCopy()"
     (cdkCopyToClipboardCopied)="showCopiedMessage = true;"
-    (click)="showCopiedMessage = false" />
+    (click)="showCopiedMessage = false" >
+    <img [src]="clipboardImage" class="svg-icon" />
+  </button>
   `
 })
 export class ClipboardComponent {
 
   @Input() text: string;
-  @ViewChild(NgForm) form: NgForm;
 
   showCopiedMessage = false;
   clipboardImage = clipboardImage;
 
-  constructor(private translateService: TranslateService) { }
+  constructor(
+    private translateService: TranslateService,
+    private editableService: EditableService
+    ) { }
 
   isEditing() {
-    return this.form && this.form.form.editing;
+    return this.editableService.editing;
   }
 
   get copyInfo() {
-    return this.translateService.instant('Copy "{{text}}" to clipboard', { text: this.text });
+    return this.translateService.instant(`Copy ${this.text} to clipboard`);
   }
 
   onCopy() {

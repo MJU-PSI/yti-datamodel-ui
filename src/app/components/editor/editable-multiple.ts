@@ -199,7 +199,7 @@
 // }
 
 
-import { Component, ElementRef, HostListener, Input, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, ContentChild, ElementRef, HostListener, Input, OnDestroy, OnInit, QueryList, SimpleChanges, ViewChild, ViewChildren } from '@angular/core';
 import { AbstractControl, FormControl, FormControlDirective, FormGroupDirective, NgControl, NgForm, NgModel } from '@angular/forms';
 import { EditableForm } from '../../components/form/editableEntityController';
 import { arrayAsyncValidator, arrayValidator } from '../../components/form/validators';
@@ -208,6 +208,7 @@ import { remove, enter, normalizeAsId } from '@mju-psi/yti-common-ui';
 import { isExternalLink } from 'app/components/form/href';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { EditableService } from 'app/services/editable.service';
 
 const skipValidators = new Set<string>(['duplicate']);
 
@@ -215,83 +216,75 @@ const skipValidators = new Set<string>(['duplicate']);
   selector: 'editable-multiple',
   templateUrl: './editable-multiple.html',
 })
-export class EditableMultipleComponent<T> implements OnDestroy {
+export class EditableMultipleComponent<T> {
 
-  // @Input() ngModel: T[];
   @Input() values: T[];
-  @Input() input: T | null;
   @Input() id: string;
   @Input() title: string;
   @Input() link: (item: T) => string;
   @Input() required: boolean;
-  @Input() form: NgForm;
+  @Input() formatter: (value: any) => string;
 
-  @ViewChildren(NgModel) ngModelControllers: QueryList<NgModel>;
-  @ViewChild(FormGroupDirective) formGroupDirective: FormGroupDirective;
-  @ViewChildren(FormControlDirective) formControlDirectives: QueryList<FormControlDirective>;
+  inputNgModelCtrl: NgModel;
+  input: ElementRef;
 
-
-
-  validation: ValidationResult<T>;
-  formatter: any[];
-
-  private destroyed$ = new Subject();
+  @ContentChild('editableInput', { read: ElementRef }) inputElementRef!: ElementRef<HTMLInputElement>;
+  @ContentChild('editableInput', { read: NgModel, static: false }) inputNgModel!: NgModel;
 
   constructor(
-    private elementRef: ElementRef
+    private elementRef: ElementRef,
+    private editableService: EditableService
   ) {}
 
-  ngAfterViewInit() {
+  ngOnInit() {
 
-  }
-
-  ngOnDestroy() {
-  }
-
-  validate() {
-
-  }
-
-  resetAsyncValidators(asyncValidatorNames?: string[], oldAsyncValidatorNames?: string[]) {
-
+     // move error messages element next to input
+     const inputElement = this.elementRef.nativeElement.querySelector('input');
+     const errorMessageElement = this.elementRef.nativeElement.querySelector('error-messages');
+     inputElement && inputElement.parentNode && inputElement.parentNode.insertBefore(errorMessageElement, inputElement.nextSibling);
   }
 
 
-  resetValidators(validators?: string[], oldValidators?: string[]) {
+  ngAfterContentChecked() {
+    this.inputNgModelCtrl = this.inputNgModel ? this.inputNgModel : this.inputNgModelCtrl;
+
+    this.input = this.inputElementRef ? this.inputElementRef : this.input;
+
+    // TODO: prevent hidden and non-editable fields participating validation with some more obvious mechanism
+    this.inputNgModelCtrl && this.inputNgModelCtrl.statusChanges && this.inputNgModelCtrl.statusChanges.subscribe((status) => {
+      if (!this.isEditing()) {
+        const errors = this.inputNgModelCtrl.errors;
+        if (errors) {
+          Object.keys(errors).forEach(key => {
+            if(errors[key] !== null) {
+              this.inputNgModelCtrl.control?.setErrors({ [key]: null });
+            }
+          });
+        }
+      }
+    });
+
   }
 
   isEditing() {
-    return this.form.form.editing;
+    return this.editableService.editing;
   }
 
   format(value: T): string {
-    return formatWithFormatters(value, this.formatter);
+    if (this.formatter) {
+    return this.formatter(value);
+    } else {
+      return String(value);
+    }
   }
 
   isValid(value: T) {
-    return !this.validation || this.validation.isValid(value);
+    // return !this.validation || this.validation.isValid(value);
+    return true;
   }
 
   deleteValue(value: T) {
     remove(this.values, value);
-  }
-
-  keyPressed(event: KeyboardEvent) {
-    if (event.key === 'Enter' && this.input) {
-      this.addValueFromInput();
-      event.preventDefault();
-    }
-  }
-
-  addValue(value: T) {
-    this.values.push(value);
-  }
-
-  addValueFromInput() {
-    if (this.input) {
-      this.addValue(this.input);
-      this.input = null;
-    }
   }
 
   normalizeValueForId(value: string): string {

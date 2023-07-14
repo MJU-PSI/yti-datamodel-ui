@@ -63,31 +63,29 @@
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { SearchController, TextAnalysis } from '../../types/filter';
 import { isDefined } from '@mju-psi/yti-common-ui';
-import { ifChanged } from '../../utils/angular';
 import { Type } from '../../types/entity';
 import * as _ from 'lodash';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 interface WithNormalizedType {
   normalizedType: Type | null;
 }
 
 @Component({
-  selector: 'app-type-filter',
+  selector: 'type-filter',
   template: `
       <select #typeSelect
               id="type"
               class="form-control"
               style="width: auto"
-              [(ngModel)]="type">
-        <option value="" translate>All types</option>
-        <option *ngFor="let type of types" [value]="type">{{ type | translate }}</option>
+              [(ngModel)]="type"
+              (ngModelChange)="onModelChange()">
+        <option [ngValue]="undefined" translate>All types</option>
+        <option *ngFor="let type of types" [ngValue]="type">{{ type | translate }}</option>
       </select>
   `
 })
-export class TypeFilterComponent implements OnInit, OnDestroy {
-
+export class TypeFilterComponent implements OnInit {
   @Input() searchController: SearchController<WithNormalizedType>;
   @Input() label: string;
   @Input() defaultType: Type;
@@ -96,39 +94,37 @@ export class TypeFilterComponent implements OnInit, OnDestroy {
 
   type: Type;
   types: Type[];
-  private unsubscribe$ = new Subject<void>();
+  itemsBefore: WithNormalizedType[];
 
   ngOnInit() {
     if (!!this.defaultType) {
       this.type = this.defaultType;
     }
 
-    // TODO ALES - PREVERI
-    // this.searchController.items$
-    //   .pipe(
-    //     takeUntil(this.unsubscribe$)
-    //   )
-    //   .subscribe(items => {
-    //     this.types = _.chain(items)
-    //       .map(item => item.normalizedType!)
-    //       .filter(type => isDefined(type))
-    //       .uniq()
-    //       .value();
-    //   });
+    this.types = _.chain(this.searchController.items)
+      .map(item => item.normalizedType!)
+      .filter(type => isDefined(type))
+      .uniq()
+      .value();
 
     this.searchController.addFilter((item: TextAnalysis<WithNormalizedType>) =>
       !this.type || item.item.normalizedType === this.type
     );
-
-    this.typeSelect.valueChanges
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe(() => this.searchController.search());
   }
 
-  ngOnDestroy() {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
+  ngDoCheck(){
+    if(this.searchController.items != this.itemsBefore) {
+      this.itemsBefore = this.searchController.items;
+
+      this.types = _.chain(this.searchController.items)
+      .map(item => item.normalizedType!)
+      .filter(type => isDefined(type))
+      .uniq()
+      .value();
+    }
+  }
+
+  onModelChange() {
+    this.searchController.search()
   }
 }

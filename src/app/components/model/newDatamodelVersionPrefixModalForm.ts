@@ -82,7 +82,7 @@ import { Model } from 'app/entities/model';
     <div class="modal-body">
       <form #form="ngForm" name="form" class="editable-form" implicitEditMode="form">
           <p translate>Define prefix for the new version. Note that prefix is used to define the new namespace.</p>
-          <editable [title]="'Prefix'" [context]="model.context" [form]="form">
+          <editable [title]="'Prefix'" [context]="model.context" >
             <input id="new_datamodel_version_prefix_input" class="form-control" type="text" prefixInput
                     [reservedPrefixesGetter]="importedPrefixes"
                     [isModelPrefix]="true"

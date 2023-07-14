@@ -65,6 +65,7 @@ import { Model } from '../../entities/model';
 import { EditableForm } from '../../components/form/editableEntityController';
 import { modalCancelHandler } from 'app/utils/angular';
 import { NgForm } from '@angular/forms';
+import { EditableService } from 'app/services/editable.service';
 
 @Component({
   selector: 'subject-view',
@@ -77,10 +78,13 @@ export class SubjectViewComponent {
   @Input() changeConceptDisabled: boolean;
   @Input() form: NgForm;
 
-  constructor(private searchConceptModal: SearchConceptModal) {}
+  constructor(
+    private searchConceptModal: SearchConceptModal,
+    private editableService: EditableService
+    ) {}
 
   isEditing(): boolean {
-    return this.form && this.form.form.editing;
+    return this.editableService.editing;
   }
 
   showChangeSubject(): boolean {

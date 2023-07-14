@@ -100,7 +100,7 @@
         <button id="save_new_model_button"
                 type="button"
                 class="btn btn-action pull-right save"
-                (click)="save()"
+                (click)="saveModel()"
                 [disabled]="!isValid() || form.pending">
           <span translate>Save</span>
         </button>
@@ -109,25 +109,23 @@
       <div class="row">
         <div class="col-lg-5">
 
-          <editable title="{{type + ' label' | capitalize}}" [context]="context" autofocus [form]="form">
+          <editable title="{{type + ' label' | capitalize}}" [context]="context" autofocus >
             <input id="modelLabel" class="form-control" type="text" autocomplete="off" bootstrapInput required [(ngModel)]="label" name="label" #editableInput/>
           </editable>
 
-          <editable title="Description" [context]="context" [form]="form">
+          <editable title="Description" [context]="context" >
             <textarea id="modelComment" class="form-control" autocomplete="off" [(ngModel)]="comment" name="comment" #editableInput></textarea>
           </editable>
 
-          {{languages | json}}
           <editable-multiple-language-select
             title="Model languages"
             id="modelLanguage"
-            [languages]="languages"
-            [form]="form"
+            [values]="languages"
 
-            required="true">
+            [required]="true">
           </editable-multiple-language-select>
 
-          <editable title="Prefix" [context]="context" [form]="form">
+          <editable title="Prefix" [context]="context" >
             <input id="modelPrefix" class="form-control" type="text" prefixInput prefixInputAsync
                    [reservedPrefixesGetter]="importedPrefixes"
                    [isModelPrefix]="true"
@@ -141,24 +139,24 @@
 
           <app-use-context-input [(ngModel)]="useContext" [editing]="true" [modelType]="type" [ngModelOptions]="{standalone: true}"></app-use-context-input>
 
-          <editable title="Contact label" [context]="context" [form]="form">
+          <editable title="Contact label" [context]="context" >
             <p translate>Please note that the content of this field is public. Don't use personal contact information!</p>
             <textarea id="modelContact" class="form-control" autocomplete="off" [(ngModel)]="contact" name="contact" #editableInput></textarea>
           </editable>
         </div>
 
         <div class="col-lg-6 offset-lg-1">
-          <classifications-view [value]="this" required="true" [form]="form"></classifications-view>
-          <contributors-view [value]="this" [context]="context" required="true" [form]="form"></contributors-view>
-          <vocabularies-view [value]="this" [context]="context" [form]="form"></vocabularies-view>
-          <reference-datas-view [value]="this" [context]="context" [form]="form"></reference-datas-view>
+          <classifications-view [value]="this" required="true" ></classifications-view>
+          <contributors-view [value]="this" [context]="context" required="true" ></contributors-view>
+          <vocabularies-view [value]="this" [context]="context" ></vocabularies-view>
+          <reference-datas-view [value]="this" [context]="context" ></reference-datas-view>
           <imported-namespaces-view [value]="this"
                                     [context]="context"
                                     [allowProfiles]="allowProfiles"
                                     [namespacesInUse]="namespacesInUse"
                                     [modelPrefix]="prefix || ''"
-                                    [form]="form"></imported-namespaces-view>
-          <links-view [value]="this" [context]="context" [form]="form"></links-view>
+                                    ></imported-namespaces-view>
+          <links-view [value]="this" [context]="context" ></links-view>
         </div>
       </div>
 

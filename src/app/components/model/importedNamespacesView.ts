@@ -161,6 +161,7 @@ import { ImportedNamespace, NamespaceType } from '../../entities/model';
 import { LanguageContext } from '../../types/language';
 import { Uri } from '../../entities/uri';
 import { NgForm } from '@angular/forms';
+import { EditableService } from 'app/services/editable.service';
 
 interface WithImportedNamespaces {
   id: Uri | null;
@@ -179,7 +180,7 @@ interface WithImportedNamespaces {
         <span translate>Import namespace</span>
       </button>
     </h4>
-    <editable-table id="importedNamespaces" [descriptor]="descriptor" [expanded]="expanded" [form]="form"></editable-table>
+    <editable-table id="importedNamespaces" [descriptor]="descriptor" [expanded]="expanded" ></editable-table>
   `,
 })
 export class ImportedNamespacesViewComponent {
@@ -190,16 +191,16 @@ export class ImportedNamespacesViewComponent {
   @Input() namespacesInUse?: Set<string>;
   @Input() modelPrefix: string;
   @Input() modelNamespace: string;
-  @Input() form: NgForm;
 
   descriptor: ImportedNamespaceTableDescriptor;
   expanded: boolean;
-
+  valueBefore: WithImportedNamespaces;
 
   constructor(
     private searchNamespaceModal: SearchNamespaceModal,
     private addEditNamespaceModal: AddEditNamespaceModal,
-    private languageService: LanguageService
+    private languageService: LanguageService,
+    private editableService: EditableService
   ) {}
 
   ngOnInit(): void {
@@ -230,28 +231,22 @@ export class ImportedNamespacesViewComponent {
   }
 
   ngDoCheck() {
-    //  if (JSON.stringify(this.value) === JSON.stringify(this.prevValue)) {
-    //   console.log('Classes are equal');
-    // } else {
-    //   console.log('Classes are not equal');
-    //   this.prevValue = { ...this.value };
-    //   this.descriptor = new ClassificationTableDescriptor(this.value, this.languageService);
-    // }
-
-    // TODO ALES - popravi da se kliče samo kadar se VALUE spremeni
-    this.descriptor = new ImportedNamespaceTableDescriptor(
-      this.addEditNamespaceModal,
-      this.value,
-      () => this.modelPrefix,
-      () => this.modelNamespace,
-      this.context,
-      this.languageService,
-      this.namespacesInUse
-    );
+   if (JSON.stringify(this.value) !== JSON.stringify(this.valueBefore)) {
+      this.valueBefore = { ...this.value };
+      this.descriptor = new ImportedNamespaceTableDescriptor(
+        this.addEditNamespaceModal,
+        this.value,
+        () => this.modelPrefix,
+        () => this.modelNamespace,
+        this.context,
+        this.languageService,
+        this.namespacesInUse
+      );
+    }
   }
 
   isEditing(): boolean {
-    return this.form && this.form.form.editing;
+    return this.editableService.editing;
   }
 
   importNamespace() {

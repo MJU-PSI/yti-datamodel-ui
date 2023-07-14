@@ -20,7 +20,7 @@
 <form name="form" class="editable-form" #form="ngForm">
   <fieldset [disabled]="persisting">
     <div *ngIf="predicate && model">
-      <selection-view [idPrefix]="'predicate_'" [model]="model" [editableController]="this" [form]="form">
+      <selection-view [idPrefix]="'predicate_'" [model]="model" [editableController]="this" >
         <div selectionButtons>
           <export *ngIf="!isEditing()"  [idPrefix]="'predicate'" [entity]="predicate" [context]="model"></export>
           <history-editor button-id="'predicate_edit_buttons_history'" [model]="model" [resource]="predicate"
@@ -29,7 +29,7 @@
         </div>
 
         <div selectionContent>
-          <predicate-form [id]="id" [predicate]="editableInEdit" [oldPredicate]="predicate" [model]="model" [form]="form"></predicate-form>
+          <predicate-form [id]="id" [predicate]="editableInEdit" [oldPredicate]="predicate" [model]="model" ></predicate-form>
         </div>
       </selection-view>
     </div>

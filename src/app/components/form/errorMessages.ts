@@ -59,7 +59,7 @@
 
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { NgModel } from '@angular/forms';
-import { resolveValidator } from './validators';
+import { resolvePlaceholder } from './validators';
 import { normalizeAsArray } from '@mju-psi/yti-common-ui';
 import { dataTypes } from 'app/entities/dataTypes';
 
@@ -72,24 +72,12 @@ interface Error {
 const errors: Error[] = [];
 
 for (const dataType of dataTypes) {
-  const format = resolveValidator(dataType).format;
+  const format = resolvePlaceholder(dataType)?.format;
   errors.push({ key: dataType, message: dataType + ' error', format: format ? `(${format})` : ''});
 }
 
 @Component({
   selector: 'error-messages',
-  // template: `
-  //   <ul *ngIf="isVisible()">
-  //     <li *ngFor="let ngModel of ngModelControllers">
-  //       <div *ngIf="ngModel.$dirty || ngModel.$touched || ngModel.errors">
-  //         <div *ngFor="let error of ngModel.errors | keyvalue">
-  //           <div *ngIf="!error.value.required && error.value">{{ error.key | translate }} {{ error.value | json }}</div>
-  //           <div *ngIf="error.value.required">{{ error.key | translate }} {{ error.value.message }}</div>
-  //         </div>
-  //       </div>
-  //     </li>
-  //   </ul>
-  // `
   templateUrl: './errorMessages.html',
 })
 export class ErrorMessagesComponent implements OnChanges {

@@ -220,6 +220,7 @@ import { isDefined } from '@mju-psi/yti-common-ui';
 import { ImportedNamespace } from '../../entities/model';
 import { Configuration } from 'app/configuration.interface';
 import { NgForm } from '@angular/forms';
+import { EditableService } from 'app/services/editable.service';
 
 declare let __config: Configuration;
 const technicalNamespaces: { [prefix: string]: string } = {
@@ -294,7 +295,8 @@ export class AddEditNamespaceModal {
 
 @Component({
   selector: 'app-add-edit-namespace',
-  templateUrl: './addEditNamespaceModal.html'
+  templateUrl: './addEditNamespaceModal.html',
+  providers: [EditableService]
 })
 export class AddEditNamespaceModalComponent implements OnInit {
   namespace: string;
@@ -307,8 +309,6 @@ export class AddEditNamespaceModalComponent implements OnInit {
   namespaceBeforeForced: string | null = null;
   prefixBeforeForced: string | null = null;
 
-  @ViewChild('form', {static: true}) form!: NgForm;
-
   public context: LanguageContext;
   public language: Language;
   public namespaceToEdit: ImportedNamespace | null;
@@ -316,7 +316,9 @@ export class AddEditNamespaceModalComponent implements OnInit {
   public usedNamespaces: string[];
 
   constructor(private activeModal: NgbActiveModal,
-              private modelService: DefaultModelService) {
+              private modelService: DefaultModelService,
+              private editableService: EditableService
+              ) {
   }
 
   ngOnInit(){
@@ -328,7 +330,7 @@ export class AddEditNamespaceModalComponent implements OnInit {
       this.label = this.namespaceToEdit.label[this.language];
     }
 
-    this.form.form.editing = true;
+    this.editableService.edit();
   }
 
   onPrefixChange() {

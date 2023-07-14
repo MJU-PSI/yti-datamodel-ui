@@ -23,7 +23,7 @@
     <editable-table [id]="'editableReferenceDataSelect'" [descriptor]="descriptor" [expanded]="expanded"></editable-table>
   </div>
 
-  <div [ngCclass]="{'model-view__sub': !!referenceData}" style="margin-bottom: 15px">
+  <div [ngClass]="{'model-view__sub': !!referenceData}" style="margin-bottom: 15px">
     <button id="add_editable_reference_data_select_button" *ngIf="isEditing()" type="button" class="btn btn-action btn-sm" (click)="addReferenceData()" translate>Add reference data</button>
   </div>
 </div>

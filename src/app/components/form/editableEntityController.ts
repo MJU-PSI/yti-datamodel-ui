@@ -20,6 +20,7 @@ import { OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, NgForm } from '@angular/forms';
 import { Component, NgModule } from '@angular/core';
 import { Observable } from 'rxjs';
+import { EditableService } from 'app/services/editable.service';
 
 export interface EditableForm extends AbstractControl  {
   editing: boolean;
@@ -202,7 +203,8 @@ export abstract class EditableEntityController<T extends EditableEntity> impleme
   constructor(
     protected deleteConfirmationModal: DeleteConfirmationModal,
     private errorModal: ErrorModal,
-    protected userService: UserService
+    protected userService: UserService,
+    private editableService: EditableService
   ) { }
 
   ngOnInit(): void {
@@ -248,7 +250,7 @@ export abstract class EditableEntityController<T extends EditableEntity> impleme
 
     if (editable && editable.unsaved) {
       // XXX: prevent problems with unsaved navigation confirmation
-      this.form.form.pendingEdit = true;
+      // this.form.form.pendingEdit = true;
       setTimeout(() => this.edit());
     } else {
       this.cancelEditing();
@@ -322,7 +324,7 @@ export abstract class EditableEntityController<T extends EditableEntity> impleme
 
   cancelEditing(): void {
     if (this.isEditing()) {
-      this.form.form.editing = false;
+      this.editableService.editing$.next(false);
       this.form.form.markAsPristine();
       const editable = this.getEditable();
       this.select(editable!.unsaved ? null : editable);
@@ -330,12 +332,12 @@ export abstract class EditableEntityController<T extends EditableEntity> impleme
   }
 
   edit(): void {
-    this.form.form.pendingEdit = undefined;
-    this.form.form.editing = true;
+    // this.form.form.pendingEdit = undefined;
+    this.editableService.edit();
   }
 
   isEditing(): boolean {
-    return this.form.form && this.form.form.editing;
+    return this.editableService.editing;
   }
 
   canEdit(): boolean {

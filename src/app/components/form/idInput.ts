@@ -93,9 +93,6 @@
 //   };
 // };
 
-
-// TODO ALES - preveri spodnjo komponento
-
 import { Directive, ElementRef, HostListener, Input, Self } from '@angular/core';
 import { AbstractControl, ValidationErrors, ControlValueAccessor, NgControl, ValidatorFn, AsyncValidatorFn } from '@angular/forms';
 import { isValidClassIdentifier, isValidIdentifier, isValidLabelLength, isValidPredicateIdentifier } from './validators';
@@ -110,17 +107,17 @@ export function validateIdInput(idInput: string): ValidatorFn {
       try {
         const name = value.name;
         if (idInput === 'class') {
-          return isValidClassIdentifier(name, idInput) ? null : { id: false };
+          return isValidClassIdentifier(name, idInput) ? null : { id: true };
         } else if (idInput === 'predicate') {
-          return isValidPredicateIdentifier(name, idInput) ? null : { id: false };
+          return isValidPredicateIdentifier(name, idInput) ? null : { id: true };
         } else {
-          return isValidIdentifier(name, idInput) ? null : { id: false };
+          return isValidIdentifier(name, idInput) ? null : { id: true };
         }
       } catch (e) {
         // probably value.name getter failed
       }
     }
-    return { id: false };
+    return null;
   };
 }
 
@@ -152,7 +149,11 @@ export function validateExistingId(old: any, idInput: string, validatorService: 
       } else {
         throw new Error('Unknown type: ' + idInput);
       }
-      return { existingId: !notExist };
+      if(notExist){
+        return null
+      } else {
+        return { existing: true };
+      }
     }
     return null;
   }
@@ -166,10 +167,9 @@ export class IdInputDirective implements ControlValueAccessor {
   @Input('idInput') idInput: string;
   @Input() old: any;//Class|Predicate;
 
-  private validators: ValidatorFn[] = [];
   private previous: Uri|null = null;
 
-  private onChange: (value: any) => void;
+  private onChange: any = () => {};
   private onTouched: () => void;
 
   constructor(
@@ -180,11 +180,17 @@ export class IdInputDirective implements ControlValueAccessor {
   }
 
   ngOnInit(): void {
-    this.validators.push(validateIdInput(this.idInput), length(isValidLabelLength));
+    const validators = this.controlDirective.control?.validator
+    ? [this.controlDirective.control.validator, validateIdInput(this.idInput), length(isValidLabelLength)]
+    : [validateIdInput(this.idInput), length(isValidLabelLength)];
 
-    this.controlDirective.control?.setValidators(this.validators);
+    this.controlDirective.control?.setValidators(validators);
     this.controlDirective.control?.updateValueAndValidity();
-    this.controlDirective.control?.setAsyncValidators(validateExistingId(this.old, this.idInput, this.validatorService));
+
+    const asyncValidators = this.controlDirective.control?.asyncValidator
+    ? [this.controlDirective.control.asyncValidator, validateExistingId(this.old, this.idInput, this.validatorService)]
+    : [validateExistingId(this.old, this.idInput, this.validatorService)];
+    this.controlDirective.control?.setAsyncValidators(asyncValidators);
     this.controlDirective.control?.updateValueAndValidity();
   }
 
@@ -195,6 +201,7 @@ export class IdInputDirective implements ControlValueAccessor {
     } else {
       this.elementRef.nativeElement.value = null;
     }
+    this.onChange(value);
 
   }
 
@@ -210,8 +217,10 @@ export class IdInputDirective implements ControlValueAccessor {
   onInputChange(value: any): void {
     if (this.previous && value) {
       this.previous = this.previous.withName(value);
+      this.onChange(this.previous);
+    } else {
+      this.onChange(value);
     }
-    this.onChange(this.previous);
   }
 }
 

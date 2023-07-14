@@ -26,7 +26,7 @@ import { Directive, ElementRef, HostBinding, Input, Optional } from '@angular/co
 import { NgModel } from '@angular/forms';
 
 @Directive({
-  selector: '[bootstrapInput]',
+  selector: 'input[type="text"], input[type="number"], input[type="email"], input[type="password"]'
 })
 export class BootstrapInputDirective {
 

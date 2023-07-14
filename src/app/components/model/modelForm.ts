@@ -43,6 +43,7 @@
 import { Component, Input } from '@angular/core';
 import { Model } from 'app/entities/model';
 import { NgForm } from '@angular/forms';
+import { EditableService } from 'app/services/editable.service';
 
 @Component({
   selector: 'model-form',
@@ -52,9 +53,10 @@ export class ModelFormComponent {
   @Input() id: string;
   @Input() model: Model;
   @Input() namespacesInUse?: Set<string>;
-  @Input() form: NgForm;
   @Input() statusChanged: boolean;
   @Input() changeResourceStatusesToo: boolean;
+
+  constructor(private editableService: EditableService) {}
 
   get allowProfiles(): boolean {
     return this.model.isOfType('profile');
@@ -65,10 +67,10 @@ export class ModelFormComponent {
   }
 
   isEditing(): boolean {
-    return this.form && this.form.form.editing;
+    return this.editableService.editing;
   }
 
   showChangeResourceStatusesCheckbox(): boolean {
-    return this.form?.form.editing && this.statusChanged;
+    return this.editableService.editing && this.statusChanged;
   }
 }

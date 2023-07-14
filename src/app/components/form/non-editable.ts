@@ -78,6 +78,7 @@ import { DisplayItem, DisplayItemFactory, Value } from './displayItemFactory';
 import { LanguageContext } from 'app/types/language';
 import { isExternalLink } from 'app/components/form/href';
 import { NgForm } from '@angular/forms';
+import { EditableService } from 'app/services/editable.service';
 
 @Component({
   selector: 'non-editable',
@@ -96,7 +97,10 @@ export class NonEditableComponent implements OnInit {
 
   item: DisplayItem;
 
-  constructor(private displayItemFactory: DisplayItemFactory) { }
+  constructor(
+    private displayItemFactory: DisplayItemFactory,
+    private editableService: EditableService
+    ) { }
 
   ngOnInit() {
 
@@ -115,7 +119,7 @@ export class NonEditableComponent implements OnInit {
   }
 
   isEditing() {
-    return this.form && this.form.form.editing;
+    return this.editableService.editing;
   }
 
   get style(): {} {

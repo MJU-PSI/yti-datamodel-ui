@@ -360,6 +360,7 @@ import { Language } from '../../types/language';
 import { ShowPredicateInfoModal } from './showPredicateInfoModal';
 import { NgForm } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
+import { EditableService } from 'app/services/editable.service';
 
 export const noPredicateExclude = (_item: PredicateListItem) => null;
 
@@ -457,7 +458,9 @@ export class SearchPredicateTableComponent implements SearchController<Predicate
               private classificationService: ClassificationService,
               protected showPredicateInfoModal: ShowPredicateInfoModal,
               private modelService: DefaultModelService,
-              private activeModal: NgbActiveModal) {
+              private activeModal: NgbActiveModal,
+              private editableService: EditableService
+              ) {
 
     this.showInfoDomain = null;
     this.showStatus = null;
@@ -573,7 +576,7 @@ export class SearchPredicateTableComponent implements SearchController<Predicate
 
   selectItem(item: AbstractPredicate) {
     this.selectedItem = item;
-    this.form.form.editing = false;
+    this.editableService.editing$.next(false);
     this.form.form.markAsPristine();
 
     this.cannotConfirm = this.exclude(item);
@@ -624,14 +627,14 @@ export class SearchPredicateTableComponent implements SearchController<Predicate
             .then(predicate => {
               this.cannotConfirm = null;
               this.selection = predicate;
-              this.form.form.editing = true;
+              this.editableService.edit();
             });
         }
       }, ignoreModalClose);
   }
 
   isEditing(): boolean {
-    return this.form.form && this.form.form.editing;
+    return this.editableService.editing;
   }
 
   isAttributeAddable(): boolean {

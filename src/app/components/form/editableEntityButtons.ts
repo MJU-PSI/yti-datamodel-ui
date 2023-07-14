@@ -35,7 +35,7 @@ export class EditableEntityButtonsComponent {
   @Input() editableController: EditableEntityController<any>;
   @Input() context: any;
   @Input() idPrefix?: string;
-  @Input() form: NgForm; // Assuming EditableForm is imported and provided correctly
+  @Input() form: NgForm;
 
   id(button: string): string | undefined {
     return this.idPrefix ? this.idPrefix + button : undefined;

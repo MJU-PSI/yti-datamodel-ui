@@ -5,12 +5,16 @@ import { availableLanguages } from '../../types/language';
 import { contains } from '@mju-psi/yti-common-ui';
 import { DataType } from '../../entities/dataTypes';
 import { parse as parseUri } from 'uri-js';
-import { AbstractControl } from '@angular/forms';
+import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 
 export type Validator<T> = (input: T, raw?: any) =>  boolean;
 export type AsyncValidator<T> = (input: T, raw?: any) => IPromise<any>;
 
 export interface ValidatorWithFormat<T> extends Validator<T> {
+  format?: string;
+}
+
+export interface ValidatorFnWithFormat<T> extends ValidationErrors {
   format?: string;
 }
 
@@ -141,43 +145,97 @@ export const isValidDay = createMomentValidator('DD');
 export const isValidHex = createRegexValidator(/^[0-9A-Fa-f]+$/);
 export const isValidUrn = createRegexValidator(/^urn:[a-z0-9][a-z0-9-]{0,31}:[a-z0-9()+,\-.:=@;$_!*'%/?#]+/);
 
-export function resolveValidator(dataType: DataType): ValidatorWithFormat<string> {
+export function resolvePlaceholder(dataType: DataType): ValidatorWithFormat<string> {
   switch (dataType) {
     case 'xsd:string':
     case 'rdf:langString':
     case 'rdfs:Literal':
-      return isValidString;
+      return isValidString
     case 'xsd:anyURI':
-      return isValidUri;
+      return isValidUri
     case 'xsd:boolean':
-      return isValidBoolean;
+      return isValidBoolean
     case 'xsd:decimal':
     case 'xsd:double':
     case 'xsd:float':
-      return isValidDecimal;
+      return isValidDecimal
     case 'xsd:integer':
     case 'xsd:long':
     case 'xsd:int':
-      return isValidNumber;
+      return isValidNumber
     case 'xsd:date':
-      return isValidDate;
+      return isValidDate
     case 'xsd:dateTime':
-      return isValidDateTime;
+      return isValidDateTime
     case 'xsd:time':
-      return isValidTime;
+      return isValidTime
     case 'xsd:gYear':
-      return isValidYear;
+      return isValidYear
     case 'xsd:gMonth':
-      return isValidMonth;
+      return isValidMonth
     case 'xsd:gDay':
-      return isValidDay;
+      return isValidDay
     case 'xsd:hexBinary':
-      return isValidHex;
+      return isValidHex
     case 'xsd:base64Binary':
-      return isValidBase64;
+      return isValidBase64
     default:
       console.log('No validator for unknown data type: ' + dataType);
-      return createNopValidator();
+      return createNopValidator()
+  }
+}
+
+export function resolveValidator(dataType: DataType): ValidatorFn {
+  switch (dataType) {
+    case 'xsd:string':
+    case 'rdf:langString':
+    case 'rdfs:Literal':
+      return createValidator(isValidString, dataType);
+    case 'xsd:anyURI':
+      return createValidator(isValidUri, dataType);
+    case 'xsd:boolean':
+      return createValidator(isValidBoolean, dataType);
+    case 'xsd:decimal':
+    case 'xsd:double':
+    case 'xsd:float':
+      return createValidator(isValidDecimal, dataType);
+    case 'xsd:integer':
+    case 'xsd:long':
+    case 'xsd:int':
+      return createValidator(isValidNumber, dataType);
+    case 'xsd:date':
+      return createValidator(isValidDate, dataType);
+    case 'xsd:dateTime':
+      return createValidator(isValidDateTime, dataType);
+    case 'xsd:time':
+      return createValidator(isValidTime, dataType);
+    case 'xsd:gYear':
+      return createValidator(isValidYear, dataType);
+    case 'xsd:gMonth':
+      return createValidator(isValidMonth, dataType);
+    case 'xsd:gDay':
+      return createValidator(isValidDay, dataType);
+    case 'xsd:hexBinary':
+      return createValidator(isValidHex, dataType);
+    case 'xsd:base64Binary':
+      return createValidator(isValidBase64, dataType);
+    default:
+      console.log('No validator for unknown data type: ' + dataType);
+      return createValidator(createNopValidator(), dataType);
+  }
+}
+
+function createValidator(validatorFn: ValidatorWithFormat<string>, dataType: any): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const input: string = control.value;
+    const isValid: boolean = validatorFn(input);
+    if(isValid) {
+      return null;
+    } else {
+      const error: any = {};
+      error[dataType] =  true
+      return error;
+    }
   }
 }
 

@@ -66,15 +66,13 @@
 
   <div class="modal-body">
 
-    <editable title="Namespace label" [disable]="!labelModifiable()" [context]="context" [form]="form">
+    <editable title="Namespace label" [disable]="!labelModifiable()" [context]="context" >
       <div class="input-group input-group-md">
         <input id="label" type="text" name="label" class="form-control" autofocus required stringInput="modelLabel"  [(ngModel)]="label" #editableInput />
       </div>
     </editable>
 
-    <!-- TODO ALES - ali rabim model ?? -->
-    <!-- [model]="model" -->
-    <editable title="Namespace" [disable]="!namespaceModifiable()" [context]="context" [form]="form">
+    <editable title="Namespace" [disable]="!namespaceModifiable()" [context]="context" >
       <div class="input-group input-group-md">
         <input id="namespace"
                type="text"
@@ -85,15 +83,13 @@
                [activeNamespace]="namespaceToEdit"
                [allowTechnical]="!edit"
                [usedNamespaces]="usedNamespaces"
-
                [(ngModel)]="namespace"
                (ngModelChange)="onNamespaceChange()"
                #editableInput />
       </div>
     </editable>
 
-    <!-- [model]="model" -->
-    <editable title="Prefix" [disable]="!prefixModifiable()" [context]="context" [form]="form">
+    <editable title="Prefix" [disable]="!prefixModifiable()" [context]="context" >
       <div class="input-group input-group-md">
         <input id="prefix"
                type="text"
@@ -104,7 +100,6 @@
                [reservedPrefixes]="reservedPrefixes"
                [activeNamespace]="namespaceToEdit"
                [allowTechnical]="!edit"
-
                [(ngModel)]="prefix"
                (ngModelChange)="onPrefixChange()"
                #editableInput/>

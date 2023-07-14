@@ -13,7 +13,7 @@
     }
   },
   "include": [
-    "init.ts",
+    // "init.ts",
     "main.ts",
     "polyfills.ts",
     "augment.d.ts",

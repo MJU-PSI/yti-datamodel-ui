@@ -51,6 +51,8 @@
     <li *ngIf="ngModelController.hasError('languageCode')">{{ 'Is not valid language code' | translate }}</li>
     <li *ngIf="ngModelController.hasError('codeValue')">{{ 'Is not valid reference data code' | translate }}</li>
 
-    <!-- <li *ngFor="let error of dynamicErrors" [ngClass]="error.key">{{ error.message | translate }} {{ error.format }}</li> -->
+    <ng-container *ngFor="let error of dynamicErrors">
+      <li *ngIf="ngModelController.hasError(error.key)">{{ error.message | translate }} {{ error.format }}</li>
+    </ng-container>
   </ul>
 </div>

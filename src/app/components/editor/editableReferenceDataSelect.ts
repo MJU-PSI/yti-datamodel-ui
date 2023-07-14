@@ -116,6 +116,7 @@ import { ReferenceData } from 'app/entities/referenceData';
 import { Model } from 'app/entities/model';
 import { modalCancelHandler } from 'app/utils/angular';
 import { NgForm } from '@angular/forms';
+import { EditableService } from 'app/services/editable.service';
 
 @Component({
   selector: 'editable-reference-data-select',
@@ -124,7 +125,6 @@ import { NgForm } from '@angular/forms';
 export class EditableReferenceDataSelectComponent implements OnInit {
   @Input() referenceData: ReferenceData[];
   @Input() model: Model;
-  @Input() form: NgForm;
 
   expanded: boolean;
   descriptor: ReferenceDataTableDescriptor;
@@ -132,7 +132,8 @@ export class EditableReferenceDataSelectComponent implements OnInit {
   constructor(
     private searchReferenceDataModal: SearchReferenceDataModal,
     private languageService: LanguageService,
-    private viewReferenceDataModal: ViewReferenceDataModal
+    private viewReferenceDataModal: ViewReferenceDataModal,
+    private editableService: EditableService
   ) {}
 
   ngOnInit() {
@@ -156,7 +157,7 @@ export class EditableReferenceDataSelectComponent implements OnInit {
   }
 
   isEditing() {
-    return this.form && this.form.form.editing;
+    return this.editableService.editing;
   }
 
   addReferenceData() {

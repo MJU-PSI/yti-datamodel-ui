@@ -53,19 +53,19 @@
     <p><span>{{ 'Do you want to add following properties from ' + classType + '?' | translate }}</span></p>
 
     <div class="properties">
-      <div *ngFor="let property of properties; let i = index;">
-        <h5>{{ property.type | translate }}</h5>
+        <div *ngFor="let property of properties | keyvalue">
+        <h5>{{ property.key | translate }}</h5>
 
-        <div class="checkbox" *ngFor="let prop of property.properties; let j = index;">
+        <div class="checkbox" *ngFor="let value of property.value; let j = index;">
           <label>
-            <input [id]="'select_property_' + property.type + '_' + prop.getIdIdentifierFromLabel(languageService) + '_checkbox'"
-                   [disabled]="isExcluded(prop)"
+            <input [id]="'select_property_' + property.key + '_' + value.getIdIdentifierFromLabel(languageService) + '_checkbox'"
+                   [disabled]="isExcluded(value)"
                    type="checkbox"
                    [ngModelOptions]="{standalone: true}"
                    [(ngModel)]="selectedProperties[j]" />
             <span ngbTooltip="tooltip(property)">
-              <i [ngClass]="prop.glyphIconClass"></i>
-              {{ property | translateLabel: context }}
+              <i [ngClass]="value.glyphIconClass"></i>
+              {{ value | translateLabel: context }}
             </span>
           </label>
         </div>

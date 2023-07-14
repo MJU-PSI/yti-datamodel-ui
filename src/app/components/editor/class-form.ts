@@ -155,7 +155,7 @@
 // }
 
 
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { ClassViewComponent } from './class-view';
 import { AddPropertiesFromClassModal } from './add-properties-from-class-modal';
 import { Uri } from 'app/entities/uri';
@@ -172,12 +172,15 @@ import { comparingLocalizable } from 'app/utils/comparator';
 import { Class, ClassListItem, Property } from 'app/entities/class';
 import { Model } from 'app/entities/model';
 import { modalCancelHandler } from 'app/utils/angular';
-import { NgForm } from '@angular/forms';
+import { ControlContainer, NgForm } from '@angular/forms';
+import { EditableService } from 'app/services/editable.service';
+import { hasLocalization } from 'app/utils/language';
 
 
 @Component({
   selector: 'class-form',
   templateUrl: './class-form.html',
+  viewProviders: [{provide: ControlContainer, useExisting: NgForm}]
 })
 export class ClassFormComponent implements OnInit {
 
@@ -186,8 +189,8 @@ export class ClassFormComponent implements OnInit {
   @Input() oldClass: Class;
   @Input() model: Model;
   @Input() openPropertyId: string;
-  @Input() form: NgForm;
   @Input() classView: ClassViewComponent;
+  @Output() openPropertyIdChange: EventEmitter<string> = new EventEmitter<string>();
 
   properties: Property[];
   shouldAutofocus: boolean;
@@ -197,15 +200,14 @@ export class ClassFormComponent implements OnInit {
   onPropertyReorder = (property: Property, index: number) => property.index = index;
   superClassExclude = (klass: ClassListItem) => klass.isOfType('shape') ? 'Super cannot be shape' : null;
 
-
-
   constructor(
               private classService: DefaultClassService,
               private sessionService: SessionService,
               private languageService: LanguageService,
               private searchPredicateModal: SearchPredicateModal,
               private searchClassModal: SearchClassModal,
-              private addPropertiesFromClassModal: AddPropertiesFromClassModal
+              private addPropertiesFromClassModal: AddPropertiesFromClassModal,
+              private editableService: EditableService
               ) {}
 
   ngOnInit() {
@@ -235,7 +237,7 @@ export class ClassFormComponent implements OnInit {
   }
 
   isEditing() {
-    return this.form && this.form.form.editing;
+    return this.editableService.editing;
   }
 
   get shouldAutoFocus() {
@@ -255,6 +257,7 @@ export class ClassFormComponent implements OnInit {
       .then(property => {
         this.class.addProperty(property);
         this.openPropertyId = property.internalId.uuid;
+        this.openPropertyIdChange.emit(this.openPropertyId);
       }, modalCancelHandler);
   }
 
@@ -275,7 +278,7 @@ export class ClassFormComponent implements OnInit {
   }
 
   addPropertiesFromClassId(id: Uri, classType: string): void {
-    this.classService.getInternalOrExternalClass(id, this.model)
+  this.classService.getInternalOrExternalClass(id, this.model)
       .then(klassOrNull => {
         const klass = requireDefined(klassOrNull); // TODO check if class can actually be null
         this.addPropertiesFromClass(klass, classType);
@@ -286,11 +289,11 @@ export class ClassFormComponent implements OnInit {
     return this.model.linkToResource(this.class.id);
   }
 
-  linkToSuperclass() {
+  linkToSuperClass() {
     return this.model.linkToResource(this.class.subClassOf);
   }
 
-  linkToScopeclass() {
+  linkToScopeClass() {
     return this.model.linkToResource(this.class.scopeClass);
   }
 

@@ -32,7 +32,7 @@
 <div *ngIf="values.length > 0 || isEditing()" class="editable-wrap form-group">
   <editable-label [inputId]="id" *ngIf="title" [title]="title" [required]="required"></editable-label>
 
-  <div *ngIf="!isEditing()" class="content">
+   <div *ngIf="!isEditing()" class="content">
     <span *ngFor="let value of values; let last=last">
       <span *ngIf="!showLink(value)">{{format(value)}}<span *ngIf="!last">, </span></span>
       <a *ngIf="showLink(value)" [href]="link(value)">{{format(value)}}
@@ -42,20 +42,20 @@
     </span>
   </div>
 
-  <div *ngIf="isEditing()">
-    <div class="form-control multi-input">
-      <div *ngFor="let value of values" class="added-item">
-        <div class="box draggable" [ngClass]="{'has-error': !isValid(value)}">
+  <div [hidden]="!isEditing()">
+    <div class="form-control multi-input" [appDragSortable]="values">
+      <div *ngFor="let value of values; let i = index" class="added-item">
+        <div class="box draggable" [ngClass]="{'has-error': !isValid(value)}" [appDragSortableItem]="value" [index]="i">
           {{format(value)}}
           <div [id]="id + '_' + normalizeValueForId(format(value).toString()) + 'delete_editable_item_button'" class="delete-item badge" (click)="deleteValue(value)">&times;</div>
         </div>
       </div>
 
-      <ng-content select="[inputContainer]"></ng-content>
+      <ng-content select="[input]"></ng-content>
     </div>
 
-    <error-messages [ngModelController]="ngModelControllers"></error-messages>
+    <error-messages [ngModelController]="inputNgModelCtrl"></error-messages>
 
-    <ng-content select="[buttonContainer]"></ng-content>
+    <ng-content select="[button]"></ng-content>
   </div>
 </div>

@@ -28,7 +28,7 @@
     </h3>
   </div>
   <div class="component-content">
-    <editable-entity-buttons [idPrefix]="id('edit_buttons_')" [context]="model" [editableController]="editableController" [form]="form">
+    <editable-entity-buttons [idPrefix]="id('edit_buttons_')" [context]="model" [editableController]="editableController" [form]="parentForm">
       <ng-content select="[selectionButtons]"></ng-content>
     </editable-entity-buttons>
     <div class="selection-form">

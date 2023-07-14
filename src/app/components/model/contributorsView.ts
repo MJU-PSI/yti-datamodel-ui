@@ -139,6 +139,7 @@ import { LanguageContext } from 'app/types/language';
 import { Organization } from 'app/entities/organization';
 import { SearchOrganizationModal } from './searchOrganizationModal';
 import { NgForm } from '@angular/forms';
+import { EditableService } from 'app/services/editable.service';
 
 interface WithContributors {
   contributors: Organization[];
@@ -156,7 +157,7 @@ interface WithContributors {
         </button>
         <span *ngIf="required && isEditing()" class="fas fa-asterisk" [ngbTooltip]="'Required' | translate"></span>
       </h4>
-      <editable-table [id]="'contributors'" [descriptor]="descriptor" [expanded]="expanded" [form]="form"></editable-table>
+      <editable-table [id]="'contributors'" [descriptor]="descriptor" [expanded]="expanded" ></editable-table>
   `
 })
 export class ContributorsViewComponent implements OnInit {
@@ -168,11 +169,13 @@ export class ContributorsViewComponent implements OnInit {
 
   descriptor: ContributorsTableDescriptor;
   expanded: boolean;
-
+  valueBefore: WithContributors;
 
 
   constructor(private languageService: LanguageService,
-              private searchOrganizationModal: SearchOrganizationModal) {
+              private searchOrganizationModal: SearchOrganizationModal,
+              private editableService: EditableService
+              ) {
   }
 
   ngOnInit() {
@@ -180,20 +183,14 @@ export class ContributorsViewComponent implements OnInit {
   }
 
   ngDoCheck() {
-    //  if (JSON.stringify(this.value) === JSON.stringify(this.prevValue)) {
-    //   console.log('Classes are equal');
-    // } else {
-    //   console.log('Classes are not equal');
-    //   this.prevValue = { ...this.value };
-    //   this.descriptor = new ContributorsTableDescriptor(this.value, this.languageService);
-    // }
-
-    // TODO ALES - popravi da se kliče samo kadar se VALUE spremeni
-    this.descriptor = new ContributorsTableDescriptor(this.value, this.context, this.languageService);
+     if (JSON.stringify(this.value) !== JSON.stringify(this.valueBefore)) {
+      this.valueBefore = { ...this.value };
+      this.descriptor = new ContributorsTableDescriptor(this.value, this.context, this.languageService);
+    }
   }
 
   isEditing() {
-    return this.form && this.form.form.editing;
+    return this.editableService.editing;
   }
 
   addContributor() {

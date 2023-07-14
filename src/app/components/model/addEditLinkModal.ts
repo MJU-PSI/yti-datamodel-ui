@@ -89,6 +89,7 @@ import { Language } from 'app/types/language';
 import { Link } from 'app/entities/model';
 import { DefaultModelService } from 'app/services/modelService';
 import { NgForm } from '@angular/forms';
+import { EditableService } from 'app/services/editable.service';
 
 @Injectable({
   providedIn: 'root'
@@ -116,7 +117,8 @@ export class AddEditLinkModal {
 
 @Component({
   selector: 'app-add-edit-link-modal',
-  templateUrl: './addEditLinkModal.html'
+  templateUrl: './addEditLinkModal.html',
+  providers: [EditableService]
 })
 export class AddEditLinkModalComponent implements OnInit {
 
@@ -130,10 +132,10 @@ export class AddEditLinkModalComponent implements OnInit {
 
   model: any;
 
-  @ViewChild(NgForm, {static: true}) form: NgForm;
-
   constructor(private modalInstance: NgbActiveModal,
-              private modelService: DefaultModelService) {
+              private modelService: DefaultModelService,
+              private editableService: EditableService
+              ) {
   }
 
   ngOnInit(): void {
@@ -145,7 +147,7 @@ export class AddEditLinkModalComponent implements OnInit {
       this.homepage = this.linkToEdit.homepage;
     }
 
-    this.form.form.editing = true;
+    this.editableService.edit();
   }
 
   get confirmLabel() {

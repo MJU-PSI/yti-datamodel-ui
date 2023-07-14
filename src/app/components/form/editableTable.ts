@@ -196,6 +196,7 @@ const nonExpandedLimit = 2;
 
 import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { EditableService } from 'app/services/editable.service';
 
 // TODO ALES - drag-sortable ???
 @Component({
@@ -255,7 +256,6 @@ export class EditableTableComponent<T> {
   @Input() id: string;
   @Input() descriptor: TableDescriptor<T>;
   @Input() expanded: boolean;
-  @Input() form: NgForm;
 
   values: T[];
 
@@ -265,6 +265,7 @@ export class EditableTableComponent<T> {
   filter = (value: T) => this.descriptor.filter(value);
   orderBy = (value: T, value1: T) => this.descriptor.orderBy(value, value1);
 
+  constructor(private editableService: EditableService){}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.descriptor) {
@@ -278,7 +279,7 @@ export class EditableTableComponent<T> {
   }
 
   isEditing() {
-    return this.form && this.form.form.editing;
+    return this.editableService.editing;
   }
 
   canSort() {

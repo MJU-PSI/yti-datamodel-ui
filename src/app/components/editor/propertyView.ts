@@ -211,7 +211,7 @@
 //   }
 // }
 
-import { Component, Input, OnInit, OnChanges, SimpleChanges, ElementRef } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges, ElementRef, Output, EventEmitter } from '@angular/core';
 import { Uri } from '../../entities/uri';
 import { LanguageService } from '../../services/languageService';
 import { allMatching, anyMatching } from '@mju-psi/yti-common-ui';
@@ -222,10 +222,12 @@ import { Attribute, Predicate, PredicateListItem } from '../../entities/predicat
 import { DataSource } from '../form/dataSource';
 import { DefaultPredicateService, PredicateService } from '../../services/predicateService';
 import { ClassFormComponent } from './class-form';
+import { ControlContainer, NgForm } from '@angular/forms';
 
 @Component({
   selector: 'property-view',
   templateUrl: './propertyView.html',
+  viewProviders: [{provide: ControlContainer, useExisting: NgForm}]
 })
 export class PropertyViewComponent implements OnInit {
   @Input() id: string;
@@ -233,6 +235,8 @@ export class PropertyViewComponent implements OnInit {
   @Input() class: Class;
   @Input() model: Model;
   @Input() classForm: ClassFormComponent;
+
+  @Output() propertyChange: EventEmitter<Property> = new EventEmitter<Property>();
 
   comparablePropertiesDataSource: DataSource<PredicateListItem>;
 
@@ -301,11 +305,18 @@ export class PropertyViewComponent implements OnInit {
     }
   }
 
+  ngDoCheck() {
+    if (this.property) {
+      // Emit the propertyChanged event
+      this.propertyChange.emit(this.property);
+    }
+  }
+
   get otherPropertyLabels() {
     return this.otherProperties.map(property => property.label);
   }
 
-    get otherAttributeLabels() {
+  get otherAttributeLabels() {
     return this.property.normalizedPredicateType === 'attribute' ? this.otherProperties.filter(property => property.normalizedPredicateType === 'attribute').map(property => property.label) : [];
   }
 

@@ -132,11 +132,11 @@
 
       <div class="selection-container" [style.width]="selectionWidth">
         <class-view id="class" *ngIf="resource?.isClass()" [parent]="parent" [class]="resource"
-          [openPropertyId]="propertyId" [model]="model" [modelController]="modelController">
+          [(openPropertyId)]="propertyId" [model]="model" [modelController]="this">
         </class-view>
 
         <predicate-view id="predicate" *ngIf="resource?.isPredicate()" [parent]="parent" [predicate]="resource"
-          [model]="model" [modelController]="modelController">
+          [model]="model" [modelController]="this">
         </predicate-view>
       </div>
 
@@ -146,9 +146,9 @@
 
           <divider *ngIf="resource"></divider>
 
-          <visualization-view *ngIf="model" [ngClass]="{ 'without-divider': !resource }"
+          <!-- <visualization-view *ngIf="model" [ngClass]="{ 'without-divider': !resource }"
             [selection]="resource" [model]="model" [modelPageActions]="this">
-          </visualization-view>
+          </visualization-view> -->
         </div>
       </div>
 

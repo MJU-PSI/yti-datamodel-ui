@@ -91,6 +91,9 @@ export class RestrictDuplicatesDirective implements Validator {
           : null;
       } else {
         const equals = value instanceof Uri ? (lhs: Uri, rhs: Uri) => lhs.equals(rhs) : referenceEquality;
+        if(contains(valuesToCheckAgainst, value, equals)) {
+          console.log("duplicate");
+        }
         return contains(valuesToCheckAgainst, value, equals) ? { duplicate: true } : null;
       }
     }

@@ -83,7 +83,7 @@
 // }
 
 import { Component, Injectable } from '@angular/core';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { LanguageService } from 'app/services/languageService';
 import { Property, Class } from 'app/entities/class';
 import { anyMatching, flatten, groupBy, stringMapToObject } from '@mju-psi/yti-common-ui';
@@ -126,8 +126,8 @@ export class AddPropertiesFromClassModalComponent {
   model: Model;
   exclude: (property: Property) => boolean;
 
-  constructor(public activeModal: NgbModalRef,
-              public languageService: LanguageService,
+  constructor(private activeModal: NgbActiveModal,
+              private languageService: LanguageService,
               private translateService: TranslateService) {
   }
 

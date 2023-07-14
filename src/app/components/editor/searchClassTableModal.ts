@@ -415,6 +415,7 @@ import { ShowClassInfoModal } from './showClassInfoModal';
 import { SearchClassType } from '../../types/component';
 import { NgForm } from '@angular/forms';
 import { Uri } from 'app/entities/uri';
+import { EditableService } from 'app/services/editable.service';
 
 export const noClassExclude = (_item: AbstractClass) => null;
 export const defaultTextForSelection = (_klass: Class) => 'Use class';
@@ -534,7 +535,8 @@ export class SearchClassTableModalComponent implements SearchController<ClassLis
     private classificationService: ClassificationService,
     private modelService: DefaultModelService,
     private searchConceptModal: SearchConceptModal,
-    private showClassInfoModal: ShowClassInfoModal
+    private showClassInfoModal: ShowClassInfoModal,
+    private editableService: EditableService
   ) {
     this.showInfoDomain = null;
     this.showModelType = null;
@@ -710,7 +712,7 @@ export class SearchClassTableModalComponent implements SearchController<ClassLis
 
     this.selectedItem = item;
     this.externalClass = undefined;
-    this.form.form.editing = false;
+    this.editableService.editing$.next(false);
     this.form.form.markAsPristine();
 
     this.cannotConfirm = this.exclude(item);
@@ -771,7 +773,7 @@ export class SearchClassTableModalComponent implements SearchController<ClassLis
     this.cannotConfirm = null;
     this.form.form.markAsPristine();
     this.selectedItem = null;
-    this.form.form.editing = true;
+    this.editableService.edit();
     this.selection = new ExternalEntity(this.localizer.language, this.searchText, 'class');
   }
 

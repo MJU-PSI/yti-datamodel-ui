@@ -153,59 +153,59 @@
  -->
 
 
-
 <h4>{{class.normalizedType + ' information' | capitalize | translate}}</h4>
 
 <div class="row basic-info">
   <div class="col-md-6">
-    <editable title="{{class.normalizedType + ' label' | capitalize}}" [context]="model" [autofocus]="shouldAutoFocus" [form]="form">
-      <input id="classLabel" class="form-control" type="text" localizedInput="label" [context]="model" [(ngModel)]="class.label" #editableInput/>
+    <editable title="{{class.normalizedType + ' label' | capitalize}}" [context]="model" [autofocus]="shouldAutoFocus">
+      <input id="classLabel" name="classLabel" class="form-control" type="text" localizedInput="label" [context]="model" [(ngModel)]="class.label" #editableInput/>
     </editable>
   </div>
 
   <div class="col-md-6">
-    <editable [title]="'Description'" [context]="model" [form]="form">
-      <textarea id="classComment" class="form-control" localizedInput [context]="model" [(ngModel)]="class.comment" #editableInput></textarea>
+    <editable [title]="'Description'" [context]="model" >
+      <textarea id="classComment" name="classComment" class="form-control" localizedInput [context]="model" [(ngModel)]="class.comment" #editableInput></textarea>
     </editable>
   </div>
+
 </div>
 
 <div class="row">
   <div class="col-md-6">
 
-    <editable title="{{class.normalizedType + ' id' | capitalize}}" (link)="linkToIdClass()" [context]="model" [clipboard]="class.id.uri" [form]="form">
-      <input id="classId" class="form-control" type="text" required idInput="class" [old]="oldClass" [(ngModel)]="class.id" [disabled]="!class.inUnstableState" #editableInput/>
+    <editable title="{{class.normalizedType + ' id' | capitalize}}" (link)="linkToIdClass()" [context]="model" [clipboard]="class.id.uri" >
+      <input id="classId" name="classId" class="form-control" type="text" required idInput="class" [old]="oldClass" [(ngModel)]="class.id" [disabled]="!class.inUnstableState" #editableInput/>
     </editable>
 
-    <editable *ngIf="class.isOfType('class')" title="Superclass" (link)="linkToSuperclass()" [context]="model" [form]="form">
-      <uri-select id="superClass" type="class" [uri]="class.subClassOf" [model]="model" [excludeItem]="superClassExclude" (afterSelected)="addPropertiesFromClassId($event, 'super class')" [form]="form" #editableInput></uri-select>
+    <editable *ngIf="class.isOfType('class')" title="Superclass" (link)="linkToSuperClass()" [context]="model" >
+      <uri-select id="superClass" name="superClass" type="class" [uri]="class.subClassOf" [model]="model" [excludeItem]="superClassExclude" (afterSelected)="addPropertiesFromClassId($event, 'super class')" ></uri-select>
     </editable>
 
-    <editable *ngIf="class.isOfType('shape')" title="Specialized from class" (link)="linkToScopeclass()" [context]="model" [form]="form">
-      <uri-select id="scopeClass" type="class" [uri]="class.scopeClass" [model]="model" [mandatory]="true" (afterSelected)="addPropertiesFromClassId($event, 'scope class')" #editableInput></uri-select>
+    <editable *ngIf="class.isOfType('shape')" title="Specialized from class" (link)="linkToScopeClass()" [context]="model" >
+      <uri-select id="scopeClass" name="scopeClass" type="class" [uri]="class.scopeClass" [model]="model" [mandatory]="true" (afterSelected)="addPropertiesFromClassId($event, 'scope class')" ></uri-select>
     </editable>
 
-    <editable title="Localname" [context]="model" [form]="form">
-      <input id="localName" class="form-control" type="text" stringInput="identifier" [ngModel]="class.localName" (ngModelChange)="class.localName = $event" #editableInput/>
+    <editable title="Localname" [context]="model" >
+      <input id="localName" name="localName" class="form-control" type="text" stringInput="identifier" [ngModel]="class.localName" (ngModelChange)="class.localName = $event" #editableInput/>
     </editable>
 
-    <editable title="API path" [context]="model" [form]="form">
-      <input id="absolutePath" class="form-control" type="text" [(ngModel)]="class.absolutePath" #editableInput/>
+    <editable title="API path" [context]="model" >
+      <input id="absolutePath" name="absolutePath" class="form-control" type="text" [(ngModel)]="class.absolutePath" #editableInput/>
     </editable>
 
-    <editable title="Deactivated" [context]="model" [form]="form">
-        <input id="deactivated" type="checkbox" [(ngModel)]="class.deactivated" #editableInput/>
+    <editable title="Deactivated" [context]="model" >
+        <input id="deactivated" name="deactivated" type="checkbox" [(ngModel)]="class.deactivated" #editableInput/>
     </editable>
 
   </div>
   <div class="col-md-6">
-    <editable-state-select *ngIf="!class.unsaved" id="classState" [(state)]="class.status" [model]="model" [form]="form"></editable-state-select>
+    <editable-state-select *ngIf="!class.unsaved" id="classState" [(state)]="class.status" [model]="model" ></editable-state-select>
     <defined-by [entity]="class" [model]="model"></defined-by>
-    <!-- <editable-multiple-uri-select id="equivalentClass" type="class" [(ngModel)]="class.equivalentClasses" [model]="model" title="{{'Equivalent class'}}" [requiredByInUse]="true" [form]="form"></editable-multiple-uri-select> -->
+    <editable-multiple-uri-select id="equivalentClass" type="class" [(values)]="class.equivalentClasses" [model]="model" title="{{'Equivalent class'}}" [requiredByInUse]="true" ></editable-multiple-uri-select>
   </div>
 </div>
 
-<subject-view id="{{id + '_subject'}}" [entity]="class" [model]="model" [form]="form"></subject-view>
+<subject-view id="{{id + '_subject'}}" [entity]="class" [model]="model" ></subject-view>
 
 <hr />
 
@@ -216,7 +216,7 @@
       <a *ngIf="!isEditing()" class="btn btn-secondary-action btn-sm"
         [class.active]="sortAlphabetically"
         ngbButtonLabel>
-        <input type="checkbox" [(ngModel)]="sortAlphabetically" style="display: none;">
+        <input type="checkbox" name="sortAlphabetically" [(ngModel)]="sortAlphabetically" style="display: none;">
         <i class="fas fa-sort-alpha-down"></i>
       </a>
 
@@ -229,21 +229,22 @@
     </div>
 
     <accordion class="properties" *ngIf="class.properties.length > 0"
-               [openId]="openPropertyId"
+               [(openId)]="openPropertyId"
                [appDragSortable]="properties"
                [dragDisabled]="!isEditing()"
                (onReorder)="onPropertyReorder()"
                #accordion>
        <accordion-group id="{{ id + '_property_' + formLabelNameToIdName(property.label) }}"
-                        *ngFor="let property of properties;"
+                        *ngFor="let property of properties; let i = index"
                         [identifier]="property.internalId.uuid"
                         [accordion]="accordion"
                         [appDragSortableItem]="property"
+                        [index] = "i"
                         #accordionGroup>
 
         <div accordionHeading>
           <div id="{{ property.internalId + 'header' }}" [attr.data-property-id]="property.internalId"
-               class="{{ 'property_no_' + property.index + '_header' }}" dragSortableItem>
+               class="{{ 'property_no_' + property.index + '_header' }}">
             <h5>
               <a [ngClass]="{ collapsed: false }" href>
                 <span class="accordion-icon" [ngClass]="property.glyphIconClass"></span>
@@ -259,11 +260,11 @@
 
 
         <div accordionBody>
-          <!-- <property-view id="{{id + '_property_' + formLabelNameToIdName(property.label)}}"
+          <property-view id="{{id + '_property_' + formLabelNameToIdName(property.label)}}"
                           [property]="property"
                           [class]="class"
                           [model]="model"
-                          [classForm]="this"></property-view> -->
+                          [classForm]="this"></property-view>
 
         </div>
       </accordion-group>
@@ -276,11 +277,11 @@
 <hr />
 
 <div class="range-input">
-  <editable [title]="'Min properties'" [context]="model" [form]="form">
-    <input id="minProperties" placeholder="0" minInput [max]="class.maxProperties" class="form-control" type="number" [(ngModel)]="class.minProperties" #editableInput/>
+  <editable [title]="'Min properties'" [context]="model" >
+    <input id="minProperties" name="minProperties" placeholder="0" minInput [max]="class.maxProperties" class="form-control" type="number" [(ngModel)]="class.minProperties" #editableInput/>
   </editable>
-  <editable [title]="'Max properties'" [context]="model" [form]="form">
-    <input id="maxProperties" placeholder="*" maxInput [min]="class.minProperties" class="form-control" type="number" [(ngModel)]="class.maxProperties" #editableInput/>
+  <editable [title]="'Max properties'" [context]="model" >
+    <input id="maxProperties" name="maxProperties" placeholder="*" maxInput [min]="class.minProperties" class="form-control" type="number" [(ngModel)]="class.maxProperties" #editableInput/>
   </editable>
 </div>
 <div *ngIf="!class.unsaved">
@@ -295,15 +296,15 @@
   </div>
   <div class="row">
     <div class="col-md-12">
-      <editable title="Editorial note" [context]="model" [form]="form">
-        <textarea id="classEditorialNote" class="form-control" localizedInput="free" [context]="model" [(ngModel)]="class.editorialNote" #editableInput></textarea>
+      <editable title="Editorial note" [context]="model" >
+        <textarea id="classEditorialNote" name="classEditorialNote" class="form-control" localizedInput="free" [context]="model" [(ngModel)]="class.editorialNote" #editableInput></textarea>
       </editable>
     </div>
   </div>
   <div class="row">
     <div class="col-md-12">
       <div *ngIf="model.isOfType('profile') && (class.constraint.isVisible() || isEditing())">
-        <editable-constraint id="'{{id + '_' + class.id.uri}}'" [constraint]="class.constraint" [model]="model" [class]="class" [form]="form"></editable-constraint>
+        <editable-constraint id="'{{id + '_' + class.id.uri}}'" [constraint]="class.constraint" [model]="model" [class]="class" ></editable-constraint>
       </div>
       <usage-panel id="'{{id + '_' + class.id.uri}}'" [entity]="class" [context]="model"></usage-panel>
     </div>

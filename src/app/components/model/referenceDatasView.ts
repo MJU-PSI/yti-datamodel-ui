@@ -133,6 +133,7 @@ import { ReferenceData } from 'app/entities/referenceData';
 import { LanguageContext } from 'app/types/language';
 import { NgForm } from '@angular/forms';
 import { modalCancelHandler } from 'app/utils/angular';
+import { EditableService } from 'app/services/editable.service';
 
 interface WithReferenceDatas {
   referenceDatas: ReferenceData[];
@@ -149,7 +150,7 @@ interface WithReferenceDatas {
           <span translate>Add reference data</span>
         </button>
       </h4>
-      <editable-table id="'referenceData'" [descriptor]="descriptor" [expanded]="expanded" [form]="form"></editable-table>
+      <editable-table id="'referenceData'" [descriptor]="descriptor" [expanded]="expanded" ></editable-table>
   `
 })
 export class ReferenceDatasViewComponent implements OnInit {
@@ -164,14 +165,16 @@ export class ReferenceDatasViewComponent implements OnInit {
   constructor(private searchReferenceDataModal: SearchReferenceDataModal,
               private editReferenceDataModal: EditReferenceDataModal,
               private languageService: LanguageService,
-              private translateService: TranslateService) {}
+              private translateService: TranslateService,
+              private editableService: EditableService
+              ) {}
 
   ngOnInit() {
     this.descriptor = new ReferenceDataTableDescriptor(this.value, this.context, this.editReferenceDataModal, this.languageService, this.translateService);
   }
 
   isEditing() {
-    return this.form && this.form.form.editing;
+    return this.editableService.editing;
   }
 
   addReferenceData() {

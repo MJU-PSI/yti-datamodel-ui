@@ -190,7 +190,8 @@
                       class="pull-left"
                       [searchController]="this"
                       type="predicate"
-                      [model]="model"></model-filter>
+                      [model]="model"
+                      [defaultShow]="null"></model-filter>
 
         <type-filter class="pull-left ml-2"
                      [searchController]="this"
@@ -211,12 +212,12 @@
 
             <app-ajax-loading-indicator *ngIf="loadingResults"></app-ajax-loading-indicator>
 
-            <search-results *ngIf="!loadingResults" [items]="searchResults" [selected]="selectedItem" [exclude]="exclude" (onSelect)="selectItem(item)" [editInProgress]="editInProgress">
+            <search-results *ngIf="!loadingResults" [items]="searchResults" [selected]="selectedItem" [exclude]="exclude" (onSelect)="selectItem($event)" [editInProgress]="editInProgress">
 
               <ng-template searchResultContent let-searchResult="searchResult">
                 <span class="title">
                   <i [ngClass]="searchResult.glyphIconClass"></i>
-                  <ajax-loading-indicator-small *ngIf="loadingSelection(searchResult)"></ajax-loading-indicator-small>
+                  <app-ajax-loading-indicator-small *ngIf="loadingSelection(searchResult)"></app-ajax-loading-indicator-small>
                   <highlight [text]="searchResult.label" [context]="model" [search]="searchText"></highlight>
                 </span>
 
@@ -242,35 +243,39 @@
           <editable title="External URI" [context]="model" autofocus>
             <div class="input-group input-group-md">
               <input id="externalUri"
+                     name="externalUri"
                      type="text"
                      class="form-control"
                      required
                      uriInput="required-namespace"
                      [model]="model"
                      [(ngModel)]="selection.id"
-                     [ngModelOptions]="{ debounce: 500 }" />
+                     [ngModelOptions]="{ debounce: 500 }"
+                     #editableInput/>
             </div>
           </editable>
 
           <div *ngIf="externalPredicate === null">
-            <editable title="Predicate type" *ngIf="typeSelectable" [context]="model">
+            <editable title="Predicate type" *ngIf="typeSelectable" [context]="model" >
               <div class="selectContainer">
-                <select class="form-control" required [(ngModel)]="selection.type" ng-options="type | translate for type in ['attribute', 'association']"></select>
+                <select name="predicateType" class="form-control" required [(ngModel)]="selection.type">
+                  <option *ngFor="let type of ['attribute', 'association']" [ngValue]="type">{{ type | translate }}</option>
+                </select>
               </div>
             </editable>
 
-            <editable title="{{selection.type + ' label' | capitalize}}" context="model">
-              <input type="text" class="form-control" string-input="label" required [(ngModel)]="selection.label" />
+            <editable title="{{selection.type + ' label' | capitalize}}" [context]="model" >
+              <input type="text" name="{{selection.type + 'text'}}" class="form-control" stringInput="label" required [(ngModel)]="selection.label" #editableInput/>
             </editable>
           </div>
 
           <div *ngIf="externalPredicate">
-            <non-editable title="Predicate type" value="externalPredicate.normalizedType" context="model"></non-editable>
-            <non-editable title="{{externalPredicate.normalizedType + ' label' | capitalize}}" value="externalPredicate.label" context="model"></non-editable>
+            <non-editable title="Predicate type" [value]="externalPredicate.normalizedType" [context]="model"></non-editable>
+            <non-editable title="{{externalPredicate.normalizedType + ' label' | capitalize}}" [value]="externalPredicate.label" [context]="model"></non-editable>
           </div>
         </div>
 
-        <error-panel error="excludeError"></error-panel>
+        <error-panel [error]="excludeError"></error-panel>
       </div>
     </div>
   </div>
@@ -282,14 +287,14 @@
             class="btn btn-action confirm"
             (click)="confirm()"
             [disabled]="!selection || cannotConfirm || (form.editing && (form.invalid || form.pending)) || isExternalPredicatePending()">
-      {{( selection.unsaved ? ('Create and use ' + selection.type)
+      {{( selection?.unsaved ? ('Create and use ' + selection?.type)
       : (!typeSelectable ? 'Use ' + type : 'Use selection')) | translate}}
     </button>
 
     <button id="cancel_predicate_button" type="button" class="btn btn-link cancel" (click)="close()" translate>Cancel</button>
 
-    <div class="alert alert-danger" role="alert" ng-show="cannotConfirm">
-      <span class="fas fa-exclamation-circle" aria-hidden="true"></span>
+    <div class="alert alert-danger" role="alert" *ngIf="cannotConfirm">
+      <span class="fas fa-exclamation-circle" [attr.aria-hidden]="true"></span>
       <span>{{cannotConfirm | translate}}</span>
     </div>
   </div>

@@ -54,7 +54,7 @@
           class="btn btn-action pull-right save"
           (click)="editableController.saveEdited()"
           *ngIf="editableController.isEditing()"
-          [disabled]="form.invalid || form.pending">
+          [disabled]="form?.invalid || form?.pending">
     <span translate>Save</span>
   </button>
 

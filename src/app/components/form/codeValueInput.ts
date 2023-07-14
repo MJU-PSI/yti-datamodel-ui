@@ -77,30 +77,6 @@ export function placeholderText(translateService: TranslateService): string {
   return translateService.instant('Write reference data code');
 }
 
-// export function createAsyncValidators(referenceData: ReferenceData[], referenceDataService: ReferenceDataService): AsyncValidator {
-//   const hasExternalReferenceData = anyMatching(referenceData, rd => rd.isExternal());
-
-//   return (control: AbstractControl): Observable<ValidationErrors | null> => {
-//     if (referenceData.length === 0 || hasExternalReferenceData || !control.value) {
-//       return new Observable<null>(observer => {
-//         observer.next(null);
-//         observer.complete();
-//       });
-//     } else {
-//       return referenceDataService.getReferenceDataCodes(referenceData).pipe(
-//         map(values => {
-//           for (const value of values) {
-//             if (value.identifier === control.value) {
-//               return null;
-//             }
-//           }
-//           return { 'does not match': true };
-//         })
-//       );
-//     }
-//   };
-// }
-
 export function createAsyncValidators(referenceData: ReferenceData[], referenceDataService: ReferenceDataService): AsyncValidatorFn {
   const hasExternalReferenceData = anyMatching(referenceData, rd => rd.isExternal());
 

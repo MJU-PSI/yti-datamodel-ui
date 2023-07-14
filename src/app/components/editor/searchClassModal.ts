@@ -263,6 +263,7 @@ import { filterAndSortSearchResults, defaultLabelComparator } from 'app/componen
 import { Optional, requireDefined, ignoreModalClose } from '@mju-psi/yti-common-ui';
 import { NgForm } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
+import { EditableService } from 'app/services/editable.service';
 
 export const noExclude = (_item: AbstractClass) => null;
 export const defaultTextForSelection = (_klass: Class) => 'Use class';
@@ -320,7 +321,8 @@ export class SearchClassModal {
 
 @Component({
   selector: 'search-class',
-  templateUrl: './searchClassModal.html'
+  templateUrl: './searchClassModal.html',
+  providers: [EditableService]
 })
 export class SearchClassController implements SearchController<ClassListItem> {
 
@@ -362,7 +364,9 @@ export class SearchClassController implements SearchController<ClassListItem> {
               private languageService: LanguageService,
               private searchConceptModal: SearchConceptModal,
               private translateService: TranslateService,
-              private activeModal: NgbActiveModal) {}
+              private activeModal: NgbActiveModal,
+              private editableService: EditableService
+              ) {}
 
   ngOnInit(){
     this.localizer = this.languageService.createLocalizer(this.model);
@@ -420,12 +424,12 @@ export class SearchClassController implements SearchController<ClassListItem> {
     this.selectedItem = item;
     this.externalClass = undefined;
     this.excludeError = null;
-    this.form.form.editing = false;
+    this.editableService.editing$.next(false);
     this.form.form.markAsPristine();
 
     if (item instanceof AddNewClass) {
       if (item.external) {
-        this.form.form.editing = true;
+        this.editableService.edit();
         this.selection = new ExternalEntity(this.localizer.language, this.searchText, 'class');
       } else {
         this.createNewClass();

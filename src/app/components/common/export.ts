@@ -162,6 +162,7 @@ import { apiEndpointWithName } from 'app/services/config';
 import { GraphNode } from '../../entities/graphNode';
 import { NgForm } from '@angular/forms';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { EditableService } from 'app/services/editable.service';
 
 const exportOptions = [
   { type: 'application/ld+json', extension: 'json' },
@@ -199,7 +200,6 @@ export class ExportComponent {
   @Input() entity: Model | Class | Predicate;
   @Input() context: LanguageContext;
   @Input() idPrefix?: string;
-  @Input() form?: NgForm;
 
   downloads: { name: string, filename: string, href: string, hrefRaw: string, onClick?: () => void }[];
 
@@ -211,7 +211,9 @@ export class ExportComponent {
   private idCleanerExpression = /[^a-zA-Z0-9_-]/g;
 
   constructor(private languageService: LanguageService,
-              private sanitizer: DomSanitizer) {}
+              private sanitizer: DomSanitizer,
+              private editableService: EditableService
+              ) {}
 
   ngOnChanges() {
     if (this.entity && this.context) {
@@ -310,7 +312,7 @@ export class ExportComponent {
   }
 
   isEditing() {
-    return this.form && this.form.form.editing;
+    return this.editableService.editing;
   }
 
   sanitizeUrl(url: string): SafeUrl {

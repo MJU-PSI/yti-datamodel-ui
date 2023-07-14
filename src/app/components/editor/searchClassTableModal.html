@@ -326,7 +326,7 @@
       <div class="row">
         <div class="col-md-4">
 
-          <editable title="External URI" [context]="model" autofocus [form]="form">
+          <editable title="External URI" [context]="model" autofocus >
             <div class="input-group input-group-md">
               <input id="externalUri" name="externalUri" type="text" class="form-control" required uriInput="required-namespace" [model]="model"
                      [(ngModel)]="selection.id" #editableInput/>
@@ -338,13 +338,13 @@
         <div class="col-md-4">
 
           <div *ngIf="externalClass === null">
-            <editable title="Class label" [context]="model" [form]="form">
+            <editable title="Class label" [context]="model" >
               <input type="text" name="class-label" class="form-control" stringInput="label" required [(ngModel)]="selection.label" #editableInput/>
             </editable>
           </div>
 
           <div *ngIf="externalClass">
-            <non-editable title="Class label" [value]="externalClass.label" [context]="model" [form]="form"></non-editable>
+            <non-editable title="Class label" [value]="externalClass.label" [context]="model" ></non-editable>
           </div>
 
         </div>

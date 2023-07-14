@@ -140,7 +140,7 @@
                      [searchText]="searchText"
                      [searchController]="this"
                      [contentExtractors]="contentExtractors"
-                     placeholder="'search class'"></text-filter>
+                     [placeholder]="'search class'"></text-filter>
 
         <div class="pull-left mt-2 ml-2">
           <content-filter [searchController]="this"
@@ -208,14 +208,14 @@
 
         <div *ngIf="isSelectionExternalEntity()">
 
-          <editable title="External URI" [context]="model" autofocus [form]="form">
+          <editable title="External URI" [context]="model" autofocus >
             <div class="input-group input-group-md">
               <input id="externalUri" type="text" class="form-control" required uriInput="required-namespace" [model]="model" [(ngModel)]="selection.id" #editableInput/>
             </div>
           </editable>
 
           <div *ngIf="externalClass === null">
-            <editable title="Class label" [context]="model" [form]="form">
+            <editable title="Class label" [context]="model" >
               <input type="text" class="form-control" stringInput="label" required [(ngModel)]="selection.label" #editableInput/>
             </editable>
           </div>

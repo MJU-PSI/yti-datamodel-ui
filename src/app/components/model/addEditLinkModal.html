@@ -37,16 +37,16 @@
     </h4>
   </div>
   <div class="modal-body">
-    <editable title="Homepage" [context]="model" [form]="form">
+    <editable title="Homepage" [context]="model">
       <input id="add_link_url_input" name="ink_url" class="form-control" type="text" uriInput="free-url" [model]="model"
         autofocus required [(ngModel)]="homepage" #editableInput/>
     </editable>
 
-    <editable title="Title" [context]="model" [form]="form">
+    <editable title="Title" [context]="model">
       <input id="add_link_title_input" name="link_title" class="form-control" type="text" required stringInput="label" [(ngModel)]="title" #editableInput/>
     </editable>
 
-    <editable title="Description" [context]="model" [form]="form">
+    <editable title="Description" [context]="model">
       <textarea id="add_link_description_textarea" name="link_description" class="form-control" stringInput
         [(ngModel)]="description" #editableInput></textarea>
     </editable>

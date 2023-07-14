@@ -114,6 +114,7 @@ import { Classification } from '../../entities/classification';
 import { SearchClassificationModal } from './searchClassificationModal';
 import { NgForm } from '@angular/forms';
 import { modalCancelHandler } from '../../utils/angular';
+import { EditableService } from 'app/services/editable.service';
 
 interface WithClassifications {
   classifications: Classification[];
@@ -131,21 +132,22 @@ interface WithClassifications {
       </button>
       <span *ngIf="required && isEditing()" class="fas fa-asterisk" [title]="'Required' | translate"></span >
     </h4>
-    <editable-table id="classifications" [descriptor]="descriptor" [expanded]="expanded" [form]="form"></editable-table>
+    <editable-table id="classifications" [descriptor]="descriptor" [expanded]="expanded" ></editable-table>
     `,
 })
 export class ClassificationsViewComponent implements OnInit {
   @Input() value: WithClassifications;
   @Input() required: boolean;
   @Input() form: NgForm;
+
   descriptor: ClassificationTableDescriptor;
   expanded: boolean;
-
-  private prevValue: WithClassifications;
+  valueBefore: WithClassifications;
 
   constructor(
     private languageService: LanguageService,
-    private searchClassificationModal: SearchClassificationModal
+    private searchClassificationModal: SearchClassificationModal,
+    private editableService: EditableService
   ) { }
 
   ngOnInit() {
@@ -160,20 +162,14 @@ export class ClassificationsViewComponent implements OnInit {
   }
 
   ngDoCheck() {
-    //  if (JSON.stringify(this.value) === JSON.stringify(this.prevValue)) {
-    //   console.log('Classes are equal');
-    // } else {
-    //   console.log('Classes are not equal');
-    //   this.prevValue = { ...this.value };
-    //   this.descriptor = new ClassificationTableDescriptor(this.value, this.languageService);
-    // }
-
-    // TODO ALES - popravi da se kliče samo kadar se VALUE spremeni
-    this.descriptor = new ClassificationTableDescriptor(this.value, this.languageService);
+     if (JSON.stringify(this.value) !== JSON.stringify(this.valueBefore)) {
+      this.valueBefore = { ...this.value };
+      this.descriptor = new ClassificationTableDescriptor(this.value, this.languageService);
+    }
   }
 
   isEditing(): boolean {
-    return this.form && this.form.form.editing;
+    return this.editableService.editing;
   }
 
   addClassification(): void {

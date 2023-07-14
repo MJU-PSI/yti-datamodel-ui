@@ -31,13 +31,13 @@
 
 <div class="row">
   <div class="col-md-12">
-    <editable title="Concept label" [context]="model" [form]="form">
+    <editable title="Concept label" [context]="model" >
       <div class="input-group input-group-md">
         <input id="conceptLabel" type="text" class="form-control" localizedInput="label" [context]="model" [(ngModel)]="concept.label" #editableInput/>
       </div>
     </editable>
 
-    <editable title="Definition" [context]="model" [form]="form">
+    <editable title="Definition" [context]="model" >
       <div class="input-group input-group-md">
         <textarea id="conceptComment" class="form-control" localized-input="required" [context]="model" [(ngModel)]="concept.definition" #editableInput></textarea>
       </div>

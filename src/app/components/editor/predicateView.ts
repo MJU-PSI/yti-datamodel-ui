@@ -126,6 +126,7 @@ import { EditorContainer, ModelControllerService } from 'app/components/model/mo
 import { AuthorizationManagerService } from 'app/services/authorizationManagerService';
 import { UserService, changeToRestrictedStatus } from '@mju-psi/yti-common-ui';
 import { DatamodelConfirmationModalService } from 'app/services/confirmation-modal.service';
+import { EditableService } from 'app/services/editable.service';
 
 @Component({
   selector: 'predicate-view',
@@ -146,9 +147,10 @@ export class PredicateViewComponent extends EditableEntityController<Association
     errorModal: ErrorModal,
     private predicateService: DefaultPredicateService,
     userService: UserService,
-    private authorizationManagerService: AuthorizationManagerService
+    private authorizationManagerService: AuthorizationManagerService,
+    editableService: EditableService
   ) {
-    super(deleteConfirmationModal, errorModal, userService);
+    super(deleteConfirmationModal, errorModal, userService, editableService);
   }
 
   ngOnInit() {

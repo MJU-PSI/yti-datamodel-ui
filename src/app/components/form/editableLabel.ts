@@ -57,12 +57,11 @@
 //   }
 // }
 
-import { Component, Inject, Input, OnInit } from '@angular/core';
-import { EditableForm } from './editableEntityController';
+import { Component, Input, OnInit } from '@angular/core';
 import { LanguageService } from 'app/services/languageService';
 import { isLocalizationDefined } from 'app/utils/language';
 import { TranslateService } from '@ngx-translate/core';
-import { NgForm } from '@angular/forms';
+import { EditableService } from 'app/services/editable.service';
 
 @Component({
   selector: 'editable-label',
@@ -80,8 +79,11 @@ export class EditableLabelComponent implements OnInit {
 
   infoText: string;
 
-  constructor(private languageService: LanguageService, private translateService: TranslateService,
-    @Inject(NgForm) private form: NgForm) {}
+  constructor(
+    private languageService: LanguageService,
+    private translateService: TranslateService,
+    private editableService: EditableService
+    ) {}
 
   ngOnInit() {
     const key = this.title + ' info';
@@ -93,7 +95,7 @@ export class EditableLabelComponent implements OnInit {
   }
 
   isEditing() {
-    return this.form && this.form.form.editing;
+    return this.editableService.editing;
   }
 
   get forId(): string | undefined {

@@ -106,12 +106,12 @@
 
 <div class="row">
   <div class="col-md-6">
-    <editable title="{{predicate.normalizedType + ' label' | capitalize}}" [context]="model" [autofocus]="shouldAutofocus" [form]="form">
+    <editable title="{{predicate.normalizedType + ' label' | capitalize}}" [context]="model" [autofocus]="shouldAutofocus" >
       <input id="predicateName" class="form-control" type="text" localizedInput="label" [context]="model" [(ngModel)]="predicate.label" #editableInput/>
     </editable>
   </div>
   <div class="col-md-6">
-    <editable title="Description" [context]="model" [form]="form">
+    <editable title="Description" [context]="model" >
       <textarea id="predicateComment" class="form-control" localizedInput [context]="model" [(ngModel)]="predicate.comment" #editableInput></textarea>
     </editable>
   </div>
@@ -119,11 +119,11 @@
 
 <div class="row">
   <div class="col-md-6">
-    <editable title="{{predicate.normalizedType + ' id' | capitalize}}" (link)="linkToIdProperty()" [context]="model" [clipboard]="predicate.id.uri" [form]="form">
+    <editable title="{{predicate.normalizedType + ' id' | capitalize}}" (link)="linkToIdProperty()" [context]="model" [clipboard]="predicate.id.uri" >
       <input id="predicateId" class="form-control" type="text" required idInput="predicate" [old]="oldPredicate" [(ngModel)]="predicate.id" [disabled]="!predicate.inUnstableState" #editableInput/>
     </editable>
 
-    <editable title="{{'Super' + predicate.normalizedType}}" (link)="linkToSuperProperty()" [context]="model" [form]="form">
+    <editable title="{{'Super' + predicate.normalizedType}}" (link)="linkToSuperProperty()" [context]="model" >
       <uri-select id="superPredicate" [type]="predicate.normalizedType" [uri]="predicate.subPropertyOf" [model]="model" #editableInput></uri-select>
     </editable>
 
@@ -132,20 +132,19 @@
 
   <div class="col-md-6">
 
-    <editable-state-select *ngIf="!predicate.unsaved" id="predicateState" [(state)]="predicate.status" [model]="model" [form]="form"></editable-state-select>
-    <editable-range-select *ngIf="predicate.isAttribute()" id="predicateRange" [(range)]="predicate.dataType" [form]="form"></editable-range-select>
+    <editable-state-select *ngIf="!predicate.unsaved" id="predicateState" [(state)]="predicate.status" [model]="model" ></editable-state-select>
+    <editable-range-select *ngIf="predicate.isAttribute()" id="predicateRange" [(range)]="predicate.dataType" ></editable-range-select>
 
-    <editable *ngIf="predicate.isAssociation()" title="Value class" name="Value class" (link)="linkToValueClass()" [context]="model" [form]="form">
+    <editable *ngIf="predicate.isAssociation()" title="Value class" name="Value class" (link)="linkToValueClass()" [context]="model" >
       <uri-select id="predicateValueClass" type="class" [uri]="predicate.valueClass" [model]="model" [defaultToCurrentModel]="true" #editableInput></uri-select>
     </editable>
 
-    <!-- TODO ALES -->
-    <!-- <editable-multiple-uri-select id="equivalentProperty" [type]="predicate.normalizedType" [(ngModel)]="predicate.equivalentProperties" [model]="model" title="{{'Equivalent ' + predicate.normalizedType}}" [requiredByInUse]="true" [form]="form"></editable-multiple-uri-select> -->
+    <editable-multiple-uri-select id="equivalentProperty" [type]="predicate.normalizedType" [(values)]="predicate.equivalentProperties" [model]="model" title="{{'Equivalent ' + predicate.normalizedType}}" [requiredByInUse]="true" ></editable-multiple-uri-select>
   </div>
 </div>
 
 
-<subject-view id="{{id + '_subject'}}" [entity]="predicate" [model]="model" [form]="form"></subject-view>
+<subject-view id="{{id + '_subject'}}" [entity]="predicate" [model]="model" ></subject-view>
 
 <hr />
 
@@ -164,7 +163,7 @@
 
   <div class="row">
     <div class="col-md-12">
-      <editable title="Editorial note" [context]="model" [form]="form">
+      <editable title="Editorial note" [context]="model" >
         <textarea id="predicateEditorialNote" class="form-control" localizedInput="free" [context]="model" [(ngModel)]="predicate.editorialNote" #editableInput></textarea>
       </editable>
     </div>

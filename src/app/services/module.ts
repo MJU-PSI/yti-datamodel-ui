@@ -37,6 +37,7 @@ import { CommonModule, LocationStrategy, PathLocationStrategy } from '@angular/c
 import { RouterModule } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { EditableService } from './editable.service';
 
 function proxyConditionallyToHelp<T>(interactiveHelpService: InteractiveHelpService, defaultService: T, helpService: T) {
   return proxyToInstance(() => interactiveHelpService.isOpen() ? helpService : defaultService);
@@ -128,7 +129,8 @@ function proxyConditionallyToHelp<T>(interactiveHelpService: InteractiveHelpServ
     ClassificationService,
     ImpersonationService,
     ConfigService,
-    UserRoleService
+    UserRoleService,
+    EditableService
   ]
 })
 export class IowServicesModule  {}

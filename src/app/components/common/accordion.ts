@@ -109,7 +109,9 @@ import {
   Component,
   ContentChildren,
   Directive,
+  EventEmitter,
   Input,
+  Output,
   QueryList,
   TemplateRef,
   ViewContainerRef,
@@ -156,6 +158,7 @@ export class AccordionTranscludeDirective {
 export class AccordionComponent {
   @Input() openId: any;
   @Input() animate = false;
+  @Output() openIdChange: EventEmitter<any> = new EventEmitter<any>();
 
   isOpen(id: any) {
     return this.openId === id;
@@ -167,6 +170,7 @@ export class AccordionComponent {
     } else {
       this.openId = id;
     }
+    this.openIdChange.emit(this.openId);
   }
 }
 

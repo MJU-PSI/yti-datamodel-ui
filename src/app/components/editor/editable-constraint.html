@@ -53,7 +53,7 @@
 <accordion [openId]="'editable_constraint'" #accordion>
   <accordion-group [id]="id + '_constraint'" [identifier]="'default'" [accordion]="accordion" #accordionGroup>
 
-    <div accordion-heading>
+    <div accordionHeading>
       <h5>
         <a href>
           <accordion-chevron [isOpen]="accordionGroup.isOpen()"></accordion-chevron>
@@ -62,10 +62,10 @@
       </h5>
     </div>
 
-    <div accordion-body>
+    <div accordionBody>
 
-      <editable title="Description" [context]="model" [form]="form">
-        <textarea id="constraintComment" class="form-control" localized-input context="model" [(ngModel)]="constraint.comment" #editableInput></textarea>
+      <editable title="Description" [context]="model" >
+        <textarea id="constraintComment" class="form-control" localizedInput [context]="model" [(ngModel)]="constraint.comment" #editableInput></textarea>
       </editable>
 
       <div class="editable-wrap form-group">

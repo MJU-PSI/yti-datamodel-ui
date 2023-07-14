@@ -123,7 +123,7 @@
 // }
 
 
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import * as _ from 'lodash';
 import { SearchController, TextAnalysis } from '../../types/filter';
 import { isDefined } from '@mju-psi/yti-common-ui';
@@ -161,7 +161,7 @@ interface ModelOption {
           <option [ngValue]="model">{{ 'Defined by this model' | translate }}</option>
         </ng-container>
         <ng-container *ngIf="!isImportedNamespacesOption(model) && !isDefinedByThisOption(model)">
-          <option [ngValue]="model">{{ model | translateLabel: model }}</option>
+          <option [ngValue]="model">{{ model | translateLabel }}</option>
         </ng-container>
       </ng-container>
 
@@ -181,7 +181,8 @@ export class ModelFilterComponent implements OnInit {
   modelOptions: (ModelOption | DefinedBy)[] = [];
   importedNamespacesOption: ModelOption;
   definedByThisOption: ModelOption;
-  private currentModelImportedNamespaceIds: Set<string> = new Set<string>();
+  currentModelImportedNamespaceIds: Set<string> = new Set<string>();
+  itemsBefore: ItemType[];
 
   constructor(private languageService: LanguageService) {}
 
@@ -201,6 +202,24 @@ export class ModelFilterComponent implements OnInit {
         return isDefined(item.item.definedBy) && item.item.definedBy.id.equals(this.showModel.id);
       }
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if(changes.model && changes.model.currentValue) {
+      this.currentModelImportedNamespaceIds = collectIds(this.model.importedNamespaces);
+      this.searchController.search();
+    }
+
+    if(changes.modelType && changes.modelType.currentValue) {
+      this.filterModelOptions(this.searchController.items, this.modelType);
+    }
+  }
+
+  ngDoCheck() {
+    if(this.searchController.items != this.itemsBefore) {
+      this.itemsBefore = this.searchController.items;
+      this.filterModelOptions(this.searchController.items, this.modelType);
+    }
   }
 
   onShowModelChange() {

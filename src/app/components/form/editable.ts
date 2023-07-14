@@ -119,11 +119,15 @@
 //   }
 // }
 
-import { Component, ContentChild, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
-import { NgForm, NgModel, ValidationErrors } from '@angular/forms';
+import { Component, ContentChild, ElementRef, Input, OnInit, Renderer2, ViewChild, forwardRef } from '@angular/core';
+import { ControlContainer, NgForm, NgModel, ValidationErrors } from '@angular/forms';
 import { DisplayItem, DisplayItemFactory, Value } from './displayItemFactory';
 import { LanguageContext } from 'app/types/language';
 import { isExternalLink } from 'app/components/form/href';
+import { UriInputDirective } from './uriInput';
+import { UriSelectComponent } from '../editor/uriSelect';
+import { EditableService } from 'app/services/editable.service';
+import { CodeValueInputAutocompleteComponent } from './codeValueInputAutocomplete';
 
 
 const NG_HIDE_CLASS = 'ng-hide';
@@ -131,7 +135,8 @@ const NG_HIDE_IN_PROGRESS_CLASS = 'ng-hide-animate';
 
 @Component({
   selector: 'editable',
-  templateUrl: './editable.html'
+  templateUrl: './editable.html',
+  viewProviders: [{provide: ControlContainer, useExisting: NgForm}]
 })
 export class EditableComponent implements OnInit {
 
@@ -143,23 +148,27 @@ export class EditableComponent implements OnInit {
   @Input() onClick: string;
   @Input() clipboard: string;
   @Input() autofocus: boolean;
-  @Input() form: NgForm;
 
   item: DisplayItem;
   itemDisplayValueBefore: string;
   isEditingBefore: boolean | undefined | null = null;
 
-  @ContentChild(NgModel, {static: true}) inputNgModelCtrl!: NgModel;
-  @ContentChild('editableInput', { read: ElementRef, static: true }) input!: ElementRef<HTMLInputElement>;
+  inputNgModelCtrl: NgModel;
+  input: ElementRef;
+
+  @ContentChild('editableInput', { read: ElementRef }) inputElementRef!: ElementRef<HTMLInputElement>;
+  @ContentChild('editableInput', { read: NgModel, static: false }) inputNgModel!: NgModel;
+  @ContentChild(UriSelectComponent, { static: false }) uriSelectComponent!: UriSelectComponent;
+  @ContentChild(CodeValueInputAutocompleteComponent, { static: false }) codeValueInputAutocompleteComponent!: CodeValueInputAutocompleteComponent;
 
   constructor(private elementRef: ElementRef,
               private renderer: Renderer2,
-              private displayItemFactory: DisplayItemFactory
+              private displayItemFactory: DisplayItemFactory,
+              private editableService: EditableService
               ) {
   }
 
   ngOnInit() {
-
     const clickHandler = this.onClick ? new Function('$event', this.onClick) : undefined;
     const onClick = this.onClick ? (value: Value) => clickHandler && clickHandler({value}) : undefined;
 
@@ -170,18 +179,16 @@ export class EditableComponent implements OnInit {
       valueAsLocalizationKey: this.valueAsLocalizationKey,
       onClick: onClick
     });
+
+    // move error messages element next to input
+    const inputElement = this.elementRef.nativeElement.querySelector('input');
+    const errorMessageElement = this.elementRef.nativeElement.querySelector('error-messages');
+    inputElement && inputElement.parentNode && inputElement.parentNode.insertBefore(errorMessageElement, inputElement.nextSibling);
   }
 
   ngDoCheck() {
-    if(this.value && this.isEditing() !== this.isEditingBefore) {
-      this.isEditingBefore = this.isEditing();
-
-      if(this.autofocus && this.isEditing()) {
-        this.input?.nativeElement.focus();
-      }
-
       if(this.item) {
-        const show = this.item && this.item.displayValue || this.isEditing();
+        const show = this.item && !!this.item.displayValue || this.isEditing();
 
         if (show) {
           this.renderer.removeClass(this.elementRef.nativeElement, NG_HIDE_CLASS);
@@ -191,15 +198,15 @@ export class EditableComponent implements OnInit {
           this.renderer.setStyle(this.elementRef.nativeElement, NG_HIDE_IN_PROGRESS_CLASS, 'display: none;');
         }
       }
-    }
   }
 
-  ngAfterViewInit() {
+  ngAfterContentChecked() {
+    this.inputNgModelCtrl = this.inputNgModel ? this.inputNgModel : this.inputNgModelCtrl;
+    this.inputNgModelCtrl = this.uriSelectComponent?.inputNgModelCtrl ? this.uriSelectComponent?.inputNgModelCtrl : this.inputNgModelCtrl;
+    this.inputNgModelCtrl = this.codeValueInputAutocompleteComponent?.inputNgModelCtrl ? this.codeValueInputAutocompleteComponent?.inputNgModelCtrl : this.inputNgModelCtrl;
 
-    // move error messages element next to input
-    const inputElement = this.input.nativeElement;
-    const errorMessageElement = this.elementRef.nativeElement.querySelector('error-messages');
-    inputElement && inputElement.parentNode && inputElement.parentNode.insertBefore(errorMessageElement, inputElement.nextSibling);
+    this.input = this.inputElementRef ? this.inputElementRef : this.input;
+    this.input = this.uriSelectComponent?.inputElementRef ? this.uriSelectComponent?.inputElementRef : this.input;
 
     // TODO: prevent hidden and non-editable fields participating validation with some more obvious mechanism
     this.inputNgModelCtrl && this.inputNgModelCtrl.statusChanges && this.inputNgModelCtrl.statusChanges.subscribe((status) => {
@@ -214,14 +221,15 @@ export class EditableComponent implements OnInit {
         }
       }
     });
+
   }
 
   get value() {
-    return this.inputNgModelCtrl && this.inputNgModelCtrl?.value;
+    return this.inputNgModelCtrl?.value;
   }
 
   get inputId() {
-    return this.input && this.input.nativeElement.getAttribute('id');
+    return this.input?.nativeElement?.getAttribute('id');
   }
 
   get required() {
@@ -230,7 +238,7 @@ export class EditableComponent implements OnInit {
       const validators = this.inputNgModelCtrl.control.validator(this.inputNgModelCtrl.control!);
       hasRequiredLocalizedValidator = this.hasValidator(validators, 'requiredLocalized');
     }
-    return !this.disable && this.input && (this.input.nativeElement.getAttribute('required') || hasRequiredLocalizedValidator);
+    return !this.disable && this.input && (this.input.nativeElement.hasAttribute('required') || hasRequiredLocalizedValidator);
   }
 
   private hasValidator(validator: ValidationErrors | null, validatorName: string): boolean {
@@ -245,7 +253,7 @@ export class EditableComponent implements OnInit {
   }
 
   isEditing() {
-    return this.form && (this.form.form.editing || this.form.form.pendingEdit) && !this.disable;
+    return this.editableService.editing && !this.disable;
   }
 
   isExternalLink(link: string): boolean {

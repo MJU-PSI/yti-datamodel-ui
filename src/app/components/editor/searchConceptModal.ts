@@ -340,6 +340,7 @@ import { filterAndSortSearchResults, defaultLabelComparator } from 'app/componen
 import { Uri } from 'app/entities/uri';
 import { NgForm } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
+import { EditableService } from 'app/services/editable.service';
 
 const limitQueryResults = 1000;
 
@@ -446,12 +447,14 @@ export class SearchConceptModalComponent implements SearchController<Concept> {
   public model: Model;
   public  allowSuggestions: boolean;
 
-  editInProgress = () => this.form.form.editing && this.form.dirty;
+  editInProgress = () => this.editableService.editing && this.form.dirty;
 
   constructor(private languageService: LanguageService,
               private vocabularyService: DefaultVocabularyService,
               private translateService: TranslateService,
-              private activeModal: NgbActiveModal) {
+              private activeModal: NgbActiveModal,
+              private editableService: EditableService
+              ) {
 
   }
 
@@ -545,7 +548,7 @@ export class SearchConceptModalComponent implements SearchController<Concept> {
       const suggestText = `${this.translateService.instant('suggest')} '${this.searchText}'`;
       const toVocabularyText = `${this.translateService.instant('to vocabulary')}`;
       const addNewText = suggestText + ' ' + toVocabularyText;
-      const addWithoutConcept = this.translateService.instant('Create new ' + this.type + ' without referencing concept');
+      const addWithoutConcept = this.translateService.instant(`Create new ${this.type} without referencing concept`);
 
       this.searchResults = [
         new AddNewConcept(addNewText,  () => this.canAddNew()),
@@ -561,11 +564,11 @@ export class SearchConceptModalComponent implements SearchController<Concept> {
 
     this.selectedItem = item;
     this.submitError = null;
-    this.form.form.editing = false;
+    this.editableService.editing$.next(false);
     this.form.form.markAsPristine();
 
     if (item instanceof AddNewConcept) {
-      this.form.form.editing = true;
+      this.editableService.edit();
       this.selection = new NewConceptData(lowerCase(this.searchText, this.localizer.language), this.resolveInitialVocabulary());
     } else if (item instanceof AddWithoutConcept) {
       this.selection = new AddWithoutConceptData(this.searchText);

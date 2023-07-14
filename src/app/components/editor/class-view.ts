@@ -153,7 +153,7 @@
 // }
 
 
-import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { EditableEntityController, Rights } from 'app/components/form/editableEntityController';
 import { DefaultClassService } from 'app/services/classService';
 import { SearchPredicateModal } from './searchPredicateModal';
@@ -168,6 +168,7 @@ import { changeToRestrictedStatus, UserService } from '@mju-psi/yti-common-ui';
 import { DatamodelConfirmationModalService } from 'app/services/confirmation-modal.service';
 import { modalCancelHandler } from 'app/utils/angular';
 import { NgForm } from '@angular/forms';
+import { EditableService } from 'app/services/editable.service';
 
 @Component({
   selector: 'class-view',
@@ -181,6 +182,7 @@ export class ClassViewComponent extends EditableEntityController<Class> implemen
   @Input() modelController!: ModelControllerService;
   @Input() parent!: EditorContainer;
   @Input() openPropertyId!: string;
+  @Output() openPropertyIdChange: EventEmitter<string> = new EventEmitter<string>();
 
 
   constructor(
@@ -191,8 +193,9 @@ export class ClassViewComponent extends EditableEntityController<Class> implemen
     private classService: DefaultClassService,
     userService: UserService,
     private authorizationManagerService: AuthorizationManagerService,
+    editableService: EditableService
   ) {
-    super(deleteConfirmationModal, errorModal, userService);
+    super(deleteConfirmationModal, errorModal, userService, editableService);
   }
 
   ngOnInit(): void {
@@ -209,6 +212,7 @@ export class ClassViewComponent extends EditableEntityController<Class> implemen
       .then(property => {
         this.editableInEdit!.addProperty(property);
         this.openPropertyId = property.internalId.uuid;
+        this.openPropertyIdChange.emit(this.openPropertyId);
       }, modalCancelHandler);
   }
 

@@ -130,6 +130,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { DisplayItemFactory, Value } from 'app/components/form/displayItemFactory';
 import { NgForm } from '@angular/forms';
 import { modalCancelHandler } from 'app/utils/angular';
+import { EditableService } from 'app/services/editable.service';
 
 interface WithVocabularies {
   vocabularies: Vocabulary[];
@@ -146,14 +147,13 @@ interface WithVocabularies {
         <span translate>Add vocabulary</span>
       </button>
     </h4>
-    <editable-table [id]="'vocabularies'" [descriptor]="descriptor" [expanded]="expanded" [form]="form"></editable-table>
+    <editable-table [id]="'vocabularies'" [descriptor]="descriptor" [expanded]="expanded" ></editable-table>
   `
 })
 export class VocabulariesViewComponent {
 
   @Input() value: WithVocabularies;
   @Input() context: LanguageContext;
-  @Input() form: NgForm;
 
   descriptor: VocabularyTableDescriptor;
   expanded: boolean;
@@ -162,7 +162,8 @@ export class VocabulariesViewComponent {
     private searchVocabularyModal: SearchVocabularyModal,
     private languageService: LanguageService,
     private translateService: TranslateService,
-    private displayItemFactory: DisplayItemFactory
+    private displayItemFactory: DisplayItemFactory,
+    private editableService: EditableService
   ) {}
 
   ngOnInit() {
@@ -186,7 +187,7 @@ export class VocabulariesViewComponent {
   }
 
   isEditing() {
-    return this.form && this.form.form.editing;
+    return this.editableService.editing;
   }
 
   addVocabulary() {

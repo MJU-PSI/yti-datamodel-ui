@@ -57,6 +57,7 @@ import { requireDefined } from '@mju-psi/yti-common-ui';
 import { Model } from 'app/entities/model';
 import { ClassListItem } from 'app/entities/class';
 import { NgForm } from '@angular/forms';
+import { EditableService } from 'app/services/editable.service';
 
 @Component({
   selector: 'editable-root-class',
@@ -65,12 +66,14 @@ import { NgForm } from '@angular/forms';
 export class EditableRootClassComponent {
 
   @Input() model: Model;
-  @Input() form: NgForm;
 
-  constructor(private searchClassModal: SearchClassModal) { }
+  constructor(
+    private searchClassModal: SearchClassModal,
+    private editableService: EditableService
+    ) { }
 
   isEditing(): boolean {
-    return this.form && this.form.form.editing;
+    return this.editableService.editing;
   }
 
   get href() {

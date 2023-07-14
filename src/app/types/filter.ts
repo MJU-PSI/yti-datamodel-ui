@@ -1,5 +1,6 @@
 import { AddNew } from 'app/components/common/searchResults';
 import { Localizable } from '@mju-psi/yti-common-ui';
+import { BehaviorSubject } from 'rxjs';
 
 export interface SearchController<T> {
   items: T[];

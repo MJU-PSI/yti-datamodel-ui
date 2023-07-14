@@ -181,8 +181,9 @@ import { Vocabulary } from 'app/entities/vocabulary';
 import { ReferenceData } from 'app/entities/referenceData';
 import { ImportedNamespace, Link } from 'app/entities/model';
 import { EditableForm } from 'app/components/form/editableEntityController';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ControlContainer, NgForm } from '@angular/forms';
+import { EditableService } from 'app/services/editable.service';
 
 @Component({
   selector: 'new-model-page',
@@ -220,10 +221,17 @@ export class NewModelPageComponent implements OnInit {
   constructor(
     private location: Location,
     private route: ActivatedRoute,
+    private router: Router,
     private modelService: DefaultModelService,
     private locationService: LocationService,
-    private errorModal: ErrorModal
-  ) { }
+    private errorModal: ErrorModal,
+    private editableService: EditableService
+  ) {
+
+    editableService.edit();
+    editableService.onSave = () => this.save();
+    editableService.onCanceled = () => router.navigate(['/']);
+  }
 
   ngOnInit() {
     this.type = this.route.snapshot.queryParams.type;
@@ -235,8 +243,6 @@ export class NewModelPageComponent implements OnInit {
       }
       return [];
     }
-
-    this.form.form.editing = true;
   }
 
   get allowProfiles() {
@@ -295,6 +301,10 @@ export class NewModelPageComponent implements OnInit {
     remove(this.links, link);
   }
 
+  saveModel() {
+    this.editableService.save();
+  }
+
   save() {
     this.persisting = true;
 
@@ -323,13 +333,13 @@ export class NewModelPageComponent implements OnInit {
           this.location.go(model.iowUrl());
         }, () => this.persisting = false);
       }, err => {
-        // this.errorModal.openSubmitError((err.data && err.data.errorMessage) || 'Unexpected error');
+        this.errorModal.openSubmitError((err.data && err.data.errorMessage) || 'Unexpected error');
         this.persisting = false;
       });
   }
 
   cancel() {
-    this.location.go('/');
+    this.editableService.cancel();
   }
 
 

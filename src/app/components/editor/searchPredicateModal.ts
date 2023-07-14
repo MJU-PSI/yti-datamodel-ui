@@ -9,7 +9,7 @@
 // import { glyphIconClassForType } from 'app/utils/entity';
 // import { ChoosePredicateTypeModal } from './choosePredicateTypeModal';
 // import { ClassService } from 'app/services/classService';
-// import { collectProperties, ignoreModalClose, requireDefined } from '@mju-psi/yti-common-ui';
+// import { collectProperties } from 'yti-common-ui/utils/array';
 // import { combineExclusions, createDefinedByExclusion, createExistsExclusion, Exclusion } from 'app/utils/exclusion';
 // import { SearchController, SearchFilter } from 'app/types/filter';
 // import { AbstractPredicate, Predicate, PredicateListItem } from 'app/entities/predicate';
@@ -18,6 +18,8 @@
 // import { ExternalEntity } from 'app/entities/externalEntity';
 // import { Class, Property } from 'app/entities/class';
 // import { defaultLabelComparator, filterAndSortSearchResults } from 'app/components/filter/util';
+// import { ignoreModalClose } from 'yti-common-ui/utils/modal';
+// import { requireDefined } from 'yti-common-ui/utils/object';
 // import { DataSource } from '../form/dataSource';
 
 // const noExclude = (_item: PredicateListItem) => null;
@@ -302,7 +304,6 @@
 //   }
 // }
 
-
 import { Component, Injectable, ViewChild } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DefaultPredicateService, PredicateService } from 'app/services/predicateService';
@@ -325,6 +326,8 @@ import { defaultLabelComparator, filterAndSortSearchResults } from 'app/componen
 import { DataSource } from '../form/dataSource';
 import { TranslateService } from '@ngx-translate/core';
 import { NgForm } from '@angular/forms';
+import { BehaviorSubject } from 'rxjs';
+import { EditableService } from 'app/services/editable.service';
 
 const noExclude = (_item: PredicateListItem) => null;
 
@@ -403,7 +406,8 @@ export class SearchPredicateModal {
 
 @Component({
   selector: 'search-predicate',
-  templateUrl: './searchPredicateModal.html'
+  templateUrl: './searchPredicateModal.html',
+  providers: [EditableService]
 })
 export class SearchPredicateController implements SearchController<PredicateListItem> {
 
@@ -442,8 +446,12 @@ export class SearchPredicateController implements SearchController<PredicateList
               private languageService: LanguageService,
               private searchConceptModal: SearchConceptModal,
               private translateService: TranslateService,
-              private activeModal: NgbActiveModal) {
+              private activeModal: NgbActiveModal,
+              private editableService: EditableService
+              ) {
+  }
 
+  ngOnInit() {
     this.localizer = this.languageService.createLocalizer(this.model);
     this.loadingResults = true;
     this.typeSelectable = !this.type;
@@ -456,12 +464,12 @@ export class SearchPredicateController implements SearchController<PredicateList
 
     if (!this.customDataSource) {
       if (this.requiredByInUse) {
-        predicateService.getRequiredByPredicates(this.model).then(appendResults);
+        this.predicateService.getRequiredByPredicates(this.model).then(appendResults);
       } else {
-        predicateService.getAllPredicates(this.model).then(appendResults);
+        this.predicateService.getAllPredicates(this.model).then(appendResults);
       }
       if (this.canAddExternal()) {
-        predicateService.getExternalPredicatesForModel(this.model).then(appendResults);
+        this.predicateService.getExternalPredicatesForModel(this.model).then(appendResults);
       }
     } else {
       this.customDataSource('').then(appendResults);
@@ -469,26 +477,20 @@ export class SearchPredicateController implements SearchController<PredicateList
   }
 
   ngDoCheck(){
-    // $scope.$watch(() => this.selection && this.selection.id, selectionId => {
-    //   if (selectionId && this.selection instanceof ExternalEntity) {
-    //     this.externalPredicate = undefined;
-    //     predicateService.getExternalPredicate(selectionId, model).then(predicate => this.externalPredicate = predicate);
-    //   }
-    // });
-
-    // if(this.selection && this.selection.id && this.selectionBefore) {
-    //   if (this.selection instanceof ExternalEntity) {
-    //     this.externalPredicate = undefined;
-    //     this.predicateService.getExternalPredicate(this.selection.id, this.model).then(predicate => this.externalPredicate = predicate);
-    //   }
-    // }
+    if(this.selection && this.selection.id !== '' && this.selection.id !== this.selectionBefore) {
+      this.selectionBefore = this.selection.id;
+      if (this.selection instanceof ExternalEntity) {
+        this.externalPredicate = undefined;
+        this.predicateService.getExternalPredicate(this.selection.id!, this.model).then(predicate => this.externalPredicate = predicate);
+      }
+    }
   }
 
   get items() {
     return this.predicates;
   }
 
-  editInProgress = () => this.form.form.editing && this.form.form.dirty;
+  editInProgress = () => this.editableService.editing && this.form.form.dirty;
 
   addFilter(filter: SearchFilter<PredicateListItem>) {
     this.searchFilters.push(filter);
@@ -534,12 +536,12 @@ export class SearchPredicateController implements SearchController<PredicateList
     this.selectedItem = item;
     this.externalPredicate = undefined;
     this.excludeError = null;
-    this.form.form.editing = false;
+    this.editableService.editing$.next(false);
     this.form.form.markAsPristine();
 
     if (item instanceof AddNewPredicate) {
       if (item.external) {
-        this.form.form.editing = true;
+        this.editableService.edit();
         this.selection = new ExternalEntity(this.localizer.language, this.searchText, this.type || 'attribute');
       } else {
         this.createNew(item.type!);
@@ -610,14 +612,14 @@ export class SearchPredicateController implements SearchController<PredicateList
             .then(predicate => {
               this.cannotConfirm = null;
               this.selection = predicate;
-              this.form.form.editing = true;
+              this.editableService.edit();
             });
         }
       }, ignoreModalClose);
   }
 
   isEditing(): boolean {
-    return this.form.form && this.form.form.editing;
+    return this.editableService.editing;
   }
 
   isAttributeAddable(): boolean {

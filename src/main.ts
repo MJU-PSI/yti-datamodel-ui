@@ -10,7 +10,7 @@ import './app/extensions/form.extensions';
 
 require('imports-loader?define=>false!jquery-mousewheel/jquery.mousewheel')(jQuery);
 
-import './init.ts'
+// import './init.ts'
 
 // export const done = platformBrowserDynamic().bootstrapModule(AppModule);
 

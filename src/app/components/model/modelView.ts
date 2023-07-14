@@ -173,6 +173,7 @@ import { AuthorizationManagerService } from 'app/services/authorizationManagerSe
 import { AlertModalService, changeToRestrictedStatus, Status, ErrorModalService, UserService } from '@mju-psi/yti-common-ui';
 import { TranslateService } from '@ngx-translate/core';
 import { DatamodelConfirmationModalService } from 'app/services/confirmation-modal.service';
+import { EditableService } from 'app/services/editable.service';
 
 @Component({
   selector: 'model-view',
@@ -200,9 +201,10 @@ export class ModelViewComponent extends EditableEntityController<Model> implemen
     userService: UserService,
     private authorizationManagerService: AuthorizationManagerService,
     private alertModalService: AlertModalService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    editableService: EditableService
   ) {
-    super(deleteConfirmationModal, errorModal, userService);
+    super(deleteConfirmationModal, errorModal, userService, editableService);
   }
 
   ngOnInit() {

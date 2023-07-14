@@ -102,8 +102,8 @@
 //   };
 // };
 
-import { Directive, ElementRef, HostListener, Input, OnChanges, OnInit, Renderer2, forwardRef } from '@angular/core';
-import { NG_VALIDATORS, AbstractControl, ValidationErrors, Validator, NgModel, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Directive, ElementRef, HostBinding, Input, OnInit, Renderer2, Self} from '@angular/core';
+import { AbstractControl, ControlValueAccessor, NgControl, ValidatorFn } from '@angular/forms';
 import { isValidUri, isValidUriStem, isValidUrl } from './validators';
 import { Uri } from 'app/entities/uri';
 import { ImportedNamespace } from 'app/entities/model';
@@ -126,71 +126,114 @@ export function placeholderText(uriInputType: UriInputType, translateService: Tr
   }
 }
 
-export interface WithContext {
+interface WithImportedNamespaces {
+  importedNamespaces: ImportedNamespace[];
   context: any;
 }
 
-export function createParser(withContextProvider: () => WithContext) {
-  return (viewValue: string) => {
-    const withContext = withContextProvider();
-    return !viewValue ? null : new Uri(viewValue, withContext ? withContext.context : {});
-  };
-}
-
-export function createFormatter() {
-  return (value: Uri) => value ? value.compact : '';
-}
-
-interface WithImportedNamespaces {
-  importedNamespaces: ImportedNamespace[];
-}
-
-export function createValidators(type: UriInputType, withNamespacesProvider: () => WithImportedNamespaces) {
-
-  const result: {[key: string]: (value: Uri | string) => boolean} = {};
+export function createValidators(type: UriInputType, withNamespacesProvider: () => WithImportedNamespaces): ValidatorFn[] {
+  const validators: ValidatorFn[] = [];
 
   if (type === 'stem') {
-    result['stem'] = isValidUriStem;
-  } else if (type === 'free-url') {
-    result['xsd:anyURI'] = isValidUri;
-    result['url'] = (value: Uri) => !value || !isValidUri(value) || isValidUrl(value);
-  } else if (type === 'free-uri') {
-    result['xsd:anyURI'] = isValidUri;
-  } else {
-    result['xsd:anyURI'] = isValidUri;
-    result['unknownNS'] = (value: Uri) => !value || !isValidUri(value) || value.resolves();
-    result['idNameRequired'] = (value: Uri) => !value || !isValidUri(value) || !value.resolves() || value.name.length > 0;
+    validators.push((control: AbstractControl) => {
+      const value: Uri = control.value;
+      const isValid: boolean = isValidUriStem(value);
+      let errors: { [key: string]: any } = {};
 
-    if (type === 'required-namespace') {
-      const isRequiredNamespace = (ns: string) => anyMatching(withNamespacesProvider().importedNamespaces, importedNamespace => importedNamespace.namespace === ns);
-      result['mustBeRequiredNS'] = (value: Uri) =>  !value || !isValidUri(value) || !value.resolves() || isRequiredNamespace(value.namespace);
-    }
+      if (!isValid) {
+        return {
+          stem: {
+            valid: false,
+            message: 'Invalid URI stem.'
+          }
+        };
+      }
+
+      return null;
+    });
+  } else if (type === 'free-url') {
+    validators.push((control: AbstractControl) => {
+      const value: Uri = control.value;
+      const validUri: boolean = isValidUri(value);
+      let errors: { [key: string]: any } = {};
+
+      const validUrl = (value: Uri) => !value || !isValidUri(value) || isValidUrl(value);
+
+      if (!validUri) {
+        errors['xsd:anyURI'] = { value: true };
+        errors['url'] = { value: true };
+        return errors;
+      }
+      return null;
+    });
+  } else if (type === 'free-uri') {
+    validators.push((control: AbstractControl) => {
+      const value: Uri | string = control.value;
+      const validUri: boolean = isValidUri(value);
+      let errors: { [key: string]: any } = {};
+
+      if (!validUri) {
+        errors['xsd:anyURI'] = { value: true };
+        return errors;
+      }
+      return null;
+    });
+  } else {
+    validators.push((control: AbstractControl) => {
+      if(!control.value){
+        return null;
+      }
+      const value: Uri = new Uri(control.value.value, withNamespacesProvider ? withNamespacesProvider().context : {});
+      const validUri: boolean = isValidUri(value);
+      let errors: { [key: string]: any } = {};
+
+      const unknownNS = (value: Uri) => !(!value || !isValidUri(value) || value.resolves());
+      const idNameRequired = (value: Uri) => !(!value || !isValidUri(value) || !value.resolves() || value.name.length > 0);
+
+      let mustBeRequiredNS;
+      if (type === 'required-namespace') {
+        const isRequiredNamespace = (ns: string) => anyMatching(withNamespacesProvider().importedNamespaces, importedNamespace => importedNamespace.namespace === ns);
+        mustBeRequiredNS = (value: Uri) =>  !(!value || !isValidUri(value) || !value.resolves() || isRequiredNamespace(value.namespace));
+      }
+
+      if (!validUri) {
+        errors['xsd:anyURI'] = { value: true };
+      }
+      if (unknownNS(value)) {
+        errors['unknownNS'] = { value: true };
+      }
+      if (idNameRequired(value)) {
+        errors['idNameRequired'] = { value: true };
+      }
+      if (mustBeRequiredNS && mustBeRequiredNS(value)) {
+        errors['mustBeRequiredNS'] = { value: true };
+      }
+
+      if (Object.keys(errors).length === 0) {
+        return null;
+      } else {
+        return errors;
+      }
+    });
   }
 
-  return result;
+  return validators;
 }
-
 
 @Directive({
   selector: '[uriInput][ngModel]',
-  providers: [
-    {
-      provide: NG_VALIDATORS,
-      useExisting: UriInputDirective,
-      multi: true
-    },
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => UriInputDirective),
-      multi: true
-    }
-  ]
+  host: {
+		"(blur)": "onTouched()",
+		"(change)": "handleChange( $event.target.value )"
+	}
 })
-export class UriInputDirective implements ControlValueAccessor, OnInit, OnChanges, Validator {
+export class UriInputDirective implements ControlValueAccessor, OnInit {
   @Input() uriInput: UriInputType;
   @Input() model: any;
 
-  private innerValue: Uri | null = null;
+  innerValue: string | null;
+
+
   private onChange: any = () => {};
   private onTouched: any = () => {};
 
@@ -198,22 +241,43 @@ export class UriInputDirective implements ControlValueAccessor, OnInit, OnChange
     private languageService: LanguageService,
     private translateService: TranslateService,
     private renderer: Renderer2,
-    private elementRef: ElementRef
-  ) {}
-
-  @HostListener('input', ['$event.target.value'])
-  onInput(value: string) {
-    this.innerValue = new Uri(value, {}); // Create an instance of Uri from the input value
-    this.onChange(this.innerValue);
+    private elementRef: ElementRef,
+    @Self() private controlDirective: NgControl
+  ) {
+    controlDirective.valueAccessor = this;
   }
 
+  // @HostListener('input', ['$event.target.value'])
+  public handleChange( value: string ) : void {
+    const uri = !value ? null : new Uri(value, this.model ? this.model.context : {})
+    this.onChange(uri);
+	}
+
+  ngOnInit(): void {
+
+    const placeholder = placeholderText(this.uriInput, this.translateService);
+    this.renderer.setAttribute(this.elementRef.nativeElement, 'placeholder', placeholder);
+
+    this.languageService.language$.subscribe(() => {
+      const placeholder = placeholderText(this.uriInput, this.translateService);
+      this.renderer.setAttribute(this.elementRef.nativeElement, 'placeholder', placeholder);
+    })
+
+    const validators = this.controlDirective.control?.validator
+    ? [this.controlDirective.control.validator, ...createValidators(this.uriInput, () => this.model)]
+    : createValidators(this.uriInput, () => this.model);
+
+    this.controlDirective.control?.setValidators(validators);
+    this.controlDirective.control?.updateValueAndValidity();
+  }
+
+
   writeValue(value: any): void {
+    const element = this.elementRef.nativeElement;
     if (value instanceof Uri) {
-      this.innerValue = value;
-      this.elementRef.nativeElement.value = value.uri;
+      this.renderer.setProperty(element, 'value', value.compact);
     } else {
-      this.innerValue = null;
-      this.elementRef.nativeElement.value = '';
+      this.renderer.setProperty(element, 'value', '');
     }
   }
 
@@ -229,32 +293,4 @@ export class UriInputDirective implements ControlValueAccessor, OnInit, OnChange
     this.elementRef.nativeElement.disabled = isDisabled;
   }
 
-  ngOnInit() {
-    const placeholder = placeholderText(this.uriInput, this.translateService);
-    this.renderer.setAttribute(this.elementRef.nativeElement, 'placeholder', placeholder);
-
-    this.languageService.language$.subscribe(() => {
-      const placeholder = placeholderText(this.uriInput, this.translateService);
-      this.renderer.setAttribute(this.elementRef.nativeElement, 'placeholder', placeholder);
-    })
-  }
-
-  ngOnChanges() {
-    this.model = this.model || '';
-  }
-
-  validate(control: AbstractControl): ValidationErrors | null {
-    const validators = createValidators(this.uriInput, () => this.model);
-    const result = {} as any;
-
-    Object.keys(validators).forEach((validatorName) => {
-      if (!validators[validatorName](control.value)) {
-        result[validatorName] = true;
-      }
-    });
-
-    return Object.keys(result).length ? result : null;
-  }
-
-  registerOnValidatorChange(fn: () => void): void {}
 }

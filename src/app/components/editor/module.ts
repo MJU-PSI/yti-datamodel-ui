@@ -94,7 +94,7 @@ import { HistoryEditorComponent } from "./history-editor";
     NgbModule,
     TranslateModule,
     YtiCommonModule,
-    VirtualScrollerModule,
+    VirtualScrollerModule
   ],
   providers: [
     AddPropertiesFromClassModal,

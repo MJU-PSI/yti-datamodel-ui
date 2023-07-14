@@ -82,6 +82,7 @@ import { IowComponentsModelModule } from './components/model/module';
 import { IowComponentsFormModule } from './components/form/module';
 import { IowComponentsEditorModule } from './components/editor/module';
 import { IowComponentsCommonModule } from './components/common/module';
+import { ClipboardModule } from 'ngx-clipboard';
 
 
 // require('angular-gettext');

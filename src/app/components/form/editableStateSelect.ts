@@ -53,6 +53,7 @@ import { Model } from 'app/entities/model';
 import { AuthorizationManagerService } from 'app/services/authorizationManagerService';
 import { Status } from '@mju-psi/yti-common-ui';
 import { NgForm } from '@angular/forms';
+import { EditableService } from 'app/services/editable.service';
 
 @Component({
   selector: 'editable-state-select',
@@ -71,10 +72,13 @@ export class EditableStateSelectComponent {
   @Input() form: NgForm;
   @Output() stateChange: EventEmitter<Status> = new EventEmitter<Status>();
 
-  constructor(private authorizationManagerService: AuthorizationManagerService) { }
+  constructor(
+    private authorizationManagerService: AuthorizationManagerService,
+    private editableService: EditableService
+    ) { }
 
   isEditing() {
-    return this.form && this.form.form.editing;
+    return this.editableService.editing;
   }
 
   getStates() {

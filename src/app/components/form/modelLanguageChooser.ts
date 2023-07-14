@@ -40,7 +40,7 @@
 
 //   localizeLanguageName(language: Language) {
 //     return this.gettextCatalog.getString('data language') + ': ' + language.toUpperCase();
-// /* 
+// /*
 //     const lang = availableLanguages.find((obj) => {
 //       return obj.code === language;
 //     });
@@ -68,7 +68,7 @@
 //   }
 // }
 
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { LanguageService } from 'app/services/languageService';
 import { Language, LanguageContext } from 'app/types/language';
 import { TranslateService } from '@ngx-translate/core';

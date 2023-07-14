@@ -45,19 +45,19 @@
   </div>
 
   <div class="modal-body">
-    <editable title="Reference data URI" [context]="context" autofocus [form]="form">
+    <editable title="Reference data URI" [context]="context" autofocus >
       <div class="input-group input-group-md">
         <input id="uri" type="text" class="form-control" required uriInput="free-url" [(ngModel)]="id" #editableInput/>
       </div>
     </editable>
 
-    <editable title="Reference data label" [context]="context" [form]="form">
+    <editable title="Reference data label" [context]="context" >
       <div class="input-group input-group-md">
         <input id="label" type="text" class="form-control" required stringInput="label" [(ngModel)]="title" #editableInput/>
       </div>
     </editable>
 
-    <editable title="Description" [context]="context" [form]="form">
+    <editable title="Description" [context]="context" >
       <div class="input-group input-group-md">
         <textarea id="description" class="form-control" required stringInput [(ngModel)]="description" #editableInput></textarea>
       </div>

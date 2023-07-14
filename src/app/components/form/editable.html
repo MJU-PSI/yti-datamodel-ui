@@ -16,7 +16,7 @@
 
 <div class="editable-wrap form-group">
   <editable-label [title]="title" [inputId]="inputId" [required]="required"></editable-label>
-  <div *ngIf="isEditing()">
+  <div [hidden]="!isEditing()">
     <ng-content></ng-content>
   </div>
   <div *ngIf="!isEditing()" class="content">

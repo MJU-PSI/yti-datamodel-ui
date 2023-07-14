@@ -33,7 +33,7 @@
       <app-ajax-loading-indicator *ngIf="loading"></app-ajax-loading-indicator>
       <div *ngIf="!loading">
         <usage *ngIf="hasReferrers()" [usage]="usage" [showLinks]="true" [context]="context"></usage>
-        <p *ngIf="!loading || !hasReferrers()" translate>No referrers</p>
+        <p *ngIf="!loading && !hasReferrers()" translate>No referrers</p>
       </div>
     </div>
   </accordion-group>

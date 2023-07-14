@@ -61,6 +61,7 @@ import { Component, ContentChild, EventEmitter, Input, OnInit, Output } from '@a
 import { NgForm, NgModel } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { DataType, dataTypes } from 'app/entities/dataTypes';
+import { EditableService } from 'app/services/editable.service';
 
 @Component({
   selector: 'editable-range-select',
@@ -92,14 +93,15 @@ export class EditableRangeSelectComponent implements OnInit {
     value ? `${translateService.instant(value)} (${value})` : '';
 
   constructor(
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private editableService: EditableService
   ) {}
 
   ngOnInit() {
   }
 
   isEditing() {
-    return this.form && this.form.form.editing;
+    return this.editableService.editing;
   }
 
   get displayName() {

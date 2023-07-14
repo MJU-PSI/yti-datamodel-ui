@@ -119,7 +119,7 @@
 //   }
 // }
 
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { IPromise } from 'angular';
 import { SearchPredicateModal } from './searchPredicateModal';
 import { SearchClassModal, defaultTextForSelection } from './searchClassModal';
@@ -135,27 +135,39 @@ import { PredicateListItem } from 'app/entities/predicate';
 import { ClassType, KnownPredicateType } from 'app/types/entity';
 import { Model } from 'app/entities/model';
 import { modalCancelHandler } from 'app/utils/angular';
-import { NgForm } from '@angular/forms';
+import { NgForm, NgModel } from '@angular/forms';
+import { EditableService } from 'app/services/editable.service';
+import { Observable, OperatorFunction, Subject, from, merge, of } from 'rxjs';
+import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
+import { catchError, debounceTime, distinctUntilChanged, filter, map, switchMap } from 'rxjs/operators';
 
 type DataType = ClassListItem|PredicateListItem;
 
 @Component({
   selector: 'editable-multiple-uri-select',
   template: `
-    <editable-multiple id="{{id + '_editable_multiple'}}" [title]="title" [(ngModel)]="ngModel" [link]="link" [input]="input" [form]="form">
-      <!-- <input-container> -->
-        <autocomplete [datasource]="datasource" [valueExtractor]="valueExtractor" [excludeProvider]="createExclusion">
-          <input id="{{id + '_input'}}"
-                 type="text"
-                 restrictDuplicates="{{ngModel}}"
-                 uriInput
-                 ignoreForm
-                 [(ngModel)]="input"
-                 [model]="model" />
-        </autocomplete>
-      <!-- </input-container> -->
+    <editable-multiple id="{{id + '_editable_multiple'}}" [title]="title" [values]="values" [link]="link" [formatter]="formatter">
+      <ng-container input>
+        <input id="{{id + '_input'}}"
+                type="text"
+                uriInput
+                [model]="model"
+                ignoreForm
+                [(ngModel)]="input"
+                [restrictDuplicates]="values"
+                (ngModelChange)="onModelChange($event)"
+                [ngbTypeahead]="search"
+                [resultFormatter]="resultFormatter"
+                [inputFormatter]="inputFormatter"
+                (focus)="focus$.next($any($event).target.value)"
+                (click)="click$.next($any($event).target.value)"
+                (selectItem)="onSelect($event)"
+                #instance="ngbTypeahead"
+                #editableInput
+              />
+      </ng-container>
 
-      <div buttonContainer>
+      <div button>
         <button id="{{id + '_choose_' + type + '_multiple_uri_select_button'}}"
                 *ngIf="isEditing()"
                 type="button"
@@ -170,27 +182,87 @@ type DataType = ClassListItem|PredicateListItem;
 })
 export class EditableMultipleUriSelectComponent implements OnInit {
 
-  @Input() ngModel: Uri[];
-  @Input() input: Uri;
+  @Input() values: Uri[];
   @Input() type: ClassType|KnownPredicateType;
   @Input() model: Model;
   @Input() id: string;
   @Input() title: string;
   @Input() customDataSource: DataSource<DataType>;
   @Input() requiredByInUse: boolean;
-  @Input() form: NgForm;
+
+  input: string;
+
+  @ViewChild('editableInput',  { read: NgModel, static: true }) inputNgModelCtrl!: NgModel;
+  @ViewChild('instance', { static: true }) instance: NgbTypeahead;
+	focus$ = new Subject<string>();
+	click$ = new Subject<string>();
+
+  search = (text$: Observable<string>) => {
+		const debouncedText$ = text$.pipe(debounceTime(200), distinctUntilChanged());
+		const clicksWithClosedPopup$ = this.click$.pipe(filter(() => !this.instance.isPopupOpen()));
+		const inputFocus$ = this.focus$;
+
+		return merge(debouncedText$, inputFocus$, clicksWithClosedPopup$).pipe(
+			switchMap((searchText: string) => {
+        return from(this.datasource(searchText)).pipe(
+          catchError(() => of([])),
+          map((results: DataType[]) => {
+            const exclude = this.createExclusion();
+            const included = results.filter((item: DataType) => !exclude || !exclude(item));
+
+            const uris: Uri[] = included.map((result: DataType) => result.id);
+
+            return uris.filter((uri: Uri) => {
+              return uri && uri.compact.includes(searchText);
+            });
+          })
+        )
+      }),
+		);
+	};
+
+  resultFormatter(result: Uri): string {
+    return result.compact;
+  }
+
+  inputFormatter(result: Uri): string {
+    return result.compact;
+  }
+
+
+  onModelChange(value: Uri): void {
+    if(value  && this.inputNgModelCtrl.control.valid){
+      this.values.push(value);
+      this.clearInput();
+    }
+  }
+
+  onSelect(item: { item: Uri; }): void {
+    this.values.push(item.item);
+    this.clearInput();
+  }
+
+  clearInput(){
+    setTimeout(()=>{ this.input = ''; }, 1);
+  }
+
+  formatter(value: Uri): string {
+    return value ? value.compact : '';
+  }
 
   addUri: (uri: Uri) => void;
   datasource: DataSource<DataType>;
   valueExtractor = (item: DataType) => item.id;
 
   link = (uri: Uri) => this.model.linkToResource(uri);
-  createExclusion = () => createExistsExclusion(collectProperties(this.ngModel, uri => uri.uri));
+  createExclusion = () => createExistsExclusion(collectProperties(this.values, uri => uri.uri));
 
   constructor(private searchPredicateModal: SearchPredicateModal,
               private searchClassModal: SearchClassModal,
               private classService: DefaultClassService,
-              private predicateService: DefaultPredicateService) {}
+              private predicateService: DefaultPredicateService,
+              private editableService: EditableService
+              ) {}
 
   ngOnInit() {
     const modelProvider = () => this.model;
@@ -203,7 +275,7 @@ export class EditableMultipleUriSelectComponent implements OnInit {
   }
 
   isEditing() {
-    return this.form && this.form.form.editing;
+    return this.editableService.editing;
   }
 
   selectUri() {
@@ -223,7 +295,7 @@ export class EditableMultipleUriSelectComponent implements OnInit {
     }
 
     promise.then(result => {
-      this.ngModel.push(result.id);
+      this.values.push(result.id);
     }).catch(modalCancelHandler);
   }
 

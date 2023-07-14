@@ -31,14 +31,12 @@
           <span class="inRowTitle"><span translate>Information domain</span>:</span>
           <span class="information-domains">
             <span class="badge badge-light" *ngFor="let domain of model!.classifications">
-              <!-- TODO ALES - zakaj je bilo prej  translateValue:true -->
               {{domain.label | translateValue}}
             </span>
           </span>
           <span class="inRowTitle"><span translate>Organization</span>:</span>
           <ul class="organizations dot-separated-list">
             <li class="organization" *ngFor="let contributor of model!.contributors">
-              <!-- TODO ALES - zakaj je bilo prej  translateValue:true -->
               {{(contributor.parentOrg ? contributor.parentOrg.label : contributor.label) | translateValue}}
             </li>
           </ul>

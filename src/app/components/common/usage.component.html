@@ -16,9 +16,9 @@
 
 <ul *ngIf="referrers">
   <li *ngFor="let ref of referrers | keyvalue">
-    <span>{{ref.type | translate}}</span>
+    <span>{{ref.key | translate}}</span>
     <ul>
-      <li *ngFor="let referrer of ref.referrers" [attr.id]="referrer.id.uri">
+      <li *ngFor="let referrer of ref.value" [attr.id]="referrer.id.uri">
         {{referrer | translateLabel: context}} <span *ngIf="!isShowLinks()">({{referrer.id.compact}})</span><a *ngIf="isShowLinks()" [href]="referrer.iowUrl()">({{referrer.id.compact}})</a>
       </li>
     </ul>

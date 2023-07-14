@@ -74,6 +74,7 @@ import { isExternalLink } from 'app/components/form/href';
 import { EditableForm } from '../form/editableEntityController';
 import { modalCancelHandler } from 'app/utils/angular';
 import { NgForm } from '@angular/forms';
+import { EditableService } from 'app/services/editable.service';
 
 @Component({
   selector: 'editable-constraint',
@@ -85,15 +86,17 @@ export class EditableConstraintComponent {
   @Input() constraint: Constraint;
   @Input() model: Model;
   @Input() class: Class;
-  @Input() form: NgForm;
 
   types: ConstraintType[] = ['or', 'and', 'not'];
 
-  constructor(private searchClassModal: SearchClassModal) {
+  constructor(
+    private searchClassModal: SearchClassModal,
+    private editableService: EditableService
+    ) {
   }
 
   isEditing() {
-    return this.form && this.form.form.editing;
+    return this.editableService.editing;
   }
 
   linkItem(item: ConstraintListItem) {

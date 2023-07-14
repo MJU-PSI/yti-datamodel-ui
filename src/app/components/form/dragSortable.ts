@@ -180,8 +180,8 @@
 //   };
 // };
 
-import { Directive, ElementRef, EventEmitter, Input, NgZone, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
-import { requireDefined } from '@mju-psi/yti-common-ui';
+import { ChangeDetectorRef, Directive, ElementRef, EventEmitter, Input, NgZone, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { moveElement, requireDefined } from '@mju-psi/yti-common-ui';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
 export interface Sortable<T> {
@@ -206,7 +206,7 @@ interface PositionChange {
 })
 export class DragSortableDirective<T> implements OnChanges {
 
-  @Input('appDragSortable') sortable: Sortable<T>;
+  @Input('appDragSortable') sortable: T[];
   @Input() dragDisabled = false;
   @Output() positionChange = new EventEmitter<PositionChange>();
 
@@ -215,7 +215,7 @@ export class DragSortableDirective<T> implements OnChanges {
   drag$ = new BehaviorSubject<Drag|null>(null);
   dragValuesOriginal: T[]|null = null;
 
-  constructor(private zone: NgZone) {
+  constructor(private zone: NgZone, private cdRef: ChangeDetectorRef) {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -234,7 +234,8 @@ export class DragSortableDirective<T> implements OnChanges {
     dataTransfer.effectAllowed = 'move';
 
     this.drag = { fromIndex, droppable: true, cloneCreated: false, sourceWidth };
-    this.dragValuesOriginal = this.sortable.sortableValues.slice();
+    // this.dragValuesOriginal = this.sortable.sortableValues.slice();
+    this.dragValuesOriginal = this.sortable.slice();
   }
 
   get drag(): Drag|null {
@@ -267,10 +268,16 @@ export class DragSortableDirective<T> implements OnChanges {
 
           this.zone.run(() => {
             this.drag = {...this.drag!, fromIndex: toIndex, droppable: true};
-            this.sortable.moveItem(fromIndex, toIndex);
-            this.positionChange.emit({fromIndex, toIndex});
-          });
+            // this.sortable.moveItem(fromIndex, toIndex);
+            const copy = this.sortable.slice();
+            moveElement(copy, fromIndex, toIndex);
+            this.sortable = copy;
 
+            this.positionChange.emit({fromIndex, toIndex});
+
+
+          });
+          this.cdRef.detectChanges();
         } else {
           this.drag = {...this.drag, droppable: true};
         }
@@ -296,8 +303,12 @@ export class DragSortableDirective<T> implements OnChanges {
       const dragValuesOriginal = this.dragValuesOriginal;
 
       this.zone.run(() => {
-        this.sortable.sortableValues = requireDefined(dragValuesOriginal);
+        // this.sortable.sortableValues = requireDefined(dragValuesOriginal);
+        this.sortable = requireDefined(dragValuesOriginal);
+
+
       });
+      this.cdRef.detectChanges();
     }
     this.drag = null;
     this.dragValuesOriginal = null;

@@ -95,6 +95,7 @@ import { Model } from 'app/entities/model';
 import { Association, Attribute } from 'app/entities/predicate';
 import { KnownPredicateType } from 'app/types/entity';
 import { NgForm } from '@angular/forms';
+import { EditableService } from 'app/services/editable.service';
 
 @Component({
   selector: 'predicate-form',
@@ -105,18 +106,18 @@ export class PredicateFormComponent {
   @Input() predicate: Attribute | Association;
   @Input() oldPredicate: Attribute | Association;
   @Input() model: Model;
-  @Input() form: NgForm;
 
   predicateView: PredicateViewComponent;
 
   constructor(
     private predicateService: DefaultPredicateService,
     private usageService: UsageService,
-    private errorModal: ErrorModal
+    private errorModal: ErrorModal,
+    private editableService: EditableService
   ) {}
 
   isEditing(): boolean {
-    return this.form && this.form.form.editing;
+    return this.editableService.editing;
   }
 
   get shouldAutofocus(): boolean {

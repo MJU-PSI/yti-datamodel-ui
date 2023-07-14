@@ -115,6 +115,7 @@ import { Link } from 'app/entities/model';
 import { LanguageContext } from 'app/types/language';
 import { NgForm } from '@angular/forms';
 import { modalCancelHandler } from 'app/utils/angular';
+import { EditableService } from 'app/services/editable.service';
 
 interface WithLinks {
   links: Link[];
@@ -131,14 +132,13 @@ interface WithLinks {
         <span translate>Add link</span>
       </button>
     </h4>
-    <editable-table [id]="'links'" [descriptor]="descriptor" [expanded]="expanded" [form]="form"></editable-table>
+    <editable-table [id]="'links'" [descriptor]="descriptor" [expanded]="expanded" ></editable-table>
   `
 })
 export class LinksViewComponent {
 
   @Input() value: WithLinks;
   @Input() context: LanguageContext;
-  @Input() form: NgForm;
 
   descriptor: LinkTableDescriptor;
   expanded = false;
@@ -146,7 +146,8 @@ export class LinksViewComponent {
 
   constructor(
     private addEditLinkModal: AddEditLinkModal,
-    private languageService: LanguageService
+    private languageService: LanguageService,
+    private editableService: EditableService
   ) {}
 
   ngOnInit() {
@@ -158,7 +159,7 @@ export class LinksViewComponent {
   }
 
   isEditing(): boolean {
-    return this.form && this.form.form.editing;
+    return this.editableService.editing;
   }
 
   addLink(): void {

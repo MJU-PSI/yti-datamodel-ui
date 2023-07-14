@@ -146,6 +146,7 @@ import { CopyPredicateModal } from './copy-predicate-modal';
 import { Property } from '../../entities/class';
 import { Model } from '../../entities/model';
 import { Association, Attribute, Predicate } from '../../entities/predicate';
+import { EditableService } from 'app/services/editable.service';
 
 
 
@@ -166,7 +167,8 @@ export class PropertyPredicateViewComponent implements OnInit {
   constructor(
     private predicateService: DefaultPredicateService,
     private searchPredicateModal: SearchPredicateModal,
-    private copyPredicateModal: CopyPredicateModal
+    private copyPredicateModal: CopyPredicateModal,
+    private editableService: EditableService
   ) {}
 
   ngOnInit() {
@@ -199,7 +201,7 @@ export class PropertyPredicateViewComponent implements OnInit {
   }
 
   isEditing(): boolean {
-    return this.classForm && this.classForm.isEditing();
+    return this.editableService.editing;
   }
 
   private setPredicateResult(predicate: Predicate|null) {

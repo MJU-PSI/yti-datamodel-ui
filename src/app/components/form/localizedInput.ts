@@ -83,12 +83,12 @@
 // };
 
 
-import { Directive, Input, ElementRef, HostListener, Self } from '@angular/core';
+import { Directive, Input, ElementRef, HostListener, Self, HostBinding } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, NgControl, ValidatorFn } from '@angular/forms';
 import { Localizable } from '@mju-psi/yti-common-ui';
 import { LanguageService } from 'app/services/languageService';
 import { LanguageContext } from 'app/types/language';
-import { isValidLabelLength, isValidModelLabelLength } from './validators';
+import { isValidLabelLength, isValidModelLabelLength, isValidString } from './validators';
 import { hasLocalization } from 'app/utils/language';
 
 export function requiredLocalized(): ValidatorFn {
@@ -97,7 +97,7 @@ export function requiredLocalized(): ValidatorFn {
     if (!hasLocalization(value)) {
       return { requiredLocalized: true };
     }
-    return { requiredLocalized: false };
+    return null;
   };
 }
 
@@ -117,6 +117,36 @@ export function length(isValidLength: (value: string) => boolean): ValidatorFn {
   };
 }
 
+export function isString(isValidString: (value: string) => boolean): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+    const values = control.value;
+    if (values === null || typeof values !== 'object') {
+      return null;
+    }
+
+    for (const value of Object.values(control.value)) {
+      if (!isValidString(value as string)) {
+        return { string: true };
+      }
+    }
+    return null;
+  };
+}
+
+export function allLocalizations(predicate: (localized: string) => boolean): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+    const values = control.value as Localizable;
+    if (values) {
+      for (const localized of Object.values(values)) {
+        if (!predicate(localized)) {
+          return {string: true};
+        }
+      }
+    }
+    return null;
+  }
+}
+
 @Directive({
   selector: '[localizedInput]',
   providers: []
@@ -130,6 +160,9 @@ export class LocalizedInputDirective implements ControlValueAccessor {
 
   private onChange: (value: any) => void;
   private onTouched: () => void;
+
+  @HostBinding('required')
+  required = true;
 
   constructor(
     private elementRef: ElementRef,
@@ -153,10 +186,9 @@ export class LocalizedInputDirective implements ControlValueAccessor {
       }
     })
 
-    // TODO ALES - preveri naslednje
-//       if (attributes.localizedInput !== 'free') {
-//         ngModel.$validators['string'] = modelValue => allLocalizations(isValidString, modelValue);
-//       }
+    if (this.localizedInput !== 'free') {
+      this.validators.push(allLocalizations(isValidString));
+    }
 
     switch (this.localizedInput) {
       case 'required':
@@ -169,11 +201,16 @@ export class LocalizedInputDirective implements ControlValueAccessor {
         this.validators.push(requiredLocalized(), length(isValidModelLabelLength));
         break;
       default:
+        this.required = false;
         // Handle other cases if needed
         break;
     }
 
-    this.controlDirective.control?.setValidators(this.validators);
+    const validators = this.controlDirective.control?.validator
+    ? [this.controlDirective.control.validator, ...this.validators]
+    : this.validators;
+
+    this.controlDirective.control?.setValidators(validators);
     this.controlDirective.control?.updateValueAndValidity();
   }
 
@@ -215,6 +252,7 @@ export class LocalizedInputDirective implements ControlValueAccessor {
   }
 
   removePlaceholder() {
-    this.elementRef.nativeElement.setAttribute("placeholder", null);
+    this.elementRef.nativeElement.setAttribute("placeholder", '');
   }
+
 }

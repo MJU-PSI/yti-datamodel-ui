@@ -62,11 +62,82 @@
 // };
 
 // TODO ALES
-import { Directive } from '@angular/core';
+
+import { resolvePlaceholder, resolveValidator } from './validators';
+import { LanguageService } from 'app/services/languageService';
+import { createAsyncValidators } from './codeValueInput';
+import { ReferenceDataService } from 'app/services/referenceDataService';
+import { isUpperCase } from 'change-case';
+import { DataType } from 'app/entities/dataTypes';
+import { ReferenceData } from 'app/entities/referenceData';
+
+import { Directive, ElementRef, Input, OnChanges, Self, SimpleChanges } from '@angular/core';
+import { NgModel } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
+
+export function placeholderText(dataType: DataType, translateService: TranslateService) {
+  const validator = resolvePlaceholder(dataType);
+  const localization = translateService.instant(dataType);
+  const placeholder = translateService.instant('Input') + ' ' + (isUpperCase(localization) ? localization : localization.toLowerCase()) + '...';
+  return validator.format ? placeholder + ` (${validator.format})` : placeholder;
+}
 
 @Directive({
-  selector: 'data-type-input,[data-type-input]',
+  selector: '[datatypeInput][ngModel]'
 })
-export class DataTypeInputDirective {
+export class DataTypeInputDirective implements OnChanges {
+  @Input('datatypeInput') dataTypeInput: DataType;
+  @Input() referenceData: ReferenceData[];
 
+  constructor(
+    private ngModel: NgModel,
+    private elementRef: ElementRef,
+    private languageService: LanguageService,
+    private referenceDataService: ReferenceDataService,
+    private translateService: TranslateService) {}
+
+  ngOnInit() {
+    this.languageService.language$.subscribe(() => {
+      this.setPlaceholder();
+    });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.dataTypeInput) {
+      this.initializeDataType(changes.dataTypeInput.currentValue, changes.dataTypeInput.previousValue);
+    }
+
+    if (changes.referenceData) {
+      this.initializeReferenceData(changes.referenceData.currentValue);
+    }
+  }
+
+  private initializeDataType(dataType: DataType, oldDataType: DataType): void {
+    this.setPlaceholder();
+
+    if (oldDataType) {
+      delete this.ngModel.control.errors?.[oldDataType];
+      this.ngModel.control.updateValueAndValidity();
+    }
+
+    this.ngModel.control.setValidators(resolveValidator(dataType));
+    this.ngModel.control.updateValueAndValidity();
+  }
+
+  private initializeReferenceData(referenceData: ReferenceData[]): void {
+    const asyncValidators = this.ngModel.control?.asyncValidator
+    ? [this.ngModel.control.asyncValidator, createAsyncValidators(referenceData, this.referenceDataService)]
+    : [createAsyncValidators(referenceData, this.referenceDataService)];
+    this.ngModel.control?.setAsyncValidators(asyncValidators);
+
+    this.ngModel.control.updateValueAndValidity();
+  }
+
+  private setPlaceholder(): void {
+    const placeholder = placeholderText(this.dataTypeInput, this.translateService);
+    const element = this.elementRef.nativeElement;
+    if (element) {
+      element.setAttribute('placeholder', placeholder);
+    }
+  }
 }
