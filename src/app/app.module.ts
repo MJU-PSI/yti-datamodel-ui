@@ -203,7 +203,6 @@ export function localizerFactory(languageService: LanguageService): AngularLocal
     NewDatamodelVersionModalComponent,
     ModelDocumentationComponent
   ],
-  entryComponents: [],
   providers: [
     { provide: AUTHENTICATED_USER_ENDPOINT, useFactory: resolveAuthenticatedUserEndpoint },
     { provide: LOCALIZER, useFactory: localizerFactory, deps: [LanguageService] },
