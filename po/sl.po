@@ -113,7 +113,7 @@ msgid "Save"
 msgstr "Shranite"
 
 msgid "Reference data"
-msgstr "Referenčni podatki"
+msgstr "Šifranti"
 
 msgid "Add reference data"
 msgstr "Dodajte referenčne podatke"
@@ -149,7 +149,7 @@ msgid "close"
 msgstr "zaprite"
 
 msgid "Data Vocabularies"
-msgstr "Podatkovno besedišče"
+msgstr "Podatkovni modeli"
 
 msgid "Confirm delete"
 msgstr "Potrdite brisanje"
@@ -296,13 +296,13 @@ msgid "Add namespace to model"
 msgstr "Dodajte imenski prostor modelu"
 
 msgid "without referencing concept"
-msgstr "brez sklicevanja na koncept"
+msgstr "brez sklicevanja na pojem"
 
 msgid "All vocabularies"
 msgstr "Vsa besedišča"
 
 msgid "Concept is suggested to vocabulary"
-msgstr "Koncept je predlagan v besedišče"
+msgstr "Pojem je predlagan v besedišče"
 
 msgid "Select attribute or association"
 msgstr "Izberite atribut ali povezavo"
@@ -311,13 +311,13 @@ msgid "Add attribute or association"
 msgstr "Dodajte atribut ali povezavo"
 
 msgid "INFO_TEXT_SUBJECT_VIEW_SELECT_CONCEPT"
-msgstr "Izberite koncept iz terminologije."
+msgstr "Izberite pojem iz terminologije."
 
 msgid "Select concept"
 msgstr "Iskanje {{name}}"
 
 msgid "No concept defined"
-msgstr "Ni definiranega koncepta"
+msgstr "Ni definiranega pojma"
 
 msgid "Invalid url error"
 msgstr "Napaka neveljaven URL"
@@ -443,7 +443,7 @@ msgid "Maintenance"
 msgstr "Premor zaradi vzdrževanja"
 
 msgid "Concept information"
-msgstr "Informacije o konceptu"
+msgstr "Informacije o pojmu"
 
 msgid "Not selected"
 msgstr "Ni izbrano"
@@ -483,6 +483,9 @@ msgstr "Definicija podatkovnega modela"
 
 msgid "Datamodel details"
 msgstr "Podrobnosti podatkovnega modela"
+
+msgid "Datamodel documentation"
+msgstr "Dokumentacija podatkovnega modela"
 
 msgid "Information domain"
 msgstr "Informacijska domena"
@@ -551,7 +554,7 @@ msgid "User details"
 msgstr "Podrobnosti uporabnika"
 
 msgid "Reference Data"
-msgstr "Referenčni podatki"
+msgstr "Šifranti"
 
 msgid "Comments"
 msgstr "Komentarji"
@@ -809,16 +812,16 @@ msgid "Classifications are here"
 msgstr "Izbrane domene se nahajajo tukaj"
 
 msgid "Concept is here"
-msgstr "Koncept se nahaja tukaj"
+msgstr "Pojem se nahaja tukaj"
 
 msgid "Concept is here info"
-msgstr "Informacije o konceptu se nahajajo tukaj"
+msgstr "Informacije o pojmu se nahajajo tukaj"
 
 msgid "Concept label"
-msgstr "Oznaka koncepta"
+msgstr "Oznaka pojma"
 
 msgid "Concept label info"
-msgstr "Prednostni izraz koncepta"
+msgstr "Prednostni izraz pojma"
 
 msgid "Confirm selection"
 msgstr "Potrdite izbiro"
@@ -884,7 +887,7 @@ msgid "Guide through creating new library"
 msgstr "Vodič za ustvarjanje novega temeljnega besedišča"
 
 msgid "Guide through creating new library description"
-msgstr "Knjižnice osnovnega besedišča so modeli povezanih podatkov, ki definirajo razrede, lastnosti tipov podatkov in lastnosti predmetov, ki jih je mogoče ponovno uporabiti. Osnovna besedišča so ustvarjena na podlagi dobro definiranih konceptov, opisanih v terminoloških slovarjih in povezanih z obstoječimi standardi metapodatkov z uporabo URI-jev."
+msgstr "Knjižnice osnovnega besedišča so modeli povezanih podatkov, ki definirajo razrede, lastnosti tipov podatkov in lastnosti predmetov, ki jih je mogoče ponovno uporabiti. Osnovna besedišča so ustvarjena na podlagi dobro definiranih pojmov, opisanih v terminoloških slovarjih in povezanih z obstoječimi standardi metapodatkov z uporabo URI-jev."
 
 msgid "Guide through creating new profile"
 msgstr "Vodič za ustvarjanje novega profila aplikacije"
@@ -977,7 +980,7 @@ msgid "Search for concept"
 msgstr "Iskanje {{name}}"
 
 msgid "Search for concept info"
-msgstr "Če želite ustvariti nov vir, morate definirati semantiko vira. Uporabite lahko obstoječe koncepte iz terminologije ali ustvarite nov koncept, če zahtevanega izraza in definicije ne najdete."
+msgstr "Če želite ustvariti nov vir, morate definirati semantiko vira. Uporabite lahko obstoječe pojme iz terminologije ali ustvarite nov pojem, če zahtevanega izraza in definicije ne najdete."
 
 msgid "Search for info"
 msgstr "Poiščite {{name}} v obstoječih virih. Vedno najprej iščite!"
@@ -998,7 +1001,7 @@ msgid "Select concept suggest creation"
 msgstr "Ustvarite nov predlog pojma"
 
 msgid "Select concept suggest creation info"
-msgstr "Če kateri pojem ni definiran v uporabljeni terminologiji, lahko ustvarite nov predlog koncepta, ki se pošlje upravljavcem terminologije."
+msgstr "Če kateri pojem ni definiran v uporabljeni terminologiji, lahko ustvarite nov predlog pojma, ki se pošlje upravljavcem terminologije."
 
 msgid "Select name and description"
 msgstr "Izberite ime in opis"
@@ -1040,7 +1043,7 @@ msgid "Select super class"
 msgstr "Izberite super razred"
 
 msgid "Select the vocabulary that is missing the required concept"
-msgstr "Izberite besedišče, v katerem manjka zahtevani koncept"
+msgstr "Izberite besedišče, v katerem manjka zahtevani pojem"
 
 msgid "Suggest definition or description for the concept"
 msgstr "Predlagajte definicijo ali opis pojma"
@@ -1076,7 +1079,7 @@ msgid "Vocabularies are here"
 msgstr "Terminologije lahko najdete tukaj"
 
 msgid "Vocabularies can be used to link resources to existing concepts"
-msgstr "Besedišča je mogoče uporabiti za povezovanje virov z obstoječimi koncepti"
+msgstr "Besedišča je mogoče uporabiti za povezovanje virov z obstoječimi pojmi"
 
 msgid "Vocabulary"
 msgstr "Terminologija"
@@ -1091,37 +1094,37 @@ msgid "not found in the concept database"
 msgstr "ni mogoče najti v bazi pojmov"
 
 msgid "Define concept for the new class"
-msgstr "Določite koncept za nov razred"
+msgstr "Določite pojem za nov razred"
 
 msgid "Define concept for the shape"
-msgstr "Določite koncept za obliko"
+msgstr "Določite pojem za obliko"
 
 msgid "Define concept for the new shape"
-msgstr "Določite koncept za novo obliko"
+msgstr "Določite pojem za novo obliko"
 
 msgid "Define concept for the attribute"
-msgstr "Definirajte koncept za atribut"
+msgstr "Definirajte pojem za atribut"
 
 msgid "Define concept for the new attribute"
-msgstr "Definirajte koncept za nov atribut"
+msgstr "Definirajte pojem za nov atribut"
 
 msgid "Define concept for the association"
-msgstr "Določite koncept povezave"
+msgstr "Določite pojem povezave"
 
 msgid "Define concept for the new association"
-msgstr "Določite koncept za novo povezavo"
+msgstr "Določite pojem za novo povezavo"
 
 msgid "Create new class without referencing concept"
-msgstr "Ustvarite nov razred brez koncepta sklicevanja"
+msgstr "Ustvarite nov razred brez pojma sklicevanja"
 
 msgid "Create new shape without referencing concept"
-msgstr "Ustvarite novo obliko brez sklicevanja na koncept"
+msgstr "Ustvarite novo obliko brez sklicevanja na pojem"
 
 msgid "Create new association without referencing concept"
-msgstr "Ustvarite novo povezavo brez koncepta sklicevanja"
+msgstr "Ustvarite novo povezavo brez pojma sklicevanja"
 
 msgid "Create new attribute without referencing concept"
-msgstr "Ustvarite nov atribut brez sklicevanja na koncept"
+msgstr "Ustvarite nov atribut brez sklicevanja na pojem"
 
 msgid "suggest"
 msgstr "predlagati"
@@ -1295,7 +1298,7 @@ msgid "What is description?"
 msgstr "Kakšni so opisi interoperabilnosti?"
 
 msgid "What is description content"
-msgstr "Opisi interoperabilnosti so nabor visoko uporabljivih metapodatkov, ki omogočajo harmonizacijo podatkovnih modelov in ustvarjanje interoperabilnih storitev. Bolj kot se zanašamo na digitalizacijo v naših transakcijah in poslovanju, bolj moramo zagotoviti, da je komunikacija med ljudmi in med stroji točna in sposobna ohraniti pomen podatkov – brez stalne pomoči pri interpretaciji. Opisi interoperabilnosti so sestavljeni iz konceptov, opredeljenih v skladu s terminološko teorijo kot nadzorovana terminologija, informacijskih komponent za večkratno uporabo, ki temeljijo na skupnih definicijah konceptov, in aplikacijskih profilov, ki določajo uporabo informacijskih komponent."
+msgstr "Opisi interoperabilnosti so nabor visoko uporabljivih metapodatkov, ki omogočajo harmonizacijo podatkovnih modelov in ustvarjanje interoperabilnih storitev. Bolj kot se zanašamo na digitalizacijo v naših transakcijah in poslovanju, bolj moramo zagotoviti, da je komunikacija med ljudmi in med stroji točna in sposobna ohraniti pomen podatkov – brez stalne pomoči pri interpretaciji. Opisi interoperabilnosti so sestavljeni iz pojmov, opredeljenih v skladu s terminološko teorijo kot nadzorovana terminologija, informacijskih komponent za večkratno uporabo, ki temeljijo na skupnih definicijah pojmov, in aplikacijskih profilov, ki določajo uporabo informacijskih komponent."
 
 msgid "What is method?"
 msgstr "Kaj je okvir semantične interoperabilnosti?"
@@ -1340,10 +1343,10 @@ msgid "of attribute"
 msgstr "atribut"
 
 msgid "of concept"
-msgstr "koncept"
+msgstr "pojma"
 
 msgid "of conceptSuggestion"
-msgstr "predlog koncepta"
+msgstr "predlog pojma"
 
 msgid "search attribute or association"
 msgstr "Iščite atribut ali povezavo ..."
@@ -1355,7 +1358,7 @@ msgid "search descriptions"
 msgstr "iščite opisov"
 
 msgid "Search from concept database"
-msgstr "iščite po podatkovni bazi konceptov"
+msgstr "iščite po podatkovni bazi pojmov"
 
 msgid "search namespace"
 msgstr "Iskanje imenskega prostora ..."
@@ -1448,7 +1451,7 @@ msgid "Property information"
 msgstr "Informacije o lastnosti"
 
 msgid "Concept suggestion information"
-msgstr "Informacije o predlogu koncepta"
+msgstr "Informacije o predlogu pojma"
 
 msgid "Class properties"
 msgstr "Atributi razreda in povezave"
@@ -1460,10 +1463,10 @@ msgid "Show excluded"
 msgstr "Prikaži izključene"
 
 msgid "Concept"
-msgstr "Koncept"
+msgstr "Pojem"
 
 msgid "Concept suggestion"
-msgstr "Predlog koncepta"
+msgstr "Predlog pojma"
 
 msgid "application/ld+json"
 msgstr "JSON-LD"
@@ -1565,7 +1568,7 @@ msgid "Specialize class"
 msgstr "Specializirajte razred"
 
 msgid "Define concept for the class"
-msgstr "Določite koncept za razred"
+msgstr "Določite pojem za razred"
 
 msgid "Can be selected only from this library"
 msgstr "Izberete ga lahko samo iz tega osnovnega besedišču"
@@ -1688,28 +1691,28 @@ msgid "Write reference data code"
 msgstr "Napišite kodo…"
 
 msgid "Browse concepts"
-msgstr "Brskanje konceptov"
+msgstr "Brskanje pojmov"
 
 msgid "Search concept"
-msgstr "Iščite koncept"
+msgstr "Iščite pojem"
 
 msgid "Delete concept"
-msgstr "Izbrišite koncept"
+msgstr "Izbrišite pojem"
 
 msgid "Delete concept from this library"
-msgstr "Izbrišite koncept iz te knjižnice"
+msgstr "Izbrišite pojem iz te knjižnice"
 
 msgid "Delete concept from this profile"
-msgstr "Izbrišite koncept iz tega profila"
+msgstr "Izbrišite pojem iz tega profila"
 
 msgid "Delete conceptSuggestion"
-msgstr "Izbrišite predlog koncepta"
+msgstr "Izbrišite predlog pojma"
 
 msgid "Delete conceptSuggestion from this library"
-msgstr "Izbrišite predlog koncepta iz te knjižnice"
+msgstr "Izbrišite predlog pojma iz te knjižnice"
 
 msgid "Delete conceptSuggestion from this profile"
-msgstr "Izbrišite predlog koncepta iz tega profila"
+msgstr "Izbrišite predlog pojma iz tega profila"
 
 msgid "URI stem"
 msgstr "URI steblo"
@@ -1763,10 +1766,10 @@ msgid "Defined in vocabularies"
 msgstr "Opredeljeno v besediščih"
 
 msgid "Change concept"
-msgstr "Spremenite koncept"
+msgstr "Spremenite pojem"
 
 msgid "Choose concept"
-msgstr "Izberite koncept"
+msgstr "Izberite pojem"
 
 msgid "Submit error"
 msgstr "Napaka pri pošiljanju"
@@ -1895,10 +1898,10 @@ msgid "Deep association hit"
 msgstr "Povezave"
 
 msgid "Concept status"
-msgstr "Stanje koncepta"
+msgstr "Stanje pojma"
 
 msgid "Concept modified at"
-msgstr "Koncept spremenjen na"
+msgstr "Pojem spremenjen na"
 
 msgid "ADD EMAIL SUBSCRIPTION TO RESOURCE REGARDING CHANGES?"
 msgstr "DODAJTE NAROČNINO NA E-POŠTNA OBVESTILA NA VIR GLEDE SPREMEMB?"
@@ -2006,10 +2009,10 @@ msgid "Class association id info"
 msgstr "Sekundarni identifikator razredne povezave, ki se lahko uporabi v shemi ali drugi lokalni izvedbi"
 
 msgid "Concept id"
-msgstr "ID koncepta"
+msgstr "ID pojma"
 
 msgid "Concept id info"
-msgstr "URI koncepta"
+msgstr "URI pojma"
 
 msgid "Vocabulary id"
 msgstr "ID terminologije"
@@ -2078,22 +2081,22 @@ msgid "Class association label info"
 msgstr "Ime povezave"
 
 msgid "Concept suggestion label"
-msgstr "Oznaka koncepta predloge"
+msgstr "Oznaka pojma predloge"
 
 msgid "Concept suggestion label info"
-msgstr "Predlagani izraz za koncept"
+msgstr "Predlagani izraz za pojem"
 
 msgid "Concept definition"
-msgstr "Opredelitev koncepta"
+msgstr "Opredelitev pojma"
 
 msgid "Concept definition info"
-msgstr "Podatki o definiciji koncepta"
+msgstr "Podatki o definiciji pojma"
 
 msgid "Concept suggestion definition"
-msgstr "Definicija predloga koncepta"
+msgstr "Definicija predloga pojma"
 
 msgid "Concept suggestion definition info"
-msgstr "Predlagana definicija mora vsebovati vse pomembne informacije o uporabi koncepta"
+msgstr "Predlagana definicija mora vsebovati vse pomembne informacije o uporabi pojma"
 
 msgid "Namespace label"
 msgstr "Oznaka imenskega prostora"
@@ -2210,10 +2213,10 @@ msgid "Equivalent property info"
 msgstr "Podatki o enakovredni lastnosti"
 
 msgid "Broader concept"
-msgstr "Širši koncept"
+msgstr "Širši pojem"
 
 msgid "Broader concept info"
-msgstr "Povezani širši koncept, ki opredeljuje neki kontekst za koncept"
+msgstr "Povezani širši pojem, ki opredeljuje neki kontekst za pojem"
 
 msgid "Internal group page"
 msgstr "Stran interne skupine"
