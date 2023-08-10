@@ -3,7 +3,7 @@ import { EditableForm } from 'app/components/form/editableEntityController';
 import { gettextCatalog as GettextCatalog } from 'angular-gettext';
 import { LegacyComponent } from 'app/utils/angular';
 
-const clipboardImage = '../../../assets/clippy.svg';
+const clipboardImage = 'assets/clippy.svg';
 
 @LegacyComponent({
   bindings: {

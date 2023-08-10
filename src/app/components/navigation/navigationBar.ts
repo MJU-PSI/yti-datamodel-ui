@@ -17,8 +17,6 @@ import { HelpService } from '../../help/providers/helpService';
 import { Subscription } from 'rxjs';
 import IInjectorService = angular.auto.IInjectorService;
 
-// const logo = require('../../../assets/logo.svg');
-
 @LegacyComponent({
   template: require('./navigationBar.html')
 })
