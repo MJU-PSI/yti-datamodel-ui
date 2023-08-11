@@ -128,7 +128,7 @@ msgid "Update codes"
 msgstr "Posodobite kode"
 
 msgid "Terminologies"
-msgstr "Terminologije"
+msgstr "Terminologija"
 
 msgid "Add vocabulary"
 msgstr "Dodajte besedišče"
