@@ -2573,3 +2573,39 @@ msgstr "Association"
 
 msgid "Annotation value"
 msgstr ""
+
+msgid "Attribute annotations"
+msgstr ""
+
+msgid "search annotation"
+msgstr ""
+
+msgid "Use annotation"
+msgstr ""
+
+msgid "Create new annotation without referencing concept"
+msgstr ""
+
+msgid "annotation"
+msgstr ""
+
+msgid "New annotation"
+msgstr ""
+
+msgid "Define concept for the new annotation"
+msgstr ""
+
+msgid "Annotation information"
+msgstr ""
+
+msgid "Annotation label"
+msgstr ""
+
+msgid "Annotation id"
+msgstr ""
+
+msgid "Delete annotation"
+msgstr ""
+
+msgid "Association annotations"
+msgstr "Opomba povezave"

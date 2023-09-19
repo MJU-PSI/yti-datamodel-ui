@@ -2,5 +2,6 @@ __config = {
   production: false,
   keycloakUrl: "http://localhost:8080/auth",
   keycloakRealm: "psi",
-  keycloakClientId: "psi-frontend"
+  keycloakClientId: "psi-frontend",
+  baseHref:"slovar"
 };
