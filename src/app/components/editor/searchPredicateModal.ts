@@ -326,7 +326,7 @@ export class SearchPredicateController implements SearchController<PredicateList
   }
 
   isAnnotationAddable(): boolean {
-    return !!this.searchText && !this.onlySelection && (this.typeSelectable || this.type === 'annotation');
+    return !!this.searchText && !this.onlySelection && this.type === 'annotation';
   }
 }
 
