@@ -2609,3 +2609,6 @@ msgstr ""
 
 msgid "Association annotations"
 msgstr "Opomba povezave"
+
+msgid "Select annotation"
+msgstr ""

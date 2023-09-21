@@ -44,7 +44,9 @@ export class AddPropertiesFromClassModalController {
               private exclude: (property: Property) => boolean) {
     'ngInject';
     const propertiesWithKnownType = klass.properties.filter(p => p.normalizedPredicateType);
-    this.properties = stringMapToObject(groupBy(propertiesWithKnownType, property => property.normalizedPredicateType!));
+    const annotationsWithKnownType = klass.annotations.filter(p => p.normalizedPredicateType);
+    const allPreoperties = propertiesWithKnownType.concat(annotationsWithKnownType);
+    this.properties = stringMapToObject(groupBy(allPreoperties, property => property.normalizedPredicateType!));
     this.selectAllWithKnownPredicates();
   }
 
