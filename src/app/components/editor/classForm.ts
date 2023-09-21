@@ -123,7 +123,7 @@ export class ClassFormComponent {
   }
 
   addAnnotation() {
-    this.searchPredicateModal.openAddAnnotation(this.model)
+    this.searchPredicateModal.openAddAnnotation(this.model, this.class.annotations)
       .then(property => {
         this.class.addProperty(property);
         this.openPropertyId = property.internalId.uuid;

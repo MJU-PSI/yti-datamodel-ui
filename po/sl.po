@@ -2472,3 +2472,6 @@ msgstr "Opomba povezave"
 
 msgid "Select annotation"
 msgstr "Izberite opombo"
+
+msgid "Create and use annotation"
+msgstr "Ustvarite in uporabite opombo"

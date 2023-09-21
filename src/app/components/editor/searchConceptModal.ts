@@ -205,7 +205,7 @@ class SearchConceptController implements SearchController<Concept> {
       const addWithoutConcept = this.gettextCatalog.getString('Create new ' + this.type + ' without referencing concept');
 
       this.searchResults = [
-        new AddNewConcept(addNewText,  () => this.canAddNew()),
+        new AddNewConcept(addNewText,  () => this.canAddNew()), //
         new AddWithoutConcept(addWithoutConcept,  () => this.newEntityCreation),
         ...filterAndSortSearchResults<Concept>(this.queryResults, this.searchText, this.contentExtractors, this.searchFilters, defaultLabelComparator(this.localizer))
       ];
@@ -251,7 +251,7 @@ class SearchConceptController implements SearchController<Concept> {
   }
 
   canAddNew() {
-    return this.allowSuggestions && !!this.searchText && this.vocabularies.length > 0;
+    return this.allowSuggestions && !!this.searchText && this.vocabularies.length > 0 && this.type != 'annotation';
   }
 
   confirm() {

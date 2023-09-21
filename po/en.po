@@ -2612,3 +2612,6 @@ msgstr "Opomba povezave"
 
 msgid "Select annotation"
 msgstr ""
+
+msgid "Create and use annotation"
+msgstr ""

@@ -92,7 +92,7 @@ export class PredicateFormComponent {
   }
 
   addAnnotation() {
-    this.searchPredicateModal.openAddAnnotation(this.model)
+    this.searchPredicateModal.openAddAnnotation(this.model, this.predicate.annotations)
       .then(property => {
         this.predicate.addAnnotation(property);
         this.openPropertyId = property.internalId.uuid;

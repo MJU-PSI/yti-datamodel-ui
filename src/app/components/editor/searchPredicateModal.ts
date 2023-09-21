@@ -32,7 +32,7 @@ export class SearchPredicateModal {
 
   // deprecated
   openAddPredicate(model: Model, type: KnownPredicateType, exclude: Exclusion<AbstractPredicate> = noExclude): IPromise<ExternalEntity | EntityCreation | Predicate> {
-    return this.openModal(model, type, undefined, exclude, false, false);
+    return this.openModal(model, type, undefined, exclude, false, false, false);
   }
 
   openAddProperty(model: Model, klass: Class): IPromise<Property> {
@@ -42,7 +42,7 @@ export class SearchPredicateModal {
       createDefinedByExclusion(model)
     );
 
-    return this.openModal(model, null, undefined, exclude, false, true, false).then(predicate => {
+    return this.openModal(model, null, undefined, exclude, false, true, false, true).then(predicate => {
       if (predicate instanceof Predicate && predicate.normalizedType === 'property') {
         return this.choosePredicateTypeModal.open().then(type => {
           return this.classService.newProperty(predicate, type, model);
@@ -53,21 +53,26 @@ export class SearchPredicateModal {
     });
   }
 
-  openAddAnnotation(model: Model, exclude: Exclusion<AbstractPredicate> = noExclude): IPromise<Property> {
-    return this.openModal(model, 'annotation', undefined, exclude, false, true, false).then(predicate => {
+  openAddAnnotation(model: Model, annotations: Property[]): IPromise<Property> {
+    const exclude = combineExclusions<PredicateListItem>(
+      createExistsExclusion(collectProperties(annotations.filter(p => p.isAnnotation), p => p.predicateId.uri)),
+      createDefinedByExclusion(model)
+    );
+
+    return this.openModal(model, 'annotation', undefined, exclude, false, true, false, true).then(predicate => {
       return this.classService.newProperty(predicate, predicate.normalizedType as KnownPredicateType, model);
     });
   }
 
   openWithCustomDataSource(model: Model, type: KnownPredicateType, dataSource: DataSource<PredicateListItem>, exclude: Exclusion<AbstractPredicate> = noExclude): IPromise<Predicate> {
-    return this.openModal(model, type, dataSource, exclude, true, false);
+    return this.openModal(model, type, dataSource, exclude, true, false, false, false);
   }
 
   openWithOnlySelection(model: Model, type: KnownPredicateType, exclude: Exclusion<AbstractPredicate> = noExclude, requiredByInUse: boolean = false): IPromise<Predicate> {
-    return this.openModal(model, type, undefined, exclude, true, true, requiredByInUse);
+    return this.openModal(model, type, undefined, exclude, true, true, requiredByInUse, false);
   }
 
-  private openModal(model: Model, type: KnownPredicateType | null, customDataSource: DataSource<PredicateListItem> | undefined, exclude: Exclusion<AbstractPredicate>, onlySelection: boolean, allowExternal: boolean, requiredByInUse: boolean = false) {
+  private openModal(model: Model, type: KnownPredicateType | null, customDataSource: DataSource<PredicateListItem> | undefined, exclude: Exclusion<AbstractPredicate>, onlySelection: boolean, allowExternal: boolean, requiredByInUse: boolean = false, addingNew: boolean = false) {
     return this.$uibModal.open({
       template: require('./searchPredicateModal.html'),
       size: 'lg',
@@ -81,7 +86,8 @@ export class SearchPredicateModal {
         onlySelection: () => onlySelection,
         allowExternal: () => allowExternal,
         customDataSource: () => customDataSource,
-        requiredByInUse: () => requiredByInUse
+        requiredByInUse: () => requiredByInUse,
+        addingNew: () => addingNew
       }
     }).result;
   }
@@ -122,6 +128,7 @@ export class SearchPredicateController implements SearchController<PredicateList
               public onlySelection: boolean,
               public allowExternal: boolean,
               public requiredByInUse: boolean,
+              public addingNew: boolean,
               private predicateService: PredicateService,
               languageService: LanguageService,
               private searchConceptModal: SearchConceptModal,
@@ -300,7 +307,7 @@ export class SearchPredicateController implements SearchController<PredicateList
   createNew(type: KnownPredicateType) {
     return this.searchConceptModal.openNewEntityCreation(this.model.vocabularies, this.model, type, this.searchText)
       .then(result => {
-        if (!this.typeSelectable) {
+        if (!this.addingNew) {
           this.$uibModalInstance.close(result);
         } else {
           this.predicateService.newPredicate(this.model, result.entity.label, result.conceptId, type, this.localizer.language)
