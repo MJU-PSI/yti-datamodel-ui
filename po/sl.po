@@ -2475,3 +2475,9 @@ msgstr "Izberite opombo"
 
 msgid "Create and use annotation"
 msgstr "Ustvarite in uporabite opombo"
+
+msgid "Shape annotations"
+msgstr "Oblikujte opombe"
+
+msgid "Copy annotation"
+msgstr "Kopiraj opombo"

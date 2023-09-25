@@ -2615,3 +2615,9 @@ msgstr ""
 
 msgid "Create and use annotation"
 msgstr ""
+
+msgid "Shape annotations"
+msgstr ""
+
+msgid "Copy annotation"
+msgstr ""

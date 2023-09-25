@@ -116,12 +116,12 @@
                 ng-click="$ctrl.copyPredicate($ctrl.selection)">
           {{'Copy ' + $ctrl.type | translate}}
         </button>
-        <button id="{{'create_sub_predicate_' + $ctrl.selection.id + '_button'}}"
+        <button ng-show="$ctrl.canCreateSubPredicate()" id="{{'create_sub_predicate_' + $ctrl.selection.id + '_button'}}"
                 class="dropdown-item"
                 ng-click="$ctrl.createSubPredicate($ctrl.selection)">
           {{'Create sub ' + $ctrl.type | translate}}
         </button>
-        <button id="{{'create_super_predicate_' + $ctrl.selection.id + '_button'}}"
+        <button ng-show="$ctrl.canCreateSuperPredicate()" id="{{'create_super_predicate_' + $ctrl.selection.id + '_button'}}"
                 class="dropdown-item"
                 ng-click="$ctrl.createSuperPredicate($ctrl.selection)">
           {{'Create super ' + $ctrl.type | translate}}
