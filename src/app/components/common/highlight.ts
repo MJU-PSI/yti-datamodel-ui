@@ -96,8 +96,7 @@ export class HighlightComponent {
 export const HighlightFilter: FilterFactory = ($sce: ISCEService) => {
   'ngInject';
   return (text: string, search: string) => {
-    const highlightedText = applyHighlight(text, search);
-    return $sce.trustAsHtml(highlightedText);
+    return applyHighlight(text, search);
   };
 };
 

@@ -18,7 +18,7 @@ export class ParagraphizeComponent {
 export const ParagraphizeFilter: FilterFactory = ($sce: ISCEService) => {
   'ngInject';
   return (text: string) => {
-    return $sce.trustAsHtml(applyParagraph(text));
+    return applyParagraph(text);
   };
 };
 
