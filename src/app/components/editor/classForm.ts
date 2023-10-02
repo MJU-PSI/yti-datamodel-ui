@@ -123,7 +123,7 @@ export class ClassFormComponent {
   }
 
   addAnnotation() {
-    this.searchPredicateModal.openAddAnnotation(this.model)
+    this.searchPredicateModal.openAddAnnotation(this.model, this.class.annotations)
       .then(property => {
         this.class.addProperty(property);
         this.openPropertyId = property.internalId.uuid;
@@ -149,9 +149,9 @@ export class ClassFormComponent {
   }
 
   addPropertiesFromClass(klass: Class, classType: string) {
-    if (klass && klass.properties.length > 0) {
-
-      const existingPredicates = new Set<string>(this.class.properties.map(property => property.predicateId.uri));
+    if (klass && (klass.properties.length > 0 || klass.annotations.length > 0)) {
+      const allProperties = this.class.properties.concat(this.class.annotations);
+      const existingPredicates = new Set<string>(allProperties.map(property => property.predicateId.uri));
       const exclude = (property: Property) => existingPredicates.has(property.predicateId.uri);
 
       this.addPropertiesFromClassModal.open(klass, classType, this.model, exclude)

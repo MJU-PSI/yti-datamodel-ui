@@ -5,7 +5,6 @@ import { LanguageService } from 'app/services/languageService';
 import { TranslateService } from '@ngx-translate/core';
 import { LegacyComponent } from 'app/utils/angular';
 
-
 @LegacyComponent({
   template: require('./breadcrumb.html')
 })

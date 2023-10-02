@@ -1121,7 +1121,7 @@ msgid "Create new shape without referencing concept"
 msgstr "Ustvarite novo obliko brez sklicevanja na pojem"
 
 msgid "Create new association without referencing concept"
-msgstr "Ustvarite novo povezavo brez pojma sklicevanja"
+msgstr "Ustvarite novo povezavo brez sklicevanja na pojem"
 
 msgid "Create new attribute without referencing concept"
 msgstr "Ustvarite nov atribut brez sklicevanja na pojem"
@@ -1472,7 +1472,7 @@ msgid "application/ld+json"
 msgstr "JSON-LD"
 
 msgid "text/turtle"
-msgstr "Želva"
+msgstr "Turtle"
 
 msgid "application/xml"
 msgstr "XML"
@@ -2432,4 +2432,52 @@ msgid "Create new annotation"
 msgstr "Ustvari novo opombo"
 
 msgid "Annotation value"
-msgstr "Vrednost anotacije"
+msgstr "Vrednost opombe"
+
+msgid "Attribute annotations"
+msgstr "Opombe atributa"
+
+msgid "search annotation"
+msgstr "poišči opombo"
+
+msgid "Use annotation"
+msgstr "Uporabi opombo"
+
+msgid "Create new annotation without referencing concept"
+msgstr "Ustvari novo opombo brez sklicevanja na pojem"
+
+msgid "annotation"
+msgstr "Opomba"
+
+msgid "New annotation"
+msgstr "Nova opomba"
+
+msgid "Define concept for the new annotation"
+msgstr "Določite pojem za opombo"
+
+msgid "Annotation information"
+msgstr "Informacija o opombi"
+
+msgid "Annotation label"
+msgstr "Oznaka opombe"
+
+msgid "Annotation id"
+msgstr "ID opombe"
+
+msgid "Delete annotation"
+msgstr "Izbriši opombo"
+
+msgid "Association annotations"
+msgstr "Opomba povezave"
+
+msgid "Select annotation"
+msgstr "Izberite opombo"
+
+msgid "Create and use annotation"
+msgstr "Ustvarite in uporabite opombo"
+
+msgid "Shape annotations"
+msgstr "Oblikujte opombe"
+
+msgid "Copy annotation"
+msgstr "Kopiraj opombo"
