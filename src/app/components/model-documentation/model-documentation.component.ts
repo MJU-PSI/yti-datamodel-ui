@@ -78,7 +78,7 @@ export class ModelDocumentationComponent implements OnInit, OnDestroy, OnChanges
     this.select(this.model);
 
     this.updateModelLanguage();
-    this.languageService.modelLanguageChange$
+    this.languageService.contentLanguage$
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.updateModelLanguage();

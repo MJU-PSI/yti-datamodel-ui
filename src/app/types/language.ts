@@ -17,7 +17,7 @@ export type Language =
   | 'si' | 'sk' | 'sl' | 'st' | 'es' | 'su' | 'sw' | 'ss' | 'sv' | 'ta' | 'tg' | 'th' | 'ti'
   | 'bo' | 'tk' | 'tl' | 'tn' | 'to' | 'tr' | 'ts' | 'tt' | 'tw' | 'ty' | 'ug' | 'uk' | 'ur'
   | 'uz' | 've' | 'vi' | 'vo' | 'wa' | 'cy' | 'wo' | 'fy' | 'xh' | 'yi' | 'yo' | 'za' | 'zu'
-  | 'prs' | 'smn' | 'sms';
+  | 'prs' | 'smn' | 'sms' | string;
 
 export const availableLanguages: Language[] = [
     'ab', 'aa', 'af', 'ak', 'sq', 'am', 'ar', 'an', 'hy', 'as', 'av', 'ae', 'ay',
