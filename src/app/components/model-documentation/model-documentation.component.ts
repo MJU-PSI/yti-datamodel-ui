@@ -11,6 +11,8 @@ import { takeUntil } from "rxjs/operators";
 import { AuthorizationManagerService } from "app/services/authorizationManagerService";
 import { ErrorModalService, defaultLanguage } from "@mju-psi/yti-common-ui";
 import { MdEditorOption } from "ngx-markdown-editor";
+import { DomSanitizer } from "@angular/platform-browser";
+import * as DOMPurify from "dompurify";
 
 @Component({
   selector: 'model-documentation',
@@ -60,7 +62,8 @@ export class ModelDocumentationComponent implements OnInit, OnDestroy, OnChanges
     // or the other services shouldn't be wrappers?
     private languageService: LanguageService,
     authorizationManagerServiceWrapper: AuthorizationManagerServiceWrapper,
-    private errorModalService: ErrorModalService
+    private errorModalService: ErrorModalService,
+    private sanitizer: DomSanitizer
   ) {
     this.modelService = modelServiceWrapper.modelService;
     this.authorizationManagerService = authorizationManagerServiceWrapper.authorizationManagerService;
@@ -224,5 +227,10 @@ export class ModelDocumentationComponent implements OnInit, OnDestroy, OnChanges
       this.options.enablePreviewContentClick = true;
     }
     this.options = Object.assign({}, this.options);
+  }
+
+  preRenderFunc(content: string) {
+    const sanitizedContent = DOMPurify.sanitize(content);
+    return this.sanitizer.bypassSecurityTrustHtml(sanitizedContent);
   }
 }
