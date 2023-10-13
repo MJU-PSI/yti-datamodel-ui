@@ -67,6 +67,7 @@ export class ModelDocumentationComponent implements OnInit, OnDestroy, OnChanges
   ) {
     this.modelService = modelServiceWrapper.modelService;
     this.authorizationManagerService = authorizationManagerServiceWrapper.authorizationManagerService;
+    this.preRenderFunc = this.preRenderFunc.bind(this);
   }
 
   ngOnInit() {
@@ -231,6 +232,7 @@ export class ModelDocumentationComponent implements OnInit, OnDestroy, OnChanges
 
   preRenderFunc(content: string) {
     const sanitizedContent = DOMPurify.sanitize(content);
-    return this.sanitizer.bypassSecurityTrustHtml(sanitizedContent);
+    const value: any = this.sanitizer.bypassSecurityTrustHtml(sanitizedContent);
+    return value['changingThisBreaksApplicationSecurity'];
   }
 }
