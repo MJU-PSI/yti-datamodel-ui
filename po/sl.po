@@ -68,10 +68,10 @@ msgid "Use context"
 msgstr "Uporabite kontekst"
 
 msgid "Classifications"
-msgstr "Informacijske domene"
+msgstr "Informacijska področja"
 
 msgid "Add classification"
-msgstr "Dodajte domeno"
+msgstr "Dodajte področje"
 
 msgid "Contributors"
 msgstr "Sodelujoči"
@@ -125,9 +125,9 @@ msgid "Reference data information"
 msgstr "Informacije o referenčnih podatkih"
 
 msgid "Update codes"
-msgstr "Posodobite kode"
+msgstr "Posodobite šifre"
 
-msgid "Terminologies"
+msgid "Terminology"
 msgstr "Terminologija"
 
 msgid "Add vocabulary"
@@ -148,7 +148,7 @@ msgstr "naslednji"
 msgid "close"
 msgstr "zaprite"
 
-msgid "Data Vocabularies"
+msgid "Data models"
 msgstr "Podatkovni modeli"
 
 msgid "Confirm delete"
@@ -173,7 +173,7 @@ msgid "Historical versions"
 msgstr "Različice zgodovine"
 
 msgid "Choose action"
-msgstr "Izberite akcijo"
+msgstr "Izberite dejanje"
 
 msgid "Add email subscription"
 msgstr "Dodajte naročnino na e-poštna obvestila"
@@ -260,7 +260,7 @@ msgid "Include:"
 msgstr "Vključite:"
 
 msgid "All information domains"
-msgstr "Vse informacijske domene"
+msgstr "Vsa informacijska področja"
 
 msgid "All class types"
 msgstr "Vse vrste razredov"
@@ -377,10 +377,10 @@ msgid "Must be imported namespace"
 msgstr "Imenski prostor mora biti uvožen"
 
 msgid "Is not valid language code"
-msgstr "Neveljavna koda jezika"
+msgstr "Neveljavna šifra jezika"
 
 msgid "Is not valid reference data code"
-msgstr "Neveljavna referenčna podatkovna koda"
+msgstr "Neveljavna referenčna podatkovna šifra"
 
 msgid "INFO_TEXT_FRONTPAGE_SEARCH"
 msgstr "Imena modelov se iščejo kot privzeto. Iščete lahko tudi po vsebini, tako da kliknete polje »Razširite iskanje«."
@@ -389,7 +389,7 @@ msgid "Search term"
 msgstr "Iskalni izraz"
 
 msgid "INFO_TEXT_FRONTPAGE_FILTER_W_CLASSIFICATION"
-msgstr "Vsi modeli so razvrščeni v informacijske domene. Če želite videti modele, razvrščene v določeno informacijsko domeno, kliknite ime informacijske domene. Filter lahko odstranite s ponovnim klikom na ime informacijske domene."
+msgstr "Vsi modeli so razvrščeni v informacijska področja. Če želite videti modele, razvrščene v določeno informacijsko področje, kliknite ime informacijskega področja. Filter lahko odstranite s ponovnim klikom na ime informacijsko področje."
 
 msgid "INFO_TEXT_FRONTPAGE_FILTER_RESULTS"
 msgstr "Rezultate iskanja lahko filtrirate z informacijami o organizaciji, vrsti ali statusu. Organizacija je za organizacijo, ki je odgovorna za vzdrževanje modela. Vrsta je bodisi osnovno besedišče ali profil aplikacije. Status je za status upravljanja modela."
@@ -410,7 +410,7 @@ msgid "ADD_PROFILE_BUTTON_TEXT"
 msgstr "Nov profil"
 
 msgid "ToolInfo"
-msgstr "Orodje Data Vocabularies Tool je storitev za upravljanje in objavljanje knjižnic osnovnih komponent in profilov aplikacij kot povezanih podatkovnih modelov. Ključne komponente so podatkovne specifikacije za usklajevanje informacij, ki jih skupaj uporabljajo različni akterji. Aplikacijski profili ponovno uporabljajo obstoječe ključne komponente in mednarodno povezana priporočila za podatke za opis semantike informacijskih struktur za podporo interoperabilnosti informacijskih sistemov."
+msgstr "Orodje za podatkovne modele se uporablja za zbiranje, vzdrževanje in objavo podatkovnih modelov temeljnih registrov in osrednjih informacijskih rešitev javne uprave."
 
 msgid "Search model"
 msgstr "Iščite model"
@@ -422,7 +422,7 @@ msgid "to content"
 msgstr "do vsebine"
 
 msgid "Filter with information domain"
-msgstr "Filtrirajte z informacijsko domeno"
+msgstr "Filtrirajte z informacijskim področjem"
 
 msgid "Filter results"
 msgstr "Filtrirajte rezultate"
@@ -488,13 +488,13 @@ msgid "Datamodel documentation"
 msgstr "Dokumentacija podatkovnega modela"
 
 msgid "Information domain"
-msgstr "Informacijska domena"
+msgstr "Informacijsko področje"
 
 msgid "Organization"
 msgstr "Organizacija"
 
 msgid "Browse reference data codes"
-msgstr "Brskajte po referenčnih podatkih kod"
+msgstr "Brskajte po referenčnih podatkih šifr"
 
 msgid "Identifier"
 msgstr "Identifikator"
@@ -503,7 +503,7 @@ msgid "Title"
 msgstr "Naslov"
 
 msgid "Select domain"
-msgstr "Izberite domeno"
+msgstr "Izberite področje"
 
 msgid "Show technical namespaces"
 msgstr "Prikažite tehnične imenske prostore"
@@ -728,7 +728,7 @@ msgid "Guide through specializing a class"
 msgstr "Vodič skozi specializacijo razreda"
 
 msgid "Add classification info"
-msgstr "Informacijska domena razvršča podatkovne modele v določen kontekst uporabe"
+msgstr "Informacijsko področje razvršča podatkovne modele v določen kontekst uporabe"
 
 msgid "Add contributor info"
 msgstr "Sodelujoči so organizacije, ki lahko urejajo podatkovni model."
@@ -740,7 +740,7 @@ msgid "Add library description"
 msgstr "Tukaj dodajte novo osnovno besedišče"
 
 msgid "Add model description"
-msgstr "Dodajte osnovno besedišče, specifično za domeno, ali profil aplikacije, specifičen za aplikacijo"
+msgstr "Dodajte osnovno besedišče, specifično za področje, ali profil aplikacije, specifičen za aplikacijo"
 
 msgid "Add new property"
 msgstr "Dodajte novo lastnost"
@@ -809,7 +809,7 @@ msgid "Classes can be seen visually here"
 msgstr "Razrede si lahko vizualno ogledate tukaj"
 
 msgid "Classifications are here"
-msgstr "Izbrane domene se nahajajo tukaj"
+msgstr "Izbrana področja se nahajajo tukaj"
 
 msgid "Concept is here"
 msgstr "Pojem se nahaja tukaj"
@@ -917,7 +917,7 @@ msgid "Model languages"
 msgstr "Jeziki modelov"
 
 msgid "Model languages info"
-msgstr "Modele je mogoče lokalizirati v več jezikov. Uporabljeni jeziki so tukaj navedeni kot jezikovne kode ISO 639-2."
+msgstr "Modele je mogoče lokalizirati v več jezikov. Uporabljeni jeziki so tukaj navedeni kot jezikovne šifre ISO 639-2."
 
 msgid "Modify class"
 msgstr "Spremenite razred"
@@ -1028,10 +1028,10 @@ msgid "Select new creation info"
 msgstr "Če nekega razreda ni mogoče najti, ga lahko ustvarite tukaj"
 
 msgid "Select registration number and vehicle code"
-msgstr "Izberite registrsko številko in kodo vozila"
+msgstr "Izberite registrsko številko in šifro vozila"
 
 msgid "Select registration number and vehicle code info"
-msgstr "Izberite podatke o registrski številki in kodi vozila"
+msgstr "Izberite podatke o registrski številki in šifri vozila"
 
 msgid "Select search result"
 msgstr "Izberite rezultat iskanja"
@@ -1658,7 +1658,7 @@ msgid "Assigned to this library"
 msgstr "Dodeljeno temu osnovnemu besedišču"
 
 msgid "language code"
-msgstr "koda jezika"
+msgstr "šifra jezika"
 
 msgid "Internal vocabulary"
 msgstr "Interna terminologija"
@@ -1688,7 +1688,7 @@ msgid "Choose reference data"
 msgstr "Izberite referenčne podatke"
 
 msgid "Write reference data code"
-msgstr "Napišite kodo…"
+msgstr "Napišite šifro"
 
 msgid "Browse concepts"
 msgstr "Brskanje pojmov"
@@ -2042,7 +2042,7 @@ msgid "Group label"
 msgstr "Oznaka skupine"
 
 msgid "Group label info"
-msgstr "Ime informacijske domene"
+msgstr "Ime informacijskega področje"
 
 msgid "Class label"
 msgstr "Oznaka razreda"

@@ -140,7 +140,7 @@ msgstr "Koodiston tiedot"
 msgid "Update codes"
 msgstr "Päivitä koodit"
 
-msgid "Terminologies"
+msgid "Terminology"
 msgstr "Käytetyt sanastot"
 
 msgid "Add vocabulary"
@@ -161,7 +161,7 @@ msgstr "seuraava"
 msgid "close"
 msgstr "sulje"
 
-msgid "Data Vocabularies"
+msgid "Data models"
 msgstr "Tietomallit"
 
 msgid "Confirm delete"
@@ -603,7 +603,7 @@ msgstr "KIRJAUDU ULOS"
 msgid "User details"
 msgstr "Käyttäjätiedot"
 
-msgid "Terminologies"
+msgid "Terminology"
 msgstr "Sanastot"
 
 msgid "Reference Data"

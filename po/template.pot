@@ -125,7 +125,7 @@ msgstr ""
 msgid "Reference data information"
 msgstr ""
 
-msgid "Terminologies"
+msgid "Terminology"
 msgstr ""
 
 msgid "Add vocabulary"
@@ -146,7 +146,7 @@ msgstr ""
 msgid "close"
 msgstr ""
 
-msgid "Data Vocabularies"
+msgid "Data models"
 msgstr ""
 
 msgid "Confirm delete"
@@ -553,7 +553,7 @@ msgstr ""
 msgid "User details"
 msgstr ""
 
-msgid "Terminologies"
+msgid "Terminology"
 msgstr ""
 
 msgid "Reference Data"

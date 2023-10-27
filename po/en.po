@@ -137,7 +137,7 @@ msgstr ""
 msgid "Update codes"
 msgstr ""
 
-msgid "Terminologies"
+msgid "Terminology"
 msgstr ""
 
 msgid "Add vocabulary"
@@ -158,7 +158,7 @@ msgstr ""
 msgid "close"
 msgstr ""
 
-msgid "Data Vocabularies"
+msgid "Data models"
 msgstr ""
 
 msgid "Confirm delete"
@@ -447,7 +447,7 @@ msgstr "New profile"
 
 msgid "ToolInfo"
 msgstr ""
-"The Data Vocabularies Tool is a service for managing and publishing core "
+"The Data models Tool is a service for managing and publishing core "
 "component libraries and application profiles as linked data models. Core "
 "components are data specifications for harmonizing information used jointly "
 "by different actors. Application profiles reuse the existing core components "
@@ -596,7 +596,7 @@ msgstr ""
 msgid "User details"
 msgstr ""
 
-msgid "Terminologies"
+msgid "Terminology"
 msgstr ""
 
 msgid "Reference Data"
@@ -1792,7 +1792,7 @@ msgid "Edit namespace"
 msgstr ""
 
 msgid "Vocabularies"
-msgstr "Terminologies"
+msgstr "Terminology"
 
 msgid "Vocabulary name"
 msgstr "Terminology name"

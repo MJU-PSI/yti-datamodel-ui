@@ -63,7 +63,7 @@ export const helpImportedLibrary = {
       label: { fi: 'Osoite', en: 'Address', sl: 'Naslov', sv: 'sv test' }
     },
     code: {
-      label: { fi: 'Koodi', en: 'Code', sl: 'Koda', sv: 'sv test' }
+      label: { fi: 'Koodi', en: 'Code', sl: 'Šifra', sv: 'sv test' }
     },
     vehicle: {
       label: { fi: 'Liikenneväline', en: 'Vehicle', sl: 'Vozilo', sv: 'sv test' },
@@ -93,7 +93,7 @@ export const helpImportedLibrary = {
   },
   associations: {
     categoryCode: {
-      label: { fi: 'Lajikoodi', en: 'Category code', sl: 'Koda kategorije', sv: 'sv test' },
+      label: { fi: 'Lajikoodi', en: 'Category code', sl: 'Šifra kategorije', sv: 'sv test' },
       valueClass: classIdFromPrefixAndName('jhs', 'Koodi')
     }
   }

@@ -140,7 +140,7 @@ msgstr "Uppgifter om kodlistan"
 msgid "Update codes"
 msgstr "Uppdatera koder"
 
-msgid "Terminologies"
+msgid "Terminology"
 msgstr "Ordlistor som används"
 
 msgid "Add vocabulary"
@@ -161,7 +161,7 @@ msgstr "nästa"
 msgid "close"
 msgstr "stäng"
 
-msgid "Data Vocabularies"
+msgid "Data models"
 msgstr "Informationsmodeller"
 
 msgid "Confirm delete"
@@ -607,7 +607,7 @@ msgstr "LOGGA UT"
 msgid "User details"
 msgstr "Användaruppgifter"
 
-msgid "Terminologies"
+msgid "Terminology"
 msgstr "Ordlistor"
 
 msgid "Reference Data"

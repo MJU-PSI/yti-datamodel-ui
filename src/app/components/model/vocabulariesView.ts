@@ -27,7 +27,7 @@ interface WithVocabularies {
   },
   template: `
       <h4>
-        <span translate>Terminologies</span>
+        <span translate>Terminology</span>
         <button id="add_vocabulary_button" type="button" class="btn btn-link btn-xs pull-right" ng-click="$ctrl.addVocabulary()" ng-show="$ctrl.isEditing()">
           <span translate>Add vocabulary</span>
         </button>

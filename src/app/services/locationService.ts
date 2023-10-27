@@ -25,7 +25,7 @@ export class LocationService {
     'ngInject';
 
     configService.getConfig().then(config => {
-      this.titleTranslationSubscription = translateService.stream('Data Vocabularies').subscribe(value => {
+      this.titleTranslationSubscription = translateService.stream('Data models').subscribe(value => {
         titleService.setTitle(config.getEnvironmentIdentifier('prefix') + value);
       });
     }).catch((reason) => {console.error('Could not fetch configuration: "' + reason + '"')});
