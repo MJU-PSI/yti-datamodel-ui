@@ -356,7 +356,7 @@ msgid "Length error"
 msgstr "Napaka v dolžini"
 
 msgid "Prefix error"
-msgstr "Predpona se mora začeti z malo začetnico. Vsebuje lahko samo male črke, številke in znaka \"-\" in \"_\" kot ločila. Brez skandinavskih črk."
+msgstr "Predpona se mora začeti z malo začetnico. Vsebuje lahko samo male črke in številke č, š, ž."
 
 msgid "Negative error"
 msgstr "Napaka negativno"
