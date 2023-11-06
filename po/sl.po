@@ -116,13 +116,13 @@ msgid "Reference data"
 msgstr "Šifranti"
 
 msgid "Add reference data"
-msgstr "Dodajte referenčne podatke"
+msgstr "Dodajte šifrant"
 
 msgid "Technical namespaces"
 msgstr "Tehnični imenski prostori"
 
 msgid "Reference data information"
-msgstr "Informacije o referenčnih podatkih"
+msgstr "Informacije o šifrantu"
 
 msgid "Update codes"
 msgstr "Posodobite šifre"
@@ -188,7 +188,7 @@ msgid "Create new version"
 msgstr "Ustvarite novo različico"
 
 msgid "No referrers"
-msgstr "Brez napotiteljev"
+msgstr "Brez podatka"
 
 msgid "Usage"
 msgstr "Uporaba"
@@ -380,7 +380,7 @@ msgid "Is not valid language code"
 msgstr "Neveljavna šifra jezika"
 
 msgid "Is not valid reference data code"
-msgstr "Neveljavna referenčna podatkovna šifra"
+msgstr "Neveljavna šifra šifranta"
 
 msgid "INFO_TEXT_FRONTPAGE_SEARCH"
 msgstr "Imena modelov se iščejo kot privzeto. Iščete lahko tudi po vsebini, tako da kliknete polje »Razširite iskanje«."
@@ -392,7 +392,7 @@ msgid "INFO_TEXT_FRONTPAGE_FILTER_W_CLASSIFICATION"
 msgstr "Vsi modeli so razvrščeni v informacijska področja. Če želite videti modele, razvrščene v določeno informacijsko področje, kliknite ime informacijskega področja. Filter lahko odstranite s ponovnim klikom na ime informacijsko področje."
 
 msgid "INFO_TEXT_FRONTPAGE_FILTER_RESULTS"
-msgstr "Rezultate iskanja lahko filtrirate z informacijami o organizaciji, vrsti ali statusu. Organizacija je za organizacijo, ki je odgovorna za vzdrževanje modela. Vrsta je bodisi osnovno besedišče ali profil aplikacije. Status je za status upravljanja modela."
+msgstr "Rezultate iskanja lahko filtrirate z informacijami o organizaciji, vrsti ali statusu. Organizacija je za organizacijo, ki je odgovorna za vzdrževanje modela. Vrsta je bodisi podatkovni model ali profil aplikacije. Status je za status upravljanja modela."
 
 msgid " hit"
 msgstr "zadetek"
@@ -404,7 +404,7 @@ msgid "Add model"
 msgstr "Dodajte model"
 
 msgid "ADD_LIBRARY_BUTTON_TEXT"
-msgstr "Novo osnovno besedišče"
+msgstr "Nov podatkovni model"
 
 msgid "ADD_PROFILE_BUTTON_TEXT"
 msgstr "Nov profil"
@@ -455,7 +455,7 @@ msgid "Clear selection"
 msgstr "Počistite izbiro"
 
 msgid "Edit reference data"
-msgstr "Uredite referenčne podatke"
+msgstr "Uredite šifrant"
 
 msgid "Resources:"
 msgstr "Viri:"
@@ -494,7 +494,7 @@ msgid "Organization"
 msgstr "Organizacija"
 
 msgid "Browse reference data codes"
-msgstr "Brskajte po referenčnih podatkih šifr"
+msgstr "Brskajte po šifrah šifranta"
 
 msgid "Identifier"
 msgstr "Identifikator"
@@ -518,7 +518,7 @@ msgid "Select organization"
 msgstr "Izberite organizacijo"
 
 msgid "Search reference data"
-msgstr "Iskanje referenčnih podatkov"
+msgstr "Iskanje šifrantov"
 
 msgid "All servers"
 msgstr "Vsi strežniki"
@@ -734,13 +734,13 @@ msgid "Add contributor info"
 msgstr "Sodelujoči so organizacije, ki lahko urejajo podatkovni model."
 
 msgid "Add library"
-msgstr "Novo osnovno besedišče"
+msgstr "Nov podatkovni model"
 
 msgid "Add library description"
-msgstr "Tukaj dodajte novo osnovno besedišče"
+msgstr "Tukaj dodajte nov podatkovni model"
 
 msgid "Add model description"
-msgstr "Dodajte osnovno besedišče, specifično za področje, ali profil aplikacije, specifičen za aplikacijo"
+msgstr "Dodajte podatkovni model, specifično za področje, ali profil aplikacije, specifičen za aplikacijo"
 
 msgid "Add new property"
 msgstr "Dodajte novo lastnost"
@@ -761,7 +761,7 @@ msgid "Add reference to namespace description"
 msgstr "Uvožene imenske prostore je mogoče uporabiti za povezovanje razredov in lastnosti z drugimi standardi"
 
 msgid "Add vocabulary description"
-msgstr "Od tukaj dodajte novo besedišče"
+msgstr "Tukaj dodajte novo besedišče"
 
 msgid "Association is here"
 msgstr "Povezava je tukaj"
@@ -842,7 +842,7 @@ msgid "Congratulations for completing library creation!"
 msgstr "Čestitke za dokončan ustvarjen model!"
 
 msgid "Congratulations for completing library creation! description"
-msgstr "Zdaj lahko nadaljujete z ustvarjanjem pravih osnovnih besedišč"
+msgstr "Zdaj lahko nadaljujete z ustvarjanjem pravih podatkovnih modelov"
 
 msgid "Congratulations for completing namespace require!"
 msgstr "Čestitke za dokončan zahtevan imenski prostor!"
@@ -884,16 +884,16 @@ msgid "Guide through creating a class"
 msgstr "Vodič za ustvarjanje razreda"
 
 msgid "Guide through creating new library"
-msgstr "Vodič za ustvarjanje novega temeljnega besedišča"
+msgstr "Vodič za ustvarjanje novega podatkovnega modela"
 
 msgid "Guide through creating new library description"
-msgstr "Knjižnice osnovnega besedišča so modeli povezanih podatkov, ki definirajo razrede, lastnosti tipov podatkov in lastnosti predmetov, ki jih je mogoče ponovno uporabiti. Osnovna besedišča so ustvarjena na podlagi dobro definiranih pojmov, opisanih v terminoloških slovarjih in povezanih z obstoječimi standardi metapodatkov z uporabo URI-jev."
+msgstr "Knjižnice podatkovnega modela so modeli povezanih podatkov, ki definirajo razrede, lastnosti tipov podatkov in lastnosti predmetov, ki jih je mogoče ponovno uporabiti. Podatkovni modeli so ustvarjena na podlagi dobro definiranih pojmov, opisanih v terminoloških slovarjih in povezanih z obstoječimi standardi metapodatkov z uporabo URI-jev."
 
 msgid "Guide through creating new profile"
 msgstr "Vodič za ustvarjanje novega profila aplikacije"
 
 msgid "Guide through creating new profile description"
-msgstr "Aplikacijski profili so strojno berljivi informacijski modeli, ki dokumentirajo informacijske strukture z uporabo oblik, ustvarjenih iz osnovnih besedišč in drugih zunanjih povezanih podatkovnih modelov. Aplikacijske profile je mogoče uporabiti za dokumentiranje informacijskih struktur, povezovanje aplikacijskih specifičnih podatkovnih modelov z mednarodnimi standardi in uporabo aplikacijskega profila kot osnove za fizični podatkovni model v kateri koli sintaksi."
+msgstr "Aplikacijski profili so strojno berljivi informacijski modeli, ki dokumentirajo informacijske strukture z uporabo oblik, ustvarjenih iz podatkovnih modelov in drugih zunanjih povezanih podatkovnih modelov. Aplikacijske profile je mogoče uporabiti za dokumentiranje informacijskih struktur, povezovanje aplikacijskih specifičnih podatkovnih modelov z mednarodnimi standardi in uporabo aplikacijskega profila kot osnove za fizični podatkovni model v kateri koli sintaksi."
 
 msgid "Guide through requiring a namespace"
 msgstr "Vodič za zahtevanje imenskega prostora"
@@ -908,10 +908,10 @@ msgid "Imported namespaces can be used to link resources to existing standards"
 msgstr "Uvožene imenske prostore je mogoče uporabiti za povezovanje virov z obstoječimi standardi"
 
 msgid "Library label"
-msgstr "Oznaka osnovnega besedišča"
+msgstr "Oznaka podatkovnega modela"
 
 msgid "Library label info"
-msgstr "Ime osnovnega besedišča"
+msgstr "Ime podatkovnega modela"
 
 msgid "Model languages"
 msgstr "Jeziki modelov"
@@ -923,10 +923,10 @@ msgid "Modify class"
 msgstr "Spremenite razred"
 
 msgid "Modify library"
-msgstr "Spremenite osnovna besedišča"
+msgstr "Spremenite podatkovni model"
 
 msgid "Modify library description"
-msgstr "Tu lahko spremenite osnovno besedišče"
+msgstr "Tu lahko spremenite podatkovni model"
 
 msgid "Modify profile"
 msgstr "Spremenite profil"
@@ -938,13 +938,13 @@ msgid "Open library details"
 msgstr "Odprite podrobnosti knjižnice"
 
 msgid "Open library details description"
-msgstr "Informacije o osnovnem besedišču lahko najdete tukaj. Ta plošča vsebuje informacije o uporabljenih imenskih prostorih, terminologiji, referenčnih podatkih in generični dokumentaciji o modelu. Iz te plošče lahko tudi izvozite podatkovni model v različnih formatih."
+msgstr "Informacije o podatkovnem modelu lahko najdete tukaj. Ta zavihek vsebuje informacije o uporabljenih imenskih prostorih, terminologiji, šifrantih in generični dokumentaciji o modelu. Tu lahko tudi izvozite podatkovni model v različnih formatih."
 
 msgid "Open profile details"
 msgstr "Odprite podrobnosti profila"
 
 msgid "Open profile details description"
-msgstr "Informacije o profilu aplikacije najdete tukaj. Ta plošča vsebuje informacije o uporabljenih imenskih prostorih, terminologiji, referenčnih podatkih, zgodovini podatkovnega modela. Iz te plošče lahko tudi izvozite podatkovni model v različnih formatih."
+msgstr "Informacije o profilu aplikacije najdete tukaj. Ta zavihek vsebuje informacije o uporabljenih imenskih prostorih, terminologiji, šifrantih, zgodovini podatkovnega modela. Tu lahko tudi izvozite podatkovni model v različnih formatih."
 
 msgid "Prefix"
 msgstr "Predpona"
@@ -1166,13 +1166,13 @@ msgid "Front page"
 msgstr "Naslovna stran"
 
 msgid "New library creation"
-msgstr "Novo osnovno besedišče"
+msgstr "Nov podatkoni model"
 
 msgid "New profile creation"
 msgstr "Ustvarjanje novega profila"
 
 msgid "Delete library"
-msgstr "Izbrišite osnovno besedišče"
+msgstr "Izbrišite podatkovni model"
 
 msgid "Delete profile"
 msgstr "Izbrišite profil"
@@ -1181,10 +1181,10 @@ msgid "group"
 msgstr "skupina"
 
 msgid "model"
-msgstr "Osnovno besedišče"
+msgstr "Podatkovni model"
 
 msgid "library"
-msgstr "Osnovno besedišče"
+msgstr "Podatkovni model"
 
 msgid "shape"
 msgstr "oblika"
@@ -1250,7 +1250,7 @@ msgid "Delete shape"
 msgstr "Izbrišite obliko"
 
 msgid "Delete class from this library"
-msgstr "Izbrišite razred iz tega osnovnega besedišča"
+msgstr "Izbrišite razred iz tega podatkovnega modela"
 
 msgid "Delete shape from this library"
 msgstr "Izbrišite obliko iz te knjižnice"
@@ -1265,7 +1265,7 @@ msgid "Delete attribute"
 msgstr "Izbrišite atribut"
 
 msgid "Delete attribute from this library"
-msgstr "Izbrišite atribut iz tega osnovnega besedišča"
+msgstr "Izbrišite atribut iz tega podatkovnega modela"
 
 msgid "Delete attribute from this profile"
 msgstr "Izbrišite atribut iz tega profila"
@@ -1280,7 +1280,7 @@ msgid "Delete association"
 msgstr "Izbrišite povezavo"
 
 msgid "Delete association from this library"
-msgstr "Izbrišite povezavo iz tega osnovnega besedišča"
+msgstr "Izbrišite povezavo iz tega podatkovenga modela"
 
 msgid "Delete association from this profile"
 msgstr "Izbrišite povezavo z tega profila"
@@ -1304,10 +1304,10 @@ msgid "What is method?"
 msgstr "Kaj je okvir semantične interoperabilnosti?"
 
 msgid "What is method content"
-msgstr "Ogrodje semantične interoperabilnosti opisuje metodo za definiranje metapodatkov informacijskih sistemov na tehnološko neodvisen način. Tvori strukturirano skupno arhitekturo, ki povezuje terminološko delo, modeliranje podatkov in referenčne podatke. Metoda temelji na mednarodnih standardih in priporočilih. Preberite več o metodi in razvoju orodij <a href=\"https://confluence.csc.fi/display/korkeakoulujentietomalli/Semantic+Interoperability+Architecture\">tukaj</a>."
+msgstr "Ogrodje semantične interoperabilnosti opisuje metodo za definiranje metapodatkov informacijskih sistemov na tehnološko neodvisen način. Tvori strukturirano skupno arhitekturo, ki povezuje terminološko delo, modeliranje podatkov in šifrante. Metoda temelji na mednarodnih standardih in priporočilih. Preberite več o metodi in razvoju orodij <a href=\"https://confluence.csc.fi/display/korkeakoulujentietomalli/Semantic+Interoperability+Architecture\">tukaj</a>."
 
 msgid "What can I do?"
-msgstr "Kaj zmore interoperabilnostna  platforma?"
+msgstr "Kaj zmore interoperabilnostna platforma?"
 
 msgid "What can I do content"
 msgstr "Interoperabilnostna platforma je nabor orodij, zasnovanih za uporabo pri razvijanju, dokumentiranju in objavljanju opisov interoperabilnosti, kot so informacijske komponente, ki jih je mogoče ponovno uporabiti, in profili aplikacij. Ponuja storitev na enem mestu za javno objavljene opise podatkov in besedišča. Ti semantično koherentni podatkovni modeli pomagajo pri načrtovanju upravljanja informacij v operacijah izmenjave informacij (integracija, vmesnik, servisno vodilo) ali razvoju baze podatkov in programske opreme."
@@ -1316,7 +1316,7 @@ msgid "How?"
 msgstr "Kako lahko sodelujem?"
 
 msgid "How content"
-msgstr "Do opisov interoperabilnosti, objavljenih v Workbenchu, lahko dostopate in jih prosto brskate. V prihodnosti bodo vsebino teh temeljnih besedišč in aplikacijskih profilov skupaj izdelali strokovnjaki, povezani z vsakim predmetnim področjem."
+msgstr "Do opisov interoperabilnosti, objavljenih v Workbenchu, lahko dostopate in jih prosto brskate. V prihodnosti bodo vsebino teh podatkovnih modelov in aplikacijskih profilov skupaj izdelali strokovnjaki, povezani z vsakim predmetnim področjem."
 
 msgid "of group"
 msgstr "skupina"
@@ -1325,7 +1325,7 @@ msgid "of model"
 msgstr "model"
 
 msgid "of library"
-msgstr "Osnovno besedišče"
+msgstr "podatkovni model"
 
 msgid "of profile"
 msgstr "profil"
@@ -1367,7 +1367,7 @@ msgid "search vocabulary"
 msgstr "Iskanje po besedišču ..."
 
 msgid "search reference data"
-msgstr "Iskanje referenčnih podatkov ..."
+msgstr "Iskanje šifrantov ..."
 
 msgid "Select attribute"
 msgstr "Izberite atribut"
@@ -1430,7 +1430,7 @@ msgid "Write URL"
 msgstr "Napišite URL ..."
 
 msgid "Library information"
-msgstr "Informacije o osnovnem besedišču"
+msgstr "Informacije o podatkovnem modelu"
 
 msgid "Profile information"
 msgstr "Informacije o profilu"
@@ -1571,7 +1571,7 @@ msgid "Define concept for the class"
 msgstr "Določite pojem za razred"
 
 msgid "Can be selected only from this library"
-msgstr "Izberete ga lahko samo iz tega osnovnega besedišču"
+msgstr "Izberete ga lahko samo iz tega podatkovnega modela"
 
 msgid "Can be selected only from this profile"
 msgstr "Izbrano je lahko samo iz tega profila"
@@ -1655,7 +1655,7 @@ msgid "Assigned to this profile"
 msgstr "Dodeljen temu profilu"
 
 msgid "Assigned to this library"
-msgstr "Dodeljeno temu osnovnemu besedišču"
+msgstr "Dodeljeno temu podatkovnemu modelu"
 
 msgid "language code"
 msgstr "šifra jezika"
@@ -1670,22 +1670,22 @@ msgid "Vocabularies"
 msgstr "Terminologije"
 
 msgid "Vocabulary name"
-msgstr "Terminološko ime"
+msgstr "Ime terminologije"
 
 msgid "Edit link"
 msgstr "Uredite povezavo"
 
 msgid "Reference data name"
-msgstr "Ime referenčnega podatka"
+msgstr "Ime šifranta"
 
 msgid "Reference data status"
-msgstr "Stanje referenčnih podatkov"
+msgstr "Stanje šifranta"
 
 msgid "Create new reference data"
-msgstr "Ustvarite nove referenčne podatke"
+msgstr "Ustvarite nov šifrant"
 
 msgid "Choose reference data"
-msgstr "Izberite referenčne podatke"
+msgstr "Izberite šifrant"
 
 msgid "Write reference data code"
 msgstr "Napišite šifro"
@@ -1739,25 +1739,25 @@ msgid "Undefined"
 msgstr "Nedoločeno"
 
 msgid "Assign reusable predicate to library"
-msgstr "Osnovnemu besedišču dodelite predikat za večkratno uporabo"
+msgstr "Podatkovnemu modelu dodelite predikat za večkratno uporabo"
 
 msgid "Assign reusable predicate to profile"
 msgstr "Profilu dodeli predikat za večkratno uporabo"
 
 msgid "Assign class to library"
-msgstr "Dodelite razred osnovnemu besedišču"
+msgstr "Dodelite razred podatkovnemu modelu"
 
 msgid "Specialize class to profile"
 msgstr "Specializirajte razred profilu"
 
 msgid "Copy reusable association to library"
-msgstr "Kopirajte povezavo za večkratno uporabo v osnovno besedišče"
+msgstr "Kopirajte povezavo za večkratno uporabo v podatkovni model"
 
 msgid "Copy reusable association to profile"
 msgstr "Kopirajte povezavo za večkratno uporabo v profilu"
 
 msgid "Copy reusable attribute to library"
-msgstr "Kopirajte atribut za večkratno uporabo v osnovno besedišče"
+msgstr "Kopirajte atribut za večkratno uporabo v podatkovni model"
 
 msgid "Copy reusable attribute to profile"
 msgstr "Kopirajte atribut za večkratno uporabo v profilu"
@@ -1853,7 +1853,7 @@ msgid "MEMBER"
 msgstr "Član"
 
 msgid "Add new library"
-msgstr "Dodajte novo osnovno besedišče"
+msgstr "Dodajte nov podatkovni model"
 
 msgid "Add new profile"
 msgstr "Dodajte nov profil"
@@ -2021,10 +2021,10 @@ msgid "Vocabulary id info"
 msgstr "Identifikator terminologije"
 
 msgid "Reference data URI"
-msgstr "URI referenčnih podatkov"
+msgstr "URI šifranta"
 
 msgid "Reference data URI info"
-msgstr "Podatki o URI referenčnih podatkov"
+msgstr "Podatki o URI šifranta"
 
 msgid "Max properties"
 msgstr "Maksimum lastnosti"
@@ -2105,10 +2105,10 @@ msgid "Namespace label info"
 msgstr "Podatki o oznaki imenskega prostora"
 
 msgid "Reference data label"
-msgstr "Oznaka referenčnih podatkov"
+msgstr "Oznaka šifranta"
 
 msgid "Reference data label info"
-msgstr "Podatki o oznaki referenčnih podatkov"
+msgstr "Podatki o oznaki šifranta"
 
 msgid "State"
 msgstr "Stanje"
@@ -2123,10 +2123,10 @@ msgid "Defined by info"
 msgstr "Sklicevanje na model, ki definira vir"
 
 msgid "Defined by library"
-msgstr "Opredeljeno z osnovnim besediščem"
+msgstr "Opredeljeno z podatkovnim modelom"
 
 msgid "Defined by library info"
-msgstr "Sklicevanje na osnovno besedišče, ki opredeljuje vir"
+msgstr "Sklicevanje na podatkovni model, ki opredeljuje vir"
 
 msgid "Defined by profile"
 msgstr "Določeno s profilom"
