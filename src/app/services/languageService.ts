@@ -3,7 +3,7 @@ import { translate } from 'app/utils/language';
 import { Localizable, Localizer as AngularLocalizer, availableLanguages, defaultLanguage, getFromLocalStorage, setToLocalStorage } from '@mju-psi/yti-common-ui';
 import { SessionService } from './sessionService';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
 import { gettextCatalog as GettextCatalog } from 'angular-gettext';
 
 type Localizer = AngularJSLocalizer;
@@ -13,22 +13,28 @@ export class LanguageService {
   private static readonly LANGUAGE_KEY: string = 'yti-datamodel-ui.language-service.language';
   private static readonly CONTENT_LANGUAGE_KEY: string = 'yti-datamodel-ui.language-service.content-language';
 
+  private _modelLanguage: {[entityId: string]: Language} = {};
+
   availableLanguages: any;
   defaultLanguage: any;
   availableUILanguages: Language[];
 
   language$: BehaviorSubject<Language>;
   contentLanguage$: BehaviorSubject<Language>;
+  translateLanguage$: BehaviorSubject<Language>;
 
   constructor(private gettextCatalog: GettextCatalog /* AngularJS */,
               private translateService: TranslateService /* Angular */,
-              public localizationStrings: { [key: string]: { [key: string]: string } }) {
+              public localizationStrings: { [key: string]: { [key: string]: string } },
+              private sessionService: SessionService) {
     'ngInject';
     this.availableLanguages = availableLanguages;
     this.defaultLanguage = defaultLanguage || 'en';
     this.availableUILanguages = availableLanguages.map((lang: { code: any; }) => { return lang.code });
 
-    this.language$ = new BehaviorSubject<Language>(getFromLocalStorage(LanguageService.LANGUAGE_KEY, this.defaultLanguage || 'en'));
+    this.language$ = new BehaviorSubject<Language>(getFromLocalStorage(LanguageService.LANGUAGE_KEY, this.defaultLanguage));
+    this.contentLanguage$ = new BehaviorSubject<Language>(getFromLocalStorage(LanguageService.CONTENT_LANGUAGE_KEY, this.defaultLanguage));
+    this.translateLanguage$ = new BehaviorSubject<Language>(this.defaultLanguage);
 
     translateService.addLangs(this.availableLanguages.map((lang: { code: any; }) => { return lang.code }));
     translateService.setDefaultLang(this.defaultLanguage);
@@ -40,7 +46,10 @@ export class LanguageService {
       this.gettextCatalog.setCurrentLanguage(lang);
     });
 
-    this.contentLanguage$ = new BehaviorSubject<Language>(getFromLocalStorage(LanguageService.CONTENT_LANGUAGE_KEY, this.defaultLanguage));
+    this._modelLanguage = sessionService.modelLanguage || {};
+
+    combineLatest(this.language$, this.contentLanguage$)
+      .subscribe(([lang, contentLang]) => this.translateLanguage$.next(lang || contentLang));
   }
 
   get UILanguage(): string {
@@ -48,16 +57,35 @@ export class LanguageService {
   }
 
   set UILanguage(language: UILanguage) {
-    this.language$.next(language);
-    setToLocalStorage(LanguageService.LANGUAGE_KEY, language);
+    if (this.UILanguage !== language) {
+      this.language$.next(language);
+      setToLocalStorage(LanguageService.LANGUAGE_KEY, language);
+    }
   }
 
   getModelLanguage(context?: LanguageContext): string {
-    return this.contentLanguage$.getValue();
+    const getUILanguageOrFirst = () => {
+      if (context!.language.indexOf(this.UILanguage) !== -1) {
+        return this.UILanguage;
+      } else {
+        return context!.language[0];
+      }
+    };
+
+    if (context) {
+      const key = context.id.uri;
+      const language = this._modelLanguage[key];
+      return language ? language : getUILanguageOrFirst();
+    } else {
+      return this.UILanguage;
+    }
   }
 
   setModelLanguage(context: LanguageContext, language: Language) {
-    this.contentLanguage$.next(language);
+    this._modelLanguage[context.id.uri] = language;
+    this.sessionService.modelLanguage = this._modelLanguage;
+
+    this.translateLanguage$.next(language);
     setToLocalStorage(LanguageService.CONTENT_LANGUAGE_KEY, language);
   }
 
