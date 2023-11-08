@@ -31,7 +31,7 @@ export class ApplicationComponent {
     'ngInject';
 
     this.subscriptions.push(userService.user$.subscribe(() => this.applicationInitialized = true));
-    
+
     this.version = versionInfo;
 
     $scope.$watch(() => $location.path(), path => {
@@ -65,5 +65,13 @@ export class ApplicationComponent {
 
   navigateToInformation() {
     this.$location.url('/information');
+  }
+
+  navigateToAccessibility() {
+    this.$location.url('/accessibility');
+  }
+
+  navigateToPrivacy() {
+    this.$location.url('/privacy');
   }
 }

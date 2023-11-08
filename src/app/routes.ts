@@ -14,6 +14,12 @@ export function routeConfig($routeProvider: angular.route.IRouteProvider) {
     .when('/information', {
       template: '<information-about-service-page></information-about-service-page>'
     })
+    .when('/accessibility', {
+      template: '<accessibility-page></accessibility-page>'
+    })
+    .when('/privacy', {
+      template: '<privacy-page></privacy-page>'
+    })
     .when('/user', {
       template: '<app-user-details></app-user-details>'
     })

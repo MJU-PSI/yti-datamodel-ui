@@ -58,6 +58,18 @@ export class LocationService {
     }]);
   }
 
+  atAccessibilityPage(): void {
+    this.changeLocation([{
+      localizationKey: 'Accessibility'
+    }]);
+  }
+
+  atPrivacyPage(): void {
+    this.changeLocation([{
+      localizationKey: 'Privacy and protection of personal data'
+    }]);
+  }
+
   atFrontPage(): void {
     this.changeLocation([]);
   }

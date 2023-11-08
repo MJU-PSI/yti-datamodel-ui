@@ -5,7 +5,9 @@ import { downgradeComponent, downgradeInjectable, UpgradeModule } from '@angular
 import {
   AjaxLoadingIndicatorComponent,
   AjaxLoadingIndicatorSmallComponent, AlertModalService, AUTHENTICATED_USER_ENDPOINT, ConfirmationModalService, DropdownComponent, ErrorModalService, ExpandableTextComponent, FilterDropdownComponent, FooterComponent, Localizer as AngularLocalizer, LOCALIZER, LoginModalService, MenuComponent, ModalService, StatusComponent, YtiCommonModule,
-  availableLanguages
+  availableLanguages,
+  AccessibilityStatementComponent,
+  PrivacyStatementComponent
 } from '@mju-psi/yti-common-ui';
 import * as angular from 'angular';
 import { animate, ICompileProvider, ILocationProvider, ILogProvider, IHttpProvider } from 'angular';
@@ -22,6 +24,8 @@ import { module3 as visualizationModule } from './components/visualization';
 import { module11 as helpModule } from './help';
 import { routeConfig } from './routes';
 import { module10 as servicesModule } from './services';
+import { module12 as accessibilityModule } from './components/accessibility';
+import { module13 as privacyModule } from './components/privacy';
 
 import { HttpClientModule } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -201,7 +205,7 @@ export function localizerFactory(languageService: LanguageService): AngularLocal
     UserDetailsSubscriptionsComponent,
     MassMigrateDatamodelResourceStatusesModalComponent,
     NewDatamodelVersionModalComponent,
-    ModelDocumentationComponent
+    ModelDocumentationComponent,
   ],
   providers: [
     { provide: AUTHENTICATED_USER_ENDPOINT, useFactory: resolveAuthenticatedUserEndpoint },
@@ -264,15 +268,20 @@ const mod = angular.module('iow-ui', [
   filterModule.name,
   componentsModule.name,
   servicesModule.name,
-  helpModule.name
+  helpModule.name,
+  accessibilityModule.name,
+  privacyModule.name
 ]);
 
 mod.directive('appMenu', downgradeComponent({ component: MenuComponent }));
 mod.directive('appFooter', downgradeComponent({
   component: FooterComponent,
   inputs: ['title'],
-  outputs: ['informationClick']
+  outputs: ['informationClick', 'accessibilityClick', 'privacyClick']
 }));
+
+mod.directive('appAccessibilityStatement', downgradeComponent({ component: AccessibilityStatementComponent }));
+mod.directive('appPrivacyStatement', downgradeComponent({ component: PrivacyStatementComponent }));
 
 mod.directive('ajaxLoadingIndicator', downgradeComponent({ component: AjaxLoadingIndicatorComponent }));
 mod.directive('ajaxLoadingIndicatorSmall', downgradeComponent({ component: AjaxLoadingIndicatorSmallComponent }));

@@ -9,5 +9,7 @@
               [show-license-icon]="true"
               [version]="$ctrl.version"
               (information-click)="$ctrl.navigateToInformation()"
+              (accessibility-click)="$ctrl.navigateToAccessibility()"
+              (privacy-click)="$ctrl.navigateToPrivacy()"
               ng-if="$ctrl.showFooter"></app-footer>
 </ng-container>
