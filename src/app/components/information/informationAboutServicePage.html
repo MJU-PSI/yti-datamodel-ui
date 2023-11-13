@@ -1,27 +1,52 @@
 <div class="content-box">
 
-  <h1 style="margin-bottom: 40px">Podatkovni modeli</h1>
+  <div ng-if="$ctrl.currentLang === 'en'">
+    <h1>Data Models</h1>
 
-  <p>
-    Vsebuje podatkovne modele temeljnih registrov, evidenc in ključnih informacijskih rešitev javne uprave. Omogoča, da se njihove strukture in metapodatki hranijo centralno in na enoten način.<br>
-    Obstoječim in potencialnim uporabnikom nudi informacijo kateri podatki se v okviru javne uprave že zbirajo in jih zato ni potrebno definirati na novo.<br>
-    Modul Podatkovni modeli zagotavlja:
-  </p>
-  <ul>
-      <li>Standardizirane konceptualne in logične podatkovne modele,</li>
-      <li>Enoten in širok nabor metapodatkov, ki omogoča jasno in nedvoumno opredelitev vsebine podatkovnih zbirk,</li>
-      <li>Podatke o lastništvu podatkov,</li>
-      <li>Verzioniranje in nadzor nad spremembami,</li>
-      <li>Relacije med posameznimi podatkovnimi zbirkami in njihovimi podatkovnimi elementi.</li>
-  </ul>
-  <p>
-    V Repozitorij podatkovnih modelov so vključeni tudi jedrni podatkovni modeli. Jedrni podatkovni modeli so ponovno uporabljivi in razširljivi podatkovni modeli,<br>
-    ki zajemajo temeljne značilnosti entitet na kontekstualno nevtralen način. Organi javne uprave lahko uporabljajo in razširijo enotne jedrne podatkovne modele na naslednje načine:</p>
-  <ul>
-      <li><b>Razvoj novih informacijskih rešitev:</b> jedrne podatkovne modele se lahko uporabi kot privzeto izhodišče za oblikovanje konceptualnih in logičnih podatkovnih modelov novo razvitih informacijskih rešitev.</li>
-      <li><b>Izmenjava podatkov med informacijskimi rešitvami:</b> Jedrni podatkovni modeli lahko predstavljajo temelj podatkovnih modelov za izmenjavo podatkov med obstoječimi informacijskimi rešitvami.</li>
-      <li><b>Podatkovna integracija:</b> Jedrni podatkovni modele se lahko uporablja za integracijo podatkov, ki prihajajo iz različnih heterogenih virov.</li>
-  </ul>
-  <p>Repozitorij podatkovnih modelov se tesno povezuje z modulom Terminologija in modulom Šifranti.</p>
+    <p>
+      The Data Models module contains data models of base registers, records and key information solutions of public administration. It allows their structures and metadata to be stored centrally and in a uniform manner. It provides existing and potential users with information on what data is already collected within the framework of public administration and therefore does not need to be redefined. The Data Models module provides:
+    </p>
+    <ul>
+        <li>Standardised conceptual and logical data models.</li>
+        <li>A uniform and comprehensive set of metadata, allowing to define the content of databases in a clear and unambiguous way.</li>
+        <li>Data ownership information.</li>
+        <li>Versioning and change control.</li>
+        <li>Relationships between individual databases and their data elements.</li>
+    </ul>
+    <p>
+      Core Data Models are also included in the Data Model Repository. Core Data Models are reusable and extensible data models that capture the fundamental characteristics of entities in a context-neutral way. Public administration bodies can use and extend the unified core data models in the following ways:</p>
+    <ul>
+        <li><b>Development of new information solutions:</b> The Core Data Models can be used as a default starting point for creating conceptual and logical data models of newly developed information solutions.</li>
+        <li><b>Data exchange between information solutions:</b> Core data models can form the basis of data models for data exchange between existing information solutions.</li>
+        <li><b>Data integration:</b> Core data models can be used to integrate data coming from different heterogeneous sources.</li>
+    </ul>
+    <p>The repository of data models is closely related to the Terminology and the Code Lists modules.</p>
+  </div>
+
+  <div ng-if="$ctrl.currentLang !== 'en'">
+    <h1>Podatkovni modeli</h1>
+
+    <p>
+      Vsebuje podatkovne modele temeljnih registrov, evidenc in ključnih informacijskih rešitev javne uprave. Omogoča, da se njihove strukture in metapodatki hranijo centralno in na enoten način.
+      Obstoječim in potencialnim uporabnikom nudi informacijo kateri podatki se v okviru javne uprave že zbirajo in jih zato ni treba definirati na novo.
+      Modul Podatkovni modeli zagotavlja:
+    </p>
+    <ul>
+        <li>Standardizirane konceptualne in logične podatkovne modele,</li>
+        <li>Enoten in širok nabor metapodatkov, ki omogoča jasno in nedvoumno opredelitev vsebine podatkovnih zbirk,</li>
+        <li>Podatke o lastništvu podatkov,</li>
+        <li>Verzioniranje in nadzor nad spremembami,</li>
+        <li>Relacije med posameznimi podatkovnimi zbirkami in njihovimi podatkovnimi elementi.</li>
+    </ul>
+    <p>
+      V Repozitorij podatkovnih modelov so vključeni tudi jedrni podatkovni modeli. Jedrni podatkovni modeli so ponovno uporabljivi in razširljivi podatkovni modeli,<br>
+      ki zajemajo temeljne značilnosti entitet na kontekstualno nevtralen način. Organi javne uprave lahko uporabljajo in razširijo enotne jedrne podatkovne modele za sledeče namene:</p>
+    <ul>
+        <li><b>Razvoj novih informacijskih rešitev:</b> jedrne podatkovne modele se lahko uporabi kot privzeto izhodišče za oblikovanje konceptualnih in logičnih podatkovnih modelov novih informacijskih rešitev.</li>
+        <li><b>Izmenjava podatkov med informacijskimi rešitvami:</b> Jedrni podatkovni modeli lahko predstavljajo temelj podatkovnih modelov za izmenjavo podatkov med obstoječimi informacijskimi rešitvami.</li>
+        <li><b>Podatkovna integracija:</b> Jedrne podatkovne modele se lahko uporablja za integracijo podatkov, ki prihajajo iz različnih heterogenih virov.</li>
+    </ul>
+    <p>Repozitorij podatkovnih modelov se tesno povezuje z moduloma Terminologija in Šifranti.</p>
+  </div>
 
 </div>
