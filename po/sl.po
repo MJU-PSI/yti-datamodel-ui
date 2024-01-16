@@ -44,7 +44,7 @@ msgid "All models"
 msgstr "Vsi modeli"
 
 msgid "Show classes defined in profiles"
-msgstr "Prikaži razrede, definirane v profilih"
+msgstr "Prikaži razrede, definirane v aplikacijskih profilih"
 
 msgid "All types"
 msgstr "Vsi tipi"
@@ -392,7 +392,7 @@ msgid "INFO_TEXT_FRONTPAGE_FILTER_W_CLASSIFICATION"
 msgstr "Vsi modeli so razvrščeni v informacijska področja. Če želite videti modele, razvrščene v določeno informacijsko področje, kliknite ime informacijskega področja. Filter lahko odstranite s ponovnim klikom na ime informacijsko področje."
 
 msgid "INFO_TEXT_FRONTPAGE_FILTER_RESULTS"
-msgstr "Rezultate iskanja lahko filtrirate z informacijami o organizaciji, vrsti ali statusu. Organizacija je za organizacijo, ki je odgovorna za vzdrževanje modela. Vrsta je bodisi podatkovni model ali profil aplikacije. Status je za status upravljanja modela."
+msgstr "Rezultate iskanja lahko filtrirate z informacijami o organizaciji, vrsti ali statusu. Organizacija je za organizacijo, ki je odgovorna za vzdrževanje modela. Vrsta je bodisi podatkovni model ali aplikacijski profil. Status je za status upravljanja modela."
 
 msgid " hit"
 msgstr "zadetek"
@@ -407,7 +407,7 @@ msgid "ADD_LIBRARY_BUTTON_TEXT"
 msgstr "Nov podatkovni model"
 
 msgid "ADD_PROFILE_BUTTON_TEXT"
-msgstr "Nov profil"
+msgstr "Nov aplikacijski profil"
 
 msgid "ToolInfo"
 msgstr "Orodje za podatkovne modele se uporablja za zbiranje, vzdrževanje in objavo podatkovnih modelov temeljnih registrov in osrednjih informacijskih rešitev javne uprave."
@@ -740,7 +740,7 @@ msgid "Add library description"
 msgstr "Tukaj dodajte nov podatkovni model"
 
 msgid "Add model description"
-msgstr "Dodajte podatkovni model, specifično za področje, ali profil aplikacije, specifičen za aplikacijo"
+msgstr "Dodajte podatkovni model, specifično za področje, ali aplikacijski profil, specifičen za aplikacijo"
 
 msgid "Add new property"
 msgstr "Dodajte novo lastnost"
@@ -749,10 +749,10 @@ msgid "Add new property description"
 msgstr "Dodajte nov atribut ali povezavo"
 
 msgid "Add profile"
-msgstr "Nov profil"
+msgstr "Nov aplikacijski profil"
 
 msgid "Add profile description"
-msgstr "Tukaj dodajte nov profil aplikacije"
+msgstr "Tukaj dodajte nov aplikacijski profil"
 
 msgid "Add reference to namespace"
 msgstr "Dodajte sklic na imenski prostor"
@@ -851,10 +851,10 @@ msgid "Congratulations for completing new class creation!"
 msgstr "Čestitke za dokončan ustvarjen nov razred!"
 
 msgid "Congratulations for completing profile creation!"
-msgstr "Čestitke za dokončan ustvarjen profil!"
+msgstr "Čestitke za dokončan ustvarjen aplikacijski profil!"
 
 msgid "Congratulations for completing profile creation! description"
-msgstr "Zdaj lahko nadaljujete z ustvarjanjem pravih profilov aplikacij."
+msgstr "Zdaj lahko nadaljujete z ustvarjanjem pravih aplikacijskih profilov."
 
 msgid "Congratulations for completing specialize class!"
 msgstr "Čestitke za dokončan specialni razred!"
@@ -890,7 +890,7 @@ msgid "Guide through creating new library description"
 msgstr "Knjižnice podatkovnega modela so modeli povezanih podatkov, ki definirajo razrede, lastnosti tipov podatkov in lastnosti predmetov, ki jih je mogoče ponovno uporabiti. Podatkovni modeli so ustvarjena na podlagi dobro definiranih pojmov, opisanih v terminoloških slovarjih in povezanih z obstoječimi standardi metapodatkov z uporabo URI-jev."
 
 msgid "Guide through creating new profile"
-msgstr "Vodič za ustvarjanje novega profila aplikacije"
+msgstr "Vodič za ustvarjanje novega aplikacijskega profila"
 
 msgid "Guide through creating new profile description"
 msgstr "Aplikacijski profili so strojno berljivi informacijski modeli, ki dokumentirajo informacijske strukture z uporabo oblik, ustvarjenih iz podatkovnih modelov in drugih zunanjih povezanih podatkovnih modelov. Aplikacijske profile je mogoče uporabiti za dokumentiranje informacijskih struktur, povezovanje aplikacijskih specifičnih podatkovnih modelov z mednarodnimi standardi in uporabo aplikacijskega profila kot osnove za fizični podatkovni model v kateri koli sintaksi."
@@ -929,10 +929,10 @@ msgid "Modify library description"
 msgstr "Tu lahko spremenite podatkovni model"
 
 msgid "Modify profile"
-msgstr "Spremenite profil"
+msgstr "Spremenite aplikacijski profil"
 
 msgid "Modify profile description"
-msgstr "Tu lahko spremenite profil aplikacije"
+msgstr "Tu lahko spremenite aplikacijski profil"
 
 msgid "Open library details"
 msgstr "Odprite podrobnosti knjižnice"
@@ -941,10 +941,10 @@ msgid "Open library details description"
 msgstr "Informacije o podatkovnem modelu lahko najdete tukaj. Ta zavihek vsebuje informacije o uporabljenih imenskih prostorih, terminologiji, šifrantih in generični dokumentaciji o modelu. Tu lahko tudi izvozite podatkovni model v različnih formatih."
 
 msgid "Open profile details"
-msgstr "Odprite podrobnosti profila"
+msgstr "Odprite podrobnosti aplikacijskega profila"
 
 msgid "Open profile details description"
-msgstr "Informacije o profilu aplikacije najdete tukaj. Ta zavihek vsebuje informacije o uporabljenih imenskih prostorih, terminologiji, šifrantih, zgodovini podatkovnega modela. Tu lahko tudi izvozite podatkovni model v različnih formatih."
+msgstr "Informacije o aplikacijskem profilu najdete tukaj. Ta zavihek vsebuje informacije o uporabljenih imenskih prostorih, terminologiji, šifrantih, zgodovini podatkovnega modela. Tu lahko tudi izvozite podatkovni model v različnih formatih."
 
 msgid "Prefix"
 msgstr "Predpona"
@@ -953,10 +953,10 @@ msgid "Prefix info"
 msgstr "Predpone se uporabljajo za oblikovanje imenskih prostorov in človeku berljivih CURIE:s"
 
 msgid "Profile label"
-msgstr "Oznaka profila"
+msgstr "Oznaka aplikacijskega profila"
 
 msgid "Profile label info"
-msgstr "Ime profila aplikacije"
+msgstr "Ime aplikacijskega profila"
 
 msgid "Property is here"
 msgstr "Tukaj je opredeljena uporaba lastnosti"
@@ -1007,7 +1007,7 @@ msgid "Select name and description"
 msgstr "Izberite ime in opis"
 
 msgid "Select name and description info"
-msgstr "Tukaj lahko izberete, katere atribute ali povezave želite uporabiti v našem profilu aplikacije"
+msgstr "Tukaj lahko izberete, katere atribute ali povezave želite uporabiti v našem aplikacijskem profilu"
 
 msgid "Select new association creation"
 msgstr "Izberite kreiranje nove povezave"
@@ -1169,13 +1169,13 @@ msgid "New library creation"
 msgstr "Nov podatkoni model"
 
 msgid "New profile creation"
-msgstr "Ustvarjanje novega profila"
+msgstr "Ustvarjanje novega aplikacijskega profila"
 
 msgid "Delete library"
 msgstr "Izbrišite podatkovni model"
 
 msgid "Delete profile"
-msgstr "Izbrišite profil"
+msgstr "Izbrišite aplikacijski profil"
 
 msgid "group"
 msgstr "skupina"
@@ -1190,7 +1190,7 @@ msgid "shape"
 msgstr "oblika"
 
 msgid "profile"
-msgstr "Profil aplikacije"
+msgstr "Aplikacijski profil"
 
 msgid "class"
 msgstr "Razred"
@@ -1268,7 +1268,7 @@ msgid "Delete attribute from this library"
 msgstr "Izbrišite atribut iz tega podatkovnega modela"
 
 msgid "Delete attribute from this profile"
-msgstr "Izbrišite atribut iz tega profila"
+msgstr "Izbrišite atribut iz tega aplikacijskega profila"
 
 msgid "Attribute list"
 msgstr "Seznam atributov"
@@ -1283,7 +1283,7 @@ msgid "Delete association from this library"
 msgstr "Izbrišite povezavo iz tega podatkovenga modela"
 
 msgid "Delete association from this profile"
-msgstr "Izbrišite povezavo z tega profila"
+msgstr "Izbrišite povezavo z tega aplikacijskeg profila"
 
 msgid "Association list"
 msgstr "Seznam povezav"
@@ -1433,7 +1433,7 @@ msgid "Library information"
 msgstr "Informacije o podatkovnem modelu"
 
 msgid "Profile information"
-msgstr "Informacije o profilu"
+msgstr "Informacije o aplikacijskem profilu"
 
 msgid "Class information"
 msgstr "Informacije o razredu"
@@ -1526,7 +1526,7 @@ msgid "Add properties from scope class"
 msgstr "Dodajte lastnosti iz obsega razreda"
 
 msgid "Add properties from profile class"
-msgstr "Dodajte lastnosti iz profila razreda"
+msgstr "Dodajte lastnosti iz aplikacijskega profila razreda"
 
 msgid "Add properties from external class"
 msgstr "Dodajte lastnosti iz zunanjega razreda"
@@ -1541,7 +1541,7 @@ msgid "Do you want to add following properties from scope class?"
 msgstr "Ali želite dodati naslednje lastnosti iz obsega razreda?"
 
 msgid "Do you want to add following properties from profile class?"
-msgstr "Ali želite dodati naslednje lastnosti iz profila razreda?"
+msgstr "Ali želite dodati naslednje lastnosti iz aplikacijskega profila razreda?"
 
 msgid "Do you want to add following properties from external class?"
 msgstr "Ali želite dodati naslednje lastnosti iz zunanjega razreda?"
@@ -1550,7 +1550,7 @@ msgid "Not imported by model"
 msgstr "Ni uvoženo glede na model"
 
 msgid "Cannot import profile"
-msgstr "Profila ni mogoče uvoziti"
+msgstr "Aplikacijskega profila ni mogoče uvoziti"
 
 msgid "Shapes are not allowed"
 msgstr "Oblike niso dovoljene"
@@ -1574,7 +1574,7 @@ msgid "Can be selected only from this library"
 msgstr "Izberete ga lahko samo iz tega podatkovnega modela"
 
 msgid "Can be selected only from this profile"
-msgstr "Izbrano je lahko samo iz tega profila"
+msgstr "Izbrano je lahko samo iz tega aplikacijskega profila"
 
 msgid "Subject"
 msgstr "Predmet"
@@ -1652,7 +1652,7 @@ msgid "Input"
 msgstr "Vnos"
 
 msgid "Assigned to this profile"
-msgstr "Dodeljen temu profilu"
+msgstr "Dodeljen temu aplikacijskemu profilu"
 
 msgid "Assigned to this library"
 msgstr "Dodeljeno temu podatkovnemu modelu"
@@ -1703,7 +1703,7 @@ msgid "Delete concept from this library"
 msgstr "Izbrišite pojem iz te knjižnice"
 
 msgid "Delete concept from this profile"
-msgstr "Izbrišite pojem iz tega profila"
+msgstr "Izbrišite pojem iz tega aplikacijskega profila"
 
 msgid "Delete conceptSuggestion"
 msgstr "Izbrišite predlog pojma"
@@ -1712,7 +1712,7 @@ msgid "Delete conceptSuggestion from this library"
 msgstr "Izbrišite predlog pojma iz te knjižnice"
 
 msgid "Delete conceptSuggestion from this profile"
-msgstr "Izbrišite predlog pojma iz tega profila"
+msgstr "Izbrišite predlog pojma iz tega aplikacijskega profila"
 
 msgid "URI stem"
 msgstr "URI steblo"
@@ -1742,25 +1742,25 @@ msgid "Assign reusable predicate to library"
 msgstr "Podatkovnemu modelu dodelite predikat za večkratno uporabo"
 
 msgid "Assign reusable predicate to profile"
-msgstr "Profilu dodeli predikat za večkratno uporabo"
+msgstr "Aplikacijskemu profilu dodeli predikat za večkratno uporabo"
 
 msgid "Assign class to library"
 msgstr "Dodelite razred podatkovnemu modelu"
 
 msgid "Specialize class to profile"
-msgstr "Specializirajte razred profilu"
+msgstr "Specializirajte razred aplikacijskemu profilu"
 
 msgid "Copy reusable association to library"
 msgstr "Kopirajte povezavo za večkratno uporabo v podatkovni model"
 
 msgid "Copy reusable association to profile"
-msgstr "Kopirajte povezavo za večkratno uporabo v profilu"
+msgstr "Kopirajte povezavo za večkratno uporabo v aplikacijskem profilu"
 
 msgid "Copy reusable attribute to library"
 msgstr "Kopirajte atribut za večkratno uporabo v podatkovni model"
 
 msgid "Copy reusable attribute to profile"
-msgstr "Kopirajte atribut za večkratno uporabo v profilu"
+msgstr "Kopirajte atribut za večkratno uporabo v aplikacijskem profilu"
 
 msgid "Defined in vocabularies"
 msgstr "Opredeljeno v besediščih"
@@ -1856,7 +1856,7 @@ msgid "Add new library"
 msgstr "Dodajte nov podatkovni model"
 
 msgid "Add new profile"
-msgstr "Dodajte nov profil"
+msgstr "Dodajte nov aplikacijski profil"
 
 msgid "InformationPool"
 msgstr "Informacijska zaloga"
@@ -2129,10 +2129,10 @@ msgid "Defined by library info"
 msgstr "Sklicevanje na podatkovni model, ki opredeljuje vir"
 
 msgid "Defined by profile"
-msgstr "Določeno s profilom"
+msgstr "Določeno s aplikacijskim profilom"
 
 msgid "Defined by profile info"
-msgstr "Sklic na profil aplikacije, ki definira vir"
+msgstr "Sklic na aplikacijski profil, ki definira vir"
 
 msgid "Superclass"
 msgstr "Super razred"
@@ -2402,7 +2402,7 @@ msgid "API path info"
 msgstr "Določite vsaj eno pot za neki razred za izvoz veljavne specifikacije Open API. Poti lahko vključujejo parametre poti ({}) ali poizvedbe (?&), na primer: /org/{id}/?name&role"
 
 msgid "Contact label"
-msgstr "Oznaka stika"
+msgstr "Stik"
 
 msgid "Contact label info"
 msgstr "Kanal za povratne informacije za podatkovni model, npr. e-poštni naslov."
