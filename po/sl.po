@@ -2270,7 +2270,7 @@ msgid "Fixed value info"
 msgstr "Fiksna vrednost lastnosti"
 
 msgid "Pattern"
-msgstr "Vsakdanje izražanje"
+msgstr "Regularni izraz"
 
 msgid "Pattern info"
 msgstr "Regularni izraz, ki ga je mogoče uporabiti za preverjanje vrednosti lastnosti"
