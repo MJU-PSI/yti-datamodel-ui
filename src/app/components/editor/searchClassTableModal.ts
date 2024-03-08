@@ -173,7 +173,7 @@ class SearchClassTableController implements SearchController<ClassListItem> {
 
     classService.getAllClasses(model).then(results);
 
-    if (model.isOfType('profile')) {
+    if (model.isOfType('profile') || model.isOfType('model')) {
       classService.getExternalClassesForModel(model).then(externalResults);
     }
 
@@ -379,8 +379,8 @@ class SearchClassTableController implements SearchController<ClassListItem> {
     });
   }
 
-  isModelProfile() {
-    return this.model.isOfType('profile');
+  isModelOrProfile() {
+    return this.model.isOfType('model') || this.model.isOfType('profile');
   }
 
   notDefinedByThisModel(item: AbstractClass) {

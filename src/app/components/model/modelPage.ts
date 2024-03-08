@@ -421,9 +421,9 @@ export class ModelPageComponent implements ModelPageActions, ModelControllerServ
   private addClass(exclusion: Exclusion<AbstractClass>,
                    filterExclusion: Exclusion<AbstractClass>) {
 
-    const isProfile = this.model.isOfType('profile');
+    const isProfileOrModel = this.model.isOfType('profile') || this.model.isOfType('model');
     const textForSelection = (klass: Optional<Class>) => {
-      if (isProfile) {
+      if (isProfileOrModel) {
         if (klass && klass instanceof Class && klass.isOfType('shape')) {
           return 'Copy shape';
         } else {
@@ -443,7 +443,7 @@ export class ModelPageComponent implements ModelPageActions, ModelControllerServ
     this.createOrAssignEntity(
       () => searchClassModal(),
       (external: ExternalEntity) => {
-        if (isProfile) {
+        if (isProfileOrModel) {
           this.createShape(external, true);
         } else {
           this.$q.reject('Library does not support external');
@@ -456,7 +456,7 @@ export class ModelPageComponent implements ModelPageActions, ModelControllerServ
             this.selectNewlyCreatedOrAssignedEntity(klass);
           } else if (klass.isOfType('shape')) {
             this.copyShape(klass);
-          } else if (isProfile) {
+          } else if (isProfileOrModel) {
             this.createShape(klass, klass.external);
           } else {
             this.assignClassToModel(klass).then(() => klass);
