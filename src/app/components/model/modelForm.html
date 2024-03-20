@@ -66,6 +66,8 @@
                               model-prefix="$ctrl.model.prefix"
                               model-namespace="$ctrl.model.namespace"></imported-namespaces-view>
     <links-view value="$ctrl.model" context="$ctrl.model"></links-view>
+    <editable-visibility-select ng-if="!$ctrl.model.unsaved" id="modelVisibility" state="$ctrl.model.visibility" model="$ctrl.model"></editable-visibility-select>
+    <users-view ng-if="$ctrl.model.visibility === 'PRIVATE'" value="$ctrl.model"></users-view>
   </div>
 
 </div>

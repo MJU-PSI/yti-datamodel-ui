@@ -1,4 +1,4 @@
-import { firstMatching, identity, keepMatching, Localizable, requireDefined, Status, availableLanguages, defaultLanguage } from '@mju-psi/yti-common-ui';
+import { firstMatching, identity, keepMatching, Localizable, requireDefined, Status, availableLanguages, defaultLanguage, Visibility } from '@mju-psi/yti-common-ui';
 import { IPromise, IQService } from 'angular';
 import { Class, Property } from 'app/entities/class';
 import { Classification } from 'app/entities/classification';
@@ -40,6 +40,7 @@ export interface ModelDetails extends EntityDetails {
   namespaces?: (Resolvable<Model>|ExternalNamespaceDetails)[];
   organizations: Resolvable<Organization>[];
   classifications: Resolvable<Classification>[];
+  visibility?: Visibility;
 }
 
 export interface ConstraintDetails {

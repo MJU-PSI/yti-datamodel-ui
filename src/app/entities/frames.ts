@@ -151,7 +151,9 @@ const modelContext = Object.assign({}, coreContext, namespaceContext, referenceD
   contact: {'@id': `http://uri.suomi.fi/datamodel/ns/iow#contact`, '@container': '@language'},
   wasRevisionOf : { '@id' : 'http://www.w3.org/ns/prov#wasRevisionOf',  '@type' : '@id' },
   documentation: { '@id': `http://uri.suomi.fi/datamodel/ns/iow#documentation`, '@container': '@language' },
-  parentOrganization: { '@id': `http://uri.suomi.fi/datamodel/ns/iow#parentOrganization`, '@type' : '@id' }
+  parentOrganization: { '@id': `http://uri.suomi.fi/datamodel/ns/iow#parentOrganization`, '@type' : '@id' },
+  visibility: { "@id": "http://uri.suomi.fi/datamodel/ns/iow#visibility"},
+  users: { "@id": "http://uri.suomi.fi/datamodel/ns/iow#users", '@container': '@list' }
 });
 
 const usageContext = Object.assign({}, coreContext, modelContext, {

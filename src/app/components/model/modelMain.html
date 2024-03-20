@@ -14,7 +14,7 @@
                   ngbTooltip="{{ 'You will receive an email notification when this resource changes.' | translate }}"></span>
           </div>
           <model-language-chooser class="nameButtonRowButton" [context]="model"></model-language-chooser>
-          <export-component class="ml-2 nameButtonRowButton" [idPrefix]="'model'" [entity]="model" [context]="model"></export-component>
+          <export-component *ngIf="hasModelDefinitionAccess" class="ml-2 nameButtonRowButton" [idPrefix]="'model'" [entity]="model" [context]="model"></export-component>
           <model-action-menu class="ml-2 nameButtonRowButton"
                              [isMessagingEnabled]="isMessagingEnabled"
                              [hasSubscription]="hasSubscription"
@@ -49,8 +49,16 @@
           <span translate>Datamodel definition</span>
         </a>
         <ng-template ngbNavContent>
-          <model-page [parent]="editorContainer" [currentSelection]="currentModelAndSelection"
-                      (makeSelection)="onSubSelection($event)" (updateNamespaces)="onNamespacesChange($event)"></model-page>
+          <ng-container *ngIf="hasModelDefinitionAccess">
+            <model-page [parent]="editorContainer" [currentSelection]="currentModelAndSelection"
+                        (makeSelection)="onSubSelection($event)" (updateNamespaces)="onNamespacesChange($event)"></model-page>
+          </ng-container>
+          <ng-container *ngIf="hasModelDefinitionAccess != undefined && !hasModelDefinitionAccess">
+            <p translate>To view the data model, login and appropriate access rights are required.</p>
+            <p translate>You can apply for it at the email address <a href="mailto:centralni-besednjak.mdp@gov.si">centralni-besednjak.mdp&#64;gov.si</a></p>
+            <div class="bottom-hack-border"></div>
+            <div class="bottom-hack-padding"></div>
+          </ng-container>
         </ng-template>
       </li>
       <li ngbNavItem="modelDetailsTab" id="modelDetailsTab">

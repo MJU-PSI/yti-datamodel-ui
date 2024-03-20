@@ -3,7 +3,7 @@ import { NgbNavChangeEvent, NgbNav } from '@ng-bootstrap/ng-bootstrap';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { ModelAndSelection, SubRoutingHackService } from '../../services/subRoutingHackService';
 import { ModelService } from '../../services/modelService';
-import { ConfigServiceWrapper, ModelServiceWrapper } from '../../ajs-upgraded-providers';
+import { AuthorizationManagerServiceWrapper, ConfigServiceWrapper, ModelServiceWrapper } from '../../ajs-upgraded-providers';
 import { Model } from '../../entities/model';
 import { NotificationModal } from '../common/notificationModal';
 import { EditingGuard, EditorContainer, View } from './modelControllerService';
@@ -43,6 +43,7 @@ export class ModelMainComponent implements OnDestroy, OnInit, EditorContainer, E
   isMessagingEnabled: boolean;
   isLoggedIn: boolean;
   hasSubscription: boolean | undefined = undefined;
+  hasModelDefinitionAccess: boolean | undefined = undefined;
 
   constructor(private subRoutingService: SubRoutingHackService, modelServiceWrapper: ModelServiceWrapper,
     private notificationModal: NotificationModal, private confirmationModal: ConfirmationModal,
@@ -50,7 +51,8 @@ export class ModelMainComponent implements OnDestroy, OnInit, EditorContainer, E
     private helpService: HelpService,
     private configServiceWrapper: ConfigServiceWrapper,
     private messagingService: MessagingService,
-    private userService: UserService) {
+    private userService: UserService,
+    private authorizationManagerServiceWrapper: AuthorizationManagerServiceWrapper) {
     this.modelService = modelServiceWrapper.modelService;
     this.editorContainer = this;
   }
@@ -85,6 +87,7 @@ export class ModelMainComponent implements OnDestroy, OnInit, EditorContainer, E
             if (this.loadingModelPrefix === model.prefix) {
               this.loadingModelPrefix = undefined;
               this.model = model;
+              this.model.visibility = this.model.visibility || 'PUBLIC';
               this.getConfigAndSubscription();
               const newestSelection = this.subRoutingService.currentSelection.getValue();
               if (newestSelection.modelPrefix === model.prefix) {
@@ -159,6 +162,7 @@ export class ModelMainComponent implements OnDestroy, OnInit, EditorContainer, E
       if (this.isMessagingEnabled && this.userService.isLoggedIn()) {
         this.getSubscription();
       }
+      this.getModelDefinitionAccess();
     });
   }
 
@@ -178,6 +182,26 @@ export class ModelMainComponent implements OnDestroy, OnInit, EditorContainer, E
       });
     } else {
       this.hasSubscription = false;
+    }
+  }
+
+  changeHasModelDefinitionAccess(enabled: boolean) {
+    this.hasModelDefinitionAccess = enabled;
+  }
+
+  getModelDefinitionAccess() {
+    if (this.isLoggedIn && this.userService.user.superuser) {
+      this.hasModelDefinitionAccess = true;
+    } else if (this.model && (this.model.visibility === 'PUBLIC' || this.model.visibility === undefined)) {
+      this.hasModelDefinitionAccess = true;
+    } else if (this.model && this.model.visibility === 'PRIVATE' && !this.isLoggedIn) {
+      this.hasModelDefinitionAccess = false;
+    } else if (this.model && this.model.visibility === 'PRIVATE' && this.isLoggedIn) {
+      if(this.model.users.map(u => u.id).includes(this.userService.user.id)) {
+        this.hasModelDefinitionAccess = true;
+      } else {
+        this.hasModelDefinitionAccess = this.authorizationManagerServiceWrapper.authorizationManagerService.canAccessModelDefinition(this.model);
+      }
     }
   }
 

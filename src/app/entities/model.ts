@@ -1,4 +1,4 @@
-import { containsAny, Localizable, remove, requireDefined, Status, availableLanguages } from '@mju-psi/yti-common-ui';
+import { containsAny, Localizable, remove, requireDefined, Status, availableLanguages, Visibility } from '@mju-psi/yti-common-ui';
 import * as _ from 'lodash';
 import { Moment } from 'moment';
 import { KnownModelType, Type, UseContext } from '../types/entity';
@@ -13,7 +13,7 @@ import { ReferenceData } from './referenceData';
 import { entity, entityAwareList, entityAwareOptional, uriSerializer } from './serializer/entitySerializer';
 import {
   dateSerializer, identitySerializer, languageSerializer, list, localizableSerializer, optional,
-  stringSerializer, typeSerializer, valueOrDefault
+  stringSerializer, typeSerializer, userSerializer, valueOrDefault
 } from './serializer/serializer';
 import { Uri, Url, Urn } from './uri';
 import { Vocabulary } from './vocabulary';
@@ -95,6 +95,8 @@ export class Model extends AbstractModel {
     contact:            { name: 'contact',      serializer: localizableSerializer },
     previousModel:      { name: 'wasRevisionOf',   serializer: entityAwareOptional(uriSerializer) },
     documentation:      { name: 'documentation', serializer: localizableSerializer },
+    visibility:         { name: 'visibility',   serializer: identitySerializer<Visibility>() },
+    users:              { name: 'users',        serializer: list<User>(userSerializer)}
   };
 
   comment: Localizable;
@@ -115,6 +117,8 @@ export class Model extends AbstractModel {
   contact: Localizable;
   previousModel: Uri|null;
   documentation: Localizable;
+  visibility: Visibility;
+  users: User[] = [];
 
   constructor(graph: any, context: any, frame: any) {
     super(graph, context, frame);
@@ -149,6 +153,14 @@ export class Model extends AbstractModel {
 
   removeLink(link: Link) {
     remove(this.links, link);
+  }
+
+  addUser(user: User) {
+    this.users.push(user);
+  }
+
+  removeUser(user: User) {
+    remove(this.users, user);
   }
 
   addReferenceData(referenceData: ReferenceData) {
@@ -413,6 +425,13 @@ export class Link extends GraphNode {
   serializationValues(_inline: boolean, clone: boolean): any {
     return serialize(this, clone, Link.linkMappings);
   }
+}
+
+export interface User {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
 }
 
 export enum NamespaceType {

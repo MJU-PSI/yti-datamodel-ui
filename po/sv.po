@@ -2653,3 +2653,24 @@ msgstr "Association"
 
 msgid "Annotation value"
 msgstr "Anteckningsvärde"
+
+msgid "Visibility"
+msgstr "Synlighet"
+
+msgid "Users"
+msgstr ""
+
+msgid "Add user"
+msgstr ""
+
+msgid "Select user"
+msgstr ""
+
+msgid "Search user"
+msgstr ""
+
+msgid "To view the data model, login and appropriate access rights are required."
+msgstr ""
+
+msgid "You can apply for it at the email address"
+msgstr ""

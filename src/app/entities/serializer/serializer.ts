@@ -5,6 +5,7 @@ import { Coordinate } from 'app/types/visualization';
 import { mapType, reverseMapType } from 'app/utils/entity';
 import * as moment from 'moment';
 import Moment = moment.Moment;
+import { User } from '../model';
 
 export interface Serializer<T> {
   type: 'Normal';
@@ -118,4 +119,9 @@ export const userLoginSerializer: Serializer<string> = createSerializer(
 export const typeSerializer: Serializer<Type[]> = createSerializer(
   (data: Type[]) => filterDefined(data.map(reverseMapType)),
   (data: any) => filterDefined(normalizeAsArray(data).map(mapType))
+);
+
+export const userSerializer: Serializer<User> = createSerializer(
+  (data: User) => data.id.toString(),
+  (data: any) => { return { id : data, firstName: '', lastName: '', email: '' }; }
 );

@@ -5,12 +5,12 @@ import { Language, LanguageContext } from 'app/types/language';
 import { KnownModelType, UseContext } from 'app/types/entity';
 import { LocationService } from 'app/services/locationService';
 import { Classification } from 'app/entities/classification';
-import { remove, availableLanguages } from '@mju-psi/yti-common-ui';
+import { remove, availableLanguages, Visibility } from '@mju-psi/yti-common-ui';
 import { Organization } from 'app/entities/organization';
 import { ErrorModal } from 'app/components/form/errorModal';
 import { Vocabulary } from 'app/entities/vocabulary';
 import { ReferenceData } from 'app/entities/referenceData';
-import { ImportedNamespace, Link } from 'app/entities/model';
+import { ImportedNamespace, Link, User } from 'app/entities/model';
 import { LegacyComponent } from 'app/utils/angular';
 import { EditableForm } from 'app/components/form/editableEntityController';
 
@@ -34,6 +34,7 @@ export class NewModelPageComponent {
   importedNamespaces: ImportedNamespace[] = [];
   importedPrefixes: () => string[];
   links: Link[] = [];
+  users: User[] = [];
 
   languages: Language[] = availableLanguages.map((lang: { code: any; }) => { return lang.code });
   type: KnownModelType;
@@ -48,6 +49,8 @@ export class NewModelPageComponent {
   form: EditableForm;
 
   namespacesInUse = new Set<string>();
+
+  visibility: Visibility = 'PUBLIC';
 
   constructor($scope: IScope,
               private $location: ILocationService,
@@ -128,6 +131,14 @@ export class NewModelPageComponent {
     remove(this.links, link);
   }
 
+  addUser(user: User) {
+    this.users.push(user);
+  }
+
+  removeUser(user: User) {
+    remove(this.users, user);
+  }
+
   save() {
 
     this.persisting = true;
@@ -141,10 +152,12 @@ export class NewModelPageComponent {
         model.comment = { [this.languages[0]]: this.comment };
         model.useContext = this.useContext;
         model.contact = { [this.languages[0]]: this.contact };
+        model.visibility = this.visibility;
         this.vocabularies.forEach(v => model.addVocabulary(v));
         this.referenceDatas.forEach(r => model.addReferenceData(r));
         this.importedNamespaces.forEach(ns => model.addImportedNamespace(ns));
         this.links.forEach(l => model.addLink(l));
+        this.users.forEach(u => model.addUser(u));
 
         // remove parent organization from the list as it is already included in child organization
         // TODO: can this be accomplished by framing?

@@ -31,6 +31,8 @@ import { module5 as mod } from './module';
 import { downgradeComponent } from '@angular/upgrade/static';
 import { ModelMainComponent } from './modelMain';
 import { ModelDocumentationComponent } from '../model-documentation/model-documentation.component';
+import { UsersViewComponent } from './usersView';
+import { SearchUserModal } from './searchUserModal';
 export { module5 } from './module';
 
 mod.component('editableRootClass', componentDeclaration(EditableRootClassComponent));
@@ -50,6 +52,7 @@ mod.component('technicalNamespaces', componentDeclaration(TechnicalNamespacesCom
 mod.component('classificationsView', componentDeclaration(ClassificationsViewComponent));
 mod.component('contributorsView', componentDeclaration(ContributorsViewComponent));
 mod.component('newDatamodelVersionPrefixModalForm', componentDeclaration(NewDatamodelVersionPrefixModalFormComponent));
+mod.component('usersView', componentDeclaration(UsersViewComponent));
 
 mod.service('addEditLinkModal', AddEditLinkModal);
 mod.service('addEditNamespaceModal', AddEditNamespaceModal);
@@ -60,5 +63,6 @@ mod.service('editReferenceDataModal', EditReferenceDataModal);
 mod.service('viewReferenceDataModal', ViewReferenceDataModal);
 mod.service('searchClassificationModal', SearchClassificationModal);
 mod.service('searchOrganizationModal', SearchOrganizationModal);
+mod.service('searchUserModal', SearchUserModal);
 
 mod.directive('modelMain', downgradeComponent({component: ModelMainComponent}) as angular.IDirectiveFactory);

@@ -2481,3 +2481,24 @@ msgstr "Oblikujte opombe"
 
 msgid "Copy annotation"
 msgstr "Kopiraj opombo"
+
+msgid "Visibility"
+msgstr "Vidnost"
+
+msgid "Users"
+msgstr "Uporabniki"
+
+msgid "Add user"
+msgstr "Dodajte uporabnika"
+
+msgid "Select user"
+msgstr "Izberite uporabnika"
+
+msgid "Search user"
+msgstr "Iščite uporabnika"
+
+msgid "To view the data model, login and appropriate access rights are required."
+msgstr "Za ogled podatkovnega modela je potrebna prijava in ustrezna pravica dostopa."
+
+msgid "You can apply for it at the email address"
+msgstr "Zanjo lahko zaprosite na elektronskem naslovu"

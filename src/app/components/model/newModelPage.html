@@ -69,6 +69,8 @@
                                     namespaces-in-Use="$ctrl.namespacesInUse"
                                     model-prefix="$ctrl.prefix || ''"></imported-namespaces-view>
           <links-view value="$ctrl" context="$ctrl.context"></links-view>
+          <editable-visibility-select id="modelVisibility" state="$ctrl.visibility" model="$ctrl.visibility"></editable-visibility-select>
+          <users-view ng-if="$ctrl.visibility === 'PRIVATE'" value="$ctrl"></users-view>
         </div>
       </div>
 

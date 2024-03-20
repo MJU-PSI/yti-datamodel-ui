@@ -37,6 +37,7 @@ import { ImplicitEditModeDirective } from './implicitEditMode';
 
 import { componentDeclaration, directiveDeclaration } from 'app/utils/angular';
 import { module4 as mod } from './module';
+import { EditableVisibilitySelectComponent } from './editableVisibilitySelect';
 export { module4 } from './module';
 
 mod.component('autocomplete', componentDeclaration(AutocompleteComponent));
@@ -48,6 +49,7 @@ mod.component('editableEntityButtons', componentDeclaration(EditableEntityButton
 mod.component('errorMessages', componentDeclaration(ErrorMessagesComponent));
 mod.component('modelLanguageChooser', componentDeclaration(ModelLanguageChooserComponent));
 mod.component('editableStateSelect', componentDeclaration(EditableStateSelectComponent));
+mod.component('editableVisibilitySelect', componentDeclaration(EditableVisibilitySelectComponent));
 mod.component('errorPanel', componentDeclaration(ErrorPanelComponent));
 mod.component('editableTable', componentDeclaration(EditableTableComponent));
 mod.component('iowSelect', componentDeclaration(IowSelectComponent));

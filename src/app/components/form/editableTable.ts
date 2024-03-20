@@ -109,7 +109,7 @@ export class EditableTableComponent<T> {
 
   properties: ColumnDescriptor<T>[];
   descriptor: TableDescriptor<T>;
-  visibleValues: number;
+  visibleValues: number = 0;
 
   filter = (value: T) => this.descriptor.filter(value);
   orderBy = (value: T) => this.descriptor.orderBy(value);

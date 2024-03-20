@@ -33,6 +33,10 @@ export class AuthorizationManagerService {
     return this.hasRightToModifyModel(model);
   }
 
+  canAccessModelDefinition(model: Model): boolean {
+    return this.hasRightToModifyModel(model);
+  }
+
   canRemoveModel(model: Model): boolean {
     return isRemovableStatus(model.status) && this.hasRightToModifyModel(model);
   }
