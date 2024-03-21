@@ -6,13 +6,12 @@
     "ng": "node -- node_modules/@angular/cli/bin/ng",
     "ts-node": "node -- node_modules/ts-node/dist/bin.js -P scripts/tsconfig.script.json --skip-ignore",
     "start": "ng serve --port 9000 --proxy-config proxy.conf.json",
-    "build": "ng build && npm run babel:dev",
+    "build": "ng build --configuration production && node transpile.js",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "create-translations": "node -- node_modules/@biesbjerg/ngx-translate-extract/bin/cli.js --input ./src/app --output ./po/template.pot --format=pot --clean",
-    "load-examples": "npm run ts-node -- scripts/load-examples.ts",
-    "babel:dev": "npx babel dist/main-es5.js -o dist/main-es5.js && npx babel dist/main-es2015.js -o dist/main-es2015.js"
+    "load-examples": "npm run ts-node -- scripts/load-examples.ts"
   },
   "private": true,
   "dependencies": {
