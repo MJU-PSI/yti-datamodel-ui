@@ -190,13 +190,13 @@ export class ModelMainComponent implements OnDestroy, OnInit, EditorContainer, E
   }
 
   getModelDefinitionAccess() {
-    if (this.isLoggedIn && this.userService.user.superuser) {
+    if (this.userService.isLoggedIn() && this.userService.user.superuser) {
       this.hasModelDefinitionAccess = true;
     } else if (this.model && (this.model.visibility === 'PUBLIC' || this.model.visibility === undefined)) {
       this.hasModelDefinitionAccess = true;
-    } else if (this.model && this.model.visibility === 'PRIVATE' && !this.isLoggedIn) {
+    } else if (this.model && this.model.visibility === 'PRIVATE' && !this.userService.isLoggedIn()) {
       this.hasModelDefinitionAccess = false;
-    } else if (this.model && this.model.visibility === 'PRIVATE' && this.isLoggedIn) {
+    } else if (this.model && this.model.visibility === 'PRIVATE' && this.userService.isLoggedIn()) {
       if(this.model.users.map(u => u.id).includes(this.userService.user.id)) {
         this.hasModelDefinitionAccess = true;
       } else {
