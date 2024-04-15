@@ -421,17 +421,13 @@ export class ModelPageComponent implements ModelPageActions, ModelControllerServ
   private addClass(exclusion: Exclusion<AbstractClass>,
                    filterExclusion: Exclusion<AbstractClass>) {
 
-    const isProfileOrModel = this.model.isOfType('profile') || this.model.isOfType('model');
+    const isProfile = this.model.isOfType('profile');
     const textForSelection = (klass: Optional<Class>) => {
-      if (isProfileOrModel) {
         if (klass && klass instanceof Class && klass.isOfType('shape')) {
           return 'Copy shape';
         } else {
           return 'Specialize class';
         }
-      } else {
-        return 'Use class';
-      }
     };
 
     // OLD FEATURE: Search class modal
@@ -443,20 +439,20 @@ export class ModelPageComponent implements ModelPageActions, ModelControllerServ
     this.createOrAssignEntity(
       () => searchClassModal(),
       (external: ExternalEntity) => {
-        if (isProfileOrModel) {
+        if (isProfile) {
           this.createShape(external, true);
         } else {
           this.$q.reject('Library does not support external');
         }
       },
       (concept: EntityCreation) => this.createClass(concept),
-      (klass: Class|RelatedClass) => {
+      (klass: Class|RelatedClass, specializedClass: boolean) => {
         if (klass instanceof Class) {
           if (klass.unsaved) {
             this.selectNewlyCreatedOrAssignedEntity(klass);
           } else if (klass.isOfType('shape')) {
             this.copyShape(klass);
-          } else if (isProfileOrModel) {
+          } else if (isProfile || specializedClass) {
             this.createShape(klass, klass.external);
           } else {
             this.assignClassToModel(klass).then(() => klass);
@@ -493,16 +489,16 @@ export class ModelPageComponent implements ModelPageActions, ModelControllerServ
   private createOrAssignEntity<T extends Class | Predicate | RelatedClass | RelatedPredicate>(modal: () => IPromise<ExternalEntity | EntityCreation | T>,
                                                                                               fromExternalEntity: (external: ExternalEntity) => void,
                                                                                               fromConcept: (concept: EntityCreation) => void,
-                                                                                              fromEntity: (entity: T) => void) {
+                                                                                              fromEntity: (entity: T, specializeClass: boolean) => void) {
 
     this.askPermissionWhenEditing(() => {
-      modal().then(result => {
-        if (result instanceof EntityCreation) {
-          fromConcept(result);
-        } else if (result instanceof ExternalEntity) {
-          fromExternalEntity(result);
+      modal().then((result: any) => {
+        if (result.selection instanceof EntityCreation) {
+          fromConcept(result.selection);
+        } else if (result.selection instanceof ExternalEntity) {
+          fromExternalEntity(result.selection);
         } else {
-          fromEntity(<T>result);
+          fromEntity(<T>result.selection, result.specializeClass);
         }
       }, modalCancelHandler);
     });

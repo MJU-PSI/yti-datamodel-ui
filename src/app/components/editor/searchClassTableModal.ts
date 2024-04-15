@@ -296,21 +296,21 @@ class SearchClassTableController implements SearchController<ClassListItem> {
     return this.isSelectionExternalEntity() && this.externalClass === undefined;
   }
 
-  confirm() {
+  confirm(specializeClass: boolean) {
     const selection = this.selection;
 
     if (selection instanceof Class) {
-      this.$uibModalInstance.close(this.selection);
+      this.$uibModalInstance.close({selection: this.selection, specializClass: specializeClass});
     } else if (selection instanceof ExternalEntity) {
       if (this.externalClass) {
         const exclude = this.exclude(this.externalClass);
         if (exclude) {
           this.cannotConfirm = exclude;
         } else {
-          this.$uibModalInstance.close(this.externalClass);
+          this.$uibModalInstance.close({selection: this.externalClass, specializeClass: specializeClass});
         }
       } else {
-        this.$uibModalInstance.close(selection);
+        this.$uibModalInstance.close({selection: selection, specializeClass: specializeClass});
       }
     } else {
       throw new Error('Unsupported selection: ' + selection);
@@ -377,6 +377,10 @@ class SearchClassTableController implements SearchController<ClassListItem> {
         this.selectItem(item);
       });
     });
+  }
+
+  isProfile() {
+    return this.model.isOfType('profile');
   }
 
   isModelOrProfile() {

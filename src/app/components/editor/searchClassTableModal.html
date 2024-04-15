@@ -139,8 +139,18 @@
     <button id="confirm_class_button"
             type="button"
             class="btn btn-action confirm"
-            ng-click="$ctrl.confirm()"
+            ng-if="!$ctrl.isProfile() && !$ctrl.showOnlyExternalClasses"
+            ng-click="$ctrl.confirm(false)"
             ng-disabled="!$ctrl.selection || $ctrl.cannotConfirm || (form.editing && (form.$invalid || form.$pending)) || $ctrl.isExternalClassPending()">
+      {{'Use class' | translate}}
+    </button>
+
+    <button id="confirm_class_button"
+        type="button"
+        class="btn btn-action confirm"
+        ng-if="$ctrl.isModelOrProfile()"
+        ng-click="$ctrl.confirm(true)"
+        ng-disabled="!$ctrl.selection || $ctrl.cannotConfirm || (form.editing && (form.$invalid || form.$pending)) || $ctrl.isExternalClassPending()">
       {{$ctrl.textForSelection($ctrl.selection) | translate}}
     </button>
 
