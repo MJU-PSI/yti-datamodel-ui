@@ -323,7 +323,7 @@ class SearchClassTableController implements SearchController<ClassListItem> {
 
   createNewClass() {
     return this.searchConceptModal.openNewEntityCreation(this.model.vocabularies, this.model, 'class', this.searchText)
-      .then(conceptCreation => this.$uibModalInstance.close(conceptCreation), ignoreModalClose);
+      .then(conceptCreation => this.$uibModalInstance.close({selection: conceptCreation, specializeClass: null }), ignoreModalClose);
   }
 
   createNewShape() {
@@ -341,15 +341,15 @@ class SearchClassTableController implements SearchController<ClassListItem> {
   }
 
   copyClass(item: AbstractClass) {
-    this.$uibModalInstance.close(new RelatedClass(item.id, 'prov:wasDerivedFrom'));
+    this.$uibModalInstance.close({selection: new RelatedClass(item.id, 'prov:wasDerivedFrom'), specializeClass: null });
   }
 
   createSubClass(item: AbstractClass) {
-    this.$uibModalInstance.close(new RelatedClass(item.id, 'rdfs:subClassOf'));
+    this.$uibModalInstance.close({selection: new RelatedClass(item.id, 'rdfs:subClassOf'), specializeClass: null });
   }
 
   createSuperClass(item: AbstractClass) {
-    this.$uibModalInstance.close(new RelatedClass(item.id, 'iow:superClassOf'));
+    this.$uibModalInstance.close({selection: new RelatedClass(item.id, 'iow:superClassOf'), specializeClass: null });
   }
 
   addNamespaceToModel(item: AbstractClass) {

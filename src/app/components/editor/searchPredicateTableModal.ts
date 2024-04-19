@@ -229,7 +229,7 @@ class SearchPredicateTableController implements SearchController<PredicateListIt
     const selection = this.selection;
 
     if (selection instanceof Predicate) {
-      this.$uibModalInstance.close(selection);
+      this.$uibModalInstance.close({selection: selection});
     } else {
       throw new Error('Unsupported selection: ' + selection);
     }
@@ -243,7 +243,7 @@ class SearchPredicateTableController implements SearchController<PredicateListIt
     return this.searchConceptModal.openNewEntityCreation(this.model.vocabularies, this.model, type, this.searchText)
       .then(result => {
         if (!this.typeSelectable) {
-          this.$uibModalInstance.close(result);
+          this.$uibModalInstance.close({selection: result});
         } else {
           this.predicateService.newPredicate(this.model, result.entity.label, result.conceptId, type, this.localizer.language)
             .then(predicate => {
@@ -299,15 +299,15 @@ class SearchPredicateTableController implements SearchController<PredicateListIt
   }
 
   copyPredicate(item: AbstractPredicate) {
-    this.$uibModalInstance.close(new RelatedPredicate(item.id, 'prov:wasDerivedFrom'));
+    this.$uibModalInstance.close({selection: new RelatedPredicate(item.id, 'prov:wasDerivedFrom')});
   }
 
   createSubPredicate(item: AbstractPredicate) {
-    this.$uibModalInstance.close(new RelatedPredicate(item.id, 'rdfs:subPropertyOf'));
+    this.$uibModalInstance.close({selection: new RelatedPredicate(item.id, 'rdfs:subPropertyOf')});
   }
 
   createSuperPredicate(item: AbstractPredicate) {
-    this.$uibModalInstance.close(new RelatedPredicate(item.id, 'iow:superPropertyOf'));
+    this.$uibModalInstance.close({selection: new RelatedPredicate(item.id, 'iow:superPropertyOf')});
   }
 
   itemTitle(item: AbstractPredicate) {
