@@ -300,7 +300,7 @@ class SearchClassTableController implements SearchController<ClassListItem> {
     const selection = this.selection;
 
     if (selection instanceof Class) {
-      this.$uibModalInstance.close({selection: this.selection, specializClass: specializeClass});
+      this.$uibModalInstance.close({selection: this.selection, specializeClass: specializeClass});
     } else if (selection instanceof ExternalEntity) {
       if (this.externalClass) {
         const exclude = this.exclude(this.externalClass);
