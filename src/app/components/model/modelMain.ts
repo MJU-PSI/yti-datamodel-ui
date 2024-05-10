@@ -3,7 +3,7 @@ import { NgbNavChangeEvent, NgbNav } from '@ng-bootstrap/ng-bootstrap';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { ModelAndSelection, SubRoutingHackService } from '../../services/subRoutingHackService';
 import { ModelService } from '../../services/modelService';
-import { AuthorizationManagerServiceWrapper, ConfigServiceWrapper, ModelServiceWrapper } from '../../ajs-upgraded-providers';
+import { AuthorizationManagerServiceWrapper, ConfigServiceWrapper, DatamodelLocationServiceWrapper, ModelServiceWrapper } from '../../ajs-upgraded-providers';
 import { Model } from '../../entities/model';
 import { NotificationModal } from '../common/notificationModal';
 import { EditingGuard, EditorContainer, View } from './modelControllerService';
@@ -18,6 +18,7 @@ import { Config } from '../../entities/config';
 import { MessagingService } from '../../services/messaging-service';
 import { UserService } from '@mju-psi/yti-common-ui';
 import { Url } from '../../entities/uri';
+import { LocationService } from 'app/services/locationService';
 
 @Component({
   selector: 'app-model-main',
@@ -44,6 +45,7 @@ export class ModelMainComponent implements OnDestroy, OnInit, EditorContainer, E
   isLoggedIn: boolean;
   hasSubscription: boolean | undefined = undefined;
   hasModelDefinitionAccess: boolean | undefined = undefined;
+  locationService: LocationService;
 
   constructor(private subRoutingService: SubRoutingHackService, modelServiceWrapper: ModelServiceWrapper,
     private notificationModal: NotificationModal, private confirmationModal: ConfirmationModal,
@@ -52,9 +54,11 @@ export class ModelMainComponent implements OnDestroy, OnInit, EditorContainer, E
     private configServiceWrapper: ConfigServiceWrapper,
     private messagingService: MessagingService,
     private userService: UserService,
-    private authorizationManagerServiceWrapper: AuthorizationManagerServiceWrapper) {
+    private authorizationManagerServiceWrapper: AuthorizationManagerServiceWrapper,
+    private locationServiceWrapper: DatamodelLocationServiceWrapper) {
     this.modelService = modelServiceWrapper.modelService;
     this.editorContainer = this;
+    this.locationService = this.locationServiceWrapper.locationService;
   }
 
   ngOnInit(): void {
@@ -202,6 +206,9 @@ export class ModelMainComponent implements OnDestroy, OnInit, EditorContainer, E
       } else {
         this.hasModelDefinitionAccess = this.authorizationManagerServiceWrapper.authorizationManagerService.canAccessModelDefinition(this.model);
       }
+    }
+    if(this.model) {
+      this.locationService.atModel(this.model, null);
     }
   }
 
