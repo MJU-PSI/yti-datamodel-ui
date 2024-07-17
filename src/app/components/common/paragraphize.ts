@@ -22,7 +22,7 @@ export const ParagraphizeFilter: FilterFactory = ($sce: ISCEService) => {
   };
 };
 
-const paragraphRegex = new RegExp(`(.*?\n\n})`);
+const paragraphRegex = new RegExp(`(.*?)(\n|$)`, 'g');
 
 function applyParagraph(text: string): string {
   if (!text) {

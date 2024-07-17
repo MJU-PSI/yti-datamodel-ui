@@ -16,11 +16,11 @@
 
   <div ng-if="$ctrl.property.isAnnotation()">
     <editable data-title="Annotation value" context="$ctrl.model">
-      <input id="{{$ctrl.property.internalId + 'value'}}" class="form-control" type="text" localized-input="label"
-        context="$ctrl.model" ng-model="$ctrl.property.value" />
+      <textarea id="{{$ctrl.property.internalId + 'value'}}" class="form-control" localized-input="label"
+        context="$ctrl.model" ng-model="$ctrl.property.value"></textarea>
     </editable>
   </div>
-  
+
   <div ng-if="!$ctrl.property.isAnnotation()">
 
     <h4>{{$ctrl.propertyInformationLabel | translate}}</h4>
