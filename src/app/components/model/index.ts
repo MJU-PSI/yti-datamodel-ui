@@ -66,3 +66,16 @@ mod.service('searchOrganizationModal', SearchOrganizationModal);
 mod.service('searchUserModal', SearchUserModal);
 
 mod.directive('modelMain', downgradeComponent({component: ModelMainComponent}) as angular.IDirectiveFactory);
+
+mod.directive("fileUpload", function() {
+  return {
+    require: "ngModel",
+    link: function postLink(scope, elem, attrs, ngModel: ng.INgModelController) {
+      elem.on("change", function(e) {
+        const inputElement = elem[0] as HTMLInputElement;
+        var files = inputElement.files;
+        ngModel.$setViewValue(files);
+      })
+    }
+  }
+})

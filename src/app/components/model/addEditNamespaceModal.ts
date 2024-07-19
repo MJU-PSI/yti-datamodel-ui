@@ -86,6 +86,9 @@ class AddEditNamespaceController {
   namespace: string;
   prefix: string;
   label: string;
+  format: string = 'RDF';
+  formats: string[] = ['RDF', 'TTL'];
+  files?: File[];
 
   submitError: string;
   edit: boolean;
@@ -185,10 +188,17 @@ class AddEditNamespaceController {
 
       this.$uibModalInstance.close(this.mangleAsTechnicalIfNecessary(this.namespaceToEdit!));
     } else {
-      this.modelService.newNamespaceImport(this.namespace, this.prefix, this.label, this.language)
+      if (this.files && this.files.length > 0) {
+        this.modelService.newNamespaceImportFromFile(this.namespace, this.format, this.files[0], this.prefix, this.label, this.language)
         .then(ns => {
           return this.$uibModalInstance.close(this.mangleAsTechnicalIfNecessary(ns));
         }, err => this.submitError = err.data.errorMessage);
+      } else {
+        this.modelService.newNamespaceImport(this.namespace, this.prefix, this.label, this.language)
+        .then(ns => {
+          return this.$uibModalInstance.close(this.mangleAsTechnicalIfNecessary(ns));
+        }, err => this.submitError = err.data.errorMessage);
+      }
     }
   }
 
@@ -206,5 +216,9 @@ class AddEditNamespaceController {
     }
 
     return ns;
+  }
+
+  getFormats() {
+    return this.formats;
   }
 }

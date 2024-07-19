@@ -106,6 +106,14 @@ export class InteractiveHelpModelService implements ModelService, ResetableServi
     });
   }
 
+  newNamespaceImportFromFile(namespace: string, format: string, file: File, prefix: string, label: string, lang: Language): IPromise<ImportedNamespace> {
+    return this.entityCreatorService.createImportedNamespace({
+      namespace,
+      prefix,
+      label: { [lang]: label }
+    });
+  }
+
   changeStatuses(model: Model, initialStatus: Status, endStatus: Status): IPromise<any> {
     throw new Error('changeStatuses is not yet supported operation in help');
   }

@@ -45,6 +45,21 @@
       </div>
     </editable>
 
+   <div class="form-group" disable="!$ctrl.namespaceModifiable()">
+      <label translate>File format</label>
+
+      <iow-select id="file_format_dropdown_button" id-prefix="file_format_dropdown_button" options="format in $ctrl.getFormats()" ng-model="$ctrl.format">
+        <span>{{format}}</span>
+      </iow-select>
+    </div>
+
+    <editable data-title="File to be uploaded" disable="!$ctrl.namespaceModifiable()" context="$ctrl.context">
+      <div class="input-group input-group-md">
+        <input type="file" file-upload ng-model="$ctrl.files"/>
+      </div>
+    </editable>
+  </div>
+
   </div>
 
   <div class="modal-footer">

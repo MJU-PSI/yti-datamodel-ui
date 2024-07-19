@@ -39,6 +39,8 @@ export interface ModelService {
 
   newNamespaceImport(namespace: string, prefix: string, label: string, lang: Language | string): IPromise<ImportedNamespace>;
 
+  newNamespaceImportFromFile(namespace: string, format: string, file: File | null, prefix: string, label: string, lang: Language | string): IPromise<ImportedNamespace>;
+
   changeStatuses(model: Model, initialStatus: Status, endStatus: Status): IPromise<any>;
 
   getModelResourcesTotalCountByStatus(model: Model, resourceStatus: Status): IPromise<number>;
@@ -159,6 +161,26 @@ export class DefaultModelService implements ModelService {
 
   newNamespaceImport(namespace: string, prefix: string, label: string, lang: Language): IPromise<ImportedNamespace> {
     return this.$http.get<GraphData>(apiEndpointWithName('modelRequirementCreator'), { params: { namespace, prefix, label, lang } })
+      .then(response => this.deserializeImportedNamespace(response.data!));
+  }
+
+  newNamespaceImportFromFile(namespace: string, format: string, file: File, prefix: string, label: string, lang: Language): IPromise<ImportedNamespace> {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('format', format);
+
+    const params = {
+      'namespace': namespace,
+      'prefix': prefix,
+      'label': label,
+      'lang': lang
+     };
+
+    const headers = {
+      'Content-Type': undefined
+    };
+
+    return this.$http.post<GraphData>(apiEndpointWithName('modelRequirementCreator'),  formData, { params, headers })
       .then(response => this.deserializeImportedNamespace(response.data!));
   }
 
